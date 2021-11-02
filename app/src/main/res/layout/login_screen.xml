@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/BackgroundColor">
+
+    <!-- Doctor Welcome TextView -->
+    <TextView
+        android:id="@+id/textView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@id/edtTxtEmail"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginBottom="64dp"
+
+        android:fontFamily="@font/zenfont"
+        android:includeFontPadding="false"
+        android:text="@string/welcome"
+        android:textAlignment="center"
+        android:textColor="@color/WhiteColor"
+        android:textFontWeight="600"
+        android:textSize="30sp" />
+
+    <!-- Email EditText -->
+    <EditText
+        android:id="@+id/edtTxtEmail"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_above="@id/edtTxtPassword"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+
+        android:autofillHints="emailAddress"
+
+        android:background="@drawable/round_shape"
+        android:fontFamily="@font/zenfont"
+        android:hint="@string/prompt_email"
+
+        android:includeFontPadding="false"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="16sp"
+
+        android:paddingTop="4sp"
+        android:paddingBottom="6sp"
+        android:textColor="@color/WhiteColor"
+        android:textColorHint="@color/WhiteColor"
+        android:textSize="20sp" />
+
+    <!-- Password EditText -->
+    <EditText
+        android:id="@+id/edtTxtPassword"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_above="@id/signUpButton"
+
+        android:layout_marginStart = "32dp"
+        android:layout_marginEnd = "32dp"
+        android:layout_marginBottom="32dp"
+
+        android:background="@drawable/round_shape"
+
+        android:autofillHints="password"
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+
+        android:paddingHorizontal="16sp"
+        android:paddingTop="4sp"
+        android:paddingBottom="6sp"
+
+        android:textSize="20sp"
+        android:textColor="@color/WhiteColor"
+        android:textColorHint="@color/WhiteColor"
+        android:fontFamily="@font/zenfont"
+        android:includeFontPadding="false" />
+
+    <!-- Sign Up Button-->
+    <!-- TODO The marginBottom should be changed, after adding Google log in -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signUpButton"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignStart="@id/edtTxtPassword"
+        android:layout_alignEnd="@id/edtTxtPassword"
+        android:layout_alignParentBottom="true"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="256dp"
+
+        android:background="@drawable/round_shape"
+        android:backgroundTint="@color/GreenColor"
+
+        android:fontFamily="@font/zenfont"
+        android:includeFontPadding="false"
+        android:text="@string/action_sign_in_short"
+        android:textColor="@color/WhiteColor"
+        android:textFontWeight="700" />
+
+</RelativeLayout>
