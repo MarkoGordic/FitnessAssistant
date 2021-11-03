@@ -24,12 +24,14 @@
         android:textFontWeight="600"
         android:textSize="30sp" />
 
+    <!-- TODO EditTexts should change color when they are selected -->
+
     <!-- Email EditText -->
     <EditText
         android:id="@+id/edtTxtEmail"
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
 
         android:layout_above="@id/edtTxtPassword"
 
@@ -45,10 +47,9 @@
 
         android:includeFontPadding="false"
         android:inputType="textEmailAddress"
-        android:paddingHorizontal="16sp"
 
-        android:paddingTop="4sp"
-        android:paddingBottom="6sp"
+        android:paddingHorizontal="16sp"
+        android:paddingBottom="4sp"
         android:textColor="@color/WhiteColor"
         android:textColorHint="@color/WhiteColor"
         android:textSize="20sp" />
@@ -58,34 +59,33 @@
         android:id="@+id/edtTxtPassword"
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
 
-        android:layout_above="@id/signUpButton"
+        android:layout_above="@id/signInButton"
 
-        android:layout_marginStart = "32dp"
-        android:layout_marginEnd = "32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
 
-        android:background="@drawable/round_shape"
-
         android:autofillHints="password"
+
+        android:background="@drawable/round_shape"
+        android:fontFamily="@font/zenfont"
         android:hint="@string/prompt_password"
+
+        android:includeFontPadding="false"
         android:inputType="textPassword"
 
         android:paddingHorizontal="16sp"
-        android:paddingTop="4sp"
-        android:paddingBottom="6sp"
-
-        android:textSize="20sp"
+        android:paddingBottom="4sp"
         android:textColor="@color/WhiteColor"
         android:textColorHint="@color/WhiteColor"
-        android:fontFamily="@font/zenfont"
-        android:includeFontPadding="false" />
+        android:textSize="20sp" />
 
     <!-- Sign Up Button-->
     <!-- TODO The marginBottom should be changed, after adding Google log in -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signUpButton"
+        android:id="@+id/signInButton"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
