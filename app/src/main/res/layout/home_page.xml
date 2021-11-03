@@ -36,4 +36,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
+
+    <TextView
+        android:id="@+id/stepTarget"
+        android:layout_width="97dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/ralewaym"
+
+        android:text="@string/default_step_target"
+        android:textColor="@color/BlueYonder"
+        android:textSize="25sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.917"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stepCount"
+        android:layout_width="97dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/ralewaym"
+
+        android:gravity="end"
+        android:text="@string/default_step_count"
+        android:textColor="@color/BlueYonder"
+        android:textSize="25sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.608"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

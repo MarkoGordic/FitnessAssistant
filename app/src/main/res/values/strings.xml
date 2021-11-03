@@ -20,6 +20,15 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="sign_in_failed">"Sign in failed"</string>
 
+    <!-- Navigation bar strings -->
+    <string name="nav1">Activity</string>
+    <string name="nav2">Stats</string>
+    <string name="nav3">Home</string>
+    <string name="nav4">Workout</string>
+    <string name="nav5">Profile</string>
+
     <!-- Strings for HomePage -->
     <string name="welcome_text">Hello! 👋</string>
+    <string name="default_step_target">/ 10000</string>
+    <string name="default_step_count">0</string>
 </resources>
