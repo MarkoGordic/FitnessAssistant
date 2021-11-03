@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        android:fontFamily="@font/zenfont"
+        android:fontFamily="@font/raleway"
         android:includeFontPadding="false"
         android:text="@string/app_name"
         android:textAlignment="center"

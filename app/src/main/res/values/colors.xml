@@ -7,10 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <!-- Our colors -->
     <color name="TextBlackFont">#374957</color>
-    <color name="BackgroundColor">#27323A</color>
+    <color name="BackgroundColor">#FFFCF2</color>
     <color name="GreenColor">#A3F7BF</color>
     <color name="DarkGreenColor">#6FFE9F</color>
     <color name="ExtraDarkGreenColor">#287170</color>
     <color name="BlackColor">#000000</color>
     <color name="WhiteColor">#FFFFFF</color>
+    <color name="SpaceCadet">#152451</color>
+    <color name="MaximumBluePurple">#ADC0FF</color>
+    <color name="BlueYonder">#6172A8</color>
+    <color name="MangoTango">#FF7E47</color>
+    <color name="Flame">#EB5E28</color>
+
+    <!-- Navigation menu colors -->
+    <color name="InactiveMenuItem">#C7C5C1</color>
+    <color name="ActiveMenuItem">#6172A8</color>
 </resources>

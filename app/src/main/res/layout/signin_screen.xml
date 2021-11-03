@@ -16,11 +16,11 @@
 
         android:layout_marginBottom="64dp"
 
-        android:fontFamily="@font/zenfont"
+        android:fontFamily="@font/raleway"
         android:includeFontPadding="false"
         android:text="@string/welcome"
         android:textAlignment="center"
-        android:textColor="@color/WhiteColor"
+        android:textColor="@color/BlueYonder"
         android:textFontWeight="600"
         android:textSize="30sp" />
 
@@ -42,7 +42,7 @@
         android:autofillHints="emailAddress"
 
         android:background="@drawable/round_shape"
-        android:fontFamily="@font/zenfont"
+        android:fontFamily="@font/raleway"
         android:hint="@string/prompt_email"
 
         android:includeFontPadding="false"
@@ -50,8 +50,8 @@
 
         android:paddingHorizontal="16sp"
         android:paddingBottom="4sp"
-        android:textColor="@color/WhiteColor"
-        android:textColorHint="@color/WhiteColor"
+        android:textColor="@color/MaximumBluePurple"
+        android:textColorHint="@color/MaximumBluePurple"
         android:textSize="20sp" />
 
     <!-- Password EditText -->
@@ -70,7 +70,7 @@
         android:autofillHints="password"
 
         android:background="@drawable/round_shape"
-        android:fontFamily="@font/zenfont"
+        android:fontFamily="@font/raleway"
         android:hint="@string/prompt_password"
 
         android:includeFontPadding="false"
@@ -78,8 +78,8 @@
 
         android:paddingHorizontal="16sp"
         android:paddingBottom="4sp"
-        android:textColor="@color/WhiteColor"
-        android:textColorHint="@color/WhiteColor"
+        android:textColor="@color/MaximumBluePurple"
+        android:textColorHint="@color/MaximumBluePurple"
         android:textSize="20sp" />
 
     <!-- Sign Up Button-->
@@ -99,12 +99,12 @@
         android:layout_marginBottom="256dp"
 
         android:background="@drawable/round_shape"
-        android:backgroundTint="@color/GreenColor"
+        android:backgroundTint="@color/BlueYonder"
 
-        android:fontFamily="@font/zenfont"
+        android:fontFamily="@font/raleway"
         android:includeFontPadding="false"
         android:text="@string/action_sign_in_short"
-        android:textColor="@color/WhiteColor"
+        android:textColor="@color/MaximumBluePurple"
         android:textFontWeight="700" />
 
 </RelativeLayout>
