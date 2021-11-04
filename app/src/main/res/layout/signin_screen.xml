@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/BackgroundColor">
+    android:background="@color/BackgroundColor"
+    tools:ignore="NamespaceTypo">
 
     <!-- Welcome TextView -->
     <TextView
@@ -41,16 +44,16 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
 
-        android:drawableEnd="@drawable/custom_email"
-
         android:autofillHints="emailAddress"
-        android:hint="@string/prompt_email"
-        android:inputType="textEmailAddress"
 
         android:background="@drawable/custom_input"
-
+        android:drawableEnd="@drawable/custom_email"
         android:fontFamily="@font/ralewaym"
+
+        android:hint="@string/prompt_email"
+
         android:includeFontPadding="false"
+        android:inputType="textEmailAddress"
         android:paddingHorizontal="16sp"
         android:textColor="@color/BlueYonder"
         android:textColorHint="@color/MaximumBluePurple"
@@ -69,16 +72,16 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
 
-        android:drawableEnd="@drawable/custom_lock"
-
         android:autofillHints="password"
-        android:hint="@string/prompt_password"
-        android:inputType="textPassword"
 
         android:background="@drawable/custom_input"
-
+        android:drawableEnd="@drawable/custom_lock"
         android:fontFamily="@font/ralewaym"
+
+        android:hint="@string/prompt_password"
+
         android:includeFontPadding="false"
+        android:inputType="textPassword"
         android:paddingHorizontal="16sp"
         android:textColor="@color/BlueYonder"
         android:textColorHint="@color/MaximumBluePurple"
@@ -102,10 +105,27 @@
 
         android:background="@drawable/sign_in_button"
 
-        android:fontFamily="@font/raleway"
+        android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
         android:text="@string/action_sign_in_short"
         android:textColor="@color/MaximumBluePurple"
         android:textFontWeight="600" />
+
+    <!-- Loading Progress Circle -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/signInProgress"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/signInButton"
+
+        android:layout_alignBottom="@id/signInButton"
+        android:layout_centerHorizontal="true"
+        android:elevation="2dp"
+
+        android:indeterminate="true"
+        app:indicatorColor="@color/Flame"
+
+        tools:visibility="visible" />
 
 </RelativeLayout>

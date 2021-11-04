@@ -8,10 +8,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +30,9 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.signInButton).setOnClickListener((View v)->{
             String email = ((EditText) findViewById(R.id.edtTxtEmail)).getText().toString();
             String password = ((EditText) findViewById(R.id.edtTxtPassword)).getText().toString(); // added so user can't spam click button
+            v.setBackground(AppCompatResources.getDrawable(this, R.drawable.sign_in_button_activated));
+            ((Button) v).setText("");
+            // findViewById(R.id.signInProgress).setVisibility(View.VISIBLE);
             signInUser(email,password);
         });
     }
@@ -86,6 +92,9 @@ public class SignInActivity extends AppCompatActivity {
                 shortToast(getString(R.string.sign_in_failed)); // TODO Make credentials red (don't clear them completely)
             else // this can happen if password gets changed w/o the use of our app while user is logged in
                 setViewSignInScreen();
+            findViewById(R.id.signInButton).setBackground(AppCompatResources.getDrawable(this, R.drawable.sign_in_button));
+            ((Button) findViewById(R.id.signInButton)).setText(getString(R.string.action_sign_in_short));
+            // findViewById(R.id.signInProgress).setVisibility(View.INVISIBLE);
             signInUserFromInput();
         });
     }
@@ -105,10 +114,13 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    // TODO Fix Visibility of ProgressBar
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.opening_screen);
+        // findViewById(R.id.signInProgress).setVisibility(View.INVISIBLE);
         signIn();
     }
 }
