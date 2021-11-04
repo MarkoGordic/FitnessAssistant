@@ -7,6 +7,9 @@
     <string name="email_key">email</string>
     <string name="password_key">password</string>
 
+    <!-- Pedometer file keys -->
+    <string name="prefrence_file_pedometer">PedometerData</string>
+
     <!-- In-app messages -->
     <string name="sign_in_successful">You have signed in successfully!</string>
 
