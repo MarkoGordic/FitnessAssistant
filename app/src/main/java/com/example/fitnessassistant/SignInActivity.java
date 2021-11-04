@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,8 +27,7 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.signInButton).setOnClickListener((View v)->{
             String email = ((EditText) findViewById(R.id.edtTxtEmail)).getText().toString();
             String password = ((EditText) findViewById(R.id.edtTxtPassword)).getText().toString(); // added so user can't spam click button
-            findViewById(R.id.signInButton).setClickable(false);
-            signInUser(email, password);
+            signInUser(email,password);
         });
     }
 

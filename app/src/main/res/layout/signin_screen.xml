@@ -24,7 +24,9 @@
         android:textFontWeight="600"
         android:textSize="30sp" />
 
+    <!-- TODO Add © rights for icons && for fonts -->
     <!-- TODO EditTexts should change color when they are selected -->
+    <!-- TODO Add vision for password -->
 
     <!-- Email EditText -->
     <EditText
@@ -39,14 +41,16 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
 
+        android:drawableEnd="@drawable/custom_email"
+
         android:autofillHints="emailAddress"
-        android:background="@drawable/round_shape"
-        android:fontFamily="@font/ralewaym"
-
         android:hint="@string/prompt_email"
-
-        android:includeFontPadding="false"
         android:inputType="textEmailAddress"
+
+        android:background="@drawable/custom_input"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
         android:paddingHorizontal="16sp"
         android:textColor="@color/BlueYonder"
         android:textColorHint="@color/MaximumBluePurple"
@@ -65,11 +69,13 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
 
+        android:drawableEnd="@drawable/custom_lock"
+
         android:autofillHints="password"
         android:hint="@string/prompt_password"
         android:inputType="textPassword"
 
-        android:background="@drawable/round_shape"
+        android:background="@drawable/custom_input"
 
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
@@ -94,8 +100,7 @@
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="256dp"
 
-        android:background="@drawable/round_shape"
-        android:backgroundTint="@color/BlueYonder"
+        android:background="@drawable/sign_in_button"
 
         android:fontFamily="@font/raleway"
         android:includeFontPadding="false"

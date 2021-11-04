@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sign In Button -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle"
+            android:tint="@color/BlueYonder">
+            <solid android:color="@color/BackgroundColor" />
+            <corners android:radius="10dp"/>
+            <stroke android:color="@color/MaximumBluePurple"
+                android:width="1dp"/>
+        </shape>
+    </item>
+</selector>
