@@ -3,35 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:itemRippleColor="@color/SpaceCadet">
 
+    <!-- Parts of the navigation -->
+
     <item
         android:id="@+id/map"
         android:icon="@drawable/map"
-        android:title="@string/nav1"
-        />
+        android:title="@string/nav1" />
 
     <item
         android:id="@+id/diary"
         android:icon="@drawable/diary"
-        android:title="@string/nav2"
-        />
+        android:title="@string/nav2" />
 
     <item
         android:id="@+id/home"
         android:icon="@drawable/home"
-        android:title="@string/nav3"
-        />
+        android:title="@string/nav3" />
 
     <item
         android:id="@+id/workout"
         android:icon="@drawable/workout"
-        android:title="@string/nav4"
-        />
+        android:title="@string/nav4" />
 
     <item
         android:id="@+id/profile"
         android:icon="@drawable/user"
-        android:title="@string/nav5"
-        />
-
+        android:title="@string/nav5" />
 
 </menu>

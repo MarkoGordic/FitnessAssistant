@@ -27,8 +27,14 @@
     <string name="nav4">Workout</string>
     <string name="nav5">Profile</string>
 
-    <!-- Strings for HomePage -->
-    <string name="welcome_text">Hello! 👋</string>
+    <!-- Greeting the user -->
+    <string name="welcome_text">Hello! 👋 </string>
+    <string name="good_morning">Good Morning </string>
+    <string name="good_afternoon">Good Afternoon </string>
+    <string name="good_evening">Good Evening </string>
+    <string name="good_night">Good Night </string>
+
+    <!-- Strings for Step Counter -->
     <string name="default_step_target">/ 10000</string>
     <string name="default_step_count">0</string>
 </resources>

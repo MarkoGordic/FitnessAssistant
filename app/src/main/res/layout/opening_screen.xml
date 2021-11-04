@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/BackgroundColor">
 
-    <!-- Welcome Text TextView -->
+    <!-- Opening Screen with the logo -->
+    <!-- TODO Add the logo instead of the textView -->
     <TextView
         android:id="@+id/FitnessAssistant"
 
@@ -21,7 +22,7 @@
         android:includeFontPadding="false"
         android:text="@string/app_name"
         android:textAlignment="center"
-        android:textColor="@color/WhiteColor"
+        android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="30sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

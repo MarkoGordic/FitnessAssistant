@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@color/BackgroundColor">
 
-    <!-- Doctor Welcome TextView -->
+    <!-- Welcome TextView -->
     <TextView
         android:id="@+id/textView"
 
@@ -16,7 +16,7 @@
 
         android:layout_marginBottom="64dp"
 
-        android:fontFamily="@font/raleway"
+        android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
         android:text="@string/welcome"
         android:textAlignment="center"
@@ -40,17 +40,15 @@
         android:layout_marginBottom="16dp"
 
         android:autofillHints="emailAddress"
-
         android:background="@drawable/round_shape"
-        android:fontFamily="@font/raleway"
+        android:fontFamily="@font/ralewaym"
+
         android:hint="@string/prompt_email"
 
         android:includeFontPadding="false"
         android:inputType="textEmailAddress"
-
         android:paddingHorizontal="16sp"
-        android:paddingBottom="4sp"
-        android:textColor="@color/MaximumBluePurple"
+        android:textColor="@color/BlueYonder"
         android:textColorHint="@color/MaximumBluePurple"
         android:textSize="20sp" />
 
@@ -68,17 +66,15 @@
         android:layout_marginBottom="32dp"
 
         android:autofillHints="password"
-
-        android:background="@drawable/round_shape"
-        android:fontFamily="@font/raleway"
         android:hint="@string/prompt_password"
-
-        android:includeFontPadding="false"
         android:inputType="textPassword"
 
+        android:background="@drawable/round_shape"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
         android:paddingHorizontal="16sp"
-        android:paddingBottom="4sp"
-        android:textColor="@color/MaximumBluePurple"
+        android:textColor="@color/BlueYonder"
         android:textColorHint="@color/MaximumBluePurple"
         android:textSize="20sp" />
 
@@ -105,6 +101,6 @@
         android:includeFontPadding="false"
         android:text="@string/action_sign_in_short"
         android:textColor="@color/MaximumBluePurple"
-        android:textFontWeight="700" />
+        android:textFontWeight="600" />
 
 </RelativeLayout>

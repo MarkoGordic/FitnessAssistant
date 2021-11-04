@@ -15,19 +15,19 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class HomePageActivity extends AppCompatActivity {
-
-    double MagnitudePrevious = 1;
-    int stepCount = 0;
+    private double MagnitudePrevious = 1;
+    private int stepCount;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
-
-        TextView stepCountText = findViewById(R.id.stepCount);
+        prefs = getSharedPreferences("StepCounter", MODE_PRIVATE);
+        stepCount = 0;
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
 
         SensorEventListener stepDetector = new SensorEventListener() {
             @Override
@@ -41,21 +41,18 @@ public class HomePageActivity extends AppCompatActivity {
                     double MagnitudeDelta = Magnitude - MagnitudePrevious;
                     MagnitudePrevious = Magnitude;
 
-                    if (MagnitudeDelta > 4){
+                    if (MagnitudeDelta > 4)
                         stepCount++;
-                    }
 
-                    stepCountText.setText(String.valueOf(stepCount));
+                    ((TextView) findViewById(R.id.stepCount)).setText(String.valueOf(stepCount));
                 }
             }
 
             @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-            }
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {}
         };
 
-        sensorManager.registerListener(stepDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(stepDetector, sensor, SensorManager.SENSOR_DELAY_UI);
 
         TextView welcome = findViewById(R.id.welcomeMessage); // TextView in top right corner for welcome message
 
@@ -66,41 +63,31 @@ public class HomePageActivity extends AppCompatActivity {
         int systemHours = calendar.get(Calendar.HOUR_OF_DAY);
 
         if (systemHours >= 6 && systemHours < 12)
-            welcome.setText("Good Morning, ");
+            welcome.setText(R.string.good_morning);
         else if(systemHours >= 12 && systemHours < 18)
-            welcome.setText("Good Afternoon, ");
+            welcome.setText(R.string.good_afternoon);
         else if(systemHours >= 18 && systemHours < 23)
-            welcome.setText("Good Evening, ");
-        else if((systemHours >= 23 && systemHours <= 24) || (systemHours >= 0 && systemHours < 6))
-            welcome.setText("Good Night, ");
-
-
+            welcome.setText(R.string.good_evening);
+        else
+            welcome.setText(R.string.good_night);
     }
 
     protected void onPause() {
         super.onPause();
-
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("stepCount", stepCount);
         editor.apply();
     }
 
     protected void onStop() {
         super.onStop();
-
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("stepCount", stepCount);
         editor.apply();
     }
 
     protected void onResume() {
         super.onResume();
-
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        stepCount = sharedPreferences.getInt("stepCount", 0);
+        stepCount = prefs.getInt("stepCount", 0);
     }
 }
