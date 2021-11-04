@@ -63,13 +63,13 @@ public class HomePageActivity extends AppCompatActivity {
         int systemHours = calendar.get(Calendar.HOUR_OF_DAY);
 
         if (systemHours >= 6 && systemHours < 12)
-            welcome.setText(R.string.good_morning);
+            welcome.setText(getString(R.string.good_morning));
         else if(systemHours >= 12 && systemHours < 18)
-            welcome.setText(R.string.good_afternoon);
+            welcome.setText(getString(R.string.good_afternoon));
         else if(systemHours >= 18 && systemHours < 23)
-            welcome.setText(R.string.good_evening);
+            welcome.setText(getString(R.string.good_evening));
         else
-            welcome.setText(R.string.good_night);
+            welcome.setText(getString(R.string.good_night));
     }
 
     protected void onPause() {
