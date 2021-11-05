@@ -25,7 +25,7 @@
         android:includeFontPadding="false"
         android:text="@string/welcome"
         android:textAlignment="center"
-        android:textColor="@color/BlueYonder"
+        android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
         android:textSize="30sp" />
 
@@ -57,8 +57,8 @@
         android:includeFontPadding="false"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/BlueYonder"
-        android:textColorHint="@color/MaximumBluePurple"
+        android:textColor="@color/SpaceCadet"
+        android:textColorHint="@color/BlueYonder"
         android:textSize="20sp" />
 
     <!-- Password EditText -->
@@ -86,8 +86,8 @@
         android:includeFontPadding="false"
         android:inputType="textPassword"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/BlueYonder"
-        android:textColorHint="@color/MaximumBluePurple"
+        android:textColor="@color/SpaceCadet"
+        android:textColorHint="@color/BlueYonder"
         android:textSize="20sp" />
 
     <!-- Sign Up Button-->
@@ -128,7 +128,7 @@
         android:elevation="2dp"
         android:indeterminate="true"
 
-        android:indeterminateTint="@color/Flame"
+        android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
