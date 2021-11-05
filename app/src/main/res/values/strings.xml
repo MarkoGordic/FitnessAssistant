@@ -21,7 +21,13 @@
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="sign_in_failed">"Sign in failed"</string>
+    <string name="empty_email">Email cannot be empty</string>
+    <string name="empty_password">Password cannot be empty</string>
+    <string name="incorrect_password">"The password you entered is incorrect. Please try again."</string>
+    <string name="email_not_registered">The email you entered isn\'t connected with a FitnessAssistant account. Please create an account.</string>
+    <string name="invalid_email">Text entered is not an email address. Please try again.</string>
+
+    <!-- Our strings for sign in/ register -->
 
     <!-- Navigation bar strings -->
     <string name="nav1">Activity</string>

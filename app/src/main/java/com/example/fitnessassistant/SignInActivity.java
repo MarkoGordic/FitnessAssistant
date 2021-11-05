@@ -8,18 +8,27 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
+
+import java.util.List;
+
+// TODO Make error textView red
 
 public class SignInActivity extends AppCompatActivity {
     private boolean isOnSignInScreen = false;
     private SharedPreferences prefs;
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    private boolean empty(EditText et){
+        return et.getText().toString().equals("") && et.getText().length() <= 0;
+    }
 
     private void signInLoading(){
         findViewById(R.id.signInButton).setVisibility(View.INVISIBLE);
@@ -31,14 +40,22 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.signInProgressBar).setVisibility(View.GONE);
     }
 
-    // TODO Handle wrong input(null, pass <5 chars,...)
+    // TODO Handle wrong email input and password input on creating an account (email doesn't need handling, only send the verification email)
     // getting user input and calling signInUser()
     private void signInUserFromInput(){
         findViewById(R.id.signInButton).setOnClickListener((View v)->{
-            String email = ((EditText) findViewById(R.id.edtTxtEmail)).getText().toString();
-            String password = ((EditText) findViewById(R.id.edtTxtPassword)).getText().toString(); // added so user can't spam click button
-            signInLoading();
-            signInUser(email,password);
+            EditText emailEdit = findViewById(R.id.edtTxtEmail);
+            EditText passEdit = findViewById(R.id.edtTxtPassword);
+            if(empty(emailEdit))
+                emailEdit.setError(getString(R.string.empty_email));
+            else if(empty(passEdit))
+                passEdit.setError(getString(R.string.empty_password));
+            else if(passEdit.getText().length() <= 5)
+                passEdit.setError(getString(R.string.invalid_password));
+            else {
+                signInLoading();
+                signInUser(emailEdit.getText().toString(),passEdit.getText().toString());
+            }
         });
     }
 
@@ -80,10 +97,6 @@ public class SignInActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void shortToast(String message){
-        Toast.makeText(SignInActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
-
     // signs user in based on prefs/input
     private void signInUser(String email, String password){
         Task<AuthResult> task = auth.signInWithEmailAndPassword(email, password);
@@ -93,9 +106,25 @@ public class SignInActivity extends AppCompatActivity {
             finish();
         });
         task.addOnFailureListener(e -> {
-            if(isOnSignInScreen)
-                shortToast(getString(R.string.sign_in_failed)); // TODO Make credentials red (don't clear them completely)
-            else // this can happen if password gets changed w/o the use of our app while user is logged in
+            if(isOnSignInScreen){
+                auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        SignInMethodQueryResult result = task1.getResult();
+                        if(result != null) {
+                            List<String> signInMethods = result.getSignInMethods();
+                            if (signInMethods != null) {
+                                if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
+                                    ((EditText) findViewById(R.id.edtTxtPassword)).setError(getString(R.string.incorrect_password));
+                                } else {
+                                    ((EditText) findViewById(R.id.edtTxtEmail)).setError(getString(R.string.email_not_registered));
+                                }
+                            }
+                        }
+                    } else {
+                        ((EditText) findViewById(R.id.edtTxtEmail)).setError(getString(R.string.invalid_email));
+                    }
+                });
+            }else // this can happen if password gets changed w/o the use of our app while user is logged in
                 setViewSignInScreen();
             finishSignInLoading();
             signInUserFromInput();
