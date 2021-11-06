@@ -61,6 +61,8 @@
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp" />
 
+    <!-- TODO figure out how to change dot size -->
+
     <!-- Password EditText -->
     <EditText
         android:id="@+id/edtTxtPassword"
@@ -88,7 +90,7 @@
         android:paddingHorizontal="16sp"
         android:textColor="@color/SpaceCadet"
         android:textColorHint="@color/BlueYonder"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <!-- Sign Up Button-->
     <!-- TODO The marginBottom should be changed, after adding Google log in/Forgot password/Create acc -->

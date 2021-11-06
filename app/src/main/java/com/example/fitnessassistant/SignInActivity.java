@@ -1,10 +1,14 @@
 package com.example.fitnessassistant;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -27,6 +31,34 @@ public class SignInActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
+    // adding the toggle view option for lock drawable in password editText
+    // TODO figure this below out, fix the hitbox of toggling
+    @SuppressLint("ClickableViewAccessibility")
+    private void addPasswordViewToggle() {
+        EditText pass = findViewById(R.id.edtTxtPassword);
+        Typeface typeface = pass.getTypeface();
+        pass.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (pass.getRight() - pass.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if (pass.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+                        pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        pass.setTypeface(typeface);
+                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_lock, 0);
+                    } else {
+                        pass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        pass.setTypeface(typeface);
+                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_unlock, 0);
+                    }
+
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    // setting the outline of EditText to red and undoing when text is changed
     private void error(EditText place, String message){
         place.setBackground(AppCompatResources.getDrawable(this, R.drawable.custom_input_error));
         place.setError(message);
@@ -45,11 +77,13 @@ public class SignInActivity extends AppCompatActivity {
         return et.getText().toString().equals("") && et.getText().length() <= 0;
     }
 
+    // making the circular progress indicator visible while hiding the button
     private void signInLoading(){
         findViewById(R.id.signInButton).setVisibility(View.INVISIBLE);
         findViewById(R.id.signInProgressBar).setVisibility(View.VISIBLE);
     }
 
+    // removing the circular progress indicator, making the button visible again
     private void finishSignInLoading(){
         findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
         findViewById(R.id.signInProgressBar).setVisibility(View.GONE);
@@ -76,6 +110,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private void setViewSignInScreen(){
         setContentView(R.layout.signin_screen);
+        addPasswordViewToggle();
         isOnSignInScreen = true;
     }
 
