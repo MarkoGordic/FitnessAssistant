@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.TransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -15,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -31,26 +34,48 @@ public class SignInActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
+    // when password is hidden, its characters are transformed by this function into '●'
+    public static class MyPasswordTransformationMethod extends PasswordTransformationMethod {
+        @Override
+        public CharSequence getTransformation(CharSequence source, View view) {
+            return new PasswordCharSequence(super.getTransformation(source, view));
+        }
+        private static class PasswordCharSequence implements CharSequence {
+            private final CharSequence mSource;
+            public PasswordCharSequence(CharSequence source) { mSource = source; }
+            public char charAt(int index) {
+                if(mSource.charAt(index) == '\u2022')
+                    return '●';// This is the important part
+                else
+                    return mSource.charAt(index);
+            }
+            public int length() { return mSource.length(); }
+            @NonNull
+            public CharSequence subSequence(int start, int end) { return mSource.subSequence(start, end); }
+        }
+    }
+
     // adding the toggle view option for lock drawable in password editText
-    // TODO figure this below out, fix the hitbox of toggling
     @SuppressLint("ClickableViewAccessibility")
     private void addPasswordViewToggle() {
         EditText pass = findViewById(R.id.edtTxtPassword);
-        Typeface typeface = pass.getTypeface();
+        Typeface defaultTypeface = pass.getTypeface();
+        TransformationMethod defaultTransformationMethod = pass.getTransformationMethod();
         pass.setOnTouchListener((v, event) -> {
             final int DRAWABLE_RIGHT = 2;
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (event.getRawX() >= (pass.getRight() - pass.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event.getRawX() >= (pass.getRight() - 2 * pass.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                     if (pass.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
                         pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        pass.setTypeface(typeface);
+                        pass.setTransformationMethod(new MyPasswordTransformationMethod());
+                        pass.setTypeface(defaultTypeface);
                         pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_lock, 0);
                     } else {
+                        pass.setTransformationMethod(defaultTransformationMethod);
                         pass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        pass.setTypeface(typeface);
+                        pass.setTypeface(defaultTypeface);
                         pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_unlock, 0);
                     }
-
                     return true;
                 }
             }
@@ -108,9 +133,14 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    private void setUpPassword(){
+        addPasswordViewToggle();
+        ((EditText) findViewById(R.id.edtTxtPassword)).setTransformationMethod(new MyPasswordTransformationMethod());
+    }
+
     private void setViewSignInScreen(){
         setContentView(R.layout.signin_screen);
-        addPasswordViewToggle();
+        setUpPassword();
         isOnSignInScreen = true;
     }
 
