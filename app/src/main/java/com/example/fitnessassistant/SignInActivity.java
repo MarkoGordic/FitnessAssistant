@@ -3,6 +3,8 @@ package com.example.fitnessassistant;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,12 +22,24 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.List;
 
-// TODO Make error textView red
-
 public class SignInActivity extends AppCompatActivity {
     private boolean isOnSignInScreen = false;
     private SharedPreferences prefs;
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    private void error(EditText place, String message){
+        place.setBackground(AppCompatResources.getDrawable(this, R.drawable.custom_input_error));
+        place.setError(message);
+        place.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            { place.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.custom_input));}
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+    }
 
     private boolean empty(EditText et){
         return et.getText().toString().equals("") && et.getText().length() <= 0;
@@ -47,11 +62,11 @@ public class SignInActivity extends AppCompatActivity {
             EditText emailEdit = findViewById(R.id.edtTxtEmail);
             EditText passEdit = findViewById(R.id.edtTxtPassword);
             if(empty(emailEdit))
-                emailEdit.setError(getString(R.string.empty_email));
+                error(findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
             else if(empty(passEdit))
-                passEdit.setError(getString(R.string.empty_password));
+                error(findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
             else if(passEdit.getText().length() <= 5)
-                passEdit.setError(getString(R.string.invalid_password));
+                error(findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
             else {
                 signInLoading();
                 signInUser(emailEdit.getText().toString(),passEdit.getText().toString());
@@ -113,16 +128,14 @@ public class SignInActivity extends AppCompatActivity {
                         if(result != null) {
                             List<String> signInMethods = result.getSignInMethods();
                             if (signInMethods != null) {
-                                if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
-                                    ((EditText) findViewById(R.id.edtTxtPassword)).setError(getString(R.string.incorrect_password));
-                                } else {
-                                    ((EditText) findViewById(R.id.edtTxtEmail)).setError(getString(R.string.email_not_registered));
-                                }
+                                if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
+                                    error(findViewById(R.id.edtTxtPassword), getString(R.string.incorrect_password));
+                                else
+                                    error(findViewById(R.id.edtTxtEmail), getString(R.string.email_not_registered));
                             }
                         }
-                    } else {
-                        ((EditText) findViewById(R.id.edtTxtEmail)).setError(getString(R.string.invalid_email));
-                    }
+                    } else
+                        error(findViewById(R.id.edtTxtEmail), getString(R.string.invalid_email));
                 });
             }else // this can happen if password gets changed w/o the use of our app while user is logged in
                 setViewSignInScreen();
