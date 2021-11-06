@@ -30,7 +30,6 @@
         android:textSize="30sp" />
 
     <!-- TODO Add © rights for icons && for fonts -->
-    <!-- TODO Add vision option for password -->
 
     <!-- Email EditText -->
     <EditText
@@ -52,7 +51,7 @@
         android:drawableEnd="@drawable/custom_email"
         android:fontFamily="@font/ralewaym"
 
-        android:hint="@string/prompt_email"
+        android:hint="@string/email"
 
         android:includeFontPadding="false"
         android:inputType="textEmailAddress"
@@ -60,8 +59,6 @@
         android:textColor="@color/SpaceCadet"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp" />
-
-    <!-- TODO figure out how to change dot size -->
 
     <!-- Password EditText -->
     <EditText
@@ -83,7 +80,7 @@
         android:drawableEnd="@drawable/custom_lock"
         android:fontFamily="@font/ralewaym"
 
-        android:hint="@string/prompt_password"
+        android:hint="@string/password"
 
         android:includeFontPadding="false"
         android:inputType="textPassword"
@@ -108,7 +105,7 @@
 
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
-        android:text="@string/action_sign_in_short"
+        android:text="@string/sign_in"
         android:textColor="@color/BackgroundColor"
         android:textFontWeight="600"
         app:layout_constraintBottom_toBottomOf="parent"

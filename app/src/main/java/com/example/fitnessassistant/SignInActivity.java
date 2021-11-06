@@ -29,8 +29,9 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.List;
 
+// TODO Handle wrong email input and password input on creating an account (email doesn't need handling, only send the verification email)
+
 public class SignInActivity extends AppCompatActivity {
-    private boolean isOnSignInScreen = false;
     private SharedPreferences prefs;
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -44,8 +45,8 @@ public class SignInActivity extends AppCompatActivity {
             private final CharSequence mSource;
             public PasswordCharSequence(CharSequence source) { mSource = source; }
             public char charAt(int index) {
-                if(mSource.charAt(index) == '\u2022')
-                    return '●';// This is the important part
+                if(mSource.charAt(index) == '\u2022') // '\u2022' are dots used by default
+                    return '●'; // they are replaced by bigger ones
                 else
                     return mSource.charAt(index);
             }
@@ -59,22 +60,24 @@ public class SignInActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void addPasswordViewToggle() {
         EditText pass = findViewById(R.id.edtTxtPassword);
-        Typeface defaultTypeface = pass.getTypeface();
-        TransformationMethod defaultTransformationMethod = pass.getTransformationMethod();
+        Typeface defaultTypeface = pass.getTypeface(); // regular font converted to typeface
+        TransformationMethod defaultTransformationMethod = pass.getTransformationMethod(); // used for regular text
         pass.setOnTouchListener((v, event) -> {
-            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_RIGHT = 2; // index of right drawables
             if (event.getAction() == MotionEvent.ACTION_UP) {
+                // ACTION_DOWN = finger on screen, ACTION_UP = finger on -> off screen
+                // getRawX() is where touch is registered, anything on x axis greater than eTRightPosition - 2 * drawableWidth is registered
                 if (event.getRawX() >= (pass.getRight() - 2 * pass.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                     if (pass.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
                         pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                         pass.setTransformationMethod(new MyPasswordTransformationMethod());
-                        pass.setTypeface(defaultTypeface);
-                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_lock, 0);
+                        pass.setTypeface(defaultTypeface); // used because it changes the font
+                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_lock, 0); // changes the icon
                     } else {
                         pass.setTransformationMethod(defaultTransformationMethod);
                         pass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        pass.setTypeface(defaultTypeface);
-                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_unlock, 0);
+                        pass.setTypeface(defaultTypeface); // used because it changes the font
+                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_unlock, 0); // changes the icon
                     }
                     return true;
                 }
@@ -83,7 +86,7 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
-    // setting the outline of EditText to red and undoing when text is changed
+    // setting the outline of place to red and undoing when text is changed, also sets an error message
     private void error(EditText place, String message){
         place.setBackground(AppCompatResources.getDrawable(this, R.drawable.custom_input_error));
         place.setError(message);
@@ -98,12 +101,12 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
-    private boolean empty(EditText et){
+    private boolean emptyET(EditText et){
         return et.getText().toString().equals("") && et.getText().length() <= 0;
     }
 
     // making the circular progress indicator visible while hiding the button
-    private void signInLoading(){
+    private void startSignInLoading(){
         findViewById(R.id.signInButton).setVisibility(View.INVISIBLE);
         findViewById(R.id.signInProgressBar).setVisibility(View.VISIBLE);
     }
@@ -114,25 +117,25 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.signInProgressBar).setVisibility(View.GONE);
     }
 
-    // TODO Handle wrong email input and password input on creating an account (email doesn't need handling, only send the verification email)
-    // getting user input and calling signInUser()
+    // getting user input, showing errors if needed and calling signInUser()
     private void signInUserFromInput(){
         findViewById(R.id.signInButton).setOnClickListener((View v)->{
             EditText emailEdit = findViewById(R.id.edtTxtEmail);
             EditText passEdit = findViewById(R.id.edtTxtPassword);
-            if(empty(emailEdit))
+            if(emptyET(emailEdit))
                 error(findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
-            else if(empty(passEdit))
+            else if(emptyET(passEdit))
                 error(findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
             else if(passEdit.getText().length() <= 5)
                 error(findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
             else {
-                signInLoading();
+                startSignInLoading();
                 signInUser(emailEdit.getText().toString(),passEdit.getText().toString());
             }
         });
     }
 
+    // adds toggle to drawable on the right of password editText and transformation method
     private void setUpPassword(){
         addPasswordViewToggle();
         ((EditText) findViewById(R.id.edtTxtPassword)).setTransformationMethod(new MyPasswordTransformationMethod());
@@ -141,7 +144,6 @@ public class SignInActivity extends AppCompatActivity {
     private void setViewSignInScreen(){
         setContentView(R.layout.signin_screen);
         setUpPassword();
-        isOnSignInScreen = true;
     }
 
     // used at the start of the app
@@ -177,6 +179,29 @@ public class SignInActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    private boolean notOnSignInScreen(){
+        return findViewById(R.id.signInButton) == null;
+    }
+
+    // sets sign in error based on user input
+    private void setSignInError(String email){
+        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                SignInMethodQueryResult result = task1.getResult();
+                if(result != null) {
+                    List<String> signInMethods = result.getSignInMethods();
+                    if (signInMethods != null) {
+                        if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
+                            error(findViewById(R.id.edtTxtPassword), getString(R.string.incorrect_password));
+                        else
+                            error(findViewById(R.id.edtTxtEmail), getString(R.string.email_not_registered));
+                    }
+                }
+            } else
+                error(findViewById(R.id.edtTxtEmail), getString(R.string.invalid_email));
+        });
+    }
+
     // signs user in based on prefs/input
     private void signInUser(String email, String password){
         Task<AuthResult> task = auth.signInWithEmailAndPassword(email, password);
@@ -186,24 +211,11 @@ public class SignInActivity extends AppCompatActivity {
             finish();
         });
         task.addOnFailureListener(e -> {
-            if(isOnSignInScreen){
-                auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()) {
-                        SignInMethodQueryResult result = task1.getResult();
-                        if(result != null) {
-                            List<String> signInMethods = result.getSignInMethods();
-                            if (signInMethods != null) {
-                                if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
-                                    error(findViewById(R.id.edtTxtPassword), getString(R.string.incorrect_password));
-                                else
-                                    error(findViewById(R.id.edtTxtEmail), getString(R.string.email_not_registered));
-                            }
-                        }
-                    } else
-                        error(findViewById(R.id.edtTxtEmail), getString(R.string.invalid_email));
-                });
-            }else // this can happen if password gets changed w/o the use of our app while user is logged in
+            if(notOnSignInScreen()) // this can happen if password gets changed w/o the use of our app while user is logged in
                 setViewSignInScreen();
+            else{
+                setSignInError(email);
+            }
             finishSignInLoading();
             signInUserFromInput();
         });
@@ -215,7 +227,7 @@ public class SignInActivity extends AppCompatActivity {
 
     // called on app opening, if user is logged in loadingAnimation appears, otherwise openingAnimation appears and user can log in
     private void signIn(){
-        prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        prefs = getSharedPreferences(getString(R.string.credentials_file_key), MODE_PRIVATE);
         if(credentialsExist()){
             loadingAnimation();
             signInUser(prefs.getString(getString(R.string.email_key), ""), prefs.getString(getString(R.string.password_key), ""));

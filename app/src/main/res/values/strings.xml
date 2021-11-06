@@ -2,48 +2,41 @@
     <!-- App Name -->
     <string name="app_name">FitnessAssistant</string>
 
-    <!-- Log in file keys -->
-    <string name="preference_file_key">UserData</string>
+    <!-- Credential File keys -->
+    <string name="credentials_file_key">UserData</string>
     <string name="email_key">email</string>
     <string name="password_key">password</string>
 
-    <!-- Pedometer file keys -->
-    <string name="prefrence_file_pedometer">PedometerData</string>
+    <!-- Pedometer File keys -->
+    <string name="pedometer_file_key">PedometerData</string>
 
-    <!-- In-app messages -->
-    <string name="sign_in_successful">You have signed in successfully!</string>
-
-    <!-- Generated strings for sign in/register -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <!-- Sign In / Register strings -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
     <string name="empty_email">Email cannot be empty</string>
     <string name="empty_password">Password cannot be empty</string>
+    <string name="invalid_password">Password must be >5 characters</string>
     <string name="incorrect_password">"The password you entered is incorrect. Please try again."</string>
     <string name="email_not_registered">The email you entered isn\'t connected with a FitnessAssistant account. Please create an account.</string>
     <string name="invalid_email">Text entered is not an email address. Please try again.</string>
 
-    <!-- Our strings for sign in/ register -->
+    <!-- Navigation Bar strings -->
+    <string name="activity">Activity</string>
+    <string name="stats">Stats</string>
+    <string name="home">Home</string>
+    <string name="workout">Workout</string>
+    <string name="profile">Profile</string>
 
-    <!-- Navigation bar strings -->
-    <string name="nav1">Activity</string>
-    <string name="nav2">Stats</string>
-    <string name="nav3">Home</string>
-    <string name="nav4">Workout</string>
-    <string name="nav5">Profile</string>
-
-    <!-- Greeting the user -->
+    <!-- Greeting strings -->
+    <string name="welcome">"Welcome !"</string>
     <string name="welcome_text">Hello! 👋 </string>
     <string name="good_morning">Good Morning </string>
     <string name="good_afternoon">Good Afternoon </string>
     <string name="good_evening">Good Evening </string>
     <string name="good_night">Good Night </string>
 
-    <!-- Strings for Step Counter -->
+    <!-- Step Counter strings -->
     <string name="default_step_target">/ 10000</string>
     <string name="default_step_count">0</string>
 </resources>

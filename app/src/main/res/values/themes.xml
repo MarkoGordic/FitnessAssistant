@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.FitnessAssistant" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/WhiteColor</item>
+        <item name="colorPrimary">@color/default_purple_color</item>
+        <item name="colorPrimaryVariant">@color/default_dark_purple_color</item>
+        <item name="colorOnPrimary">@color/default_white_color</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/BlackColor</item>
+        <item name="colorSecondary">@color/default_turquoise_color</item>
+        <item name="colorSecondaryVariant">@color/default_dark_turquoise_color</item>
+        <item name="colorOnSecondary">@color/default_black_color</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
