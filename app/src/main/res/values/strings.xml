@@ -2,11 +2,6 @@
     <!-- App Name -->
     <string name="app_name">FitnessAssistant</string>
 
-    <!-- Credential File keys -->
-    <string name="credentials_file_key">UserData</string>
-    <string name="email_key">email</string>
-    <string name="password_key">password</string>
-
     <!-- Pedometer File keys -->
     <string name="pedometer_file_key">PedometerData</string>
 
