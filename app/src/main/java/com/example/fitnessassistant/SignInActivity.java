@@ -85,7 +85,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     // setting the outline of place to red and undoing when text is changed, also sets an error message
-    private void error(EditText place, String message){
+    private void myError(EditText place, String message){
         place.setBackground(AppCompatResources.getDrawable(this, R.drawable.custom_input_error));
         place.setError(message);
         place.addTextChangedListener(new TextWatcher() {
@@ -101,20 +101,20 @@ public class SignInActivity extends AppCompatActivity {
 
     // sets sign in error based on user input
     private void setSignInError(String email){
-        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task1 -> {
-            if (task1.isSuccessful()) {
-                SignInMethodQueryResult result = task1.getResult();
+        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                SignInMethodQueryResult result = task.getResult();
                 if(result != null) {
                     List<String> signInMethods = result.getSignInMethods();
                     if (signInMethods != null) {
                         if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
-                            error(findViewById(R.id.edtTxtPassword), getString(R.string.incorrect_password));
+                            myError(findViewById(R.id.edtTxtPassword), getString(R.string.incorrect_password));
                         else
-                            error(findViewById(R.id.edtTxtEmail), getString(R.string.email_not_registered));
+                            myError(findViewById(R.id.edtTxtEmail), getString(R.string.email_not_registered));
                     }
                 }
             } else
-                error(findViewById(R.id.edtTxtEmail), getString(R.string.invalid_email));
+                myError(findViewById(R.id.edtTxtEmail), getString(R.string.invalid_email));
         });
     }
 
@@ -130,17 +130,18 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.signInProgressBar).setVisibility(View.GONE);
     }
 
-    // sets a listener for signInButton that's showing errors in input and signing in
-    private void signInUserFromInput(){
+    // sets up listeners for signing in, creating an account, resetting password
+    private void setUpOnClickListeners(){
+        // signUpButton listener
         findViewById(R.id.signInButton).setOnClickListener((View v)->{
             EditText emailEdit = findViewById(R.id.edtTxtEmail);
             EditText passEdit = findViewById(R.id.edtTxtPassword);
             if(TextUtils.isEmpty(emailEdit.getText().toString()))
-                error(findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
+                myError(findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
             else if(TextUtils.isEmpty(passEdit.getText().toString()))
-                error(findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
+                myError(findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
             else if(passEdit.getText().length() <= 5)
-                error(findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
+                myError(findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
             else {
                 startSignInLoading();
                 auth.signInWithEmailAndPassword(emailEdit.getText().toString(), passEdit.getText().toString()).addOnFailureListener(e -> {
@@ -149,6 +150,8 @@ public class SignInActivity extends AppCompatActivity {
                 });
             }
         });
+
+        findViewById(R.id.forgotPassword).setOnClickListener(view -> startActivity(new Intent(this, PasswordResetActivity.class)));
     }
 
     // adds toggle to drawable on the right of password editText and transformation method
@@ -167,9 +170,9 @@ public class SignInActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
-                setContentView(R.layout.signin_screen);
+                setContentView(R.layout.sign_in_screen);
                 setUpPassword();
-                signInUserFromInput();
+                setUpOnClickListeners();
             }
         });
         findViewById(R.id.FitnessAssistant).startAnimation(openAnim);

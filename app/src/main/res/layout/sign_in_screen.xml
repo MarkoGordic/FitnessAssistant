@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/BackgroundColor"
-    tools:ignore="NamespaceTypo">
+    android:background="@color/BackgroundColor">
 
     <!-- Welcome TextView -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/welcomeTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +21,7 @@
 
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
-        android:text="@string/welcome"
+        android:text="@string/sign_in"
         android:textAlignment="center"
         android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
@@ -72,7 +70,7 @@
 
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="56dp"
 
         android:autofillHints="password"
 
@@ -99,7 +97,7 @@
 
         android:layout_marginStart="128dp"
         android:layout_marginEnd="128dp"
-        android:layout_marginBottom="256dp"
+        android:layout_marginBottom="200dp"
 
         android:background="@drawable/sign_in_button"
 
@@ -129,5 +127,26 @@
 
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
+
+    <!-- -->
+    <TextView
+        android:id="@+id/forgotPassword"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/edtTxtPassword"
+        app:layout_constraintRight_toRightOf="@id/edtTxtPassword"
+
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:text="@string/forgot_password"
+        android:textAlignment="center"
+        android:textColor="@color/MangoTango"
+        android:textFontWeight="600"
+        android:textSize="16sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

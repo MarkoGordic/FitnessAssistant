@@ -24,6 +24,10 @@
         </intent-filter>
     </activity>
     <activity
+        android:name=".PasswordResetActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+    </activity>
+    <activity
         android:name=".HomePageActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
