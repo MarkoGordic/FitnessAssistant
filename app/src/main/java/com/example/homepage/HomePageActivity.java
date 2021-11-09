@@ -1,9 +1,11 @@
-package com.example.fitnessassistant;
+package com.example.homepage;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.authentication.R;
 
 import java.util.Calendar;
 import java.util.Date;

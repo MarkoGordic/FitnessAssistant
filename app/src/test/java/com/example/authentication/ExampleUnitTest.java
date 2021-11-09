@@ -1,4 +1,4 @@
-package com.example.fitnessassistant;
+package com.example.authentication;
 
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fitnessassistant">
+    package="com.example.authentication">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
@@ -15,7 +15,7 @@
     android:supportsRtl="true"
     android:theme="@style/Theme.FitnessAssistant" >
     <activity
-        android:name=".SignInActivity"
+        android:name="com.example.authentication.SignInActivity"
         android:exported="true"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
         <intent-filter>
@@ -24,11 +24,11 @@
         </intent-filter>
     </activity>
     <activity
-        android:name=".PasswordResetActivity"
+        android:name="com.example.authentication.PasswordResetActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
     <activity
-        android:name=".HomePageActivity"
+        android:name="com.example.homepage.HomePageActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
 </application>

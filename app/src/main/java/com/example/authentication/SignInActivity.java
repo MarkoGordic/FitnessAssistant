@@ -1,4 +1,4 @@
-package com.example.fitnessassistant;
+package com.example.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,37 +10,16 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.EmailAuthProvider;
+import com.example.homepage.HomePageActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.SignInMethodQueryResult;
-
-import java.util.List;
 
 // TODO Handle wrong email input and password input on creating an account (email doesn't need handling, only send the verification email)
+// TODO Handle to save email entered after exiting app and revisiting (running in background)
 
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
-
-    // sets sign in error based on user input
-    private void setSignInError(String email){
-        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                SignInMethodQueryResult result = task.getResult();
-                if(result != null) {
-                    List<String> signInMethods = result.getSignInMethods();
-                    if (signInMethods != null) {
-                        if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
-                            SignInFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.incorrect_password));
-                        else
-                            SignInFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.email_not_registered));
-                    }
-                }
-            } else
-                SignInFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.invalid_email));
-        });
-    }
 
     // sets up listeners for signing in, creating an account, resetting password
     private void setUpOnClickListeners(){
@@ -49,16 +28,16 @@ public class SignInActivity extends AppCompatActivity {
             EditText emailEdit = findViewById(R.id.edtTxtEmail);
             EditText passEdit = findViewById(R.id.edtTxtPassword);
             if(TextUtils.isEmpty(emailEdit.getText().toString()))
-                SignInFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
+                AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
             else if(TextUtils.isEmpty(passEdit.getText().toString()))
-                SignInFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
+                AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
             else if(passEdit.getText().length() <= 5)
-                SignInFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
+                AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
             else {
-                SignInFunctional.startLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+                AuthFunctional.startLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
                 auth.signInWithEmailAndPassword(emailEdit.getText().toString(), passEdit.getText().toString()).addOnFailureListener(e -> {
-                    setSignInError(emailEdit.getText().toString());
-                    SignInFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+                    AuthFunctional.setError(this, emailEdit.getText().toString(), emailEdit, passEdit);
+                    AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
                 });
             }
         });
@@ -69,7 +48,7 @@ public class SignInActivity extends AppCompatActivity {
 
     // used at the start of the app
     private void openingAnimation(){
-        Animation openAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fitnessassistant_opening);
+        Animation openAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_opening);
         openAnim.setAnimationListener(new Animation.AnimationListener(){
             @Override
             public void onAnimationStart(Animation animation) {}
@@ -81,12 +60,12 @@ public class SignInActivity extends AppCompatActivity {
 
                 // it won't be null after successful resetPassword email sent or
                 // TODO after creating an account
-                if(SignInFunctional.emailLinked != null){
-                    ((EditText) findViewById(R.id.edtTxtEmail)).setText(SignInFunctional.emailLinked);
-                    SignInFunctional.emailLinked = null;
+                if(AuthFunctional.emailLinked != null){
+                    ((EditText) findViewById(R.id.edtTxtEmail)).setText(AuthFunctional.emailLinked);
+                    AuthFunctional.emailLinked = null;
                 }
 
-                SignInFunctional.setUpPassword(((EditText) findViewById(R.id.edtTxtPassword)));
+                AuthFunctional.setUpPassword(findViewById(R.id.edtTxtPassword));
 
                 setUpOnClickListeners();
             }
@@ -96,7 +75,7 @@ public class SignInActivity extends AppCompatActivity {
 
     // used when user has to wait
     private void loadingAnimation(){
-        Animation loadAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fitnessassistant_loading);
+        Animation loadAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_loading);
         loadAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}

@@ -1,4 +1,4 @@
-package com.example.fitnessassistant;
+package com.example.authentication;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,7 +15,13 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
-public class SignInFunctional {
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
+
+import java.util.List;
+
+public class AuthFunctional {
     // when creating account or requesting password reset, emailLinked is copied back to sign in page
     public static String emailLinked = null;
 
@@ -100,5 +106,26 @@ public class SignInFunctional {
     public static void setUpPassword(EditText password){
         addPasswordViewToggle(password);
         password.setTransformationMethod(new MyPasswordTransformationMethod());
+    }
+
+    // sets errors based on user's input
+    public static void setError(Context context, String email, EditText emailEdit, EditText passwordEdit){
+        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                SignInMethodQueryResult result = task.getResult();
+                if(result != null) {
+                    List<String> signInMethods = result.getSignInMethods();
+                    if (signInMethods != null) {
+                        if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
+                            if (passwordEdit != null)
+                                myError(context, passwordEdit, context.getString(R.string.incorrect_password));
+                        }
+                        else
+                            myError(context, emailEdit, context.getString(R.string.email_not_registered));
+                    }
+                } // TODO handle an else if for no network connection
+            } else
+                myError(context, emailEdit, context.getString(R.string.invalid_email));
+        });
     }
 }

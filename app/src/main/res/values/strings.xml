@@ -17,10 +17,9 @@
     <string name="invalid_email">Text entered is not an email address. Please try again.</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="reset_password">Reset Password</string>
-    <string name="large_password_reset_text">Type in the email associated with your
-        FitnessAssistant account and press the \'Reset Password\' button when finished</string>
-    <string name="link_will_be_sent">Link for password reset will be sent to email entered</string>
-    <string name="link_has_been_sent">Link has been sent</string>
+    <string name="large_password_reset_text">That\'s OK, it happens…\nJust enter the email address you used to register and we\'ll send you a reset link.</string>
+    <string name="link_will_be_sent">The link in the email will expire in 1 hour</string>
+    <string name="link_has_been_sent">Email has been sent</string>
     <string name="back_button_description">Return to previous activity</string>
 
     <!-- Navigation Bar strings -->
