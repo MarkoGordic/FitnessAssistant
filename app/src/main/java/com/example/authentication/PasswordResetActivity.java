@@ -9,9 +9,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.network.NetworkManager;
+import com.example.util.authentication.AuthFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PasswordResetActivity extends AppCompatActivity {
+    private NetworkManager networkManager;
 
     // used when email has been sent successfully
     private void successAnimation(TextView tv){
@@ -48,6 +51,14 @@ public class PasswordResetActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        networkManager = new NetworkManager(getApplication());
+        setContentView(R.layout.password_reset_screen);
+        findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         // resetPassword listener
@@ -62,7 +73,6 @@ public class PasswordResetActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
                         // set email to be filled out on sign in screen
-                        AuthFunctional.emailLinked = email;
                         successAnimation((findViewById(R.id.smallResetPasswordTextView)));
                     } else {
                         AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
@@ -75,9 +85,16 @@ public class PasswordResetActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.password_reset_screen);
-        findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
+    protected void onResume() {
+        super.onResume();
+        // registering this activity when user comes first time or returns
+        networkManager.registerConnectionObserver(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // unregistering this activity when another activity comes into the foreground or else
+        networkManager.unregisterConnectionObserver(this);
     }
 }

@@ -44,15 +44,14 @@
         android:layout_marginBottom="16dp"
 
         android:autofillHints="emailAddress"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
 
         android:background="@drawable/custom_input"
         android:drawableEnd="@drawable/custom_email"
+
         android:fontFamily="@font/ralewaym"
-
-        android:hint="@string/email"
-
         android:includeFontPadding="false"
-        android:inputType="textEmailAddress"
         android:paddingHorizontal="16sp"
         android:textColor="@color/SpaceCadet"
         android:textColorHint="@color/BlueYonder"
@@ -73,15 +72,14 @@
         android:layout_marginBottom="56dp"
 
         android:autofillHints="password"
+        android:hint="@string/password"
+        android:inputType="textPassword"
 
         android:background="@drawable/custom_input"
         android:drawableEnd="@drawable/custom_lock"
-        android:fontFamily="@font/ralewaym"
-
-        android:hint="@string/password"
 
         android:includeFontPadding="false"
-        android:inputType="textPassword"
+        android:fontFamily="@font/ralewaym"
         android:paddingHorizontal="16sp"
         android:textColor="@color/SpaceCadet"
         android:textColorHint="@color/BlueYonder"
@@ -89,11 +87,16 @@
 
     <!-- Sign Up Button-->
     <!-- TODO The marginBottom should be changed, after adding Google log in/Forgot password/Create acc -->
+    <!--  if changed, change the resetPassword button too, and myb the createAccount/register button(if made in the future) -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signInButton"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/edtTxtPassword"
+        app:layout_constraintStart_toStartOf="@id/edtTxtPassword"
 
         android:layout_marginStart="128dp"
         android:layout_marginEnd="128dp"
@@ -105,10 +108,7 @@
         android:includeFontPadding="false"
         android:text="@string/sign_in"
         android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/edtTxtPassword"
-        app:layout_constraintStart_toStartOf="@id/edtTxtPassword" />
+        android:textFontWeight="600" />
 
     <!-- Signing in Progress Circle -->
     <ProgressBar
@@ -124,7 +124,6 @@
 
         android:elevation="2dp"
         android:indeterminate="true"
-
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
 

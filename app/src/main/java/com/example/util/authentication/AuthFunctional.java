@@ -1,4 +1,4 @@
-package com.example.authentication;
+package com.example.util.authentication;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.example.authentication.R;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
@@ -22,9 +23,6 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import java.util.List;
 
 public class AuthFunctional {
-    // when creating account or requesting password reset, emailLinked is copied back to sign in page
-    public static String emailLinked = null;
-
     // when password is hidden, its characters are transformed by this function into '●'
     public static class MyPasswordTransformationMethod extends PasswordTransformationMethod {
         @Override

@@ -11,15 +11,17 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.homepage.HomePageActivity;
+import com.example.network.NetworkManager;
+import com.example.util.authentication.AuthFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 // TODO Handle wrong email input and password input on creating an account (email doesn't need handling, only send the verification email)
-// TODO Handle to save email entered after exiting app and revisiting (running in background)
 
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
+    private NetworkManager networkManager;
 
     // sets up listeners for signing in, creating an account, resetting password
     private void setUpOnClickListeners(){
@@ -46,8 +48,16 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.forgotPassword).setOnClickListener(view -> startActivity(new Intent(this, PasswordResetActivity.class)));
     }
 
+    // sets everything up for signing in
+    private void setUpSignInUI(){
+        setContentView(R.layout.sign_in_screen);
+        AuthFunctional.setUpPassword(findViewById(R.id.edtTxtPassword));
+        setUpOnClickListeners();
+    }
+
     // used at the start of the app
     private void openingAnimation(){
+        setContentView(R.layout.opening_screen);
         Animation openAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_opening);
         openAnim.setAnimationListener(new Animation.AnimationListener(){
             @Override
@@ -56,25 +66,14 @@ public class SignInActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
-                setContentView(R.layout.sign_in_screen);
-
-                // it won't be null after successful resetPassword email sent or
-                // TODO after creating an account
-                if(AuthFunctional.emailLinked != null){
-                    ((EditText) findViewById(R.id.edtTxtEmail)).setText(AuthFunctional.emailLinked);
-                    AuthFunctional.emailLinked = null;
-                }
-
-                AuthFunctional.setUpPassword(findViewById(R.id.edtTxtPassword));
-
-                setUpOnClickListeners();
+                // after opening animation ends adding the listener that will change UI furthermore
+                auth.addAuthStateListener(authListener);
             }
         });
         findViewById(R.id.FitnessAssistant).startAnimation(openAnim);
     }
 
-    // used when user has to wait
-    private void loadingAnimation(){
+    private void goToHomePageUI(){
         Animation loadAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_loading);
         loadAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -95,30 +94,40 @@ public class SignInActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         setContentView(R.layout.opening_screen);
         if (user != null)
-            loadingAnimation();
+            goToHomePageUI();
         else
-            openingAnimation();
+            setUpSignInUI();
     }
 
     // declares firebase instance and creates the listener
+    //  sets up networkManager and performs openingAnimation
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
+        networkManager = new NetworkManager(getApplication());
         authListener = firebaseAuth -> updateUI(firebaseAuth.getCurrentUser());
+        openingAnimation();
     }
 
-    // sets the listener
     @Override
-    protected void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
+    protected void onResume() {
+        super.onResume();
+        // registering this activity when user comes first time or returns
+        networkManager.registerConnectionObserver(this);
     }
 
-    // removes the listener
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        // unregistering this activity when another activity comes into the foreground or else
+        networkManager.unregisterConnectionObserver(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // removing the listener when activity finishes
         if(authListener != null)
             auth.removeAuthStateListener(authListener);
     }
