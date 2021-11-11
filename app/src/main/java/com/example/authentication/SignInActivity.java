@@ -43,21 +43,13 @@ public class SignInActivity extends AppCompatActivity {
                         AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
                     });
                 }
-            } else // if there is no internet, the animated notification quick flashes
+            } else { // if there is no internet, the animated notification quick flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.signInButton), findViewById(R.id.notification_layout_id));
+            }
         });
 
         // forgotPassword listener - going to the PasswordResetActivity
         findViewById(R.id.forgotPassword).setOnClickListener(view -> startActivity(new Intent(this, PasswordResetActivity.class)));
-    }
-
-    // sets everything up for signing in
-    private void setUpSignInUI(){
-        setContentView(R.layout.sign_in_screen);
-        AuthFunctional.setUpPassword(findViewById(R.id.edtTxtPassword));
-        setUpOnClickListeners();
-        // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(this,findViewById(R.id.signInScreen));
     }
 
     private void goToHomePageUI(){
@@ -82,8 +74,6 @@ public class SignInActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null)
             goToHomePageUI();
-        else
-            setUpSignInUI();
     }
 
     // declares firebase instance and creates the listener
@@ -91,7 +81,11 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        // setting up SignIn UI
         setContentView(R.layout.sign_in_screen);
+        AuthFunctional.setUpPassword(findViewById(R.id.edtTxtPassword));
+        setUpOnClickListeners();
+
         networkManager = new NetworkManager(getApplication());
 
         // setting up for firebase
@@ -102,7 +96,9 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // adding the listener for firebase to change the UI furthermore
+        // registering this activity when user comes first time or returns
+        networkManager.registerConnectionObserver(this,findViewById(R.id.signInScreen));
+        // adding the listener for firebase to change the UI if user is logged in
         auth.addAuthStateListener(authListener);
     }
 

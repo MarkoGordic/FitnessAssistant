@@ -2,7 +2,7 @@ package com.example.network;
 
 import android.app.Application;
 import android.view.Gravity;
-import android.view.ViewGroup;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
@@ -58,7 +58,7 @@ public class NetworkManager {
     }
 
     // creates the whole banner
-    public void addBanner(ConstraintLayout layout){
+    public void addNotification(ConstraintLayout layout){
         // creating a linearLayout so that drawable in the textView can be centered too
         LinearLayout linearLayout = new LinearLayout(application);
 
@@ -106,15 +106,19 @@ public class NetworkManager {
 
     public void registerConnectionObserver(LifecycleOwner lifecycleOwner, ConstraintLayout layout){
         csMonitor.observe(lifecycleOwner, connected -> {
-            // removes any previous banner if it exists
-            if (notificationView.getParent() != null)
-                ((ViewGroup) notificationView.getParent()).removeView(notificationView);
-            // adds new banner
-            if (!connected) {
-                addBanner(layout);
-                layout.startLayoutAnimation(); // starts the flashing animation
+            // checks if there is already a notification set
+            if(notificationView.getParent() == null){
+                // sets notification and starts animation
+                addNotification(layout);
+                layout.startLayoutAnimation();
+            }
+            if(!connected){
+                // if we're offline notification is visible and currentlyOnline is false
+                notificationView.setVisibility(View.VISIBLE);
                 AuthFunctional.currentlyOnline = false;
-            } else{ // updating currentlyOnline for the usage of the app
+            } else{
+                // if we're online notification is not present and currentlyOnline is true
+                notificationView.setVisibility(View.GONE);
                 AuthFunctional.currentlyOnline = true;
             }
         });

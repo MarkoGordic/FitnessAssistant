@@ -82,8 +82,9 @@ public class PasswordResetActivity extends AppCompatActivity {
                         }
                     });
                 }
-            } else // if there is no internet, the animated notification quick flashes
+            } else { // if there is no internet, the animated notification quick flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.resetPasswordButton), findViewById(R.id.notification_layout_id));
+            }
         });
     }
 
