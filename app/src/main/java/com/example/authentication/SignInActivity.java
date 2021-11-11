@@ -1,5 +1,6 @@
 package com.example.authentication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.homepage.HomePageActivity;
 import com.example.network.NetworkManager;
@@ -23,9 +25,9 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
 
-    // sets up listeners for signing in, creating an account, resetting password
+    // sets up listeners for signing in, resetting password
     private void setUpOnClickListeners(){
-        // signUpButton listener
+        // signUpButton listener - checks basic errors, checks sign in errors
         findViewById(R.id.signInButton).setOnClickListener((View v)->{
             EditText emailEdit = findViewById(R.id.edtTxtEmail);
             EditText passEdit = findViewById(R.id.edtTxtPassword);
@@ -44,7 +46,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        // forgotPassword listener
+        // forgotPassword listener - going to the PasswordResetActivity
         findViewById(R.id.forgotPassword).setOnClickListener(view -> startActivity(new Intent(this, PasswordResetActivity.class)));
     }
 
@@ -53,27 +55,12 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.sign_in_screen);
         AuthFunctional.setUpPassword(findViewById(R.id.edtTxtPassword));
         setUpOnClickListeners();
-    }
-
-    // used at the start of the app
-    private void openingAnimation(){
-        setContentView(R.layout.opening_screen);
-        Animation openAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_opening);
-        openAnim.setAnimationListener(new Animation.AnimationListener(){
-            @Override
-            public void onAnimationStart(Animation animation) {}
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // after opening animation ends adding the listener that will change UI furthermore
-                auth.addAuthStateListener(authListener);
-            }
-        });
-        findViewById(R.id.FitnessAssistant).startAnimation(openAnim);
+        // registering this activity when user comes first time or returns
+        networkManager.registerConnectionObserver(this,findViewById(R.id.signInScreen));
     }
 
     private void goToHomePageUI(){
+        setContentView(R.layout.opening_screen);
         Animation loadAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_loading);
         loadAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -92,7 +79,6 @@ public class SignInActivity extends AppCompatActivity {
 
     // if user exists loadingAnimation appears prior to HomePage, otherwise openingAnimation appears prior to SignInPage
     private void updateUI(FirebaseUser user) {
-        setContentView(R.layout.opening_screen);
         if (user != null)
             goToHomePageUI();
         else
@@ -104,17 +90,21 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        auth = FirebaseAuth.getInstance();
+        setContentView(R.layout.sign_in_screen);
         networkManager = new NetworkManager(getApplication());
+
+        // setting up for firebase
+        auth = FirebaseAuth.getInstance();
         authListener = firebaseAuth -> updateUI(firebaseAuth.getCurrentUser());
-        openingAnimation();
     }
+
+    // TODO Extract opening to MainActivity that will handle updateUI(), here only registering connection...
 
     @Override
     protected void onResume() {
         super.onResume();
-        // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(this);
+        // adding the listener for firebase to change the UI furthermore
+        auth.addAuthStateListener(authListener);
     }
 
     @Override

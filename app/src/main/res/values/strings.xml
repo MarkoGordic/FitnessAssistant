@@ -28,6 +28,9 @@
     <string name="link_will_be_sent">The link in the email will expire in 1 hour</string>
     <string name="link_has_been_sent">Email has been sent</string>
 
+    <!-- COM.EXAMPLE.NETWORK -->
+    <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>
+
     <!-- COM.EXAMPLE.HOMEPAGE -->
     <!-- NavBar strings -->
     <string name="activity">Activity</string>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/relativeLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signInScreen"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/BackgroundColor">
@@ -94,21 +95,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/edtTxtPassword"
-        app:layout_constraintStart_toStartOf="@id/edtTxtPassword"
-
         android:layout_marginStart="128dp"
         android:layout_marginEnd="128dp"
         android:layout_marginBottom="200dp"
 
         android:background="@drawable/sign_in_button"
-
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
+
         android:text="@string/sign_in"
+
         android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
+        android:textFontWeight="600"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/edtTxtPassword"
+        app:layout_constraintStart_toStartOf="@id/edtTxtPassword"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <!-- Signing in Progress Circle -->
     <ProgressBar
@@ -144,7 +146,7 @@
         android:includeFontPadding="false"
         android:text="@string/forgot_password"
         android:textAlignment="center"
-        android:textColor="@color/MangoTango"
+        android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="16sp" />
 

@@ -1,5 +1,6 @@
 package com.example.authentication;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.animation.AlphaAnimation;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.network.NetworkManager;
 import com.example.util.authentication.AuthFunctional;
@@ -53,8 +55,8 @@ public class PasswordResetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        networkManager = new NetworkManager(getApplication());
         setContentView(R.layout.password_reset_screen);
+        networkManager = new NetworkManager(getApplication());
         findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
     }
 
@@ -88,7 +90,7 @@ public class PasswordResetActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(this);
+        networkManager.registerConnectionObserver(this,findViewById(R.id.passwordResetScreen));
     }
 
     @Override
