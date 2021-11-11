@@ -2,7 +2,7 @@
 <!-- Defining shapes for input in sign in screen -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Used as a border for textViews during sign in -->
+    <!-- Used as a border for textViews during authentication -->
 
     <item android:state_enabled="true" android:state_focused="true">
         <shape android:shape="rectangle">

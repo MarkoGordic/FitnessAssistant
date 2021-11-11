@@ -16,8 +16,6 @@ import com.example.util.authentication.AuthFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-// TODO Handle wrong email input and password input on creating an account (email doesn't need handling, only send the verification email)
-
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -43,13 +41,15 @@ public class SignInActivity extends AppCompatActivity {
                         AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
                     });
                 }
-            } else { // if there is no internet, the animated notification quick flashes
+            } else // if there is no internet, the animated notification quick flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.signInButton), findViewById(R.id.notification_layout_id));
-            }
         });
 
         // forgotPassword listener - going to the PasswordResetActivity
         findViewById(R.id.forgotPassword).setOnClickListener(view -> startActivity(new Intent(this, PasswordResetActivity.class)));
+
+        // createAccount listener - going to the CreateAccountActivity
+        findViewById(R.id.createAccount).setOnClickListener(view -> startActivity(new Intent(this, CreateAccountActivity.class)));
     }
 
     private void goToHomePageUI(){

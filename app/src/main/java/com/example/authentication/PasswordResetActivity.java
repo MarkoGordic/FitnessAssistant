@@ -55,12 +55,8 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.password_reset_screen);
         networkManager = new NetworkManager(getApplication());
+        // backButton listener
         findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         // resetPassword listener
         findViewById(R.id.resetPasswordButton).setOnClickListener(view1 -> {
             if(AuthFunctional.currentlyOnline) {
@@ -82,9 +78,8 @@ public class PasswordResetActivity extends AppCompatActivity {
                         }
                     });
                 }
-            } else { // if there is no internet, the animated notification quick flashes
+            } else // if there is no internet, the animated notification quick flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.resetPasswordButton), findViewById(R.id.notification_layout_id));
-            }
         });
     }
 

@@ -99,7 +99,7 @@
         android:layout_marginEnd="128dp"
         android:layout_marginBottom="200dp"
 
-        android:background="@drawable/sign_in_button"
+        android:background="@drawable/authentication_button"
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
 
@@ -129,7 +129,7 @@
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
 
-    <!-- -->
+    <!-- ForgotPassword textView -->
     <TextView
         android:id="@+id/forgotPassword"
 
@@ -149,5 +149,28 @@
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="16sp" />
+
+    <!-- createAccount textView -->
+    <TextView
+        android:id="@+id/createAccount"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInButton"
+
+        android:layout_marginTop="64dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:text="@string/account_register"
+        android:textAlignment="center"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="16sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

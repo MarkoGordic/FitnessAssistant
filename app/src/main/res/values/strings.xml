@@ -14,7 +14,11 @@
     <string name="password">Password</string>
     <string name="sign_in">Sign In</string>
     <string name="reset_password">Reset Password</string>
-    <string name="back_button_description">Return to previous activity</string>>
+    <string name="back_button_description">Return to previous activity</string>
+    <string name="create_account">Create an Account</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username">Username</string>
     <!-- errors -->
     <string name="empty_email">Email cannot be empty</string>
     <string name="empty_password">Password cannot be empty</string>
@@ -23,10 +27,14 @@
     <string name="email_not_registered">The email you entered isn\'t connected with a FitnessAssistant account. Please create an account.</string>
     <string name="invalid_email">Text entered is not an email address. Please try again.</string>
     <!-- user interaction -->
-    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="forgot_your_password">Forgot Your Password?</string>
     <string name="large_password_reset_text">That\'s OK, it happens…\nJust enter the email address you used to register and we\'ll send you a reset link.</string>
     <string name="link_will_be_sent">The link in the email will expire in 1 hour</string>
     <string name="link_has_been_sent">Email has been sent</string>
+    <string name="register_agreement">By registering for a FitnessAssistant account you \n agree to our <u>Privacy Policy</u> and <u>Terms of Service</u></string>
+    <string name="register_for_free">Start your fitness journey for free</string>
+    <string name="account_register">Not a member? <u>Create account</u></string>
 
     <!-- COM.EXAMPLE.NETWORK -->
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>

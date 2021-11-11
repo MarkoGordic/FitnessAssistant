@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Unlocked lock icon for sign in screen -->
+    <!-- Unlocked lock icon for authentication screens -->
 
     <item android:state_focused="true" android:drawable="@drawable/unlock_focused" />
 
