@@ -46,6 +46,7 @@ public class ConnectionStateMonitor extends LiveData<Boolean> {
             this.connectionStateMonitor = connectionStateMonitor;
         }
 
+        // called when network connection is available
         @Override
         public void onAvailable(@NonNull Network network) {
             super.onAvailable(network);
@@ -53,12 +54,14 @@ public class ConnectionStateMonitor extends LiveData<Boolean> {
             new TaskRunner().executeAsync(new CheckForConnectionTask(), connectionStateMonitor::postValue);
         }
 
+        // called when network connection is lost
         @Override
         public void onLost(@NonNull Network network) {
             super.onLost(network);
             connectionStateMonitor.postValue(false);
         }
 
+        // called when network connection is unavailable
         @Override
         public void onUnavailable() {
             super.onUnavailable();
@@ -77,6 +80,7 @@ public class ConnectionStateMonitor extends LiveData<Boolean> {
         }
     }
 
+    // used instead of AsyncTask
     private static class TaskRunner{
         private interface Callback<R>{
             void onComplete(R result);
@@ -102,6 +106,7 @@ public class ConnectionStateMonitor extends LiveData<Boolean> {
         @Override
         public Boolean call(){
             // returns if connecting to Google server "8.8.8.8" has been successful
+            // used to check if there really is internet for some specific cases
             try{
                 Socket sock = new Socket();
                 sock.connect(new InetSocketAddress("8.8.8.8", 53), 1500); // throws

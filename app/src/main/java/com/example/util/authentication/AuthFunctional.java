@@ -10,7 +10,11 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -23,6 +27,8 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import java.util.List;
 
 public class AuthFunctional {
+    public static boolean currentlyOnline;
+
     // when password is hidden, its characters are transformed by this function into '●'
     public static class MyPasswordTransformationMethod extends PasswordTransformationMethod {
         @Override
@@ -73,13 +79,15 @@ public class AuthFunctional {
         });
     }
 
-    // setting the outline of place to red and undoing when text is changed, also sets an error message
     public static void myError(Context context, EditText place, String message){
+        // setting outline of place to red
         place.setBackground(AppCompatResources.getDrawable(context, R.drawable.custom_input_error));
+        // setting an error message
         place.setError(message);
         place.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            // undo when text is changed
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
             { place.setBackground(AppCompatResources.getDrawable(context, R.drawable.custom_input));}
@@ -121,9 +129,36 @@ public class AuthFunctional {
                         else
                             myError(context, emailEdit, context.getString(R.string.email_not_registered));
                     }
-                } // TODO handle an else if for no network connection
+                }
             } else
                 myError(context, emailEdit, context.getString(R.string.invalid_email));
         });
+    }
+
+    // used for quickFlashing the notification layout
+    public static void quickFlash(Context context, Button button, LinearLayout notificationLayout){
+        // setting the enabled and clickable to false -> avoid spamming and problems caused with spamming
+        button.setEnabled(false);
+        button.setClickable(false);
+
+        Animation previous = notificationLayout.getAnimation();
+
+        Animation current = AnimationUtils.loadAnimation(context, R.anim.quick_flash);
+        current.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // continuing(starting) the previous animation
+                notificationLayout.startAnimation(previous);
+                // setting enabled and clickable back to true
+                button.setEnabled(true);
+                button.setClickable(true);
+            }
+        });
+
+        notificationLayout.startAnimation(current);
     }
 }

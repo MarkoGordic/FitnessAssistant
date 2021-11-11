@@ -1,6 +1,5 @@
 package com.example.authentication;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.animation.AlphaAnimation;
@@ -9,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.network.NetworkManager;
 import com.example.util.authentication.AuthFunctional;
@@ -65,24 +63,27 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onStart();
         // resetPassword listener
         findViewById(R.id.resetPasswordButton).setOnClickListener(view1 -> {
-            EditText emailEdit = findViewById(R.id.emailEditForReset);
-            if (TextUtils.isEmpty(emailEdit.getText().toString()))
-                AuthFunctional.myError(getApplicationContext(),findViewById(R.id.emailEditForReset), getString(R.string.empty_email));
-            else {
-                AuthFunctional.startLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
-                String email = emailEdit.getText().toString();
-                FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
-                        // set email to be filled out on sign in screen
-                        successAnimation((findViewById(R.id.smallResetPasswordTextView)));
-                    } else {
-                        AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
-                        // set errors
-                        AuthFunctional.setError(this, email, emailEdit, null);
-                    }
-                });
-            }
+            if(AuthFunctional.currentlyOnline) {
+                EditText emailEdit = findViewById(R.id.emailEditForReset);
+                if (TextUtils.isEmpty(emailEdit.getText().toString()))
+                    AuthFunctional.myError(getApplicationContext(), findViewById(R.id.emailEditForReset), getString(R.string.empty_email));
+                else {
+                    AuthFunctional.startLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
+                    String email = emailEdit.getText().toString();
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
+                            // set email to be filled out on sign in screen
+                            successAnimation((findViewById(R.id.smallResetPasswordTextView)));
+                        } else {
+                            AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
+                            // set errors
+                            AuthFunctional.setError(this, email, emailEdit, null);
+                        }
+                    });
+                }
+            } else // if there is no internet, the animated notification quick flashes
+                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.resetPasswordButton), findViewById(R.id.notification_layout_id));
         });
     }
 

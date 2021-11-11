@@ -3,6 +3,8 @@ package com.example.network;
 import android.app.Application;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.example.authentication.R;
+import com.example.util.authentication.AuthFunctional;
 
 // used to notify user about networkState with usage of com.example.network.ConnectionStateMonitor class
 public class NetworkManager {
@@ -75,6 +78,16 @@ public class NetworkManager {
 
         // adds the textView
         linearLayout.addView(notificationView);
+
+        // setting up the flashing animation
+        Animation flash = new AlphaAnimation(0.0f, 1.0f);
+        flash.setDuration(800); // flash duration
+        flash.setStartOffset(1600); // staying visible duration
+        flash.setRepeatMode(Animation.REVERSE);
+        flash.setRepeatCount(Animation.INFINITE);
+
+        linearLayout.setAnimation(flash);
+
         // adds the linearLayout to the main one
         layout.addView(linearLayout);
 
@@ -97,8 +110,13 @@ public class NetworkManager {
             if (notificationView.getParent() != null)
                 ((ViewGroup) notificationView.getParent()).removeView(notificationView);
             // adds new banner
-            if (!connected)
+            if (!connected) {
                 addBanner(layout);
+                layout.startLayoutAnimation(); // starts the flashing animation
+                AuthFunctional.currentlyOnline = false;
+            } else{ // updating currentlyOnline for the usage of the app
+                AuthFunctional.currentlyOnline = true;
+            }
         });
     }
 

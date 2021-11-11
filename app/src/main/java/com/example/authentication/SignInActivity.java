@@ -1,6 +1,5 @@
 package com.example.authentication;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,7 +9,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.homepage.HomePageActivity;
 import com.example.network.NetworkManager;
@@ -29,21 +27,24 @@ public class SignInActivity extends AppCompatActivity {
     private void setUpOnClickListeners(){
         // signUpButton listener - checks basic errors, checks sign in errors
         findViewById(R.id.signInButton).setOnClickListener((View v)->{
-            EditText emailEdit = findViewById(R.id.edtTxtEmail);
-            EditText passEdit = findViewById(R.id.edtTxtPassword);
-            if(TextUtils.isEmpty(emailEdit.getText().toString()))
-                AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
-            else if(TextUtils.isEmpty(passEdit.getText().toString()))
-                AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
-            else if(passEdit.getText().length() <= 5)
-                AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
-            else {
-                AuthFunctional.startLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
-                auth.signInWithEmailAndPassword(emailEdit.getText().toString(), passEdit.getText().toString()).addOnFailureListener(e -> {
-                    AuthFunctional.setError(this, emailEdit.getText().toString(), emailEdit, passEdit);
-                    AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
-                });
-            }
+            if(AuthFunctional.currentlyOnline) {
+                EditText emailEdit = findViewById(R.id.edtTxtEmail);
+                EditText passEdit = findViewById(R.id.edtTxtPassword);
+                if (TextUtils.isEmpty(emailEdit.getText().toString()))
+                    AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
+                else if (TextUtils.isEmpty(passEdit.getText().toString()))
+                    AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
+                else if (passEdit.getText().length() <= 5)
+                    AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
+                else {
+                    AuthFunctional.startLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+                    auth.signInWithEmailAndPassword(emailEdit.getText().toString(), passEdit.getText().toString()).addOnFailureListener(e -> {
+                        AuthFunctional.setError(this, emailEdit.getText().toString(), emailEdit, passEdit);
+                        AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+                    });
+                }
+            } else // if there is no internet, the animated notification quick flashes
+                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.signInButton), findViewById(R.id.notification_layout_id));
         });
 
         // forgotPassword listener - going to the PasswordResetActivity
@@ -97,8 +98,6 @@ public class SignInActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         authListener = firebaseAuth -> updateUI(firebaseAuth.getCurrentUser());
     }
-
-    // TODO Extract opening to MainActivity that will handle updateUI(), here only registering connection...
 
     @Override
     protected void onResume() {

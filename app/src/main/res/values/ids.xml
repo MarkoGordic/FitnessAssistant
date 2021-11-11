@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- IDs for notification about no network -->
     <item name="banner_id" type="id" />
     <item name="notification_layout_id" type="id"/>
 </resources>
