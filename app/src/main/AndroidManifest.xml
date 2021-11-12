@@ -39,6 +39,10 @@
         android:name="com.example.authentication.CreateAccountActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
+    <activity
+        android:name=".EmailVerificationActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+    </activity>
 </application>
 
 </manifest>

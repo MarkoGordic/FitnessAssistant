@@ -16,12 +16,14 @@ import com.example.util.authentication.AuthFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+// TODO Handle when user's account is deleted indirectly -> probably re-authenticate
+
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
 
-    // sets up listeners for signing in, resetting password
+    // sets up listeners for signing in, resetting password, creating an account(registering)
     private void setUpOnClickListeners(){
         // signUpButton listener - checks basic errors, checks sign in errors
         findViewById(R.id.signInButton).setOnClickListener((View v)->{
@@ -29,16 +31,17 @@ public class SignInActivity extends AppCompatActivity {
                 EditText emailEdit = findViewById(R.id.edtTxtEmail);
                 EditText passEdit = findViewById(R.id.edtTxtPassword);
                 if (TextUtils.isEmpty(emailEdit.getText().toString()))
-                    AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.empty_email));
+                    AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.empty_email));
                 else if (TextUtils.isEmpty(passEdit.getText().toString()))
-                    AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.empty_password));
+                    AuthFunctional.myError(getApplicationContext(), passEdit, getString(R.string.empty_password));
                 else if (passEdit.getText().length() <= 5)
-                    AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtPassword), getString(R.string.invalid_password));
+                    AuthFunctional.myError(getApplicationContext(), passEdit, getString(R.string.password_not_enough_characters));
                 else {
                     AuthFunctional.startLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
-                    auth.signInWithEmailAndPassword(emailEdit.getText().toString(), passEdit.getText().toString()).addOnFailureListener(e -> {
-                        AuthFunctional.setError(this, emailEdit.getText().toString(), emailEdit, passEdit);
+                    auth.signInWithEmailAndPassword(emailEdit.getText().toString(), passEdit.getText().toString()).addOnCompleteListener(task -> {
                         AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+                        if(!task.isSuccessful())
+                            AuthFunctional.setError(this, emailEdit.getText().toString(), emailEdit, passEdit);
                     });
                 }
             } else // if there is no internet, the animated notification quick flashes
@@ -70,14 +73,19 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.FitnessAssistant).startAnimation(loadAnim);
     }
 
-    // if user exists loadingAnimation appears prior to HomePage, otherwise openingAnimation appears prior to SignInPage
+    // if user exists, emailVerification is checked and he is redirected to a new UI
     private void updateUI(FirebaseUser user) {
-        if (user != null)
-            goToHomePageUI();
+        if (user != null) {
+            if (user.isEmailVerified())
+                goToHomePageUI();
+            else {
+                user.sendEmailVerification();
+                startActivity(new Intent(getApplicationContext(), EmailVerificationActivity.class));
+            }
+        }
     }
 
-    // declares firebase instance and creates the listener
-    //  sets up networkManager and performs openingAnimation
+    // declares firebase instance, sets up networkManager and creates the listener
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -98,7 +106,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onResume();
         // registering this activity when user comes first time or returns
         networkManager.registerConnectionObserver(this,findViewById(R.id.signInScreen));
-        // adding the listener for firebase to change the UI if user is logged in
+        // adding the listener for firebase to change the UI
         auth.addAuthStateListener(authListener);
     }
 

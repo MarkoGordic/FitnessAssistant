@@ -73,21 +73,21 @@
     <TextView
         android:id="@+id/smallRegisterTextView"
 
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintStart_toStartOf="@id/confirmPasswordEditForRegister"
-        app:layout_constraintEnd_toEndOf="@id/confirmPasswordEditForRegister"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditForRegister"
 
         android:layout_marginTop="12dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="58dp"
 
         android:fontFamily="@font/raleway"
         android:includeFontPadding="false"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
         android:text="@string/register_agreement"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="14sp"/>
@@ -247,4 +247,18 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
+
+    <CheckBox
+        android:id="@+id/registerCheckbox"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/smallRegisterTextView"
+        app:layout_constraintBottom_toBottomOf="@id/smallRegisterTextView"
+
+        android:buttonTint="@color/MangoTango"
+        android:layout_marginEnd="48dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

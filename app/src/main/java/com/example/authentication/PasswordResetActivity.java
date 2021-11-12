@@ -50,29 +50,25 @@ public class PasswordResetActivity extends AppCompatActivity {
         tv.startAnimation(fadeOut);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.password_reset_screen);
-        networkManager = new NetworkManager(getApplication());
+    // sets up listeners for back button and resetPassword button
+    private void setUpOnClickListeners(){
         // backButton listener
         findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
+
         // resetPassword listener
         findViewById(R.id.resetPasswordButton).setOnClickListener(view1 -> {
             if(AuthFunctional.currentlyOnline) {
                 EditText emailEdit = findViewById(R.id.emailEditForReset);
                 if (TextUtils.isEmpty(emailEdit.getText().toString()))
-                    AuthFunctional.myError(getApplicationContext(), findViewById(R.id.emailEditForReset), getString(R.string.empty_email));
+                    AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.empty_email));
                 else {
                     AuthFunctional.startLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
                     String email = emailEdit.getText().toString();
                     FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+                        AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
                         if (task.isSuccessful()) {
-                            AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
-                            // set email to be filled out on sign in screen
                             successAnimation((findViewById(R.id.smallResetPasswordTextView)));
                         } else {
-                            AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
                             // set errors
                             AuthFunctional.setError(this, email, emailEdit, null);
                         }
@@ -81,6 +77,15 @@ public class PasswordResetActivity extends AppCompatActivity {
             } else // if there is no internet, the animated notification quick flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.resetPasswordButton), findViewById(R.id.notification_layout_id));
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.password_reset_screen);
+        setUpOnClickListeners();
+
+        networkManager = new NetworkManager(getApplication());
     }
 
     @Override

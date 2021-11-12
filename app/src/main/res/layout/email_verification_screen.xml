@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/emailVerificationScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/BackgroundColor">
+
+    <!-- userEmail textView -->
+    <TextView
+        android:id="@+id/userEmailTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/verifyEmailTextView"
+
+        android:layout_marginBottom="64dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:text="@string/email_user"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="15sp"/>
+
+    <!-- Main textView -->
+    <TextView
+        android:id="@+id/verifyEmailTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/verifyEmailButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_marginBottom="194dp"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/verify_your_email"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="30sp"/>
+
+    <!-- Large textView-->
+    <TextView
+        android:id="@+id/largeVerifyEmailTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verifyEmailTextView"
+        app:layout_constraintBottom_toTopOf="@id/smallVerifyEmailTextView"
+
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/email_verification_required"
+        android:textAlignment="center"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="18sp"/>
+
+    <!-- Small textView -->
+    <TextView
+        android:id="@+id/smallVerifyEmailTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/verifyEmailButton"
+
+        android:layout_marginBottom="12dp"
+
+        android:fontFamily="@font/raleway"
+        android:includeFontPadding="false"
+        android:paddingStart="72dp"
+        android:paddingEnd="72dp"
+        android:text="@string/verification_will_be_sent"
+        android:textAlignment="center"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="15sp"
+        android:lines="3"/>
+
+    <!-- Change Credentials Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signOutButton"
+
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="200dp"
+
+        android:background="@drawable/authentication_button"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/sign_out"
+        android:textColor="@color/BackgroundColor"
+        android:textFontWeight="600" />
+
+    <!-- Password Reset Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/verifyEmailButton"
+
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="200dp"
+
+        android:background="@drawable/authentication_button"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/send_email_verification"
+        android:textColor="@color/BackgroundColor"
+        android:textFontWeight="600" />
+
+    <!-- Sending Email Progress Circle -->
+    <ProgressBar
+        android:id="@+id/verifyEmailBar"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@id/verifyEmailButton"
+        app:layout_constraintLeft_toLeftOf="@id/verifyEmailButton"
+        app:layout_constraintRight_toRightOf="@id/verifyEmailButton"
+        app:layout_constraintTop_toTopOf="@id/verifyEmailButton"
+
+        android:elevation="2dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/BlueYonder"
+        android:visibility="gone" />
+</androidx.constraintlayout.widget.ConstraintLayout>
