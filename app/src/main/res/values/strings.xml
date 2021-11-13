@@ -66,7 +66,7 @@
     <string name="forgot_your_password">Forgot Your Password?</string>
     <string name="large_password_reset_text">That\'s OK, it happens…\n
         Just enter the email address you used to register and we\'ll send you a reset link.</string>
-    <string name="link_will_be_sent">The link in the email will expire in 1 hour</string>
+    <string name="link_will_be_sent">The link in the email will expire in 1 hour. Firebase doesn\'t check the strength of the password, so make sure you set a strong one.</string>
     <string name="link_has_been_sent">Email has been sent</string>
     <string name="register_agreement">By registering for a FitnessAssistant account you agree\n
         to our <u>Privacy Policy</u> and <u>Terms of Service</u></string>
@@ -77,7 +77,7 @@
     <string name="email_verification_required">In order to use our app, we must be sure it\'s really you. We have sent you a link to verify your email. Check your mail(and spam) and verify your email address.</string>
     <string name="hold_for_signing_out">Hold the button to sign out</string>
     <string name="successful_verification_sent">Email verification has been sent</string>
-    <string name="unsuccessful_verification_sent">Something went wrong. You probably sent too many requests. Check if the email is already in your inbox.</string>
+    <string name="unsuccessful_verification_sent">Something went wrong. Check if the email is already in your inbox or try again later.</string>
     <string name="user_email">User Email</string>
     <string name="verified_false">verified: false</string>
     <string name="verified_true">verified: true</string>

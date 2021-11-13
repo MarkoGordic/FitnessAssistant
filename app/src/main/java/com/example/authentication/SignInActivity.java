@@ -37,9 +37,10 @@ public class SignInActivity extends AppCompatActivity {
                 else {
                     AuthFunctional.startLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
                     auth.signInWithEmailAndPassword(emailEdit.getText().toString(), passEdit.getText().toString()).addOnCompleteListener(task -> {
-                        AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
-                        if(!task.isSuccessful())
+                        if(!task.isSuccessful()) {
                             AuthFunctional.setError(this, emailEdit.getText().toString(), emailEdit, passEdit);
+                            AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+                        }
                     });
                 }
             } else // if there is no internet, the animated notification quick flashes
@@ -97,14 +98,7 @@ public class SignInActivity extends AppCompatActivity {
 
         // setting up for firebase
         auth = FirebaseAuth.getInstance();
-        authListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if(user != null){
-                user.reload(); // used to update data from firebase
-                user = firebaseAuth.getCurrentUser(); // necessary
-            }
-            updateUI(user);
-        };
+        authListener = firebaseAuth -> updateUI(AuthFunctional.refreshedUser());
     }
 
     @Override

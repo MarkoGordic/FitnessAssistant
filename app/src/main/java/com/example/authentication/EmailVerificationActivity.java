@@ -104,14 +104,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
         // setting up for firebase
         auth = FirebaseAuth.getInstance();
-        authListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if(user != null){
-                user.reload(); // used to update data from firebase
-                user = firebaseAuth.getCurrentUser(); // necessary
-            }
-            updateUI(user);
-        };
+        authListener = firebaseAuth -> updateUI(AuthFunctional.refreshedUser());
     }
 
     @Override

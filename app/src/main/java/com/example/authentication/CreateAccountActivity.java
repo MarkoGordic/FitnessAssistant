@@ -15,6 +15,8 @@ import com.example.util.authentication.AuthFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+// TODO test - check if on two phones you try to create an account at the same time
+
 public class CreateAccountActivity extends AppCompatActivity {
     private NetworkManager networkManager;
 

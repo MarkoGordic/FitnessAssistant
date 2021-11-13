@@ -80,7 +80,7 @@ public class HomePageActivity extends AppCompatActivity {
         // setting up for firebase
         auth = FirebaseAuth.getInstance();
 
-        FirebaseUser currentUser = auth.getCurrentUser();
+        FirebaseUser currentUser = AuthFunctional.refreshedUser();
         if(currentUser != null){ // redundant
             String name = currentUser.getDisplayName();
             ((TextView) findViewById(R.id.userName)).setText(String.format("%s: %s", getString(R.string.user_name), name));
@@ -96,14 +96,7 @@ public class HomePageActivity extends AppCompatActivity {
             setUpOnClickListeners();
         }
 
-        authListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if(user != null){
-                user.reload(); // used to update data from firebase
-                user = firebaseAuth.getCurrentUser(); // necessary
-            }
-            updateUI(user);
-        };
+        authListener = firebaseAuth -> updateUI(AuthFunctional.refreshedUser());
     }
 
     @Override

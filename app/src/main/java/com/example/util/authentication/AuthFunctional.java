@@ -356,4 +356,14 @@ public class AuthFunctional {
                 .setDisplayName(username)
                 .build());
     }
+
+    // return the updated user - firebase doesn't automatically do this
+    public static FirebaseUser refreshedUser(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            user.reload(); // used to update data from firebase
+            user = FirebaseAuth.getInstance().getCurrentUser(); // necessary
+        }
+        return user;
+    }
 }
