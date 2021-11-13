@@ -2,7 +2,6 @@ package com.example.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -46,41 +45,14 @@ public class EmailVerificationActivity extends AppCompatActivity {
         if(user != null) {
             if (user.isEmailVerified())
                 goToHomePageUI();
-            else{ // TODO Firebase doesn't change or isEmailVerified won't work
+            else{
                 // user-specific textView set up and animation - notifying that email is not verified
-                ((TextView) findViewById(R.id.userEmailTextView)).setText(String.format("%s: %s (%s)", getString(R.string.email_user), user.getEmail(), getString(R.string.verified_false)));
+                ((TextView) findViewById(R.id.userEmailTextView)).setText(String.format("%s: %s (%s)", getString(R.string.user_email), user.getEmail(), getString(R.string.verified_false)));
                 findViewById(R.id.userEmailTextView).setAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
             }
-        } else
+        } else { // if no user is signed in -> user is signed out -> go to sign in screen
+            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
             finish();
-    }
-
-    // displaying results from sending an email verification
-    private void displayResults(TextView textView, boolean successful){
-        if(successful){
-            // textView fading in and finishing the activity
-            Animation fadeIn  = new AlphaAnimation(0.0f, 1.0f);
-            fadeIn.setDuration(2000);
-
-            // textView fading out, setting new text and calling fadeIn animation
-            Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-            fadeOut.setDuration(1000);
-            fadeOut.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {}
-                @Override
-                public void onAnimationRepeat(Animation animation) {}
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    textView.setText(getString(R.string.successful_verification_sent));
-                    textView.startAnimation(fadeIn);
-                }
-            });
-            textView.startAnimation(fadeOut);
-        } else{
-            // notify the user about the error with sending the email verification
-            textView.setText(getString(R.string.unsuccessful_verification_sent));
-            textView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
         }
     }
 
@@ -96,10 +68,9 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
         // signOutButton listener - hold
         findViewById(R.id.signOutButton).setOnLongClickListener(view -> {
-            if(AuthFunctional.currentlyOnline){
-                FirebaseAuth.getInstance().signOut();
-                finish();
-            } else // if there is no internet, the animated notification quick flashes
+            if(AuthFunctional.currentlyOnline)
+                auth.signOut();
+            else // if there is no internet, the animated notification quick flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.signOutButton), findViewById(R.id.notification_layout_id));
             return true; // returns true -> onClick doesn't get triggered
         });
@@ -108,11 +79,12 @@ public class EmailVerificationActivity extends AppCompatActivity {
         findViewById(R.id.verifyEmailButton).setOnClickListener(view -> {
             if(AuthFunctional.currentlyOnline){
                 AuthFunctional.startLoading(view, findViewById(R.id.verifyEmailBar));
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseUser user = auth.getCurrentUser();
                 if(user != null) // send email verification
-                    FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(task -> {
+                    user.sendEmailVerification().addOnCompleteListener(task -> {
                         AuthFunctional.finishLoading(view, findViewById(R.id.verifyEmailBar));
-                        displayResults(findViewById(R.id.smallVerifyEmailTextView), task.isSuccessful()); // display results based on if email was sent successfully
+                        // display results based on if email was sent successfully
+                        AuthFunctional.displayEmailVerificationResults(getApplicationContext(), findViewById(R.id.smallVerifyEmailTextView), task.isSuccessful());
                     });
             } else{ // if there is no internet, the animated notification quick flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.verifyEmailButton), findViewById(R.id.notification_layout_id));
@@ -132,7 +104,14 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
         // setting up for firebase
         auth = FirebaseAuth.getInstance();
-        authListener = firebaseAuth -> updateUI(firebaseAuth.getCurrentUser());
+        authListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if(user != null){
+                user.reload(); // used to update data from firebase
+                user = firebaseAuth.getCurrentUser(); // necessary
+            }
+            updateUI(user);
+        };
     }
 
     @Override

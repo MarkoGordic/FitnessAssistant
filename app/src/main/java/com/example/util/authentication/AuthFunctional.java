@@ -10,12 +10,14 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -23,7 +25,9 @@ import androidx.appcompat.content.res.AppCompatResources;
 import com.example.authentication.R;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -314,5 +318,42 @@ public class AuthFunctional {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
+    }
+
+    // displaying results from sending an email verification
+    public static void displayEmailVerificationResults(Context context, TextView textView, boolean successful){
+        if(successful){
+            // textView fading in and finishing the activity
+            Animation fadeIn  = new AlphaAnimation(0.0f, 1.0f);
+            fadeIn.setDuration(2000);
+
+            // textView fading out, setting new text and calling fadeIn animation
+            Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+            fadeOut.setDuration(1000);
+            fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    textView.setText(context.getString(R.string.successful_verification_sent));
+                    textView.startAnimation(fadeIn);
+                }
+            });
+            textView.startAnimation(fadeOut);
+        } else{
+            // notify the user about the error with sending the email verification
+            textView.setText(context.getString(R.string.unsuccessful_verification_sent));
+            textView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.quick_flash));
+        }
+    }
+
+    // updates user's name(username)
+    public static void updateUserName(FirebaseUser user, String username){
+        if(user != null)
+            user.updateProfile(new UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .build());
     }
 }

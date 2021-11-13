@@ -16,8 +16,6 @@ import com.example.util.authentication.AuthFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-// TODO Handle when user's account is deleted indirectly -> probably re-authenticate
-
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -73,7 +71,7 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.FitnessAssistant).startAnimation(loadAnim);
     }
 
-    // if user exists, emailVerification is checked and he is redirected to a new UI
+    // if user exists, emailVerification is checked and he is redirected to a new UI, otherwise he stays here
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             if (user.isEmailVerified())
@@ -81,6 +79,7 @@ public class SignInActivity extends AppCompatActivity {
             else {
                 user.sendEmailVerification();
                 startActivity(new Intent(getApplicationContext(), EmailVerificationActivity.class));
+                finish();
             }
         }
     }
@@ -98,7 +97,14 @@ public class SignInActivity extends AppCompatActivity {
 
         // setting up for firebase
         auth = FirebaseAuth.getInstance();
-        authListener = firebaseAuth -> updateUI(firebaseAuth.getCurrentUser());
+        authListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if(user != null){
+                user.reload(); // used to update data from firebase
+                user = firebaseAuth.getCurrentUser(); // necessary
+            }
+            updateUI(user);
+        };
     }
 
     @Override

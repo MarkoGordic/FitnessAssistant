@@ -78,8 +78,10 @@
     <string name="hold_for_signing_out">Hold the button to sign out</string>
     <string name="successful_verification_sent">Email verification has been sent</string>
     <string name="unsuccessful_verification_sent">Something went wrong. You probably sent too many requests. Check if the email is already in your inbox.</string>
-    <string name="email_user">Email User</string>
+    <string name="user_email">User Email</string>
     <string name="verified_false">verified: false</string>
+    <string name="verified_true">verified: true</string>
+    <string name="user_name">User Name</string>
 
     <!-- COM.EXAMPLE.NETWORK -->
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>

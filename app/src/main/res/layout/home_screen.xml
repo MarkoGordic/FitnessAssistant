@@ -76,4 +76,71 @@
         android:textColor="@color/BlueYonder"
         android:textSize="25sp" />
 
+    <!-- UserName TextView -->
+    <TextView
+        android:id="@+id/userName"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stepCount"
+
+        android:layout_marginTop="48dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/user_name"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="17sp"/>
+
+    <!-- UserEmail TextView -->
+    <TextView
+        android:id="@+id/userEmail"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userName"
+
+        android:layout_marginTop="16dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/user_email"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="17sp"/>
+
+    <!-- Sign Out Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signOutHPButton"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="200dp"
+
+        android:background="@drawable/authentication_button"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/sign_out"
+        android:textColor="@color/BackgroundColor"
+        android:textFontWeight="600" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

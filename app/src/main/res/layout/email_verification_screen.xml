@@ -23,7 +23,7 @@
         android:includeFontPadding="false"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
-        android:text="@string/email_user"
+        android:text="@string/user_email"
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="15sp"/>

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.network.NetworkManager;
 import com.example.util.authentication.AuthFunctional;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private NetworkManager networkManager;
@@ -59,6 +60,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 // this should rarely happen or not even happen at all
                                 Toast.makeText(getApplicationContext(),getString(R.string.register_unsuccessful), Toast.LENGTH_LONG).show();
                             } else{
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                AuthFunctional.updateUserName(user, name);
                                 // user created
                                 finish();
                             }
