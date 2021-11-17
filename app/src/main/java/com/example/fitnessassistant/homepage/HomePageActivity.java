@@ -12,8 +12,6 @@ import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -103,10 +101,6 @@ public class HomePageActivity extends AppCompatActivity {
         if(user == null) {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
-        }
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account == null){
-            startActivity(new Intent(this, SignInActivity.class));
         }
     }
 

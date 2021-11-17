@@ -24,11 +24,11 @@
         </intent-filter>
     </activity>
     <activity
-        android:name=".authentication.SignInActivity"
+        android:name="com.example.fitnessassistant.authentication.SignInActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
     <activity
-        android:name=".authentication.PasswordResetActivity"
+        android:name="com.example.fitnessassistant.authentication.PasswordResetActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
     <activity
@@ -36,11 +36,11 @@
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
     <activity
-        android:name=".authentication.CreateAccountActivity"
+        android:name="com.example.fitnessassistant.authentication.CreateAccountActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
     <activity
-        android:name=".authentication.EmailVerificationActivity"
+        android:name="com.example.fitnessassistant.authentication.EmailVerificationActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
 </application>

@@ -3,24 +3,17 @@ package com.example.fitnessassistant.authentication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.homepage.HomePageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,7 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
-    private GoogleSignInClient googleSignInClient;
 
     // sets up listeners for signing in, resetting password, creating an account(registering)
     private void setUpOnClickListeners(){
@@ -62,33 +54,6 @@ public class SignInActivity extends AppCompatActivity {
 
         // createAccount listener - going to the CreateAccountActivity
         findViewById(R.id.createAccountTextView).setOnClickListener(view -> startActivity(new Intent(this, CreateAccountActivity.class)));
-
-        findViewById(R.id.googleSignInButton).setOnClickListener(view -> startActivityForResult(googleSignInClient.getSignInIntent(), 1));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            Log.d("GSI", "handleSignInResult:" + task.isSuccessful());
-            if (task.isSuccessful()) {
-                // Signed in successfully, show authenticated UI.
-                GoogleSignInAccount acct = task.getResult();
-
-                Log.e("GSI", "display name: " + acct.getDisplayName());
-
-                String personName = acct.getDisplayName();
-                String personPhotoUrl = "";
-                if(acct.getPhotoUrl() != null)
-                    personPhotoUrl = acct.getPhotoUrl().toString();
-                String email = acct.getEmail();
-
-                Log.e("GSI", "Name: " + personName + ", email: " + email
-                        + ", Image: " + personPhotoUrl);
-            }
-            updateUI();
-        }
     }
 
     private void goToHomePageUI(){
@@ -121,10 +86,6 @@ public class SignInActivity extends AppCompatActivity {
                 finish();
             }
         }
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account != null){
-            goToHomePageUI();
-        }
     }
 
     @Override
@@ -138,9 +99,6 @@ public class SignInActivity extends AppCompatActivity {
 
         // setting up listener for firebase
         authListener = firebaseAuth -> updateUI();
-
-        // setting up client for google
-        googleSignInClient = GoogleSignIn.getClient(this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build());
     }
 
     @Override
