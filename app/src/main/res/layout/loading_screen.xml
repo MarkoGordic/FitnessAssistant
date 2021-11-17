@@ -9,7 +9,7 @@
     <!-- Opening Screen with the logo -->
     <!-- TODO Add the logo instead of the textView -->
     <TextView
-        android:id="@+id/FitnessAssistant"
+        android:id="@+id/appLogo"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

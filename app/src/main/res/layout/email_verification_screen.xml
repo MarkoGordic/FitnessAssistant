@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/BackgroundColor">
 
-    <!-- userEmail textView -->
+    <!-- UserEmail TextView -->
     <TextView
-        android:id="@+id/userEmailTextView"
+        android:id="@+id/userEmailNotVerifiedTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,19 +23,18 @@
         android:includeFontPadding="false"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
-        android:text="@string/user_email"
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="15sp"/>
 
-    <!-- Main textView -->
+    <!-- Main TextView -->
     <TextView
         android:id="@+id/verifyEmailTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toTopOf="@id/verifyEmailButton"
+        app:layout_constraintBottom_toTopOf="@id/sendEmailVerificationButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
@@ -49,7 +48,7 @@
         android:textFontWeight="600"
         android:textSize="30sp"/>
 
-    <!-- Large textView-->
+    <!-- Large TextView-->
     <TextView
         android:id="@+id/largeVerifyEmailTextView"
 
@@ -72,7 +71,7 @@
         android:textFontWeight="600"
         android:textSize="18sp"/>
 
-    <!-- Small textView -->
+    <!-- Small TextView -->
     <TextView
         android:id="@+id/smallVerifyEmailTextView"
 
@@ -81,7 +80,7 @@
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/verifyEmailButton"
+        app:layout_constraintBottom_toTopOf="@id/sendEmailVerificationButton"
 
         android:layout_marginBottom="12dp"
 
@@ -98,7 +97,7 @@
 
     <!-- Change Credentials Button -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signOutButton"
+        android:id="@+id/changeCredentialsButton"
 
         android:layout_width="144dp"
         android:layout_height="wrap_content"
@@ -117,9 +116,9 @@
         android:textColor="@color/BackgroundColor"
         android:textFontWeight="600" />
 
-    <!-- Password Reset Button -->
+    <!-- SendEmailVerification Button -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/verifyEmailButton"
+        android:id="@+id/sendEmailVerificationButton"
 
         android:layout_width="144dp"
         android:layout_height="wrap_content"
@@ -138,20 +137,60 @@
         android:textColor="@color/BackgroundColor"
         android:textFontWeight="600" />
 
-    <!-- Sending Email Progress Circle -->
+    <!-- Sending Email Verification Progress Circle -->
     <ProgressBar
-        android:id="@+id/verifyEmailBar"
+        android:id="@+id/sendEmailVerificationBar"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toBottomOf="@id/verifyEmailButton"
-        app:layout_constraintLeft_toLeftOf="@id/verifyEmailButton"
-        app:layout_constraintRight_toRightOf="@id/verifyEmailButton"
-        app:layout_constraintTop_toTopOf="@id/verifyEmailButton"
+        app:layout_constraintBottom_toBottomOf="@id/sendEmailVerificationButton"
+        app:layout_constraintLeft_toLeftOf="@id/sendEmailVerificationButton"
+        app:layout_constraintRight_toRightOf="@id/sendEmailVerificationButton"
+        app:layout_constraintTop_toTopOf="@id/sendEmailVerificationButton"
 
         android:elevation="2dp"
         android:indeterminate="true"
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
+
+    <!-- Refresh Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/refreshButton"
+
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/changeCredentialsButton"
+        app:layout_constraintStart_toStartOf="@id/changeCredentialsButton"
+        app:layout_constraintEnd_toEndOf="@id/sendEmailVerificationButton"
+
+        android:layout_marginTop="64dp"
+
+        android:background="@drawable/authentication_button"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/refresh"
+        android:textColor="@color/BackgroundColor"
+        android:textFontWeight="600" />
+
+    <!-- Refresh Progress Circle -->
+    <ProgressBar
+        android:id="@+id/refreshBar"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@id/refreshButton"
+        app:layout_constraintLeft_toLeftOf="@id/refreshButton"
+        app:layout_constraintRight_toRightOf="@id/refreshButton"
+        app:layout_constraintTop_toTopOf="@id/refreshButton"
+
+        android:elevation="2dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/BlueYonder"
+        android:visibility="gone" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

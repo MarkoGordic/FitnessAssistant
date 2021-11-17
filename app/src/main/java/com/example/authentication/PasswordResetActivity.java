@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.network.NetworkManager;
 import com.example.util.authentication.AuthFunctional;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PasswordResetActivity extends AppCompatActivity {
@@ -52,30 +54,33 @@ public class PasswordResetActivity extends AppCompatActivity {
 
     // sets up listeners for back button and resetPassword button
     private void setUpOnClickListeners(){
-        // backButton listener
+        // backButton listener - goes back to SignInActivity
         findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
 
-        // resetPassword listener
-        findViewById(R.id.resetPasswordButton).setOnClickListener(view1 -> {
-            if(AuthFunctional.currentlyOnline) {
-                EditText emailEdit = findViewById(R.id.emailEditForReset);
-                if (TextUtils.isEmpty(emailEdit.getText().toString()))
-                    AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.empty_email));
-                else {
-                    AuthFunctional.startLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
-                    String email = emailEdit.getText().toString();
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task -> {
-                        AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
-                        if (task.isSuccessful()) {
-                            successAnimation((findViewById(R.id.smallResetPasswordTextView)));
-                        } else {
-                            // set errors
-                            AuthFunctional.setError(this, email, emailEdit, null);
+        // resetPassword listener - checking for errors(email empty/not registered) -> sending reset password email
+        findViewById(R.id.resetPasswordButton).setOnClickListener(view -> {
+            EditText emailEdit = findViewById(R.id.emailEditForPassReset);
+            if (TextUtils.isEmpty(emailEdit.getText().toString()))
+                AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.empty_email));
+            else {
+                String email = emailEdit.getText().toString();
+                AuthFunctional.startLoading(view, findViewById(R.id.resetPasswordBar));
+                // try sending the mail
+                FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+                    AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
+                    if (task.isSuccessful())
+                        successAnimation((findViewById(R.id.smallResetPasswordTextView)));
+                    else // if it fails set errors
+                        try{
+                            if(task.getException() != null)
+                                throw task.getException();
+                        } catch (FirebaseNetworkException e1){ // if there is no internet, the animated notification quick flashes
+                            AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
+                        } catch (Exception e2){ // if there is internet, set authentication errors
+                            AuthFunctional.setAuthenticationError(getApplicationContext(), email, emailEdit, null, null, null);
                         }
-                    });
-                }
-            } else // if there is no internet, the animated notification quick flashes
-                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.resetPasswordButton), findViewById(R.id.notification_layout_id));
+                });
+            }
         });
     }
 

@@ -21,6 +21,7 @@ public class NetworkManager {
     private final TextView notificationView;
     private final ConnectionStateMonitor csMonitor;
 
+    // called in onCreate() of the Activity implementing it -> declare networkManager as a field in Activity
     public NetworkManager(Application application){
         this.application = application;
         csMonitor = new ConnectionStateMonitor(application);
@@ -104,13 +105,16 @@ public class NetworkManager {
         constraintSet.applyTo(layout);
     }
 
+    // called in onResume() of the Activity implementing it
     public void registerConnectionObserver(LifecycleOwner lifecycleOwner, ConstraintLayout layout){
         csMonitor.observe(lifecycleOwner, connected -> {
             // checks if there is already a notification set
             if(notificationView.getParent() == null){
                 // sets notification and starts animation
-                addNotification(layout);
-                layout.startLayoutAnimation();
+                if(layout != null) { // checked in case an Activity is using this just to register the currentlyOnline state
+                    addNotification(layout);
+                    layout.startLayoutAnimation();
+                }
             }
             if(!connected){
                 // if we're offline notification is visible and currentlyOnline is false
@@ -124,6 +128,7 @@ public class NetworkManager {
         });
     }
 
+    // called in onPause() of the Activity implementing it
     public void unregisterConnectionObserver(LifecycleOwner lifecycleOwner){
         csMonitor.removeObservers(lifecycleOwner);
     }

@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     // used at the start of the app
     private void openingAnimation(){
-        setContentView(R.layout.opening_screen);
+        setContentView(R.layout.loading_screen);
         Animation openAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_opening);
         openAnim.setAnimationListener(new Animation.AnimationListener(){
             @Override
@@ -28,12 +28,17 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        findViewById(R.id.FitnessAssistant).startAnimation(openAnim);
+        findViewById(R.id.appLogo).startAnimation(openAnim);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         openingAnimation();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

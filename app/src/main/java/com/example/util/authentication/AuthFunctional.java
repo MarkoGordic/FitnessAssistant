@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
@@ -25,14 +26,13 @@ import androidx.appcompat.content.res.AppCompatResources;
 import com.example.authentication.R;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// class used for variables and functions called during authentication processes
 public class AuthFunctional {
     public static boolean currentlyOnline;
 
@@ -59,25 +59,25 @@ public class AuthFunctional {
 
     // adding the toggle view option for lock drawable in password editText
     @SuppressLint("ClickableViewAccessibility")
-    public static void addPasswordViewToggle(EditText pass) {
-        Typeface defaultTypeface = pass.getTypeface(); // regular font converted to typeface
-        TransformationMethod defaultTransformationMethod = pass.getTransformationMethod(); // used for regular text
-        pass.setOnTouchListener((v, event) -> {
+    public static void addPasswordViewToggle(EditText passEdit) {
+        Typeface defaultTypeface = passEdit.getTypeface(); // regular font converted to typeface
+        TransformationMethod defaultTransformationMethod = passEdit.getTransformationMethod(); // used for regular text
+        passEdit.setOnTouchListener((v, event) -> {
             final int DRAWABLE_RIGHT = 2; // index of right drawables
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 // ACTION_DOWN = finger on screen, ACTION_UP = finger on -> off screen
                 // getRawX() is where touch is registered, anything on x axis greater than eTRightPosition - 2 * drawableWidth is registered
-                if (event.getRawX() >= (pass.getRight() - 2 * pass.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                    if (pass.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
-                        pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        pass.setTransformationMethod(new MyPasswordTransformationMethod());
-                        pass.setTypeface(defaultTypeface); // used because it changes the font
-                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_lock, 0); // changes the icon
+                if (event.getRawX() >= (passEdit.getRight() - 2 * passEdit.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if (passEdit.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+                        passEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        passEdit.setTransformationMethod(new MyPasswordTransformationMethod());
+                        passEdit.setTypeface(defaultTypeface); // used because it changes the font
+                        passEdit.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_lock, 0); // changes the icon
                     } else {
-                        pass.setTransformationMethod(defaultTransformationMethod);
-                        pass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        pass.setTypeface(defaultTypeface); // used because it changes the font
-                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_unlock, 0); // changes the icon
+                        passEdit.setTransformationMethod(defaultTransformationMethod);
+                        passEdit.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        passEdit.setTypeface(defaultTypeface); // used because it changes the font
+                        passEdit.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.custom_unlock, 0); // changes the icon
                     }
                     return true;
                 }
@@ -103,16 +103,16 @@ public class AuthFunctional {
         });
     }
 
-    // starts "loading animation" by hiding button and revealing progress bar
-    public static void startLoading(View button, View bar){
-        button.setVisibility(View.INVISIBLE);
+    // starts "loading animation" by hiding view and revealing progress bar
+    public static void startLoading(View view, View bar){
+        view.setVisibility(View.INVISIBLE);
         bar.setVisibility(View.VISIBLE);
     }
 
-    // finishes "loading animation" by revealing button and hiding progress bar
-    public static void finishLoading(View button, View bar){
+    // finishes "loading animation" by revealing view and hiding progress bar
+    public static void finishLoading(View view, View bar){
         bar.setVisibility(View.GONE);
-        button.setVisibility(View.VISIBLE);
+        view.setVisibility(View.VISIBLE);
     }
 
     // adds toggle to drawable on the right of password editText and transformation method
@@ -122,7 +122,7 @@ public class AuthFunctional {
     }
 
     // sets errors based on user's input
-    public static void setError(Context context, String email, EditText emailEdit, EditText passwordEdit){
+    public static void setAuthenticationError(Context context, String email, EditText emailEdit, EditText passwordEdit, TextView forgotPassword, TextView createAccount){
         FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 SignInMethodQueryResult result = task.getResult();
@@ -130,11 +130,17 @@ public class AuthFunctional {
                     List<String> signInMethods = result.getSignInMethods();
                     if (signInMethods != null) {
                         if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
-                            if (passwordEdit != null)
+                            if (passwordEdit != null) {
                                 myError(context, passwordEdit, context.getString(R.string.incorrect_password));
+                                if(forgotPassword != null)
+                                    forgotPassword.startAnimation(AnimationUtils.loadAnimation(context, R.anim.quick_flash));
+                            }
                         }
-                        else
+                        else if(signInMethods.isEmpty()){
                             myError(context, emailEdit, context.getString(R.string.email_not_registered));
+                            if(createAccount != null)
+                                createAccount.startAnimation(AnimationUtils.loadAnimation(context,R.anim.quick_flash));
+                        }
                     }
                 }
             } else
@@ -144,33 +150,44 @@ public class AuthFunctional {
 
     // used for quickFlashing the notification layout
     public static void quickFlash(Context context, Button button, LinearLayout notificationLayout){
-        // setting the enabled and clickable to false -> avoid spamming and problems caused with spamming
-        button.setEnabled(false);
-        button.setClickable(false);
-
-        Animation previous = notificationLayout.getAnimation();
-
-        Animation current = AnimationUtils.loadAnimation(context, R.anim.quick_flash);
-        current.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // continuing(starting) the previous animation
-                notificationLayout.startAnimation(previous);
-                // setting enabled and clickable back to true
-                button.setEnabled(true);
-                button.setClickable(true);
+        if(notificationLayout != null) { // this could happen if quickFlash is called faster than the notificationLayout is registered
+            // setting the enabled and clickable to false -> avoid spamming and problems caused with spamming
+            if(button != null) {
+                button.setEnabled(false);
+                button.setClickable(false);
             }
-        });
 
-        notificationLayout.startAnimation(current);
+            Animation previous = notificationLayout.getAnimation();
+
+            Animation current = AnimationUtils.loadAnimation(context, R.anim.quick_flash);
+            current.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    // continuing(starting) the previous animation
+                    notificationLayout.startAnimation(previous);
+                    // setting enabled and clickable back to true
+                    if (button != null) {
+                        button.setEnabled(true);
+                        button.setClickable(true);
+                    }
+                }
+            });
+
+            notificationLayout.startAnimation(current);
+        }
     }
 
     // flashing used for the checkbox at registering (if user doesn't check)
     public static void checkboxFlash(Context context, CheckBox checkBox){
+        // extracted into a function to disable clicking
         checkBox.setEnabled(false);
         checkBox.setClickable(false);
         Animation quickFlash = AnimationUtils.loadAnimation(context, R.anim.quick_flash);
@@ -181,6 +198,7 @@ public class AuthFunctional {
             public void onAnimationRepeat(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
+                // enabling clicking once animation is finished
                 checkBox.setEnabled(true);
                 checkBox.setClickable(true);
             }
@@ -188,9 +206,15 @@ public class AuthFunctional {
         checkBox.startAnimation(quickFlash);
     }
 
-    // validating username for register
+    // validating username for register with regex
     public static boolean validUsername(Context context, EditText userEdit){
         String username = userEdit.getText().toString();
+
+        // must not be empty
+        if(TextUtils.isEmpty(username)) {
+            AuthFunctional.myError(context, userEdit, context.getString(R.string.empty_name));
+            return false;
+        }
 
         // length: 5 - 20
         if(username.length() > 20){
@@ -246,9 +270,15 @@ public class AuthFunctional {
         });
     }
 
-    // validating email for register
+    // validating email for register with regex
     public static boolean validEmail(Context context, EditText emailEdit){
         String email = emailEdit.getText().toString();
+
+        // must not be empty
+        if(TextUtils.isEmpty(email)) {
+            AuthFunctional.myError(context, emailEdit, context.getString(R.string.empty_email));
+            return false;
+        }
 
         // regex for email
         String emailRegexPattern = "(?=.{1,64}@)^[a-zA-z0-9_-]+(\\.[a-zA-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-za-z]{2,})$";
@@ -262,11 +292,17 @@ public class AuthFunctional {
         return true;
     }
 
-    // validating password for register
+    // validating password for register with regex
     public static boolean validPassword(Context context, EditText passEdit){
         String password = passEdit.getText().toString();
 
-        // regex for a strong password
+        // must not be empty
+        if(TextUtils.isEmpty(password)) {
+            AuthFunctional.myError(context, passEdit, context.getString(R.string.empty_password));
+            return false;
+        }
+
+        // used for a strong password
         String passwordPattern = "^" +
                 "(?=.*[0-9])" + // at least one digit
                 "(?=.*[a-z])" + // at least one lowercase character
@@ -321,49 +357,25 @@ public class AuthFunctional {
     }
 
     // displaying results from sending an email verification
-    public static void displayEmailVerificationResults(Context context, TextView textView, boolean successful){
-        if(successful){
-            // textView fading in and finishing the activity
-            Animation fadeIn  = new AlphaAnimation(0.0f, 1.0f);
-            fadeIn.setDuration(2000);
+    public static void emailVerificationSentAnimation(Context context, TextView messageTextView){
+        // textView fading in and finishing the activity
+        Animation fadeIn  = new AlphaAnimation(0.0f, 1.0f);
+        fadeIn.setDuration(2000);
 
-            // textView fading out, setting new text and calling fadeIn animation
-            Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-            fadeOut.setDuration(1000);
-            fadeOut.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {}
-                @Override
-                public void onAnimationRepeat(Animation animation) {}
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    textView.setText(context.getString(R.string.successful_verification_sent));
-                    textView.startAnimation(fadeIn);
-                }
-            });
-            textView.startAnimation(fadeOut);
-        } else{
-            // notify the user about the error with sending the email verification
-            textView.setText(context.getString(R.string.unsuccessful_verification_sent));
-            textView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.quick_flash));
-        }
-    }
-
-    // updates user's name(username)
-    public static void updateUserName(FirebaseUser user, String username){
-        if(user != null)
-            user.updateProfile(new UserProfileChangeRequest.Builder()
-                .setDisplayName(username)
-                .build());
-    }
-
-    // return the updated user - firebase doesn't automatically do this
-    public static FirebaseUser refreshedUser(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
-            user.reload(); // used to update data from firebase
-            user = FirebaseAuth.getInstance().getCurrentUser(); // necessary
-        }
-        return user;
+        // textView fading out, setting new text and calling fadeIn animation
+        Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        fadeOut.setDuration(1000);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                messageTextView.setText(context.getString(R.string.successful_verification_sent));
+                messageTextView.startAnimation(fadeIn);
+            }
+        });
+        messageTextView.startAnimation(fadeOut);
     }
 }

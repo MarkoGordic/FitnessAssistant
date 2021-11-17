@@ -86,9 +86,9 @@
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
-    <!-- Sign Up Button-->
-    <!-- TODO The marginBottom should be changed, after adding Google log in/Forgot password/Create acc -->
-    <!--  if changed, change the resetPassword button too, and myb the createAccount/register button(if made in the future) -->
+    <!-- Sign In Button-->
+    <!-- TODO The marginBottom should be changed, after adding Google and other sign ins -->
+    <!--  if changed, change resetPassword button and registerButton -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signInButton"
 
@@ -129,9 +129,9 @@
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
 
-    <!-- ForgotPassword textView -->
+    <!-- ForgotPassword TextView -->
     <TextView
-        android:id="@+id/forgotPassword"
+        android:id="@+id/forgotPasswordTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -150,9 +150,9 @@
         android:textFontWeight="600"
         android:textSize="16sp" />
 
-    <!-- createAccount textView -->
+    <!-- createAccount TextView -->
     <TextView
-        android:id="@+id/createAccount"
+        android:id="@+id/createAccountTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

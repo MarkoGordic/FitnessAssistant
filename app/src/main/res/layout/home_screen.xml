@@ -8,7 +8,7 @@
 
     <!-- Navigation at the bottom of the screen -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        android:id="@+id/bottomNavigation"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,9 +22,9 @@
 
         app:menu="@menu/bottom_navigation" />
 
-    <!-- Welcoming the user message -->
+    <!-- Welcome TextView -->
     <TextView
-        android:id="@+id/welcomeMessage"
+        android:id="@+id/welcomeMessageTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,9 +40,9 @@
         android:textSize="24sp"
         android:textColor="@color/BlueYonder" />
 
-    <!-- TextView displaying the step goal -->
+    <!-- Step Goal TextView -->
     <TextView
-        android:id="@+id/stepTarget"
+        android:id="@+id/stepGoalTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,14 +58,14 @@
         android:textColor="@color/BlueYonder"
         android:textSize="25sp" />
 
-    <!-- TextView displaying the step count -->
+    <!-- StepCount TextView -->
     <TextView
-        android:id="@+id/stepCount"
+        android:id="@+id/stepCountTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintEnd_toStartOf="@id/stepTarget"
+        app:layout_constraintEnd_toStartOf="@id/stepGoalTextView"
         app:layout_constraintTop_toTopOf="parent"
 
         android:layout_marginTop="80dp"
@@ -78,14 +78,14 @@
 
     <!-- UserName TextView -->
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/userNameTextView"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/stepCount"
+        app:layout_constraintTop_toBottomOf="@id/stepCountTextView"
 
         android:layout_marginTop="48dp"
 
@@ -93,21 +93,20 @@
         android:includeFontPadding="false"
         android:paddingStart="36dp"
         android:paddingEnd="36dp"
-        android:text="@string/user_name"
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="17sp"/>
 
     <!-- UserEmail TextView -->
     <TextView
-        android:id="@+id/userEmail"
+        android:id="@+id/userEmailTextView"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userName"
+        app:layout_constraintTop_toBottomOf="@id/userNameTextView"
 
         android:layout_marginTop="16dp"
 
@@ -115,14 +114,13 @@
         android:includeFontPadding="false"
         android:paddingStart="36dp"
         android:paddingEnd="36dp"
-        android:text="@string/user_email"
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="17sp"/>
 
     <!-- Sign Out Button -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signOutHPButton"
+        android:id="@+id/signOutButton"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
