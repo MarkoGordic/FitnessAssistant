@@ -9,7 +9,7 @@
 
     <!-- Welcome TextView -->
     <TextView
-        android:id="@+id/welcomeTextView"
+        android:id="@+id/signInTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
 
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="96dp"
 
         android:autofillHints="password"
         android:hint="@string/password"
@@ -97,7 +97,7 @@
 
         android:layout_marginStart="128dp"
         android:layout_marginEnd="128dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="164dp"
 
         android:background="@drawable/authentication_button"
         android:fontFamily="@font/ralewayb"
@@ -139,7 +139,7 @@
         app:layout_constraintTop_toBottomOf="@id/edtTxtPassword"
         app:layout_constraintRight_toRightOf="@id/edtTxtPassword"
 
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="12dp"
 
         android:fontFamily="@font/ralewaym"
@@ -172,5 +172,15 @@
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="16sp"/>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleSignInButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/signInTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.authentication;
+package com.example.fitnessassistant.authentication;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.network.NetworkManager;
-import com.example.util.authentication.AuthFunctional;
+import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.util.AuthFunctional;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 

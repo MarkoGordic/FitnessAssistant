@@ -1,4 +1,4 @@
-package com.example;
+package com.example.fitnessassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.view.animation.AnimationUtils;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.authentication.R;
-import com.example.authentication.SignInActivity;
+import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.authentication.SignInActivity;
 
 public class MainActivity extends AppCompatActivity {
 

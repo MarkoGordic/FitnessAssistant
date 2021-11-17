@@ -1,4 +1,4 @@
-package com.example.network;
+package com.example.fitnessassistant.network;
 
 import android.app.Application;
 import android.view.Gravity;
@@ -12,10 +12,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.example.authentication.R;
-import com.example.util.authentication.AuthFunctional;
+import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.util.AuthFunctional;
 
-// used to notify user about networkState with usage of com.example.network.ConnectionStateMonitor class
+// used to notify user about networkState with usage of com.example.fitnessassistant.network.ConnectionStateMonitor class
 public class NetworkManager {
     private final Application application;
     private final TextView notificationView;

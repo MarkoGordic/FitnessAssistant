@@ -1,4 +1,4 @@
-package com.example.authentication;
+package com.example.fitnessassistant.authentication;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,8 +9,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.network.NetworkManager;
-import com.example.util.authentication.AuthFunctional;
+import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.util.AuthFunctional;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

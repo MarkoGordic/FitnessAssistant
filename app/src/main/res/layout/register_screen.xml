@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditTextForRegister"
 
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="58dp"
 
@@ -192,7 +192,7 @@
 
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="96dp"
 
         android:autofillHints="password"
         android:hint="@string/confirm_password"
@@ -221,7 +221,7 @@
 
         android:layout_marginStart="128dp"
         android:layout_marginEnd="128dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="164dp"
 
         android:background="@drawable/authentication_button"
 

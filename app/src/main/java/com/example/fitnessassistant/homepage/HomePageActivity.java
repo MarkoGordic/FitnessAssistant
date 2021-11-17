@@ -1,4 +1,4 @@
-package com.example.homepage;
+package com.example.fitnessassistant.homepage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,10 +8,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.authentication.R;
-import com.example.authentication.SignInActivity;
-import com.example.network.NetworkManager;
-import com.example.util.authentication.AuthFunctional;
+import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.authentication.SignInActivity;
+import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.util.AuthFunctional;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -101,6 +103,10 @@ public class HomePageActivity extends AppCompatActivity {
         if(user == null) {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
+        }
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account == null){
+            startActivity(new Intent(this, SignInActivity.class));
         }
     }
 
