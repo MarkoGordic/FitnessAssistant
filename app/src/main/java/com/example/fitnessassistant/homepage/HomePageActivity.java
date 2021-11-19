@@ -1,16 +1,24 @@
 package com.example.fitnessassistant.homepage;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
 import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +34,9 @@ import java.util.GregorianCalendar;
 public class HomePageActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
+    private Pedometer pedometer;
+
+    private final int ACTIVITY_RECOGNITION_ID = 101;
 
     // gives welcome message based on time
     private void greetUser(){
@@ -104,6 +115,43 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
+    private void startPedometerPermissionListener(){
+        Button startPedometer = (Button) findViewById(R.id.startPedometerButton);
+        startPedometer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askForPermission(Manifest.permission.ACTIVITY_RECOGNITION, "Physical Activity", ACTIVITY_RECOGNITION_ID);
+            }
+        });
+    }
+
+    public ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    Button startPedometer = (Button) findViewById(R.id.startPedometerButton);
+                    startPedometer.setVisibility(View.GONE);
+                }
+            });
+
+    private void askForPermission(String permission, String name, int requestCode){
+        if (!shouldShowRequestPermissionRationale(permission)){
+            String[] permissions = new String[1];
+            permissions[0] = permission;
+
+            ActivityCompat.requestPermissions(this, permissions, requestCode);
+        }
+    }
+
+    private boolean checkPedometerPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
+            Button startPedometer = (Button) findViewById(R.id.startPedometerButton);
+            startPedometer.setVisibility(View.GONE);
+            return true;
+        }
+        else
+            return false;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,9 +160,13 @@ public class HomePageActivity extends AppCompatActivity {
         setUpOnClickListeners();
 
         networkManager = new NetworkManager(getApplication());
+        pedometer = new Pedometer(this, findViewById(R.id.stepCountTextView));
 
         // setting up listener for firebase
         authListener = firebaseAuth -> updateUI();
+
+        if(!checkPedometerPermission())
+            startPedometerPermissionListener();
     }
 
     @Override
@@ -124,6 +176,8 @@ public class HomePageActivity extends AppCompatActivity {
         networkManager.registerConnectionObserver(this,findViewById(R.id.homeScreen));
         // adding the listener for firebase to change the UI
         FirebaseAuth.getInstance().addAuthStateListener(authListener);
+
+        pedometer.reRegisterSensor();
 
         displayCurrentUser();
     }
