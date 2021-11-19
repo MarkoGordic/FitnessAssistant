@@ -30,6 +30,7 @@ import java.util.GregorianCalendar;
 
 // TODO After adding in-app password change, update current user and make sure he doesn't get redirected to sign in
 //  also for in-app email change
+// TODO After adding in database, make sure the data isn't lost if more than one OAuth is connected
 
 public class HomePageActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
@@ -106,29 +107,23 @@ public class HomePageActivity extends AppCompatActivity {
         });
     }
 
-    // if user is somehow signed out, go to sign in
+    // if user is signed out, go to sign in
     private void updateUI() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user == null) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
         }
     }
 
     private void startPedometerPermissionListener(){
-        Button startPedometer = (Button) findViewById(R.id.startPedometerButton);
-        startPedometer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                askForPermission(Manifest.permission.ACTIVITY_RECOGNITION, "Physical Activity", ACTIVITY_RECOGNITION_ID);
-            }
-        });
+        Button startPedometer = findViewById(R.id.startPedometerButton);
+        startPedometer.setOnClickListener(view -> askForPermission(Manifest.permission.ACTIVITY_RECOGNITION, "Physical Activity", ACTIVITY_RECOGNITION_ID));
     }
 
     public ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    Button startPedometer = (Button) findViewById(R.id.startPedometerButton);
+                    Button startPedometer = findViewById(R.id.startPedometerButton);
                     startPedometer.setVisibility(View.GONE);
                 }
             });
@@ -144,7 +139,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private boolean checkPedometerPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
-            Button startPedometer = (Button) findViewById(R.id.startPedometerButton);
+            Button startPedometer = findViewById(R.id.startPedometerButton);
             startPedometer.setVisibility(View.GONE);
             return true;
         }

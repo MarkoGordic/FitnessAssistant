@@ -26,13 +26,14 @@ import androidx.appcompat.content.res.AppCompatResources;
 import com.example.fitnessassistant.R;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// class used for variables and functions called during authentication processes
+// class used for variables and functions called during authentication processes with Firebase
 public class AuthFunctional {
     public static boolean currentlyOnline;
 
@@ -121,7 +122,7 @@ public class AuthFunctional {
         password.setTransformationMethod(new MyPasswordTransformationMethod());
     }
 
-    // sets errors based on user's input
+    // sets errors based on user's input // TODO Also add in Facebook, Twitter, Apple
     public static void setAuthenticationError(Context context, String email, EditText emailEdit, EditText passwordEdit, TextView forgotPassword, TextView createAccount){
         FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -129,18 +130,18 @@ public class AuthFunctional {
                 if(result != null) {
                     List<String> signInMethods = result.getSignInMethods();
                     if (signInMethods != null) {
-                        if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
+                        if(signInMethods.isEmpty()){
+                            myError(context, emailEdit, context.getString(R.string.email_not_registered));
+                            if(createAccount != null)
+                                createAccount.startAnimation(AnimationUtils.loadAnimation(context,R.anim.quick_flash));
+                        } else if(signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)){
                             if (passwordEdit != null) {
                                 myError(context, passwordEdit, context.getString(R.string.incorrect_password));
                                 if(forgotPassword != null)
                                     forgotPassword.startAnimation(AnimationUtils.loadAnimation(context, R.anim.quick_flash));
                             }
-                        }
-                        else if(signInMethods.isEmpty()){
-                            myError(context, emailEdit, context.getString(R.string.email_not_registered));
-                            if(createAccount != null)
-                                createAccount.startAnimation(AnimationUtils.loadAnimation(context,R.anim.quick_flash));
-                        }
+                        } else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
+                            myError(context, emailEdit, context.getString(R.string.email_connected_via_google));
                     }
                 }
             } else
@@ -255,16 +256,19 @@ public class AuthFunctional {
         return true;
     }
 
-    // in case registering fails, error will be set if the entered email is already connected with an account
+    // in case registering fails, error will be set if the entered email is already connected with an FitnessAssistant account or an Google account
     public static void emailAlreadyRegistered(Context context, EditText emailEdit, String email){
         FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 SignInMethodQueryResult result = task.getResult();
                 if(result != null) {
-                    List<String> signInMethods = result.getSignInMethods();
-                    if (signInMethods != null)
-                        if(!signInMethods.isEmpty())
+                    List<String> signInMethods = result.getSignInMethods(); // TODO also add in Facebook, Twitter, Apple
+                    if (signInMethods != null){
+                        if(signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
                             myError(context, emailEdit, context.getString(R.string.email_already_registered));
+                        else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
+                            myError(context, emailEdit, context.getString(R.string.email_connected_via_google));
+                    }
                 }
             }
         });

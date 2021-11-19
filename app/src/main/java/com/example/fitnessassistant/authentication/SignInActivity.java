@@ -7,22 +7,32 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.homepage.HomePageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
+    private GoogleSignInClient googleSignInClient;
 
-    // sets up listeners for signing in, resetting password, creating an account(registering)
+    // sets up listeners for signing in, resetting password, creating an account(registering) and other sign in methods
     private void setUpOnClickListeners(){
         // signUpButton listener - checks basic errors, checks sign in errors
         findViewById(R.id.signInButton).setOnClickListener(v -> {
@@ -54,6 +64,48 @@ public class SignInActivity extends AppCompatActivity {
 
         // createAccount listener - going to the CreateAccountActivity
         findViewById(R.id.createAccountTextView).setOnClickListener(view -> startActivity(new Intent(this, CreateAccountActivity.class)));
+
+        // googleSignInButton listener - gives google sign in pop-up
+        findViewById(R.id.googleSignInButton).setOnClickListener(view -> {
+            AuthFunctional.startLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+            googleSignInClient.signOut(); // signing out, just in case there is a previously saved user
+            // starts the SignInIntent -> results in onActivityResult with requestCode 1
+            // TODO fix because it's deprecated
+            startActivityForResult(googleSignInClient.getSignInIntent(), 1);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            try {
+                // we get the account's credential from the SignInIntent (account's ID token)
+                GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                // and pass the credential to sign in with firebase
+                FirebaseAuth.getInstance().signInWithCredential(credential).addOnFailureListener(e -> {
+                    AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+                    try{ // if we fail, throw the exception
+                        throw e;
+                    } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
+                        AuthFunctional.quickFlash(this, null, findViewById(R.id.notification_layout_id));
+                    } catch(Exception e2){ // if it's any other we notify the user the sign in process was unsuccessful
+                        findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                        Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
+                    }
+                });
+            } catch (ApiException e){ // if there is an error, check if we're currently not online
+                AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
+                if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
+                    AuthFunctional.quickFlash(this, null, findViewById(R.id.notification_layout_id));
+                else{ // else quick flash the button and tell the user the sign in was unsuccessful by toasting
+                    findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                    Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
+                }
+                e.printStackTrace();
+            }
+        }
     }
 
     private void goToHomePageUI(){
@@ -74,10 +126,10 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.appLogo).startAnimation(loadAnim);
     }
 
-    // if user exists, emailVerification is checked and he is redirected to a new UI, otherwise he stays here
     private void updateUI() {
+        // checking firebase user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
+        if (user != null) { // if user exists, emailVerification is checked and he is redirected to a new UI, otherwise he stays here
             if (user.isEmailVerified())
                 goToHomePageUI();
             else {
@@ -99,6 +151,10 @@ public class SignInActivity extends AppCompatActivity {
 
         // setting up listener for firebase
         authListener = firebaseAuth -> updateUI();
+
+        // setting up google client
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.server_client_id)).requestEmail().build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
     }
 
     @Override
