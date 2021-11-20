@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class SignInActivity extends AppCompatActivity {
+    private final int RC_GOOGLE_SIGN_IN = 100;
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
     private GoogleSignInClient googleSignInClient;
@@ -71,14 +72,14 @@ public class SignInActivity extends AppCompatActivity {
             googleSignInClient.signOut(); // signing out, just in case there is a previously saved user
             // starts the SignInIntent -> results in onActivityResult with requestCode 1
             // TODO fix because it's deprecated
-            startActivityForResult(googleSignInClient.getSignInIntent(), 1);
+            startActivityForResult(googleSignInClient.getSignInIntent(), RC_GOOGLE_SIGN_IN);
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
+        if(requestCode == RC_GOOGLE_SIGN_IN){
             try {
                 // we get the account's credential from the SignInIntent (account's ID token)
                 GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);

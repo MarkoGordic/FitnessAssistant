@@ -8,6 +8,10 @@
     <!-- COM.EXAMPLE.PEDOMETER -->
     <!-- Pedometer File keys -->
     <string name="pedometer_file_key">PedometerData</string>
+    <!-- Used for Pedometer Permission -->
+    <string name="android_q_needed">This feature requests Android 10(Q)</string>
+    <string name="activity_recognition_permission">Activity Recognition Permission</string>
+    <string name="activity_recognition_rationale">FitnessAssistant will now request activity recognition permission on your device.\n\nThis is required in order to use StepCounter services.</string>
 
     <!-- COM.EXAMPLE.AUTHENTICATION -->
     <!-- Sign In / Register strings -->

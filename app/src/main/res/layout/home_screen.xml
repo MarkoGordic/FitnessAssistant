@@ -125,24 +125,23 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/startPedometerButton"
 
-        android:layout_width="155dp"
-        android:layout_height="42dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
+        app:layout_constraintBottom_toBottomOf="@id/stepCountTextView"
+        app:layout_constraintTop_toTopOf="@id/stepCountTextView"
+        app:layout_constraintStart_toStartOf="parent"
+
+        android:layout_marginStart="32dp"
 
         android:background="@drawable/authentication_button"
+        android:visibility="gone"
+
         android:fontFamily="@font/ralewayb"
-
         android:includeFontPadding="false"
-
         android:text="@string/start_button"
         android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.116" />
+        android:textFontWeight="600" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signOutButton"

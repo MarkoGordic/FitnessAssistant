@@ -7,19 +7,17 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.TextView;
 
+// TODO get in touch with Gordic, this may become a Singleton class
+
 public class Pedometer implements SensorEventListener {
     private final SensorManager sensorManager;
+    private final TextView stepsText;
 
-    Context context;
-    TextView stepsText;
-
-    float currentSteps = -1f;
-    float lastKnownSteps = 0f;
+    float currentSteps = -1.0f;
+    float lastKnownSteps = 0.0f;
 
     public Pedometer(Context context, TextView textView){
-        this.context = context;
         this.stepsText = textView;
-
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
         reRegisterSensor();
@@ -43,8 +41,9 @@ public class Pedometer implements SensorEventListener {
             currentSteps = sensorEvent.values[0];
         }
 
-        int newSteps = (int)(Math.round(currentSteps)) - (int)(Math.round(lastKnownSteps));
+        int newSteps = Math.round(currentSteps) - Math.round(lastKnownSteps);
 
+        // TODO fix - this can result in a NullPointerException if user is not at homePage
         stepsText.setText(String.valueOf(newSteps));
     }
 
