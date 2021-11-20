@@ -2,8 +2,6 @@
     <!-- OVERALL -->
     <!-- App Name -->
     <string name="app_name">FitnessAssistant</string>
-    <!-- Web Client ID for Google Sign In - default - tools:ignore was used because of the warning -->
-    <string name="server_client_id" tools:ignore="TypographyDashes">545598236576-1uj5ad6vbdt4b3c2fdvk356qad0r5di3.apps.googleusercontent.com</string>
 
     <!-- COM.EXAMPLE.PEDOMETER -->
     <!-- Pedometer File keys -->
@@ -15,6 +13,11 @@
 
     <!-- COM.EXAMPLE.AUTHENTICATION -->
     <!-- Sign In / Register strings -->
+    <!-- IDs for sign in -->
+    <!-- web client ID for Google Sign In - default - tools:ignore was used because of the warning -->
+    <string name="server_client_id" tools:ignore="TypographyDashes">545598236576-1uj5ad6vbdt4b3c2fdvk356qad0r5di3.apps.googleusercontent.com</string>
+    <!-- Facebook app ID -->
+    <string name="facebook_app_id">416273409983887</string>
     <!-- overall -->
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -50,6 +53,8 @@
         Use it to sign in or create a new account using another one.</string>
     <string name="email_connected_via_google">This email is connected with a FitnessAssistant account using Google Sign In.
         Use it to sign in with Google.</string>
+    <string name="email_connected_via_facebook">This email is connected with a FitnessAssistant account using Facebook Sign In.
+        Use it to sign in with Facebook.</string>
 
     <!-- password errors -->
     <string name="empty_password">Password cannot be empty</string>
@@ -84,7 +89,7 @@
     <string name="account_register"><u>Not a member? Create account</u></string>
     <string name="verify_your_email">Verify your Email</string>
     <string name="verification_will_be_sent">If you somehow haven\'t received any mail we can send you another one. If you\'ve made a mistake simply sign out.</string>
-    <string name="email_verification_required">We have sent you a link to verify your email. Check your mail(and spam) and verify your email address. Using Google Sign In without verifying this email will result in losing current credentials.</string>
+    <string name="email_verification_required">We have sent you an email verification link. Check your mail and verify your email address. Using Google sign in without verifying this email may result in losing current account credentials.</string>
     <string name="hold_for_signing_out">Hold the button to sign out</string>
     <string name="successful_verification_sent">Email verification has been sent</string>
     <string name="unsuccessful_verification_sent">Something went wrong. Check if the email is already in your inbox or try again later.</string>
@@ -93,6 +98,10 @@
     <string name="user_name">User Name</string>
     <string name="account_created_username_update_unsuccessful">Account created, username update unsuccessful</string>
     <string name="google_sign_in_unsuccessful">Google Sign In Unsuccessful</string>
+    <string name="facebook_sign_in_unsuccessful">Facebook Sign In Unsuccessful</string>
+    <string name="password_reset_unsuccessful">Password Reset Unsuccessful</string>
+    <string name="facebook_error_password">Use that email to sign in via Email/Password</string>
+    <string name="facebook_error_google">Use that email to sign in via Google</string>
 
     <!-- COM.EXAMPLE.NETWORK -->
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>

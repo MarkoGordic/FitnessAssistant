@@ -20,6 +20,7 @@ import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.example.fitnessassistant.util.PermFunctional;
+import com.facebook.login.LoginManager;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -106,9 +107,11 @@ public class HomePageActivity extends AppCompatActivity {
 
         // signOutButton listener - hold
         findViewById(R.id.signOutButton).setOnLongClickListener(view -> {
-            if(AuthFunctional.currentlyOnline)
+            if(AuthFunctional.currentlyOnline) {
                 FirebaseAuth.getInstance().signOut();
-            else // if there is no internet, the animated notification quickly flashes
+                // signing out from facebook because they save it separately
+                LoginManager.getInstance().logOut();
+            }else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
             return true; // returns true -> onClick doesn't get triggered
         });

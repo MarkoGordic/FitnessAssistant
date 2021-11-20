@@ -15,6 +15,7 @@ import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.homepage.HomePageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
+import com.facebook.login.LoginManager;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -93,9 +94,11 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
         // signOutButton listener - hold - signing out user
         findViewById(R.id.changeCredentialsButton).setOnLongClickListener(view -> {
-            if(AuthFunctional.currentlyOnline)
+            if(AuthFunctional.currentlyOnline) {
                 FirebaseAuth.getInstance().signOut();
-            else // if there is no internet, the animated notification quick flashes
+                // signing out from facebook because they save it separately
+                LoginManager.getInstance().logOut();
+            }else // if there is no internet, the animated notification quick flashes
                 AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
             return true; // returns true -> onClick doesn't get triggered
         });

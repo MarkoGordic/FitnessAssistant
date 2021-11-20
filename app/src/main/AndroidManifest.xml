@@ -15,6 +15,9 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.FitnessAssistant" >
+
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
     <activity
         android:name=".MainActivity"
         android:exported="true"
@@ -25,11 +28,11 @@
         </intent-filter>
     </activity>
     <activity
-        android:name="com.example.fitnessassistant.authentication.SignInActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar" >
+        android:name=".authentication.SignInActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
     <activity
-        android:name="com.example.fitnessassistant.authentication.PasswordResetActivity"
+        android:name=".authentication.PasswordResetActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
     <activity
@@ -37,11 +40,11 @@
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
     <activity
-        android:name="com.example.fitnessassistant.authentication.CreateAccountActivity"
+        android:name=".authentication.CreateAccountActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
     <activity
-        android:name="com.example.fitnessassistant.authentication.EmailVerificationActivity"
+        android:name=".authentication.EmailVerificationActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
 </application>

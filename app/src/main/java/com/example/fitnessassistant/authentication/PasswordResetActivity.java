@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +15,13 @@ import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
+
+import java.util.List;
 
 public class PasswordResetActivity extends AppCompatActivity {
     private NetworkManager networkManager;
@@ -66,20 +73,40 @@ public class PasswordResetActivity extends AppCompatActivity {
             else {
                 String email = emailEdit.getText().toString();
                 AuthFunctional.startLoading(view, findViewById(R.id.resetPasswordBar));
-                // try sending the mail
-                FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task -> {
-                    AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
-                    if (task.isSuccessful())
-                        successAnimation((findViewById(R.id.smallResetPasswordTextView)));
-                    else // if it fails set errors
-                        try{
-                            if(task.getException() != null)
-                                throw task.getException();
-                        } catch (FirebaseNetworkException e1){ // if there is no internet, the animated notification quick flashes
-                            AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
-                        } catch (Exception e2){ // if there is internet, set authentication errors
-                            AuthFunctional.setAuthenticationError(getApplicationContext(), email, emailEdit, null, null, null);
+                // send the mail (if email is connected with an email/password sign in method) or set the errors
+                FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        SignInMethodQueryResult result = task.getResult();
+                        if(result != null) {
+                            List<String> signInMethods = result.getSignInMethods();
+                            if (signInMethods != null) { // checking sign in methods available for entered email
+                                if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) // sending password reset email only if there is this method available
+                                    FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task1 -> {
+                                        AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
+                                        if (task1.isSuccessful())
+                                            successAnimation((findViewById(R.id.smallResetPasswordTextView)));
+                                        else
+                                            Toast.makeText(getApplicationContext(), R.string.password_reset_unsuccessful, Toast.LENGTH_LONG).show();
+                                    }); // TODO add in Twitter and Apple
+                                else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
+                                    AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.email_connected_via_google));
+                                else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))
+                                    AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.email_connected_via_facebook));
+                                AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
+                            }
                         }
+                    } else{
+                        AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
+                        try{
+                            if(task.getException() != null){
+                                throw task.getException();
+                            }
+                        } catch (FirebaseNetworkException e1){ // in case it's a network error - notification quickly flashes
+                            AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
+                        } catch (Exception e2){ // in other cases, it's an invalid email input
+                            AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.invalid_email));
+                        }
+                    }
                 });
             }
         });
