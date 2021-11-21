@@ -112,7 +112,7 @@ public class SignInActivity extends AppCompatActivity {
                                     if (result != null) {
                                         List<String> signInMethods = result.getSignInMethods();
                                         if (signInMethods != null) { // checking signInMethods
-                                            if (signInMethods.isEmpty()) { // if it's a new account, simply sign in
+                                            if (signInMethods.isEmpty() || signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD)) { // if it's a new account or it's an account authorized with facebook, simply sign in
                                                 AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
                                                 FirebaseAuth.getInstance().signInWithCredential(credential).addOnFailureListener(e -> {
                                                     AuthFunctional.finishLoading(findViewById(R.id.signInButton), findViewById(R.id.signInProgressBar));
@@ -191,8 +191,7 @@ public class SignInActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_GOOGLE_SIGN_IN){
-            try {
-                // we get the account's credential from the SignInIntent (account's ID token)
+            try { // we get the account's credential from the SignInIntent (account's ID token)
                 GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 // and pass the credential to sign in with firebase
@@ -217,8 +216,8 @@ public class SignInActivity extends AppCompatActivity {
                 }
                 e.printStackTrace();
             }
-        } else{
-            // pass the activity result back to the Facebook SDK
+        } else if(requestCode == ((LoginButton) findViewById(R.id.facebookSignInButton)).getRequestCode()){ // pass the activity result back to the Facebook SDK
+            System.out.println("FACEBOOK LOGIN");
             facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
