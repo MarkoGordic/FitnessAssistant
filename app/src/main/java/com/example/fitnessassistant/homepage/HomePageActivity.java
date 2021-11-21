@@ -31,7 +31,6 @@ import java.util.GregorianCalendar;
 
 // TODO After adding in-app password change, update current user and make sure he doesn't get redirected to sign in
 //  also for in-app email change
-// TODO After adding in database, make sure the data isn't lost if more than one OAuth is connected
 
 public class HomePageActivity extends AppCompatActivity {
     private final int RC_PEDOMETER_PERMISSION = 101;

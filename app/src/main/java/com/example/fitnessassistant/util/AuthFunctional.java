@@ -143,7 +143,7 @@ public class AuthFunctional {
                             }
                         } else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
                             myError(context, emailEdit, context.getString(R.string.email_connected_via_google));
-                        else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD)) // TODO Also add in Twitter, Apple
+                        else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))
                             myError(context, emailEdit, context.getString(R.string.email_connected_via_facebook));
                     }
                 }
@@ -265,7 +265,7 @@ public class AuthFunctional {
             if (task.isSuccessful()) {
                 SignInMethodQueryResult result = task.getResult();
                 if(result != null) {
-                    List<String> signInMethods = result.getSignInMethods(); // TODO also add in Twitter and Apple
+                    List<String> signInMethods = result.getSignInMethods();
                     if (signInMethods != null){
                         if(signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
                             myError(context, emailEdit, context.getString(R.string.email_already_registered));

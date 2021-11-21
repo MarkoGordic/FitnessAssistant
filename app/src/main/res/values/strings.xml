@@ -31,6 +31,8 @@
     <string name="send_email_verification">Send me the mail</string>
     <string name="sign_out">Sign Out</string>
     <string name="refresh">Refresh</string>
+    <string name="or">OR</string>
+    <string name="continue_with_google">Continue with Google</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -77,7 +79,8 @@
     <string name="username_last_char_error">Username must end with a letter or a number</string>
 
     <!-- user interaction -->
-    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="please_enter_credentials">Please enter your Email and Password</string>
+    <string name="forgot_password"><i><u>Forgot Password</u></i><b> ?</b></string>
     <string name="forgot_your_password">Forgot Your Password?</string>
     <string name="large_password_reset_text">That\'s OK, it happens…\n
         Just enter the email address you used to register and we\'ll send you a reset link.</string>
@@ -86,7 +89,8 @@
     <string name="register_agreement">By registering for a FitnessAssistant account you agree\n
         to our <u>Privacy Policy</u> and <u>Terms of Service</u></string>
     <string name="register_for_free">Start your fitness journey for free</string>
-    <string name="account_register"><u>Not a member? Create account</u></string>
+    <string name="not_a_member_yet"><i>Not a member yet</i><b> ?</b></string>
+    <string name="create_account_u"><i><u>Create account </u></i></string>
     <string name="verify_your_email">Verify your Email</string>
     <string name="verification_will_be_sent">If you somehow haven\'t received any mail we can send you another one. If you\'ve made a mistake simply sign out.</string>
     <string name="email_verification_required">We have sent you an email verification link. Check your mail and verify your email address. Using Google sign in without verifying this email may result in losing current account credentials.</string>

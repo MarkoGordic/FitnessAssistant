@@ -14,9 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Firestore {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+public class Firestore {
     public static AtomicBoolean success = new AtomicBoolean(false);
 
     public static void createNewUser(String userID){
@@ -31,14 +30,8 @@ public class Firestore {
 
     @SuppressLint("SimpleDateFormat")
     public static void createPedometerData(String userID){
-        Calendar calendar;
-        SimpleDateFormat dateFormat;
-        String dateText;
-
-        calendar = Calendar.getInstance();
-
-        dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        dateText = dateFormat.format(calendar.getTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateText = dateFormat.format(Calendar.getInstance().getTime());
 
         Map<String, Object> pedometerData = new HashMap<>();
         pedometerData.put("date", dateText);

@@ -52,11 +52,9 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
                             } catch (Exception e2){ // else errors are checked
                                 AuthFunctional.emailAlreadyRegistered(getApplicationContext(), emailEdit, email);
-                                // this should rarely happen
                                 Toast.makeText(getApplicationContext(), getString(R.string.register_unsuccessful), Toast.LENGTH_LONG).show();
                             }
-                        } else{
-                            // user is created
+                        } else{ // user is created
                             FirebaseUser newUser = FirebaseAuth.getInstance().getCurrentUser();
                             if(newUser != null) // probably redundant
                                 newUser.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(name).build()).addOnCompleteListener(task1 -> {

@@ -14,11 +14,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toBottomOf="@id/edtTxtEmail"
+        app:layout_constraintBottom_toTopOf="@id/enterCredentialsTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
 
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="16dp"
 
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
@@ -26,7 +26,28 @@
         android:textAlignment="center"
         android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
-        android:textSize="30sp" />
+        android:textSize="50sp" />
+
+    <!-- enterCredentials TextView -->
+    <TextView
+        android:id="@+id/enterCredentialsTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/edtTxtEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_marginBottom="88dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:text="@string/please_enter_credentials"
+        android:textAlignment="center"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        android:textSize="17sp" />
 
     <!-- TODO Add © rights for icons && for fonts -->
 
@@ -39,10 +60,11 @@
 
         app:layout_constraintBottom_toTopOf="@id/edtTxtPassword"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
 
+        android:layout_marginBottom="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
 
         android:autofillHints="emailAddress"
         android:hint="@string/email"
@@ -50,7 +72,6 @@
 
         android:background="@drawable/custom_input"
         android:drawableEnd="@drawable/custom_email"
-
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
         android:paddingHorizontal="16sp"
@@ -65,12 +86,13 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
 
-        app:layout_constraintBottom_toTopOf="@id/signInButton"
+        app:layout_constraintBottom_toTopOf="@id/forgotPasswordTextView"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
 
+        android:layout_marginBottom="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="96dp"
 
         android:autofillHints="password"
         android:hint="@string/password"
@@ -86,30 +108,99 @@
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
+    <!-- ForgotPassword TextView -->
+    <TextView
+        android:id="@+id/forgotPasswordTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/signInButton"
+        app:layout_constraintEnd_toEndOf="@id/edtTxtPassword"
+
+        android:layout_marginBottom="88dp"
+        android:layout_marginEnd="8dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:text="@string/forgot_password"
+        android:textAlignment="center"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="14sp" />
+
+    <!-- notAMember TextView -->
+    <TextView
+        android:id="@+id/notAMemberTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="1dp"
+        android:fontFamily="@font/ralewaym"
+
+        android:includeFontPadding="false"
+        android:paddingStart="2dp"
+
+        android:paddingEnd="2dp"
+        android:text="@string/not_a_member_yet"
+        android:textAlignment="center"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@id/forgotPasswordTextView"
+        app:layout_constraintStart_toStartOf="@id/edtTxtPassword"
+        app:layout_constraintTop_toTopOf="@+id/forgotPasswordTextView"
+        tools:ignore="TextContrastCheck" />
+
+    <!-- createAccount TextView -->
+    <TextView
+        android:id="@+id/createAccountTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toEndOf="@id/notAMemberTextView"
+        app:layout_constraintTop_toTopOf="@+id/forgotPasswordTextView"
+        app:layout_constraintBottom_toBottomOf="@id/forgotPasswordTextView"
+
+        android:layout_marginTop="1dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:text="@string/create_account_u"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="13sp"/>
+
     <!-- Sign In Button-->
-    <!-- TODO The marginBottom should be changed, after adding Google and other sign ins -->
-    <!--  if changed, change resetPassword button and registerButton -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signInButton"
 
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="128dp"
-        android:layout_marginEnd="128dp"
-        android:layout_marginBottom="164dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:layout_marginTop="144dp"
 
         android:background="@drawable/authentication_button"
+
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
-
+        android:textSize="16sp"
         android:text="@string/sign_in"
-
+        android:textAllCaps="false"
         android:textColor="@color/BackgroundColor"
         android:textFontWeight="600"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/edtTxtPassword"
-        app:layout_constraintStart_toStartOf="@id/edtTxtPassword"
+
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <!-- Signing in Progress Circle -->
@@ -129,74 +220,146 @@
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
 
-    <!-- ForgotPassword TextView -->
+    <!-- Left Line Separator -->
+    <View
+        android:id="@+id/line1"
+
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/orSeparator"
+        app:layout_constraintTop_toTopOf="@id/orSeparator"
+        app:layout_constraintBottom_toBottomOf="@id/orSeparator"
+        app:layout_constrainedWidth="true"
+
+        android:background="@color/SpaceCadet"/>
+
+    <!-- OR Separator -->
     <TextView
-        android:id="@+id/forgotPasswordTextView"
+        android:id="@+id/orSeparator"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/edtTxtPassword"
-        app:layout_constraintRight_toRightOf="@id/edtTxtPassword"
+        app:layout_constraintTop_toBottomOf="@id/signInButton"
+        app:layout_constraintBottom_toTopOf="@id/facebookSignInButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
 
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="12dp"
 
-        android:fontFamily="@font/ralewaym"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+
+        android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
-        android:text="@string/forgot_password"
+        android:text="@string/or"
         android:textAlignment="center"
-        android:textColor="@color/Flame"
+        android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
-        android:textSize="16sp" />
+        android:textSize="22sp" />
 
-    <!-- createAccount TextView -->
-    <TextView
-        android:id="@+id/createAccountTextView"
+    <!-- Right Line Separator -->
+    <View
+        android:id="@+id/line2"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
 
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/orSeparator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInButton"
+        app:layout_constraintTop_toTopOf="@id/orSeparator"
+        app:layout_constraintBottom_toBottomOf="@id/orSeparator"
+        app:layout_constrainedWidth="true"
 
-        android:layout_marginTop="64dp"
-
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:text="@string/account_register"
-        android:textAlignment="center"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="16sp"/>
-
-    <!-- Google Sign In Button -->
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleSignInButton"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/signInTextView"
-
-        android:layout_marginBottom="12dp"/>
+        android:background="@color/SpaceCadet"/>
 
     <!-- Facebook Sign In Button -->
-    <com.facebook.login.widget.LoginButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/facebookSignInButton"
+
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="@id/signInButton"
+        app:layout_constraintEnd_toEndOf="@id/signInButton"
+        app:layout_constraintTop_toBottomOf="@id/orSeparator"
+
+        android:layout_marginTop="32dp"
+
+        android:background="@drawable/custom_fb_button"
+        android:drawableStart="@drawable/ic_facebook"
+
+        android:drawablePadding="24dp"
+
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+
+        android:text="@string/com_facebook_loginview_log_in_button_continue"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+
+        android:textColor="@color/default_white_color"
+        android:textSize="16sp"
+        tools:ignore="TextContrastCheck" />
+
+    <!-- Facebook Signing in Progress Circle -->
+    <ProgressBar
+        android:id="@+id/facebookSignInProgressBar"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/googleSignInButton"
+        app:layout_constraintBottom_toBottomOf="@id/facebookSignInButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/facebookSignInButton"
 
-        android:layout_marginBottom="12dp" />
+        android:elevation="2dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/BlueYonder"
+        android:visibility="gone" />
+
+    <!-- Google Sign In Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/googleSignInButton"
+
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="@id/signInButton"
+        app:layout_constraintStart_toStartOf="@id/signInButton"
+        app:layout_constraintTop_toBottomOf="@id/facebookSignInButton"
+
+        android:layout_marginTop="24dp"
+
+        android:background="@drawable/custom_google_button"
+        android:drawableStart="@drawable/ic_google"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:drawablePadding="24dp"
+
+        android:text="@string/continue_with_google"
+        android:textColor="@color/common_google_signin_btn_text_light_default"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:textAllCaps="false"/>
+
+    <!-- Google Signing in Progress Circle -->
+    <ProgressBar
+        android:id="@+id/googleSignInProgressBar"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@id/googleSignInButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/googleSignInButton"
+
+        android:elevation="2dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/BlueYonder"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

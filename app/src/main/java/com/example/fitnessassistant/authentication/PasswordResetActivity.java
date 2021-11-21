@@ -87,7 +87,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                                             successAnimation((findViewById(R.id.smallResetPasswordTextView)));
                                         else
                                             Toast.makeText(getApplicationContext(), R.string.password_reset_unsuccessful, Toast.LENGTH_LONG).show();
-                                    }); // TODO add in Twitter and Apple
+                                    });
                                 else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
                                     AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.email_connected_via_google));
                                 else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))

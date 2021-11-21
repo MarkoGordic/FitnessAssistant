@@ -7,8 +7,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.TextView;
 
-// TODO get in touch with Gordic, this may become a Singleton class
-
 public class Pedometer implements SensorEventListener {
     private final SensorManager sensorManager;
     private final TextView stepsText;
