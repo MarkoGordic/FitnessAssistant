@@ -84,7 +84,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                                     FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task1 -> {
                                         AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
                                         if (task1.isSuccessful())
-                                            successAnimation((findViewById(R.id.smallResetPasswordTextView)));
+                                            successAnimation((findViewById(R.id.linkSentTextView)));
                                         else
                                             Toast.makeText(getApplicationContext(), R.string.password_reset_unsuccessful, Toast.LENGTH_LONG).show();
                                     });

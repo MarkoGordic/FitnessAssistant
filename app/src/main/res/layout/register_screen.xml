@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/createAccountScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,18 +26,18 @@
         android:background="@color/BackgroundColor"
         android:contentDescription="@string/back_button_description"/>
 
-    <!-- Main TextView -->
+    <!-- CreateAnAccount TextView -->
     <TextView
         android:id="@+id/registerTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toTopOf="@id/usernameEditTextForRegister"
+        app:layout_constraintBottom_toTopOf="@id/startJourneyTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="16dp"
 
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
@@ -44,20 +45,20 @@
         android:textAlignment="center"
         android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
-        android:textSize="30sp"/>
+        android:textSize="35sp"/>
 
-    <!-- Large TextView-->
+    <!-- StartJourney TextView-->
     <TextView
-        android:id="@+id/largeRegisterTextView"
+        android:id="@+id/startJourneyTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerTextView"
         app:layout_constraintBottom_toTopOf="@id/usernameEditTextForRegister"
 
+        android:layout_marginBottom="80dp"
 
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
@@ -65,32 +66,9 @@
         android:paddingEnd="36dp"
         android:text="@string/register_for_free"
         android:textAlignment="center"
-        android:textColor="@color/Flame"
+        android:textColor="@color/BlueYonder"
         android:textFontWeight="600"
-        android:textSize="17sp"/>
-
-    <!-- Small TextView -->
-    <TextView
-        android:id="@+id/smallRegisterTextView"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditTextForRegister"
-
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="58dp"
-
-        android:fontFamily="@font/raleway"
-        android:includeFontPadding="false"
-        android:text="@string/register_agreement"
-        android:textAlignment="textStart"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="14sp"/>
+        android:textSize="18sp"/>
 
     <!-- Username EditText-->
     <EditText
@@ -105,7 +83,7 @@
 
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="16dp"
 
         android:autofillHints="username"
         android:hint="@string/username"
@@ -128,13 +106,14 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
 
-        app:layout_constraintBottom_toTopOf="@id/passwordEditTextForRegister"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
+        android:layout_marginBottom="80dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="12dp"
 
         android:autofillHints="emailAddress"
         android:hint="@string/email"
@@ -157,13 +136,13 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
 
-        app:layout_constraintBottom_toTopOf="@id/confirmPasswordEditTextForRegister"
+        app:layout_constraintTop_toBottomOf="@id/emailEditTextForRegister"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
+        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="12dp"
 
         android:autofillHints="password"
         android:hint="@string/password"
@@ -186,13 +165,13 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
 
-        app:layout_constraintBottom_toTopOf="@id/registerButton"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditTextForRegister"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
+        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="96dp"
 
         android:autofillHints="password"
         android:hint="@string/confirm_password"
@@ -208,26 +187,69 @@
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
-    <!-- Register Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/registerButton"
+    <!-- Privacy Policy TextView -->
+    <TextView
+        android:id="@+id/privacyPolicyTextView"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:clickable="true"
 
-        android:layout_marginStart="128dp"
-        android:layout_marginEnd="128dp"
-        android:layout_marginBottom="164dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/ralewaym"
+
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="1dp"
+        android:text="@string/register_agreement"
+
+        android:textAlignment="textStart"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="13sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="@id/privacyPolicyCheckbox"
+        app:layout_constraintStart_toStartOf="@id/confirmPasswordEditTextForRegister"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditTextForRegister"
+        tools:ignore="TextContrastCheck" />
+
+    <!-- Privacy Policy Checkbox -->
+    <CheckBox
+        android:id="@+id/privacyPolicyCheckbox"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="@id/confirmPasswordEditTextForRegister"
+        app:layout_constraintTop_toTopOf="@id/privacyPolicyTextView"
+        app:layout_constraintBottom_toBottomOf="@id/privacyPolicyTextView"
+
+        android:layout_marginEnd="48dp"
+
+        android:buttonTint="@color/Flame"/>
+
+    <!-- Register Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/registerButton"
+
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/privacyPolicyTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_marginTop="48dp"
 
         android:background="@drawable/authentication_button"
 
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
         android:text="@string/register"
+        android:textSize="16sp"
+        android:textAllCaps="false"
         android:textColor="@color/BackgroundColor"
         android:textFontWeight="600" />
 
@@ -247,19 +269,5 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
-
-    <!-- Terms of Service and Privacy Policy Checkbox -->
-    <CheckBox
-        android:id="@+id/registerCheckbox"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/smallRegisterTextView"
-        app:layout_constraintBottom_toBottomOf="@id/smallRegisterTextView"
-
-        android:buttonTint="@color/MangoTango"
-        android:layout_marginEnd="48dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

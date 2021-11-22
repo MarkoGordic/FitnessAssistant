@@ -20,9 +20,6 @@ import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-// TODO later on, add real refresh to the whole layout instead of a button (not a big job)
-//  also adding refresh more throughout the app could be pretty helpful
-
 public class EmailVerificationActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
@@ -56,7 +53,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
             AuthFunctional.startLoading(findViewById(R.id.refreshButton), findViewById(R.id.refreshBar));
             if(!AuthFunctional.currentlyOnline){
                 // if there is no internet, we can't reload, just load previously saved user's info and quickly flash the notification about connectivity
-                ((TextView) findViewById(R.id.userEmailNotVerifiedTextView)).setText(String.format("%s: %s (%s)", getString(R.string.user_email), user.getEmail(), getString(R.string.verified_false)));
+                ((TextView) findViewById(R.id.userEmailNotVerifiedTextView)).setText(String.format("%s (%s)", user.getEmail(), getString(R.string.verified_false)));
                 findViewById(R.id.userEmailNotVerifiedTextView).setAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.refreshButton), findViewById(R.id.notification_layout_id));
                 AuthFunctional.finishLoading(findViewById(R.id.refreshButton), findViewById(R.id.refreshBar));
@@ -73,7 +70,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                     else if (user.isEmailVerified()) // if reloaded user has emailVerified, go to home page (this may get triggered often)
                         goToHomePageUI();
                     else { // if not, just load reloaded user's info
-                        ((TextView) findViewById(R.id.userEmailNotVerifiedTextView)).setText(String.format("%s: %s (%s)", getString(R.string.user_email), user.getEmail(), getString(R.string.verified_false)));
+                        ((TextView) findViewById(R.id.userEmailNotVerifiedTextView)).setText(String.format("%s (%s)", user.getEmail(), getString(R.string.verified_false)));
                         findViewById(R.id.userEmailNotVerifiedTextView).setAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                         AuthFunctional.finishLoading(findViewById(R.id.refreshButton), findViewById(R.id.refreshBar));
                     }
@@ -134,11 +131,11 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                     } catch (FirebaseNetworkException e1){ // if it's a network error, the no connectivity notification quickly flashes
                                         AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
                                     } catch (Exception e2){ // notify the user about the other error
-                                        ((TextView)findViewById(R.id.smallVerifyEmailTextView)).setText(getString(R.string.unsuccessful_verification_sent));
-                                        findViewById(R.id.smallVerifyEmailTextView).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                                        ((TextView)findViewById(R.id.resendEmailMessageTextView)).setText(getString(R.string.unsuccessful_verification_sent));
+                                        findViewById(R.id.resendEmailMessageTextView).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                     }
                                 } else // if it's successful, give the user feedback that the email was sent
-                                    AuthFunctional.emailVerificationSentAnimation(getApplicationContext(), findViewById(R.id.smallVerifyEmailTextView));
+                                    AuthFunctional.emailVerificationSentAnimation(getApplicationContext(), findViewById(R.id.resendEmailMessageTextView));
                             });
                     });
                 }

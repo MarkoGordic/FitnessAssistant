@@ -7,7 +7,9 @@
     android:layout_height="fill_parent"
     android:background="@color/BackgroundColor">
 
-    <!-- Welcome TextView -->
+    <!-- TODO maybe add in the logo above Sign In TextView (move the whole view down) -->
+
+    <!-- Sign In TextView -->
     <TextView
         android:id="@+id/signInTextView"
 
@@ -15,8 +17,8 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintBottom_toTopOf="@id/enterCredentialsTextView"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
 
         android:layout_marginBottom="16dp"
 
@@ -26,9 +28,9 @@
         android:textAlignment="center"
         android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
-        android:textSize="50sp" />
+        android:textSize="35sp" />
 
-    <!-- enterCredentials TextView -->
+    <!-- EnterCredentials TextView -->
     <TextView
         android:id="@+id/enterCredentialsTextView"
 
@@ -39,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="80dp"
 
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
@@ -47,9 +49,7 @@
         android:textAlignment="center"
         android:textColor="@color/BlueYonder"
         android:textFontWeight="600"
-        android:textSize="17sp" />
-
-    <!-- TODO Add © rights for icons && for fonts -->
+        android:textSize="16sp" />
 
     <!-- Email EditText -->
     <EditText
@@ -58,11 +58,12 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
 
-        app:layout_constraintBottom_toTopOf="@id/edtTxtPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="240dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
 
@@ -86,11 +87,11 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
 
-        app:layout_constraintBottom_toTopOf="@id/forgotPasswordTextView"
+        app:layout_constraintTop_toBottomOf="@id/edtTxtEmail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
 
@@ -115,10 +116,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toTopOf="@id/signInButton"
+        app:layout_constraintTop_toBottomOf="@id/edtTxtPassword"
         app:layout_constraintEnd_toEndOf="@id/edtTxtPassword"
 
-        android:layout_marginBottom="88dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
 
         android:fontFamily="@font/ralewaym"
@@ -184,12 +185,12 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/forgotPasswordTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/orSeparator"
 
-        android:layout_marginTop="144dp"
+        android:layout_marginTop="88dp"
 
         android:background="@drawable/authentication_button"
 
@@ -361,5 +362,26 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/BlueYonder"
         android:visibility="gone" />
+
+    <!-- signInPrivacyPolicy TextView -->
+    <TextView
+        android:id="@+id/signInPrivacyPolicyTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/googleSignInButton"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:textAlignment="center"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:text="@string/sign_in_privacy_policy_agreement"
+        android:textSize="12sp"
+        tools:ignore="TextContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

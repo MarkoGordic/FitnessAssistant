@@ -22,7 +22,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -259,11 +258,6 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.sign_in_screen);
         AuthFunctional.setUpPassword(findViewById(R.id.edtTxtPassword));
 
-        // setting up for Facebook Analytics and callback manager (this needs to be done before onClickListeners)
-        AppEventsLogger.activateApp(getApplication());
-        facebookCallbackManager = CallbackManager.Factory.create();
-
-
         setUpOnClickListeners();
 
         networkManager = new NetworkManager(getApplication());
@@ -274,6 +268,9 @@ public class SignInActivity extends AppCompatActivity {
         // setting up Google client
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.server_client_id)).requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+
+        // setting up the Facebook callback manager
+        facebookCallbackManager = CallbackManager.Factory.create();
     }
 
     @Override

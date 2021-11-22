@@ -1,6 +1,10 @@
 package com.example.fitnessassistant.authentication;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,6 +25,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     private NetworkManager networkManager;
 
     // sets up listeners for back button and register button
+    @SuppressLint("ClickableViewAccessibility")
     private void setUpOnClickListeners(){
         // backButton listener - goes back to SignInActivity
         findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
@@ -38,8 +43,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             if(AuthFunctional.validUsername(getApplicationContext(), nameEdit) && AuthFunctional.validEmail(getApplicationContext(), emailEdit) && AuthFunctional.validPassword(getApplicationContext(), passEdit)){
                 if(!password.equals(cPassword)) // check if password and confirmPassword are equal
                     AuthFunctional.bothPasswordsError(getApplicationContext(), passEdit, cPassEdit, getString(R.string.passwords_not_equal));
-                else if(!((CheckBox) findViewById(R.id.registerCheckbox)).isChecked())
-                    AuthFunctional.checkboxFlash(getApplicationContext(), findViewById(R.id.registerCheckbox));
+                else if(!((CheckBox) findViewById(R.id.privacyPolicyCheckbox)).isChecked())
+                    AuthFunctional.checkboxFlash(getApplicationContext(), findViewById(R.id.privacyPolicyCheckbox));
                 else{ // if everything is set, create the user
                     AuthFunctional.startLoading(view, findViewById(R.id.registerBar));
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
@@ -84,7 +89,15 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
 
-        // TODO Terms of Service and Privacy Policy listeners -> redirecting to scrollViews made for reading with a back button (think about where the user clicks)
+        // privacyPolicyTextView listener - redirects to our Privacy Policy(with Uri)
+        findViewById(R.id.privacyPolicyTextView).setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_UP) // ACTION_DOWN = finger on screen, ACTION_UP = finger on -> off screen
+                    if (event.getRawX() >= (v.getRight() - v.getWidth() / 3) && event.getRawX() <= (v.getRight() - v.getWidth() / 15)) { // getRawX() is where touch is registered, anything on x axis in the last quarter
+                        startActivity(new Intent("android.intent.action.VIEW", Uri.parse(getString(R.string.privacy_policy_link))));
+                        return true;
+                    }
+                return false;
+        });
     }
 
     @Override
