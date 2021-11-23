@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.homepage.HomePageActivity;
@@ -50,13 +51,13 @@ public class EmailVerificationActivity extends AppCompatActivity {
         } else if (user.isEmailVerified()) // if saved user is email verified, go to home page
             goToHomePageUI();
         else{ // if saved user's email is not verified, try to reload if possible
-            AuthFunctional.startLoading(findViewById(R.id.refreshButton), findViewById(R.id.refreshBar));
+            ((SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout)).setRefreshing(true);
             if(!AuthFunctional.currentlyOnline){
                 // if there is no internet, we can't reload, just load previously saved user's info and quickly flash the notification about connectivity
                 ((TextView) findViewById(R.id.userEmailNotVerifiedTextView)).setText(String.format("%s (%s)", user.getEmail(), getString(R.string.verified_false)));
                 findViewById(R.id.userEmailNotVerifiedTextView).setAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
-                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.refreshButton), findViewById(R.id.notification_layout_id));
-                AuthFunctional.finishLoading(findViewById(R.id.refreshButton), findViewById(R.id.refreshBar));
+                AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                ((SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout)).setRefreshing(false);
             } else { // if there is internet, we try to reload the user
                 user.reload().addOnCompleteListener(task -> {
                     if (!task.isSuccessful())
@@ -72,15 +73,19 @@ public class EmailVerificationActivity extends AppCompatActivity {
                     else { // if not, just load reloaded user's info
                         ((TextView) findViewById(R.id.userEmailNotVerifiedTextView)).setText(String.format("%s (%s)", user.getEmail(), getString(R.string.verified_false)));
                         findViewById(R.id.userEmailNotVerifiedTextView).setAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
-                        AuthFunctional.finishLoading(findViewById(R.id.refreshButton), findViewById(R.id.refreshBar));
+                        ((SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout)).setRefreshing(false);
                     }
                 });
             }
         }
     }
 
-    // sets up listeners for signing out(changing credentials), verifying email and refreshing
+    // sets up listeners for refreshing, signing out(changing credentials) and verifying email
     private void setUpOnClickListeners(){
+        // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.swipeRefreshLayout);
+        refreshLayout.setOnRefreshListener(this::updateUI);
+
         // signOutButton listener - click - tells user to hold to sign out(it's better, click can happen on accident)
         findViewById(R.id.changeCredentialsButton).setOnClickListener(view -> {
             if(AuthFunctional.currentlyOnline)
@@ -140,10 +145,6 @@ public class EmailVerificationActivity extends AppCompatActivity {
                     });
                 }
         });
-
-        // refreshButton listener - updates UI(refreshes)
-        findViewById(R.id.refreshButton).setOnClickListener(view -> updateUI());
-
     }
 
 

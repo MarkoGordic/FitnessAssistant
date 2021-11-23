@@ -32,7 +32,6 @@
     <string name="username">Username</string>
     <string name="send_email_verification">Send the Mail</string>
     <string name="sign_out">Sign Out</string>
-    <string name="refresh">Refresh</string>
     <string name="or">OR</string>
     <string name="continue_with_google">Continue with Google</string>
 

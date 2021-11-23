@@ -1,201 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/emailVerificationScreen"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/BackgroundColor">
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/emailVerificationScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/BackgroundColor">
 
-    <!-- Change Credentials - Sign Out Button -->
-    <ImageButton
-        android:id="@+id/changeCredentialsButton"
+        <!-- Change Credentials - Sign Out Button -->
+        <ImageButton
+            android:id="@+id/changeCredentialsButton"
 
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
-        android:paddingStart="20dp"
-        android:paddingEnd="4dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="4dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="4dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="4dp"
 
-        android:src="@drawable/back"
-        android:background="@color/BackgroundColor"
-        android:contentDescription="@string/back_button_description"/>
+            android:src="@drawable/back"
+            android:background="@color/BackgroundColor"
+            android:contentDescription="@string/back_button_description"/>
 
-    <!-- VerifyEmail TextView -->
-    <TextView
-        android:id="@+id/verifyEmailTextView"
+        <!-- VerifyEmail TextView -->
+        <TextView
+            android:id="@+id/verifyEmailTextView"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toTopOf="@id/verifyEmailMessageTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/verifyEmailMessageTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="16dp"
+            android:layout_marginBottom="16dp"
 
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:text="@string/verify_your_email"
-        android:textAlignment="center"
-        android:textColor="@color/SpaceCadet"
-        android:textFontWeight="600"
-        android:textSize="35sp"/>
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/verify_your_email"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="35sp"/>
 
-    <!-- VerifyEmailMessage TextView-->
-    <TextView
-        android:id="@+id/verifyEmailMessageTextView"
+        <!-- VerifyEmailMessage TextView-->
+        <TextView
+            android:id="@+id/verifyEmailMessageTextView"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toTopOf="@id/userEmailNotVerifiedTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/userEmailNotVerifiedTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="80dp"
+            android:layout_marginBottom="80dp"
 
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:text="@string/email_verification_required"
-        android:textAlignment="center"
-        android:textColor="@color/BlueYonder"
-        android:textFontWeight="600"
-        android:textSize="17sp"/>
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:text="@string/email_verification_required"
+            android:textAlignment="center"
+            android:textColor="@color/BlueYonder"
+            android:textFontWeight="600"
+            android:textSize="17sp"/>
 
-    <!-- UserEmail TextView -->
-    <TextView
-        android:id="@+id/userEmailNotVerifiedTextView"
+        <!-- UserEmail TextView -->
+        <TextView
+            android:id="@+id/userEmailNotVerifiedTextView"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"
 
-        android:layout_marginTop="16dp"
+            android:layout_marginTop="16dp"
 
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:textColor="@color/SpaceCadet"
-        android:textStyle="bold"
-        android:paddingStart="2dp"
-        android:paddingEnd="2dp"
-        android:textFontWeight="600"
-        android:textSize="17sp"/>
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:textColor="@color/SpaceCadet"
+            android:textStyle="bold"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:textFontWeight="600"
+            android:textSize="17sp"/>
 
-    <!-- ResendEmailMessage TextView -->
-    <TextView
-        android:id="@+id/resendEmailMessageTextView"
+        <!-- ResendEmailMessage TextView -->
+        <TextView
+            android:id="@+id/resendEmailMessageTextView"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-
-        app:layout_constrainedWidth="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userEmailNotVerifiedTextView"
-
-        android:layout_marginTop="80dp"
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:text="@string/verification_will_be_sent"
-        android:textAlignment="center"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="12sp"
-        tools:ignore="TextContrastCheck" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
 
-    <!-- SendEmailVerification Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/sendEmailVerificationButton"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userEmailNotVerifiedTextView"
 
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintTop_toBottomOf="@id/resendEmailMessageTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        android:layout_marginTop="36dp"
-
-        android:background="@drawable/authentication_button"
-
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:text="@string/send_email_verification"
-        android:textSize="16sp"
-        android:textAllCaps="false"
-        android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
-
-    <!-- Sending Email Verification Progress Circle -->
-    <ProgressBar
-        android:id="@+id/sendEmailVerificationBar"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="@id/sendEmailVerificationButton"
-        app:layout_constraintLeft_toLeftOf="@id/sendEmailVerificationButton"
-        app:layout_constraintRight_toRightOf="@id/sendEmailVerificationButton"
-        app:layout_constraintTop_toTopOf="@id/sendEmailVerificationButton"
-
-        android:elevation="2dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/BlueYonder"
-        android:visibility="gone" />
-
-    <!-- TODO Change Refresh Button to a Refresh Layout -->
-
-    <!-- Refresh Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/refreshButton"
-
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintTop_toBottomOf="@id/sendEmailVerificationButton"
-        app:layout_constraintStart_toStartOf="@id/sendEmailVerificationButton"
-        app:layout_constraintEnd_toEndOf="@id/sendEmailVerificationButton"
-
-        android:layout_marginTop="64dp"
-
-        android:background="@drawable/authentication_button"
-
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:text="@string/refresh"
-        android:textSize="16sp"
-        android:textAllCaps="false"
-        android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
-
-    <!-- Refresh Progress Circle -->
-    <ProgressBar
-        android:id="@+id/refreshBar"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="@id/refreshButton"
-        app:layout_constraintLeft_toLeftOf="@id/refreshButton"
-        app:layout_constraintRight_toRightOf="@id/refreshButton"
-        app:layout_constraintTop_toTopOf="@id/refreshButton"
-
-        android:elevation="2dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/BlueYonder"
-        android:visibility="gone" />
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:text="@string/verification_will_be_sent"
+            android:textAlignment="center"
+            android:textColor="@color/Flame"
+            android:textFontWeight="600"
+            android:textSize="12sp"
+            tools:ignore="TextContrastCheck" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- SendEmailVerification Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sendEmailVerificationButton"
+
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/resendEmailMessageTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_marginTop="36dp"
+
+            android:background="@drawable/authentication_button"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/send_email_verification"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/BackgroundColor"
+            android:textFontWeight="600" />
+
+        <!-- Sending Email Verification Progress Circle -->
+        <ProgressBar
+            android:id="@+id/sendEmailVerificationBar"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintBottom_toBottomOf="@id/sendEmailVerificationButton"
+            app:layout_constraintLeft_toLeftOf="@id/sendEmailVerificationButton"
+            app:layout_constraintRight_toRightOf="@id/sendEmailVerificationButton"
+            app:layout_constraintTop_toTopOf="@id/sendEmailVerificationButton"
+
+            android:elevation="2dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/BlueYonder"
+            android:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
