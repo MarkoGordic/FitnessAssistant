@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -37,6 +36,7 @@ import java.util.regex.Pattern;
 // class used for variables and functions called during authentication processes with Firebase
 public class AuthFunctional {
     public static boolean currentlyOnline;
+    private static boolean quickFlashAnimating; // used to prevent spamming the notification
 
     // when password is hidden, its characters are transformed by this function into '●'
     public static class MyPasswordTransformationMethod extends PasswordTransformationMethod {
@@ -153,13 +153,8 @@ public class AuthFunctional {
     }
 
     // used for quickFlashing the notification layout
-    public static void quickFlash(Context context, Button button, LinearLayout notificationLayout){
+    public static void quickFlash(Context context, LinearLayout notificationLayout){
         if(notificationLayout != null) { // this could happen if quickFlash is called faster than the notificationLayout is registered
-            // setting the enabled and clickable to false -> avoid spamming and problems caused with spamming
-            if(button != null) {
-                button.setEnabled(false);
-                button.setClickable(false);
-            }
 
             Animation previous = notificationLayout.getAnimation();
 
@@ -177,15 +172,15 @@ public class AuthFunctional {
                 public void onAnimationEnd(Animation animation) {
                     // continuing(starting) the previous animation
                     notificationLayout.startAnimation(previous);
-                    // setting enabled and clickable back to true
-                    if (button != null) {
-                        button.setEnabled(true);
-                        button.setClickable(true);
-                    }
+                    quickFlashAnimating = false;
                 }
             });
 
-            notificationLayout.startAnimation(current);
+            // this avoids spamming and problems that may get caused by spamming
+            if(!quickFlashAnimating) {
+                notificationLayout.startAnimation(current);
+                quickFlashAnimating = true;
+            }
         }
     }
 

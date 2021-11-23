@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +68,7 @@ public class HomePageActivity extends AppCompatActivity {
                             throw task.getException();
                         }
                     } catch (FirebaseNetworkException e1){ // if it fails and it's a network error, the animated notification quickly flashes
-                        AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                         // we're displaying the user's profile (last saved)
                         ((TextView) findViewById(R.id.userNameTextView)).setText(String.format("%s: %s", getString(R.string.user_name), currentUser.getDisplayName()));
                         ((TextView) findViewById(R.id.userEmailTextView)).setText(String.format("%s: %s", getString(R.string.user_email), currentUser.getEmail()));
@@ -101,7 +100,7 @@ public class HomePageActivity extends AppCompatActivity {
             if(AuthFunctional.currentlyOnline)
                 Toast.makeText(getApplicationContext(),getString(R.string.hold_for_signing_out), Toast.LENGTH_LONG).show(); // it's better to sign out on hold, user can click this on accident
             else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
+                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
         });
 
         // signOutButton listener - hold
@@ -111,7 +110,7 @@ public class HomePageActivity extends AppCompatActivity {
                 // signing out from facebook because they save it separately
                 LoginManager.getInstance().logOut();
             }else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
+                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
             return true; // returns true -> onClick doesn't get triggered
         });
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -71,7 +70,7 @@ public class SignInActivity extends AppCompatActivity {
                     try{ // if we fail, throw the exception
                         throw e;
                     } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                        AuthFunctional.quickFlash(this, ((Button) v), findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(this, findViewById(R.id.notification_layout_id));
                     } catch(Exception e2){ // if it's any other we set the authentication error
                         AuthFunctional.setAuthenticationError(getApplicationContext(), emailEdit.getText().toString(), emailEdit, passEdit, findViewById(R.id.forgotPasswordTextView), findViewById(R.id.createAccountTextView));
                     }
@@ -86,8 +85,7 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.createAccountTextView).setOnClickListener(view -> startActivity(new Intent(this, CreateAccountActivity.class)));
 
         // googleSignInButton listener - gives google sign in pop-up
-        Button googleButton =  findViewById(R.id.googleSignInButton);
-        googleButton.setOnClickListener(view -> {
+        findViewById(R.id.googleSignInButton).setOnClickListener(view -> {
             AuthFunctional.startLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
             googleSignInClient.signOut(); // signing out, just in case there is a previously saved user
             activityLauncher.launch(googleSignInClient.getSignInIntent(), result -> {
@@ -100,7 +98,7 @@ public class SignInActivity extends AppCompatActivity {
                         try{ // if we fail, throw the exception
                             throw e;
                         } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                            AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                         } catch(Exception e2){ // if it's any other we notify the user the sign in process was unsuccessful
                             findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                             Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
@@ -109,7 +107,7 @@ public class SignInActivity extends AppCompatActivity {
                 } catch (ApiException e){ // if there is an error, check if we're currently not online
                     AuthFunctional.finishLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
                     if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
-                        AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                     else{ // else quick flash the button and tell the user the sign in was unsuccessful by toasting
                         findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                         Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
@@ -118,8 +116,8 @@ public class SignInActivity extends AppCompatActivity {
             });
         });
 
-        Button customFBButton = findViewById(R.id.facebookSignInButton);
-        customFBButton.setOnClickListener(view -> {
+        // facebookSignInButton listener - communicates with Facebook SDK
+        findViewById(R.id.facebookSignInButton).setOnClickListener(view -> {
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile")); // asking for the use of email and public profile on sign in
             LoginManager.getInstance().registerCallback(facebookCallbackManager, new FacebookCallback<LoginResult>() {
                 @Override
@@ -145,7 +143,7 @@ public class SignInActivity extends AppCompatActivity {
                                                         try { // if we fail, throw the exception and sign out of fb
                                                             throw e;
                                                         } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                            AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                                                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                                                         } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
                                                             findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                                             Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
@@ -171,7 +169,7 @@ public class SignInActivity extends AppCompatActivity {
                                             if (task.getException() != null)
                                                 throw task.getException();
                                         } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                            AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                                         } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
                                             findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                             Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
@@ -201,13 +199,13 @@ public class SignInActivity extends AppCompatActivity {
                 public void onCancel() {
                     Toast.makeText(getApplicationContext(), R.string.facebook_sign_in_unsuccessful , Toast.LENGTH_LONG).show();
                     if(!AuthFunctional.currentlyOnline)
-                        AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                 }
                 @Override
                 public void onError(@NonNull FacebookException e) {
                     Toast.makeText(getApplicationContext(), R.string.facebook_sign_in_unsuccessful , Toast.LENGTH_LONG).show();
                     if(!AuthFunctional.currentlyOnline)
-                        AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                 }
             });
         });

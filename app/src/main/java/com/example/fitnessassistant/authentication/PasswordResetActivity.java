@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,7 +101,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                                 throw task.getException();
                             }
                         } catch (FirebaseNetworkException e1){ // in case it's a network error - notification quickly flashes
-                            AuthFunctional.quickFlash(getApplicationContext(), ((Button) view), findViewById(R.id.notification_layout_id));
+                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                         } catch (Exception e2){ // in other cases, it's an invalid email input
                             AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.invalid_email));
                         }
