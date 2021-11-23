@@ -6,7 +6,7 @@ import android.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
 
-public class PermFunctional {
+public class PermissionFunctional {
     // requests the permission
     private static void requestPermission(Activity activity, String permissionName, int permissionRequestCode){
         ActivityCompat.requestPermissions(activity, new String[]{ permissionName }, permissionRequestCode);

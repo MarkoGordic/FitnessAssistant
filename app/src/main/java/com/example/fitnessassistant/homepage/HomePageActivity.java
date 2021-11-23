@@ -19,7 +19,7 @@ import com.example.fitnessassistant.authentication.SignInActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.util.AuthFunctional;
-import com.example.fitnessassistant.util.PermFunctional;
+import com.example.fitnessassistant.util.PermissionFunctional;
 import com.facebook.login.LoginManager;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -120,7 +120,7 @@ public class HomePageActivity extends AppCompatActivity {
             findViewById(R.id.startPedometerButton).setVisibility(View.VISIBLE);
             findViewById(R.id.startPedometerButton).setOnClickListener(view -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                    PermFunctional.askForPermission(this, getString(R.string.activity_recognition_permission), getString(R.string.activity_recognition_rationale), Manifest.permission.ACTIVITY_RECOGNITION, RC_PEDOMETER_PERMISSION);
+                    PermissionFunctional.askForPermission(this, getString(R.string.activity_recognition_permission), getString(R.string.activity_recognition_rationale), Manifest.permission.ACTIVITY_RECOGNITION, RC_PEDOMETER_PERMISSION);
                 else // tell user he needs android (Q)10 for activity recognition
                     Toast.makeText(this, getString(R.string.android_q_needed), Toast.LENGTH_LONG).show();
             });

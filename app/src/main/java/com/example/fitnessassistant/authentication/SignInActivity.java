@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.homepage.HomePageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.util.ActivityResultFunctional;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -44,7 +46,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
-    private final int RC_GOOGLE_SIGN_IN = 100;
+    protected final ActivityResultFunctional<Intent, ActivityResult> activityLauncher = ActivityResultFunctional.registerActivityForResult(this);
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
     private GoogleSignInClient googleSignInClient;
@@ -88,8 +90,32 @@ public class SignInActivity extends AppCompatActivity {
         googleButton.setOnClickListener(view -> {
             AuthFunctional.startLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
             googleSignInClient.signOut(); // signing out, just in case there is a previously saved user
-            // TODO fix because it's deprecated
-            startActivityForResult(googleSignInClient.getSignInIntent(), RC_GOOGLE_SIGN_IN); // starts the SignInIntent -> results in onActivityResult with called request code
+            activityLauncher.launch(googleSignInClient.getSignInIntent(), result -> {
+                try { // we get the account's credential from the SignInIntent (account's ID token)
+                    GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(result.getData()).getResult(ApiException.class);
+                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                    // and pass the credential to sign in with firebase
+                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnFailureListener(e -> {
+                        AuthFunctional.finishLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
+                        try{ // if we fail, throw the exception
+                            throw e;
+                        } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
+                            AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                        } catch(Exception e2){ // if it's any other we notify the user the sign in process was unsuccessful
+                            findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                            Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (ApiException e){ // if there is an error, check if we're currently not online
+                    AuthFunctional.finishLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
+                    if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
+                        AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
+                    else{ // else quick flash the button and tell the user the sign in was unsuccessful by toasting
+                        findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                        Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         });
 
         Button customFBButton = findViewById(R.id.facebookSignInButton);
@@ -190,33 +216,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RC_GOOGLE_SIGN_IN){
-            try { // we get the account's credential from the SignInIntent (account's ID token)
-                GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
-                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-                // and pass the credential to sign in with firebase
-                FirebaseAuth.getInstance().signInWithCredential(credential).addOnFailureListener(e -> {
-                    AuthFunctional.finishLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
-                    try{ // if we fail, throw the exception
-                        throw e;
-                    } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                        AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
-                    } catch(Exception e2){ // if it's any other we notify the user the sign in process was unsuccessful
-                        findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
-                        Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
-                    }
-                });
-            } catch (ApiException e){ // if there is an error, check if we're currently not online
-                AuthFunctional.finishLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
-                if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
-                    AuthFunctional.quickFlash(getApplicationContext(), null, findViewById(R.id.notification_layout_id));
-                else{ // else quick flash the button and tell the user the sign in was unsuccessful by toasting
-                    findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
-                    Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
-                }
-                e.printStackTrace();
-            }
-        } else if(FacebookSdk.isFacebookRequestCode(requestCode)) // pass the activity result back to the Facebook SDK
+        if(FacebookSdk.isFacebookRequestCode(requestCode)) // pass the activity result back to the Facebook SDK
             facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
