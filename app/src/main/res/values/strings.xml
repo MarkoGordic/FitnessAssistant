@@ -34,6 +34,9 @@
     <string name="sign_out">Sign Out</string>
     <string name="or">OR</string>
     <string name="continue_with_google">Continue with Google</string>
+    <string name="unlink">Unlink</string>
+    <string name="link">Link</string>
+    <string name="link_with_fitness_assistant">Link our Account</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -108,6 +111,13 @@
     <string name="facebook_error_google">Use that email to sign in via Google</string>
     <string name="sign_in_privacy_policy_agreement"><i>By continuing you agree to the sign-in provider\'s Privacy Policy</i></string>
     <string name="press_again_to_sign_out">Press again to Sign Out</string>
+    <string name="google_linking_unsuccessful">Linking with Google unsuccessful</string>
+    <string name="google_unlinking_unsuccessful">Unlinking with Google unsuccessful</string>
+    <string name="facebook_linking_unsuccessful">Linking with Facebook unsuccessful</string>
+    <string name="facebook_unlinking_unsuccessful">Unlinking with Facebook unsuccessful</string>
+    <string name="email_linking_unsuccessful">Linking with Email unsuccessful</string>
+    <string name="error_last_auth_provider">Unable to unlink last remaining authentication provider</string>
+    <string name="account_already_linked">That email is already linked to this provider</string>
 
     <!-- COM.EXAMPLE.NETWORK -->
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>

@@ -18,7 +18,6 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.List;
 
@@ -59,6 +58,25 @@ public class PasswordResetActivity extends AppCompatActivity {
         tv.startAnimation(fadeOut);
     }
 
+    // checks if email is registered with email/pass provider and sends mail in that case
+    private void sendEmailReset(List<String> signInMethods, String email, EditText emailEdit){
+        if(signInMethods.isEmpty())
+            AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.email_not_registered));
+        else if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) // sending password reset email only if there is this method available
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task1 -> {
+                AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
+                if (task1.isSuccessful())
+                    successAnimation((findViewById(R.id.linkSentTextView)));
+                else
+                    Toast.makeText(getApplicationContext(), R.string.password_reset_unsuccessful, Toast.LENGTH_LONG).show();
+            });
+        else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
+            AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.email_connected_via_google));
+        else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))
+            AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.email_connected_via_facebook));
+        AuthFunctional.finishLoading(findViewById(R.id.resetPasswordButton), findViewById(R.id.resetPasswordBar));
+    }
+
     // sets up listeners for back button and resetPassword button
     private void setUpOnClickListeners(){
         // backButton listener - goes back to SignInActivity
@@ -74,27 +92,9 @@ public class PasswordResetActivity extends AppCompatActivity {
                 AuthFunctional.startLoading(view, findViewById(R.id.resetPasswordBar));
                 // send the mail (if email is connected with an email/password sign in method) or set the errors
                 FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        SignInMethodQueryResult result = task.getResult();
-                        if(result != null) {
-                            List<String> signInMethods = result.getSignInMethods();
-                            if (signInMethods != null) { // checking sign in methods available for entered email
-                                if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) // sending password reset email only if there is this method available
-                                    FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task1 -> {
-                                        AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
-                                        if (task1.isSuccessful())
-                                            successAnimation((findViewById(R.id.linkSentTextView)));
-                                        else
-                                            Toast.makeText(getApplicationContext(), R.string.password_reset_unsuccessful, Toast.LENGTH_LONG).show();
-                                    });
-                                else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
-                                    AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.email_connected_via_google));
-                                else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))
-                                    AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.email_connected_via_facebook));
-                                AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
-                            }
-                        }
-                    } else{
+                    if(task.isSuccessful() && task.getResult() != null && task.getResult().getSignInMethods() != null)
+                        sendEmailReset(task.getResult().getSignInMethods(), email, emailEdit);
+                    else{
                         AuthFunctional.finishLoading(view, findViewById(R.id.resetPasswordBar));
                         try{
                             if(task.getException() != null){

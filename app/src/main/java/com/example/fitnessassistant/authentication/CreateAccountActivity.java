@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,12 +17,40 @@ import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private NetworkManager networkManager;
+
+    private void updateNewUser(FirebaseUser newUser, String name){
+        if (newUser != null) // probably redundant
+            newUser.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(name).build()).addOnCompleteListener(task1 -> {
+                // update user's username
+                if (!task1.isSuccessful()) // if unsuccessful, check errors
+                    try {
+                        AuthFunctional.finishLoading(findViewById(R.id.registerButton), findViewById(R.id.registerBar));
+                        if (task1.getException() != null)
+                            throw task1.getException();
+                    } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                    } catch (Exception e2) { // else notify user
+                        Toast.makeText(getApplicationContext(), getString(R.string.account_created_username_update_unsuccessful), Toast.LENGTH_LONG).show();
+                    }
+                else {
+                    if (AuthFunctional.currentlyOnline) {
+                        newUser.reload().addOnFailureListener(e -> Toast.makeText(getApplicationContext(), getString(R.string.register_unsuccessful), Toast.LENGTH_LONG).show());
+                    }
+                    AuthFunctional.finishLoading(findViewById(R.id.registerButton), findViewById(R.id.registerBar));
+                    finish(); // finish after (not) calling reload -> get back to sign in, trigger the listener that will get the user to the home page
+                }
+            });
+        else // finishing loading here too, just in case (probably redundant)
+            AuthFunctional.finishLoading(findViewById(R.id.registerButton), findViewById(R.id.registerBar));
+    }
 
     // sets up listeners for back button and register button
     @SuppressLint("ClickableViewAccessibility")
@@ -46,44 +75,42 @@ public class CreateAccountActivity extends AppCompatActivity {
                     AuthFunctional.checkboxFlash(getApplicationContext(), findViewById(R.id.privacyPolicyCheckbox));
                 else{ // if everything is set, create the user
                     AuthFunctional.startLoading(view, findViewById(R.id.registerBar));
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-                        if(!task.isSuccessful()){ // if task fails, network error needs to be checked
-                            AuthFunctional.finishLoading(view, findViewById(R.id.registerBar));
-                            try{
-                                if(task.getException() != null)
-                                    throw task.getException();
-                            } catch (FirebaseNetworkException e1){ // if it's a network error, the animated notification quickly flashes
-                                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
-                            } catch (Exception e2){ // else errors are checked
-                                AuthFunctional.emailAlreadyRegistered(getApplicationContext(), emailEdit, email);
-                                Toast.makeText(getApplicationContext(), getString(R.string.register_unsuccessful), Toast.LENGTH_LONG).show();
-                            }
-                        } else{ // user is created
-                            FirebaseUser newUser = FirebaseAuth.getInstance().getCurrentUser();
-                            if(newUser != null) // probably redundant
-                                newUser.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(name).build()).addOnCompleteListener(task1 -> {
-                                    // update user's username
-                                    if(!task1.isSuccessful()) // if unsuccessful, check errors
-                                        try{ AuthFunctional.finishLoading(view, findViewById(R.id.registerBar));
-                                            if(task1.getException() != null)
-                                                throw task1.getException();
-                                        } catch (FirebaseNetworkException e1){ // if it's a network error, the animated notification quickly flashes
-                                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
-                                        } catch (Exception e2){ // else notify user
-                                            Toast.makeText(getApplicationContext(), getString(R.string.account_created_username_update_unsuccessful), Toast.LENGTH_LONG).show();
-                                        }
-                                    else {
-                                        if (AuthFunctional.currentlyOnline){
-                                            newUser.reload().addOnFailureListener(e -> Toast.makeText(getApplicationContext(), getString(R.string.register_unsuccessful), Toast.LENGTH_LONG).show());
-                                        }
-                                        AuthFunctional.finishLoading(view, findViewById(R.id.registerBar));
-                                        finish(); // finish after (not) calling reload -> get back to sign in, trigger the listener that will get the user to the home page
-                                    }
-                                });
-                            else // finishing loading here too, just in case (probably redundant)
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if(currentUser == null) { // if currentUser is null, we're creating a new account
+                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+                            if(task.isSuccessful())// user is created
+                                updateNewUser(FirebaseAuth.getInstance().getCurrentUser(), name);
+                            else{
                                 AuthFunctional.finishLoading(view, findViewById(R.id.registerBar));
-                        }
-                    });
+                                try {
+                                    if (task.getException() != null)
+                                        throw task.getException();
+                                } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                    AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                                } catch (Exception e2) { // else errors are checked
+                                    AuthFunctional.emailAlreadyRegistered(getApplicationContext(), emailEdit, email);
+                                    Toast.makeText(getApplicationContext(), getString(R.string.register_unsuccessful), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    } else { // if currentUser is not null, we're linking the created account (using created credential) with the current user
+                        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+                        currentUser.linkWithCredential(credential).addOnCompleteListener(task -> {
+                            AuthFunctional.finishLoading(view, findViewById(R.id.registerBar));
+                            if (task.isSuccessful())
+                                finish();
+                            else
+                                try { // if we fail, throw the exception
+                                    if (task.getException() != null)
+                                        throw task.getException();
+                                } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
+                                    AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                                } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
+                                    view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                                    Toast.makeText(getApplicationContext(), getString(R.string.email_linking_unsuccessful), Toast.LENGTH_LONG).show();
+                                }
+                        });
+                    }
                 }
             }
         });

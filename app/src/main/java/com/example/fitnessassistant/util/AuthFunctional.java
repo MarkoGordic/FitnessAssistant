@@ -3,6 +3,7 @@ package com.example.fitnessassistant.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -27,7 +28,6 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -126,27 +126,22 @@ public class AuthFunctional {
     // sets errors based on user's input
     public static void setAuthenticationError(Context context, String email, EditText emailEdit, EditText passwordEdit, TextView forgotPassword, TextView createAccount){
         FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                SignInMethodQueryResult result = task.getResult();
-                if(result != null) {
-                    List<String> signInMethods = result.getSignInMethods();
-                    if (signInMethods != null) {
-                        if(signInMethods.isEmpty()){
-                            myError(context, emailEdit, context.getString(R.string.email_not_registered));
-                            if(createAccount != null)
-                                createAccount.startAnimation(AnimationUtils.loadAnimation(context,R.anim.quick_flash));
-                        } else if(signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)){
-                            if (passwordEdit != null) {
-                                myError(context, passwordEdit, context.getString(R.string.incorrect_password));
-                                if(forgotPassword != null)
-                                    forgotPassword.startAnimation(AnimationUtils.loadAnimation(context, R.anim.quick_flash));
-                            }
-                        } else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
-                            myError(context, emailEdit, context.getString(R.string.email_connected_via_google));
-                        else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))
-                            myError(context, emailEdit, context.getString(R.string.email_connected_via_facebook));
+            if (task.isSuccessful() && task.getResult() != null && task.getResult().getSignInMethods() != null) {
+                List<String> signInMethods = task.getResult().getSignInMethods();
+                if(signInMethods.isEmpty()){
+                    myError(context, emailEdit, context.getString(R.string.email_not_registered));
+                    if(createAccount != null)
+                        createAccount.startAnimation(AnimationUtils.loadAnimation(context,R.anim.quick_flash));
+                } else if(signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)){
+                    if (passwordEdit != null) {
+                        myError(context, passwordEdit, context.getString(R.string.incorrect_password));
+                        if(forgotPassword != null)
+                            forgotPassword.startAnimation(AnimationUtils.loadAnimation(context, R.anim.quick_flash));
                     }
-                }
+                } else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
+                    myError(context, emailEdit, context.getString(R.string.email_connected_via_google));
+                else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))
+                    myError(context, emailEdit, context.getString(R.string.email_connected_via_facebook));
             } else
                 myError(context, emailEdit, context.getString(R.string.invalid_email));
         });
@@ -162,6 +157,7 @@ public class AuthFunctional {
             current.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
+                    new Handler().postDelayed(() -> quickFlashAnimating = false, 1500); // handled 1500ms after animation starts(anim is 1000ms long)
                 }
 
                 @Override
@@ -172,7 +168,6 @@ public class AuthFunctional {
                 public void onAnimationEnd(Animation animation) {
                     // continuing(starting) the previous animation
                     notificationLayout.startAnimation(previous);
-                    quickFlashAnimating = false;
                 }
             });
 
@@ -257,19 +252,14 @@ public class AuthFunctional {
     // in case registering fails, error will be set if the entered email is already connected with an FitnessAssistant account or an Google account
     public static void emailAlreadyRegistered(Context context, EditText emailEdit, String email){
         FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                SignInMethodQueryResult result = task.getResult();
-                if(result != null) {
-                    List<String> signInMethods = result.getSignInMethods();
-                    if (signInMethods != null){
-                        if(signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
-                            myError(context, emailEdit, context.getString(R.string.email_already_registered));
-                        else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
-                            myError(context, emailEdit, context.getString(R.string.email_connected_via_google));
-                        else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))
-                            myError(context, emailEdit, context.getString(R.string.email_connected_via_facebook));
-                    }
-                }
+            if (task.isSuccessful() && task.getResult() != null && task.getResult().getSignInMethods() != null) {
+                List<String> signInMethods = task.getResult().getSignInMethods();
+                if(signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
+                    myError(context, emailEdit, context.getString(R.string.email_already_registered));
+                else if(signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD))
+                    myError(context, emailEdit, context.getString(R.string.email_connected_via_google));
+                else if(signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD))
+                    myError(context, emailEdit, context.getString(R.string.email_connected_via_facebook));
             }
         });
     }

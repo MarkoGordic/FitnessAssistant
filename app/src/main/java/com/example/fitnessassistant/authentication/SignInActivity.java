@@ -37,7 +37,6 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
 
 import org.json.JSONException;
 
@@ -45,7 +44,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
-    protected final ActivityResultFunctional<Intent, ActivityResult> activityLauncher = ActivityResultFunctional.registerActivityForResult(this);
+    private final ActivityResultFunctional<Intent, ActivityResult> activityLauncher = ActivityResultFunctional.registerActivityForResult(this);
     private FirebaseAuth.AuthStateListener authListener;
     private NetworkManager networkManager;
     private GoogleSignInClient googleSignInClient;
@@ -86,7 +85,7 @@ public class SignInActivity extends AppCompatActivity {
 
         // googleSignInButton listener - gives google sign in pop-up
         findViewById(R.id.googleSignInButton).setOnClickListener(view -> {
-            AuthFunctional.startLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
+            AuthFunctional.startLoading(view, findViewById(R.id.googleSignInProgressBar));
             googleSignInClient.signOut(); // signing out, just in case there is a previously saved user
             activityLauncher.launch(googleSignInClient.getSignInIntent(), result -> {
                 try { // we get the account's credential from the SignInIntent (account's ID token)
@@ -94,22 +93,22 @@ public class SignInActivity extends AppCompatActivity {
                     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                     // and pass the credential to sign in with firebase
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnFailureListener(e -> {
-                        AuthFunctional.finishLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
+                        AuthFunctional.finishLoading(view, findViewById(R.id.googleSignInProgressBar));
                         try{ // if we fail, throw the exception
                             throw e;
                         } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
                             AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                         } catch(Exception e2){ // if it's any other we notify the user the sign in process was unsuccessful
-                            findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                            view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                             Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
                         }
                     });
                 } catch (ApiException e){ // if there is an error, check if we're currently not online
-                    AuthFunctional.finishLoading(findViewById(R.id.googleSignInButton), findViewById(R.id.googleSignInProgressBar));
+                    AuthFunctional.finishLoading(view, findViewById(R.id.googleSignInProgressBar));
                     if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
                         AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                     else{ // else quick flash the button and tell the user the sign in was unsuccessful by toasting
-                        findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                        view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                         Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
                     }
                 }
@@ -118,6 +117,7 @@ public class SignInActivity extends AppCompatActivity {
 
         // facebookSignInButton listener - communicates with Facebook SDK
         findViewById(R.id.facebookSignInButton).setOnClickListener(view -> {
+            LoginManager.getInstance().logOut();
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile")); // asking for the use of email and public profile on sign in
             LoginManager.getInstance().registerCallback(facebookCallbackManager, new FacebookCallback<LoginResult>() {
                 @Override
@@ -128,38 +128,33 @@ public class SignInActivity extends AppCompatActivity {
                         if (jsonObject != null) {
                             try {
                                 String email = jsonObject.getString("email");
-                                // after getting the email, fetch to check if it is already connected with another type of authorization
+                                // after getting the email, fetch to check if it is already connected with another type of provider
                                 FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        SignInMethodQueryResult result = task.getResult();
-                                        if (result != null) {
-                                            List<String> signInMethods = result.getSignInMethods();
-                                            if (signInMethods != null) { // checking signInMethods
-                                                if (signInMethods.isEmpty() || signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD)) { // if it's a new account or it's an account authorized with facebook, simply sign in
-                                                    AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
-                                                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnFailureListener(e -> {
-                                                        AuthFunctional.finishLoading(view, findViewById(R.id.facebookSignInProgressBar));
-                                                        LoginManager.getInstance().logOut();
-                                                        try { // if we fail, throw the exception and sign out of fb
-                                                            throw e;
-                                                        } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
-                                                        } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
-                                                            findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
-                                                            Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
-                                                        }
-                                                    });
-                                                } else{
-                                                    AuthFunctional.finishLoading(view, findViewById(R.id.facebookSignInProgressBar));
-                                                    LoginManager.getInstance().logOut();
-                                                    // set errors for other authorizations
-                                                    if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
-                                                        AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.facebook_error_password));
-                                                    else if (signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD)) {
-                                                        AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.facebook_error_google));
-                                                        findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
-                                                    }
+                                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getSignInMethods() != null) {
+                                        List<String> signInMethods = task.getResult().getSignInMethods(); // checking signInMethods
+                                        if (signInMethods.isEmpty() || signInMethods.contains(FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD)) { // if it's a new account or it's an account authenticated with facebook, simply sign in
+                                            AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
+                                            FirebaseAuth.getInstance().signInWithCredential(credential).addOnFailureListener(e -> {
+                                                AuthFunctional.finishLoading(view, findViewById(R.id.facebookSignInProgressBar));
+                                                LoginManager.getInstance().logOut();
+                                                try { // if we fail, throw the exception and sign out of fb
+                                                    throw e;
+                                                } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
+                                                    AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                                                } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
+                                                    findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                                                    Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
                                                 }
+                                            });
+                                        } else {
+                                            AuthFunctional.finishLoading(view, findViewById(R.id.facebookSignInProgressBar));
+                                            LoginManager.getInstance().logOut();
+                                            // set errors for other authentication
+                                            if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD))
+                                                AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.facebook_error_password));
+                                            else if (signInMethods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD)) {
+                                                AuthFunctional.myError(getApplicationContext(), findViewById(R.id.edtTxtEmail), getString(R.string.facebook_error_google));
+                                                findViewById(R.id.googleSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                             }
                                         }
                                     } else {
@@ -171,7 +166,7 @@ public class SignInActivity extends AppCompatActivity {
                                         } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
                                             AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                                         } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
-                                            findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                                            view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                             Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
                                         }
                                     }
@@ -179,13 +174,13 @@ public class SignInActivity extends AppCompatActivity {
                             } catch (JSONException e){ // notify about failing
                                 AuthFunctional.finishLoading(view, findViewById(R.id.facebookSignInProgressBar));
                                 LoginManager.getInstance().logOut();
-                                findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                                view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                 Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
                             }
                         } else{ // notify about failing
                             AuthFunctional.finishLoading(view, findViewById(R.id.facebookSignInProgressBar));
                             LoginManager.getInstance().logOut();
-                            findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
+                            view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                             Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
                         }
                     });

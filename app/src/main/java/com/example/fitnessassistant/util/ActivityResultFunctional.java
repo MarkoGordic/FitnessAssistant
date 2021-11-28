@@ -10,6 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+// class used for launching new activities and receiving their results
+//  --> made because startActivityForResult() is deprecated
 public class ActivityResultFunctional<Input, Result> {
     @NonNull
     public static <Input, Result> ActivityResultFunctional<Input, Result> registerForActivityResult(
