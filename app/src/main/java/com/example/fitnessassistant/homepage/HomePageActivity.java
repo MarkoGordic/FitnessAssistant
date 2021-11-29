@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.homepage;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -388,6 +389,17 @@ public class HomePageActivity extends AppCompatActivity {
 
     // sets up listeners for signing out
     private void setUpOnClickListeners(){
+        // startPedometer listener - asks for permission for activity recognition (if permission is not already granted)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            findViewById(R.id.startPedometerButton).setVisibility(View.VISIBLE);
+            findViewById(R.id.startPedometerButton).setOnClickListener(view -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                    PermissionFunctional.askForPermission(this, getString(R.string.activity_recognition_permission), getString(R.string.activity_recognition_rationale), Manifest.permission.ACTIVITY_RECOGNITION, RC_PEDOMETER_PERMISSION);
+                else // tell user he needs android (Q)10 for activity recognition
+                    Toast.makeText(getApplicationContext(), getString(R.string.android_q_needed), Toast.LENGTH_LONG).show();
+            });
+        }
+
         // signOutButton listener - click
         findViewById(R.id.signOutButton).setOnClickListener(view -> {
             if(AuthFunctional.currentlyOnline)
@@ -407,16 +419,18 @@ public class HomePageActivity extends AppCompatActivity {
             return true; // returns true -> onClick doesn't get triggered
         });
 
-        // startPedometer listener - asks for permission for activity recognition (if permission is not already granted)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            findViewById(R.id.startPedometerButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.startPedometerButton).setOnClickListener(view -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                    PermissionFunctional.askForPermission(this, getString(R.string.activity_recognition_permission), getString(R.string.activity_recognition_rationale), Manifest.permission.ACTIVITY_RECOGNITION, RC_PEDOMETER_PERMISSION);
-                else // tell user he needs android (Q)10 for activity recognition
-                    Toast.makeText(getApplicationContext(), getString(R.string.android_q_needed), Toast.LENGTH_LONG).show();
-            });
-        }
+        findViewById(R.id.deleteAccountButton).setOnClickListener(view -> {
+            if(AuthFunctional.currentlyOnline) { // setting up alertDialog for deletion
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.delete_your_account)
+                        .setMessage(R.string.account_deletion_message)
+                        .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
+                        .setPositiveButton(R.string.delete_account, (dialog, i) -> AuthFunctional.setUpDeletion(this));
+                builder.create().show();
+            }
+            else // if there is no internet, the animated notification quickly flashes
+                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+        });
     }
 
     // if user is signed out, go to sign in

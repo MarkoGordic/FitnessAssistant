@@ -37,6 +37,9 @@
     <string name="unlink">Unlink</string>
     <string name="link">Link</string>
     <string name="link_with_fitness_assistant">Link our Account</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -118,6 +121,14 @@
     <string name="email_linking_unsuccessful">Linking with Email unsuccessful</string>
     <string name="error_last_auth_provider">Unable to unlink last remaining authentication provider</string>
     <string name="account_already_linked">That email is already linked to this provider</string>
+    <string name="delete_your_account">Delete Your Account</string>
+    <string name="account_deletion_message">Are you sure you want to delete your account?\n\n<b>Please note:</b>
+        If you delete your account, you won\'t be able to reactivate it later
+         and all information associated with this account will be deleted.</string>
+    <string name="re_authenticate_your_account">Authenticate Your Account</string>
+    <string name="re_authentication_message">In order to delete your account, authenticate it once again by entering your password</string>
+    <string name="re_enter_your_password">Enter your password</string>
+    <string name="re_authentication_unsuccessful">Authentication Unsuccessful</string>
 
     <!-- COM.EXAMPLE.NETWORK -->
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>

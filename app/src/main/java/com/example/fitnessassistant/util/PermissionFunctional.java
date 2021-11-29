@@ -15,7 +15,9 @@ public class PermissionFunctional {
     // creates an alert dialog with rationale shown
     private static void showExplanation(Activity activity, String title, String message, String permission, int requestCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(title).setMessage(message).setPositiveButton(android.R.string.ok, (dialogInterface, i) -> requestPermission(activity, permission, requestCode));
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> requestPermission(activity, permission, requestCode));
         builder.create().show();
     }
 

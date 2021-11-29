@@ -261,15 +261,14 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signOutButton"
 
-        android:layout_width="match_parent"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/deleteAccountButton"
         app:layout_constraintStart_toStartOf="parent"
 
-        android:layout_marginStart="128dp"
-        android:layout_marginEnd="128dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="200dp"
 
         android:background="@drawable/authentication_button"
@@ -277,6 +276,30 @@
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
         android:text="@string/sign_out"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:textColor="@color/BackgroundColor"
+        android:textFontWeight="600" />
+
+    <!-- Delete Account Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deleteAccountButton"
+
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/signOutButton"
+
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="200dp"
+
+        android:background="@drawable/authentication_button"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/delete_account"
         android:textSize="16sp"
         android:textAllCaps="false"
         android:textColor="@color/BackgroundColor"

@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.util;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -17,17 +18,25 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.fitnessassistant.R;
+import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserInfo;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -206,7 +215,7 @@ public class AuthFunctional {
 
         // must not be empty
         if(TextUtils.isEmpty(username)) {
-            AuthFunctional.myError(context, userEdit, context.getString(R.string.empty_name));
+            myError(context, userEdit, context.getString(R.string.empty_name));
             return false;
         }
 
@@ -270,7 +279,7 @@ public class AuthFunctional {
 
         // must not be empty
         if(TextUtils.isEmpty(email)) {
-            AuthFunctional.myError(context, emailEdit, context.getString(R.string.empty_email));
+            myError(context, emailEdit, context.getString(R.string.empty_email));
             return false;
         }
 
@@ -292,7 +301,7 @@ public class AuthFunctional {
 
         // must not be empty
         if(TextUtils.isEmpty(password)) {
-            AuthFunctional.myError(context, passEdit, context.getString(R.string.empty_password));
+            myError(context, passEdit, context.getString(R.string.empty_password));
             return false;
         }
 
@@ -371,5 +380,73 @@ public class AuthFunctional {
             }
         });
         messageTextView.startAnimation(fadeOut);
+    }
+
+    // used to reauthenticate user with given credential and delete user if re-authentication was successful
+    public static void deleteUponReauthentication(Context context, AuthCredential credential){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null)
+            user.reauthenticate(credential).addOnCompleteListener(task -> {
+                if (!task.isSuccessful())
+                    Toast.makeText(context, R.string.re_authentication_unsuccessful, Toast.LENGTH_LONG).show();
+                else
+                    user.delete();
+            });
+    }
+
+    // setting up deletion based on accounts the user linked to
+    public static void setUpDeletion(Context context){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null && user.getEmail() != null) {
+            boolean signedInWithPassword = false;
+            boolean signedInWithGoogle = false;
+            boolean signedInWithFacebook = false;
+
+            for (UserInfo info : user.getProviderData()) {
+                if (info.getProviderId().contains(EmailAuthProvider.PROVIDER_ID))
+                    signedInWithPassword = true;
+                if (info.getProviderId().contains(FacebookAuthProvider.PROVIDER_ID))
+                    signedInWithFacebook = true;
+                if (info.getProviderId().contains(GoogleAuthProvider.PROVIDER_ID))
+                    signedInWithGoogle = true;
+            }
+
+            if (!signedInWithPassword) { // if user doesn't have our account, we re-authenticate with provider's token and delete user
+                if (signedInWithGoogle) {
+                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+                    if (account != null && account.getIdToken() != null)
+                        deleteUponReauthentication(context, GoogleAuthProvider.getCredential(account.getIdToken(), null));
+                }
+                if (signedInWithFacebook) {
+                    AccessToken token = AccessToken.getCurrentAccessToken();
+                    if (token != null)
+                        deleteUponReauthentication(context, FacebookAuthProvider.getCredential(token.getToken()));
+                }
+            } else { // if user has our account, we ask him to enter his password once again
+                EditText passwordInput = new EditText(context);
+                passwordInput.setHint(R.string.re_enter_your_password);
+                passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                passwordInput.setTransformationMethod(new MyPasswordTransformationMethod());
+
+                FrameLayout layout = new FrameLayout(context);
+                layout.setPaddingRelative(45, 15, 45, 0);
+                layout.addView(passwordInput);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.re_authenticate_your_account)
+                        .setMessage(R.string.re_authentication_message)
+                        .setView(layout)
+                        .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
+                        .setPositiveButton(R.string.delete, (dialog, i) -> {
+                            if (TextUtils.isEmpty(passwordInput.getText().toString()))
+                                passwordInput.setError(context.getString(R.string.empty_password));
+                            else {
+                                dialog.dismiss(); // we create credential based on user's email and given password
+                                deleteUponReauthentication(context, EmailAuthProvider.getCredential(user.getEmail(), passwordInput.getText().toString()));
+                            }
+                        });
+                builder.create().show();
+            }
+        }
     }
 }
