@@ -1,8 +1,12 @@
 package com.example.fitnessassistant.util;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.text.Editable;
@@ -27,9 +31,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.authentication.SignInActivity;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -447,6 +453,30 @@ public class AuthFunctional {
                         });
                 builder.create().show();
             }
+        }
+    }
+
+    // if user is signed out, go to sign in
+    public static void refreshUser(Context context){
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser == null) {
+            Intent signInIntent = new Intent(context, SignInActivity.class);
+            signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(context, signInIntent, null);
+            ((Activity) context).finish();
+        } else{ // try to reload the user
+            currentUser.reload().addOnFailureListener(e -> {
+                try{
+                    throw e;
+                } catch (FirebaseNetworkException e1){ // if it fails and it's a network error, the animated notification quickly flashes
+                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                } catch(Exception e2){ // if it fails and we're online(user deleted, disabled or credentials no longer valid) -> return to sign in
+                    Intent signInIntent = new Intent(context, SignInActivity.class);
+                    signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(context, signInIntent, null);
+                    ((Activity) context).finish();
+                }
+            });
         }
     }
 }

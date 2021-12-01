@@ -1,10 +1,7 @@
-package com.example.fitnessassistant.homepage;
+package com.example.fitnessassistant.profile;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -16,16 +13,17 @@ import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.CreateAccountActivity;
 import com.example.fitnessassistant.authentication.SignInActivity;
+import com.example.fitnessassistant.diary.DiaryPageActivity;
+import com.example.fitnessassistant.home.HomePageActivity;
+import com.example.fitnessassistant.map.MapPageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
-import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.util.ActivityResultFunctional;
 import com.example.fitnessassistant.util.AuthFunctional;
-import com.example.fitnessassistant.util.PermissionFunctional;
+import com.example.fitnessassistant.workout.WorkoutPageActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -38,6 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -50,47 +49,22 @@ import com.google.firebase.auth.UserInfo;
 import org.json.JSONException;
 
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-// TODO After adding in-app password change, update current user and make sure he doesn't get redirected to sign in
-//  also for in-app email change
-
-public class HomePageActivity extends AppCompatActivity {
+public class ProfilePageActivity extends AppCompatActivity {
     private final ActivityResultFunctional<Intent, ActivityResult> activityLauncher = ActivityResultFunctional.registerActivityForResult(this);
-    private final int RC_PEDOMETER_PERMISSION = 101;
+    private NetworkManager networkManager;
     private FirebaseAuth.AuthStateListener authListener;
     private GoogleSignInClient googleLinkingClient;
     private CallbackManager facebookCallbackManager;
-    private NetworkManager networkManager;
-    private Pedometer pedometer;
 
-    // gives welcome message based on time
-    private void greetUser(){
-        TextView welcomeTextView = findViewById(R.id.welcomeMessageTextView); // TextView in top right corner for welcome message
-
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(new Date());
-
-        int systemHours = calendar.get(Calendar.HOUR_OF_DAY);
-
-        if (systemHours >= 6 && systemHours < 12)
-            welcomeTextView.setText(getString(R.string.good_morning));
-        else if(systemHours >= 12 && systemHours < 18)
-            welcomeTextView.setText(getString(R.string.good_afternoon));
-        else if(systemHours >= 18 && systemHours < 22)
-            welcomeTextView.setText(getString(R.string.good_evening));
-        else
-            welcomeTextView.setText(getString(R.string.good_night));
-    }
-
+    // used to change textView content
     private void dispUser(FirebaseUser currentUser){
         ((TextView) findViewById(R.id.userNameTextView)).setText(String.format("%s: %s", getString(R.string.user_name), currentUser.getDisplayName()));
         ((TextView) findViewById(R.id.userEmailTextView)).setText(String.format("%s: %s", getString(R.string.user_email), currentUser.getEmail()));
     }
 
+    // called in onResume -> reloading user and displaying user info
     private void displayCurrentUser(){
         // setting up current user - this is in onResume in case anything gets changed after onPause()
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -115,6 +89,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
+    // setting up onClickListener for unlinking Google
     private void setUpGoogleUnlinkingSystem(Button googleLinkButton){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null) {
@@ -140,6 +115,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
+    // setting up onClickListener for linking Google
     private void setUpGoogleLinkingSystem(Button googleLinkButton){
         googleLinkButton.setOnClickListener(view -> {
             AuthFunctional.startLoading(view, findViewById(R.id.googleLinkingProgressBar));
@@ -173,7 +149,7 @@ public class HomePageActivity extends AppCompatActivity {
                                             }
                                         });
                                     } else // in case somehow user got here, but there is no user available, we get him back to sign in
-                                        updateUI();
+                                        AuthFunctional.refreshUser(this);
                                 } else {
                                     AuthFunctional.finishLoading(view, findViewById(R.id.googleLinkingProgressBar));
                                     view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
@@ -205,6 +181,7 @@ public class HomePageActivity extends AppCompatActivity {
         });
     }
 
+    // setting up onClickListener for unlinking Facebook
     private void setUpFacebookUnlinkingSystem(Button fbLinkButton){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null) {
@@ -228,9 +205,10 @@ public class HomePageActivity extends AppCompatActivity {
                 });
             });
         } else
-            updateUI();
+            AuthFunctional.refreshUser(this);
     }
 
+    // setting up onClickListener for linking Facebook
     private void setUpFacebookLinkingSystem(Button fbLinkButton){
         fbLinkButton.setOnClickListener(view -> {
             LoginManager.getInstance().logOut();
@@ -270,7 +248,7 @@ public class HomePageActivity extends AppCompatActivity {
                                                     }
                                                 });
                                             } else // in case somehow user got here, but there is no user available, we get him back to sign in
-                                                updateUI();
+                                                AuthFunctional.refreshUser(ProfilePageActivity.this);
                                         } else{ // else, some account is already linked, we notify the user
                                             AuthFunctional.finishLoading(view, findViewById(R.id.facebookLinkingProgressBar));
                                             LoginManager.getInstance().logOut();
@@ -326,6 +304,7 @@ public class HomePageActivity extends AppCompatActivity {
         });
     }
 
+    // setting up onClickListeners for all authentication providers
     private void setUpLinkingSystem(){
         Button googleLinkButton = findViewById(R.id.googleLinkingButton);
         boolean signedInWithGoogle = false;
@@ -348,7 +327,7 @@ public class HomePageActivity extends AppCompatActivity {
                 }
             }
         } else // if somehow this happens we make sure it doesn't happen :)
-            updateUI();
+            AuthFunctional.refreshUser(this);
 
         // setting up onClickListener and text for Google Linking
         if(signedInWithGoogle){
@@ -364,7 +343,6 @@ public class HomePageActivity extends AppCompatActivity {
             googleLinkButton.setText(R.string.link);
             setUpGoogleLinkingSystem(googleLinkButton);
         }
-
 
         // setting up onClickListener and text for Facebook Linking
         if(signedInWithFacebook){
@@ -382,24 +360,15 @@ public class HomePageActivity extends AppCompatActivity {
         }
 
         if(!signedInWithPassword)
-            ourLinkButton.setOnClickListener(view -> activityLauncher.launch(new Intent(this, CreateAccountActivity.class), result -> view.setVisibility(View.GONE)));
+            ourLinkButton.setOnClickListener(view -> activityLauncher.launch(new Intent(this, CreateAccountActivity.class), result -> {
+                if(result.getResultCode() == RESULT_OK)
+                    view.setVisibility(View.GONE);
+            }));
         else
             ourLinkButton.setVisibility(View.GONE);
     }
 
-    // sets up listeners for signing out
-    private void setUpOnClickListeners(){
-        // startPedometer listener - asks for permission for activity recognition (if permission is not already granted)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            findViewById(R.id.startPedometerButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.startPedometerButton).setOnClickListener(view -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                    PermissionFunctional.askForPermission(this, getString(R.string.activity_recognition_permission), getString(R.string.activity_recognition_rationale), Manifest.permission.ACTIVITY_RECOGNITION, RC_PEDOMETER_PERMISSION);
-                else // tell user he needs android (Q)10 for activity recognition
-                    Toast.makeText(getApplicationContext(), getString(R.string.android_q_needed), Toast.LENGTH_LONG).show();
-            });
-        }
-
+    private void setOnClickListeners(){
         // signOutButton listener - click
         findViewById(R.id.signOutButton).setOnClickListener(view -> {
             if(AuthFunctional.currentlyOnline)
@@ -431,14 +400,19 @@ public class HomePageActivity extends AppCompatActivity {
             else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
         });
-    }
 
-    // if user is signed out, go to sign in
-    private void updateUI() {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-        }
+        // setting up listeners for selected items in nav bar
+        ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setOnItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.map)
+                startActivity(new Intent(this, MapPageActivity.class));
+            else if(item.getItemId() == R.id.diary)
+                startActivity(new Intent(this, DiaryPageActivity.class));
+            else if(item.getItemId() == R.id.home)
+                startActivity(new Intent(this, HomePageActivity.class));
+            else if(item.getItemId() == R.id.workout)
+                startActivity(new Intent(this, WorkoutPageActivity.class));
+            return true;
+        });
     }
 
     @Override
@@ -449,25 +423,15 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RC_PEDOMETER_PERMISSION) // requestCode is used to retrieve the results of asking for permission
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                findViewById(R.id.startPedometerButton).setVisibility(View.GONE); // hide the button if it's granted
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_screen);
-        greetUser();
-        setUpOnClickListeners();
+        setContentView(R.layout.profile_screen);
+        setOnClickListeners();
 
         networkManager = new NetworkManager(getApplication());
-        pedometer = new Pedometer(this, findViewById(R.id.stepCountTextView));
 
         // setting up listener for firebase
-        authListener = firebaseAuth -> updateUI();
+        authListener = firebaseAuth -> AuthFunctional.refreshUser(this);
 
         // setting up Google client
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.server_client_id)).requestEmail().build();
@@ -482,12 +446,12 @@ public class HomePageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // setting up current selected item in nav bar
+        ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.profile);
         // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(this,findViewById(R.id.homeScreen));
+        networkManager.registerConnectionObserver(this,findViewById(R.id.profileScreen));
         // adding the listener for firebase to change the UI
         FirebaseAuth.getInstance().addAuthStateListener(authListener);
-        // re-registering the pedometer sensor
-        pedometer.reRegisterSensor();
 
         displayCurrentUser();
     }

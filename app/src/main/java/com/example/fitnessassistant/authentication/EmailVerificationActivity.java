@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.homepage.HomePageActivity;
+import com.example.fitnessassistant.home.HomePageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.facebook.login.LoginManager;

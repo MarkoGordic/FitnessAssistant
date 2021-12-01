@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.homepage.HomePageActivity;
+import com.example.fitnessassistant.home.HomePageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.ActivityResultFunctional;
 import com.example.fitnessassistant.util.AuthFunctional;

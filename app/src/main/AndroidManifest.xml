@@ -36,7 +36,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
     <activity
-        android:name=".homepage.HomePageActivity"
+        android:name=".home.HomePageActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
     <activity
@@ -45,6 +45,18 @@
     </activity>
     <activity
         android:name=".authentication.EmailVerificationActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+    </activity>
+    <activity android:name=".map.MapPageActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+    </activity>
+    <activity android:name=".diary.DiaryPageActivity"
+    android:theme="@style/Theme.AppCompat.NoActionBar">
+    </activity>
+    <activity android:name=".workout.WorkoutPageActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+    </activity>
+    <activity android:name=".profile.ProfilePageActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
 </application>

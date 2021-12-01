@@ -1,27 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/homeScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/BackgroundColor">
-
-    <!-- Navigation at the bottom of the screen -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        android:background="@color/BackgroundColor"
-
-        app:itemIconTint="@color/bottom_navigation_colors"
-        app:itemTextColor="@color/bottom_navigation_colors"
-
-        app:menu="@menu/bottom_navigation" />
 
     <!-- Welcome TextView -->
     <TextView
@@ -100,209 +83,20 @@
         app:layout_constraintEnd_toStartOf="@id/stepGoalTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- UserName TextView -->
-    <TextView
-        android:id="@+id/userNameTextView"
+    <!-- Navigation at the bottom of the screen -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/stepCountTextView"
-
-        android:layout_marginTop="48dp"
-
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:paddingStart="36dp"
-        android:paddingEnd="36dp"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="17sp"/>
-
-    <!-- UserEmail TextView -->
-    <TextView
-        android:id="@+id/userEmailTextView"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userNameTextView"
-
-        android:layout_marginTop="16dp"
-
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:paddingStart="36dp"
-        android:paddingEnd="36dp"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="17sp"/>
-
-    <!-- TODO add in a drawable logo in link button -->
-    <!-- Create Account Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/FAlinkingButton"
-
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/facebookLinkingButton"
-
-        android:layout_marginBottom="32dp"
-
-        android:background="@drawable/authentication_button"
-
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-
-        android:text="@string/link_with_fitness_assistant"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/default_white_color"
-        android:textSize="16sp" />
-
-
-
-    <!-- Facebook Linking Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/facebookLinkingButton"
-
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/custom_fb_button"
-        android:drawableStart="@drawable/ic_facebook"
-
-        android:drawablePadding="24dp"
-
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-
-        android:text="@string/link"
-
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
-
-        android:textColor="@color/default_white_color"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/googleLinkingButton"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TextContrastCheck,DuplicateSpeakableTextCheck" />
-
-    <!-- Facebook Linking Progress Circle -->
-    <ProgressBar
-        android:id="@+id/facebookLinkingProgressBar"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="@id/facebookLinkingButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/facebookLinkingButton"
-
-        android:elevation="2dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/BlueYonder"
-        android:visibility="gone" />
-
-    <!-- Google Linking Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/googleLinkingButton"
-
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/signOutButton"
-
-        android:layout_marginBottom="24dp"
-
-        android:background="@drawable/custom_google_button"
-        android:drawableStart="@drawable/ic_google"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:drawablePadding="24dp"
-
-        android:text="@string/link"
-        android:textColor="@color/common_google_signin_btn_text_light_default"
-        android:textAlignment="textStart"
-        android:textSize="16sp"
-        android:textAllCaps="false"/>
-
-    <!-- Google Linking Progress Circle -->
-    <ProgressBar
-        android:id="@+id/googleLinkingProgressBar"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="@id/googleLinkingButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/googleLinkingButton"
-
-        android:elevation="2dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/BlueYonder"
-        android:visibility="gone" />
-
-    <!-- Sign Out Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signOutButton"
-
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/deleteAccountButton"
-        app:layout_constraintStart_toStartOf="parent"
 
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="200dp"
+        android:background="@color/BackgroundColor"
 
-        android:background="@drawable/authentication_button"
+        app:itemIconTint="@color/bottom_navigation_colors"
+        app:itemTextColor="@color/bottom_navigation_colors"
 
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:text="@string/sign_out"
-        android:textSize="16sp"
-        android:textAllCaps="false"
-        android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
 
-    <!-- Delete Account Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/deleteAccountButton"
-
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/signOutButton"
-
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="200dp"
-
-        android:background="@drawable/authentication_button"
-
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:text="@string/delete_account"
-        android:textSize="16sp"
-        android:textAllCaps="false"
-        android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
-
+        app:menu="@menu/bottom_navigation" />
 </androidx.constraintlayout.widget.ConstraintLayout>
