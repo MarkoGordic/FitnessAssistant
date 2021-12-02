@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -58,12 +57,6 @@ public class ProfilePageActivity extends AppCompatActivity {
     private GoogleSignInClient googleLinkingClient;
     private CallbackManager facebookCallbackManager;
 
-    // used to change textView content
-    private void dispUser(FirebaseUser currentUser){
-        ((TextView) findViewById(R.id.userNameTextView)).setText(String.format("%s: %s", getString(R.string.user_name), currentUser.getDisplayName()));
-        ((TextView) findViewById(R.id.userEmailTextView)).setText(String.format("%s: %s", getString(R.string.user_email), currentUser.getEmail()));
-    }
-
     // called in onResume -> reloading user and displaying user info
     private void displayCurrentUser(){
         // setting up current user - this is in onResume in case anything gets changed after onPause()
@@ -72,7 +65,7 @@ public class ProfilePageActivity extends AppCompatActivity {
             // try to reload the user (update) to get the latest data
             currentUser.reload().addOnCompleteListener(task -> {
                 if(task.isSuccessful()) // we're displaying the user's profile (reloaded)
-                    dispUser(currentUser);
+                    AuthFunctional.dispUser(this, currentUser);
                 else
                     try{
                         if(task.getException() != null)
@@ -80,7 +73,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                     } catch (FirebaseNetworkException e1){ // if it fails and it's a network error, the animated notification quickly flashes
                         AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
                         // we're displaying the user's profile (last saved)
-                        dispUser(currentUser);
+                        AuthFunctional.dispUser(this, currentUser);
                     } catch(Exception e2){ // if it fails and we're online(user deleted, disabled or credentials no longer valid) -> return to sign in
                         startActivity(new Intent(this, SignInActivity.class));
                         finish();
@@ -360,10 +353,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         }
 
         if(!signedInWithPassword)
-            ourLinkButton.setOnClickListener(view -> activityLauncher.launch(new Intent(this, CreateAccountActivity.class), result -> {
-                if(result.getResultCode() == RESULT_OK)
-                    view.setVisibility(View.GONE);
-            }));
+            ourLinkButton.setOnClickListener(view -> activityLauncher.launch(new Intent(this, CreateAccountActivity.class), result -> setUpLinkingSystem()));
         else
             ourLinkButton.setVisibility(View.GONE);
     }
@@ -388,8 +378,9 @@ public class ProfilePageActivity extends AppCompatActivity {
             return true; // returns true -> onClick doesn't get triggered
         });
 
+        // deleteAccountButton listener - pops up alert dialog for deletion
         findViewById(R.id.deleteAccountButton).setOnClickListener(view -> {
-            if(AuthFunctional.currentlyOnline) { // setting up alertDialog for deletion
+            if(AuthFunctional.currentlyOnline) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.delete_your_account)
                         .setMessage(R.string.account_deletion_message)
@@ -397,6 +388,30 @@ public class ProfilePageActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.delete_account, (dialog, i) -> AuthFunctional.setUpDeletion(this));
                 builder.create().show();
             }
+            else // if there is no internet, the animated notification quickly flashes
+                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+        });
+
+        // changeUserNameButton listener - first alert dialog for confirmation
+        findViewById(R.id.changeUserNameButton).setOnClickListener(view -> {
+            if(AuthFunctional.currentlyOnline)
+                AuthFunctional.setUpUserNameChange(this);
+            else // if there is no internet, the animated notification quickly flashes
+                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+        });
+
+        // changeEmailButton listener - first alert dialog for confirmation
+        findViewById(R.id.changeEmailButton).setOnClickListener(view -> {
+            if(AuthFunctional.currentlyOnline)
+                AuthFunctional.setUpEmailChange(this);
+            else // if there is no internet, the animated notification quickly flashes
+                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+        });
+
+        // changePasswordButton listener - alert dialog for confirmation
+        findViewById(R.id.changePasswordButton).setOnClickListener(view -> {
+            if(AuthFunctional.currentlyOnline)
+                AuthFunctional.setUpPasswordChange(this);
             else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
         });

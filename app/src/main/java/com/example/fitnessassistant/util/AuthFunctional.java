@@ -43,6 +43,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -394,7 +395,14 @@ public class AuthFunctional {
         if(user != null)
             user.reauthenticate(credential).addOnCompleteListener(task -> {
                 if (!task.isSuccessful())
-                    Toast.makeText(context, R.string.re_authentication_unsuccessful, Toast.LENGTH_LONG).show();
+                    try { // throw the exception to check errors
+                        if (task.getException() != null)
+                            throw task.getException();
+                    } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                        AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                    } catch (Exception e2) { // else notify user
+                        Toast.makeText(context, context.getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
+                    }
                 else
                     user.delete();
             });
@@ -435,7 +443,7 @@ public class AuthFunctional {
                 passwordInput.setTransformationMethod(new MyPasswordTransformationMethod());
 
                 FrameLayout layout = new FrameLayout(context);
-                layout.setPaddingRelative(45, 15, 45, 0);
+                layout.setPaddingRelative(45, 0, 45, 0);
                 layout.addView(passwordInput);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -448,12 +456,289 @@ public class AuthFunctional {
                                 passwordInput.setError(context.getString(R.string.empty_password));
                             else {
                                 dialog.dismiss(); // we create credential based on user's email and given password
-                                deleteUponReauthentication(context, EmailAuthProvider.getCredential(user.getEmail(), passwordInput.getText().toString()));
+                                if(currentlyOnline)
+                                    deleteUponReauthentication(context, EmailAuthProvider.getCredential(user.getEmail(), passwordInput.getText().toString()));
+                                else // if we're offline, the animated notification quickly flashes
+                                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
                             }
                         });
                 builder.create().show();
             }
         }
+    }
+
+    // used to change user's email
+    private static void changeEmail(Context context){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            // setting up EditText for email input
+            EditText emailInput = new EditText(context);
+            emailInput.setHint(R.string.enter_your_new_email);
+            emailInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS );
+
+            FrameLayout layout = new FrameLayout(context);
+            layout.setPaddingRelative(45, 0, 45, 0);
+            layout.addView(emailInput);
+
+            // building alert dialog for email input
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.change_your_email)
+                    .setMessage(R.string.change_email_message)
+                    .setView(layout)
+                    .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
+                    .setPositiveButton(R.string.change, (dialog, i) -> {
+                        if (validEmail(context, emailInput)) {
+                            dialog.dismiss();
+                            // dismiss dialog and update the email
+                            user.updateEmail(emailInput.getText().toString()).addOnCompleteListener(task -> {
+                                if (!task.isSuccessful()) // if unsuccessful, check errors
+                                    try {
+                                        if (task.getException() != null)
+                                            throw task.getException();
+                                    } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                        AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                                    } catch (Exception e2) { // else notify user
+                                        Toast.makeText(context, context.getString(R.string.email_change_unsuccessful), Toast.LENGTH_LONG).show();
+                                    }
+                                else if (AuthFunctional.currentlyOnline) // try to reload the user
+                                        user.reload().addOnCompleteListener(task1 -> {
+                                            if (!task1.isSuccessful()) {
+                                                try { // throw the exception to check errors
+                                                    if (task1.getException() != null)
+                                                        throw task1.getException();
+                                                } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                                                } catch (Exception e2) { // else notify user
+                                                    Toast.makeText(context, context.getString(R.string.email_change_unsuccessful), Toast.LENGTH_LONG).show();
+                                                }
+                                            } else
+                                                dispUser(context, user); // if task is successful refresh the displayed user
+                                        });
+                            });
+                        }
+                    });
+            builder.create().show();
+        }
+    }
+    public static void setUpEmailChange(Context context){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null && user.getEmail() != null) {
+            boolean signedInWithPassword = false;
+
+            for (UserInfo info : user.getProviderData()) {
+                if (info.getProviderId().contains(EmailAuthProvider.PROVIDER_ID))
+                    signedInWithPassword = true;
+            }
+
+            if (!signedInWithPassword) { // if user doesn't have our account, we inform him that he can't change his email
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.no_fa_account_error)
+                        .setMessage(R.string.no_fa_message)
+                        .setPositiveButton(android.R.string.ok, (dialog, i) -> dialog.dismiss());
+                builder.create().show();
+            } else { // if user has our account, we ask him to enter his password once again
+                EditText passwordInput = new EditText(context);
+                passwordInput.setHint(R.string.re_enter_your_password);
+                passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                passwordInput.setTransformationMethod(new MyPasswordTransformationMethod());
+
+                FrameLayout layout = new FrameLayout(context);
+                layout.setPaddingRelative(45, 0, 45, 0);
+                layout.addView(passwordInput);
+
+                // building alert dialog for re-authentication
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.re_authenticate_your_account)
+                        .setMessage(R.string.re_authentication_message)
+                        .setView(layout)
+                        .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
+                        .setPositiveButton(R.string.continue_ad, (dialog, i) -> {
+                            if (TextUtils.isEmpty(passwordInput.getText().toString()))
+                                passwordInput.setError(context.getString(R.string.empty_password));
+                            else {
+                                // if email entered is not empty, dismiss the dialog an re-authenticate user with credential created
+                                dialog.dismiss();
+                                user.reauthenticate(EmailAuthProvider.getCredential(user.getEmail(), passwordInput.getText().toString())).addOnCompleteListener(task -> {
+                                    if (!task.isSuccessful())
+                                        try { // if we fail throw exceptions
+                                            if (task.getException() != null)
+                                                throw task.getException();
+                                        } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                            AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                                        } catch (Exception e2) { // else notify user
+                                            Toast.makeText(context, context.getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
+                                        }
+                                    else
+                                        changeEmail(context); // if everything is successful, we continue the email change process
+                                });
+                            }
+                        });
+                builder.create().show();
+            }
+        }
+    }
+
+    private static void changePassword(Context context){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            // setting up the input for the new password
+            EditText passwordInput = new EditText(context);
+            passwordInput.setHint(R.string.enter_your_new_password);
+            passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+            FrameLayout layout = new FrameLayout(context);
+            layout.setPaddingRelative(45, 0, 45, 0);
+            layout.addView(passwordInput);
+
+            // building the alert dialog for the new password
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.change_your_password)
+                    .setMessage(R.string.change_password_message)
+                    .setView(layout)
+                    .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
+                    .setPositiveButton(R.string.change, (dialog, i) -> {
+                        if(validPassword(context, passwordInput)){
+                            dialog.dismiss();
+                            // if password is valid, dismiss the dialog and try to update the password
+                            user.updatePassword(passwordInput.getText().toString()).addOnCompleteListener(task -> {
+                                if (!task.isSuccessful()) // if unsuccessful, check errors
+                                    try {
+                                        if (task.getException() != null)
+                                            throw task.getException();
+                                    } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                        AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                                    } catch (Exception e2) { // else notify user
+                                        Toast.makeText(context, context.getString(R.string.password_change_unsuccessful), Toast.LENGTH_LONG).show();
+                                    }
+                                else if (AuthFunctional.currentlyOnline) // reload the user and in case that fails, notify user
+                                        user.reload().addOnFailureListener(e -> Toast.makeText(context, context.getString(R.string.password_change_unsuccessful), Toast.LENGTH_LONG).show());
+                            });
+                        }
+                    });
+            builder.create().show();
+        }
+    }
+
+    public static void setUpPasswordChange(Context context){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null && user.getEmail() != null) {
+            boolean signedInWithPassword = false;
+
+            for (UserInfo info : user.getProviderData()) {
+                if (info.getProviderId().contains(EmailAuthProvider.PROVIDER_ID))
+                    signedInWithPassword = true;
+            }
+
+            if (!signedInWithPassword) { // if user doesn't have our account, he can't change his password
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.no_fa_account_error)
+                        .setMessage(R.string.no_fa_message)
+                        .setPositiveButton(android.R.string.ok, (dialog, i) -> dialog.dismiss());
+                builder.create().show();
+            } else { // if user has our account, we ask him to enter his password once again
+                EditText passwordInput = new EditText(context);
+                passwordInput.setHint(R.string.re_enter_your_password);
+                passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                passwordInput.setTransformationMethod(new MyPasswordTransformationMethod());
+
+                FrameLayout layout = new FrameLayout(context);
+                layout.setPaddingRelative(45, 0, 45, 0);
+                layout.addView(passwordInput);
+
+                // building the alert dialog for re-authentication
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.re_authenticate_your_account)
+                        .setMessage(R.string.re_authentication_message)
+                        .setView(layout)
+                        .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
+                        .setPositiveButton(R.string.continue_ad, (dialog, i) -> {
+                            if (TextUtils.isEmpty(passwordInput.getText().toString()))
+                                passwordInput.setError(context.getString(R.string.empty_password));
+                            else {
+                                dialog.dismiss();
+                                // if password is not empty, we try to re-authenticate with created credential
+                                user.reauthenticate(EmailAuthProvider.getCredential(user.getEmail(), passwordInput.getText().toString())).addOnCompleteListener(task -> {
+                                    if (!task.isSuccessful())
+                                        try { // if we fail throw the exception
+                                            if (task.getException() != null)
+                                                throw task.getException();
+                                        } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                            AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                                        } catch (Exception e2) { // else notify user
+                                            Toast.makeText(context, context.getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
+                                        }
+                                    else
+                                        changePassword(context); // if we succeed, continue the password change process
+                                });
+                            }
+                        });
+                builder.create().show();
+            }
+        }
+    }
+
+    public static void setUpUserNameChange(Context context){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            // creating EditText for username input
+            EditText usernameInput = new EditText(context);
+            usernameInput.setHint(R.string.enter_your_new_username);
+            usernameInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+
+            FrameLayout layout = new FrameLayout(context);
+            layout.setPaddingRelative(45, 0, 45, 0);
+            layout.addView(usernameInput);
+
+            // building the alert dialog for username change
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.change_your_username)
+                    .setMessage(R.string.change_username_message)
+                    .setView(layout)
+                    .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
+                    .setPositiveButton(R.string.change, (dialog, i) -> {
+                        if(validUsername(context, usernameInput)){
+                            dialog.dismiss();
+                            // if username is valid dismiss the dialog and try to update user profile
+                            user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(usernameInput.getText().toString()).build()).addOnCompleteListener(task -> {
+                                if (!task.isSuccessful()) // if unsuccessful, check errors
+                                    try {
+                                        if (task.getException() != null)
+                                            throw task.getException();
+                                    } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                        AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                                    } catch (Exception e2) { // else notify user
+                                        Toast.makeText(context, context.getString(R.string.username_change_unsuccessful), Toast.LENGTH_LONG).show();
+                                    }
+                                else if (AuthFunctional.currentlyOnline) // try to reload the user
+                                    user.reload().addOnCompleteListener(task1 -> {
+                                        if (!task1.isSuccessful()) {
+                                            try {
+                                                if (task1.getException() != null)
+                                                    throw task1.getException();
+                                            } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                                AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification_layout_id));
+                                            } catch (Exception e2) { // else notify user
+                                                Toast.makeText(context, context.getString(R.string.username_change_unsuccessful), Toast.LENGTH_LONG).show();
+                                            }
+                                        } else
+                                            dispUser(context, user);
+                                    });
+                            });
+                        }
+                    });
+            builder.create().show();
+        }
+    }
+
+    // used to change textView content
+    public static void dispUser(Context context, FirebaseUser currentUser){
+        TextView userNameView = ((Activity) context).findViewById(R.id.userNameTextView);
+        TextView userEmailView = ((Activity) context).findViewById(R.id.userEmailTextView);
+        // checking if textViews are null in case we are not on the profile page
+        if(userNameView != null)
+            userNameView.setText(String.format("%s: %s", context.getString(R.string.user_name), currentUser.getDisplayName()));
+        if(userEmailView != null)
+            userEmailView.setText(String.format("%s: %s", context.getString(R.string.user_email), currentUser.getEmail()));
     }
 
     // if user is signed out, go to sign in

@@ -28,6 +28,27 @@
         android:textFontWeight="600"
         android:textSize="17sp"/>
 
+    <!-- Change Username Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/changeUserNameButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userNameTextView"
+        app:layout_constraintBottom_toBottomOf="@id/userNameTextView"
+
+        android:layout_marginEnd="32dp"
+
+        android:background="@drawable/authentication_button"
+
+        android:text="@string/change"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/default_white_color"
+        android:textSize="16sp"/>
+
     <!-- UserEmail TextView -->
     <TextView
         android:id="@+id/userEmailTextView"
@@ -39,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/userNameTextView"
 
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
 
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
@@ -48,6 +69,49 @@
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="17sp"/>
+
+    <!-- Change Email Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/changeEmailButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userEmailTextView"
+        app:layout_constraintBottom_toBottomOf="@id/userEmailTextView"
+
+        android:layout_marginEnd="32dp"
+
+        android:background="@drawable/authentication_button"
+
+        android:text="@string/change"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/default_white_color"
+        android:textSize="16sp"/>
+
+    <!-- Change Password Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/changePasswordButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="@id/changeEmailButton"
+        app:layout_constraintTop_toBottomOf="@id/changeEmailButton"
+
+        android:layout_marginTop="16dp"
+
+        android:background="@drawable/authentication_button"
+
+        android:text="@string/change_password"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/default_white_color"
+        android:textSize="16sp"/>
 
     <!-- TODO add in a drawable logo in link button -->
     <!-- Create Account Button -->

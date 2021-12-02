@@ -41,6 +41,9 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="privacy_policy"><u>Privacy Policy</u></string>
+    <string name="change">Change</string>
+    <string name="continue_ad">Continue</string>
+    <string name="change_password">Change Password</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -127,9 +130,23 @@
         If you delete your account, you won\'t be able to reactivate it later
          and all information associated with this account will be deleted.</string>
     <string name="re_authenticate_your_account">Authenticate Your Account</string>
-    <string name="re_authentication_message">In order to delete your account, authenticate it once again by entering your password</string>
+    <string name="re_authentication_message">In order to continue, authenticate your account once again by entering your password</string>
     <string name="re_enter_your_password">Enter your password</string>
     <string name="re_authentication_unsuccessful">Authentication Unsuccessful</string>
+    <string name="change_your_username">Change Username</string>
+    <string name="change_your_email">Change Email</string>
+    <string name="change_your_password">Change Password</string>
+    <string name="change_username_message"><b>Please note: </b>Provide a valid username.\nInvalid usernames will NOT change your old one.</string>
+    <string name="change_email_message"><b>Please note: </b>Provide a valid email.\nYou\'ll have to verify it on your next sign in.</string>
+    <string name="change_password_message"><b>Please note: </b>Provide a strong password.\nWeak passwords won\'t change your old one.</string>
+    <string name="no_fa_account_error">No FitnessAssistant Account</string>
+    <string name="no_fa_message">This change is available for users registered with our FitnessAssistant account. Please create an account first.</string>
+    <string name="enter_your_new_email">Enter your new email</string>
+    <string name="enter_your_new_password">Enter your new password</string>
+    <string name="enter_your_new_username">Enter your new username</string>
+    <string name="username_change_unsuccessful">Username Change Unsuccessful</string>
+    <string name="password_change_unsuccessful">Password Change Unsuccessful</string>
+    <string name="email_change_unsuccessful">Email Change Unsuccessful</string>
 
     <!-- COM.EXAMPLE.NETWORK -->
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>
