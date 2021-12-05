@@ -13,9 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.home.HomePageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
+import com.example.fitnessassistant.InAppActivity;
 import com.facebook.login.LoginManager;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +26,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
     private NetworkManager networkManager;
     private boolean changeCredentialsButtonPressed = false; // used for back button
 
-    private void goToHomePageUI(){
+    private void enterApp(){
         setContentView(R.layout.loading_screen);
         Animation loadAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_loading);
         loadAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -36,8 +36,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
-                // after loading goes to HomePageActivity
-                startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
+                startActivity(new Intent(getApplicationContext(), InAppActivity.class));
                 finish();
             }
         });
@@ -50,7 +49,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
         } else if (user.isEmailVerified()) // if saved user is email verified, go to home page
-            goToHomePageUI();
+            enterApp();
         else{ // if saved user's email is not verified, try to reload if possible
             ((SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout)).setRefreshing(true);
             if(!AuthFunctional.currentlyOnline){
@@ -70,7 +69,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                             finish();
                         }
                     else if (user.isEmailVerified()) // if reloaded user has emailVerified, go to home page (this may get triggered often)
-                        goToHomePageUI();
+                        enterApp();
                     else { // if not, just load reloaded user's info
                         ((TextView) findViewById(R.id.userEmailNotVerifiedTextView)).setText(String.format("%s (%s)", user.getEmail(), getString(R.string.verified_false)));
                         findViewById(R.id.userEmailNotVerifiedTextView).setAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
@@ -121,7 +120,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                 finish();
                             }
                         else if (user.isEmailVerified()) // if reloaded user has emailVerified, go to home page (this may get triggered often)
-                            goToHomePageUI();
+                            enterApp();
                         else
                             user.sendEmailVerification().addOnCompleteListener(task1 -> {
                                 AuthFunctional.finishLoading(view, findViewById(R.id.sendEmailVerificationBar));

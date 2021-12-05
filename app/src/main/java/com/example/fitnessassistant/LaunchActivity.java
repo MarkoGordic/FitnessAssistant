@@ -8,10 +8,9 @@ import android.view.animation.AnimationUtils;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class LaunchActivity extends AppCompatActivity {
 
     // used at the start of the app
     private void openingAnimation(){

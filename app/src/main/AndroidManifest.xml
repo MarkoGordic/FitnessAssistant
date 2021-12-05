@@ -19,13 +19,17 @@
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
     <activity
-        android:name=".MainActivity"
+        android:name=".LaunchActivity"
         android:exported="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+    </activity>
+    <activity android:name=".InAppActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:launchMode="singleTop">
     </activity>
     <activity
         android:name=".authentication.SignInActivity"
@@ -36,27 +40,11 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
     <activity
-        android:name=".home.HomePageActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar" >
-    </activity>
-    <activity
         android:name=".authentication.CreateAccountActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
     </activity>
     <activity
         android:name=".authentication.EmailVerificationActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-    </activity>
-    <activity android:name=".map.MapPageActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-    </activity>
-    <activity android:name=".diary.DiaryPageActivity"
-    android:theme="@style/Theme.AppCompat.NoActionBar">
-    </activity>
-    <activity android:name=".workout.WorkoutPageActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-    </activity>
-    <activity android:name=".profile.ProfilePageActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar">
     </activity>
 </application>

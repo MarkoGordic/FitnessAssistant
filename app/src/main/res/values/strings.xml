@@ -138,7 +138,7 @@
     <string name="change_your_password">Change Password</string>
     <string name="change_username_message"><b>Please note: </b>Provide a valid username.\nInvalid usernames will NOT change your old one.</string>
     <string name="change_email_message"><b>Please note: </b>Provide a valid email.\nYou\'ll have to verify it on your next sign in.</string>
-    <string name="change_password_message"><b>Please note: </b>Provide a strong password.\nWeak passwords won\'t change your old one.</string>
+    <string name="change_password_message"><b>Please note: </b>Provide a strong password.\nWeak passwords <b>won\'t</b> change your old one.</string>
     <string name="no_fa_account_error">No FitnessAssistant Account</string>
     <string name="no_fa_message">This change is available for users registered with our FitnessAssistant account. Please create an account first.</string>
     <string name="enter_your_new_email">Enter your new email</string>

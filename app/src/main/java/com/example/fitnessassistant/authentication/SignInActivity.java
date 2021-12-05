@@ -14,10 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.home.HomePageActivity;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.ActivityResultFunctional;
 import com.example.fitnessassistant.util.AuthFunctional;
+import com.example.fitnessassistant.InAppActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -213,7 +213,7 @@ public class SignInActivity extends AppCompatActivity {
             facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void goToHomePageUI(){
+    private void enterApp(){
         setContentView(R.layout.loading_screen);
         Animation loadAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.authentication_loading);
         loadAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -223,8 +223,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
-                // after loading goes to HomePageActivity
-                startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
+                startActivity(new Intent(getApplicationContext(), InAppActivity.class));
                 finish();
             }
         });
@@ -236,7 +235,7 @@ public class SignInActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) { // if user exists, emailVerification is checked and he is redirected to a new UI, otherwise he stays here
             if (user.isEmailVerified())
-                goToHomePageUI();
+                enterApp();
             else {
                 user.sendEmailVerification();
                 startActivity(new Intent(this, EmailVerificationActivity.class));

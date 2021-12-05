@@ -21,7 +21,7 @@ public class NetworkManager {
     private final TextView notificationView;
     private final ConnectionStateMonitor csMonitor;
 
-    // called in onCreate() of the Activity implementing it -> declare networkManager as a field in Activity
+    // called in onCreate() -> declaring networkManager as a field
     public NetworkManager(Application application){
         this.application = application;
         csMonitor = new ConnectionStateMonitor(application);
@@ -105,13 +105,13 @@ public class NetworkManager {
         constraintSet.applyTo(layout);
     }
 
-    // called in onResume() of the Activity implementing it
+    // called in onResume() - registering
     public void registerConnectionObserver(LifecycleOwner lifecycleOwner, ConstraintLayout layout){
         csMonitor.observe(lifecycleOwner, connected -> {
             // checks if there is already a notification set
             if(notificationView.getParent() == null){
                 // sets notification and starts animation
-                if(layout != null) { // checked in case an Activity is using this just to register the currentlyOnline state
+                if(layout != null) { // checked in case this is used just for the currentlyOnline state
                     addNotification(layout);
                     layout.startLayoutAnimation();
                 }
@@ -128,7 +128,7 @@ public class NetworkManager {
         });
     }
 
-    // called in onPause() of the Activity implementing it
+    // called in onPause() - unregistering
     public void unregisterConnectionObserver(LifecycleOwner lifecycleOwner){
         csMonitor.removeObservers(lifecycleOwner);
     }
