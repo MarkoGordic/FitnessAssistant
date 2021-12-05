@@ -14,74 +14,14 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
 
         android:text="@string/welcome_text"
         android:fontFamily="@font/ralewaym"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textColor="@color/BlueYonder" />
-
-    <!-- Start Counting Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/startPedometerButton"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="@id/stepCountTextView"
-        app:layout_constraintTop_toTopOf="@id/stepCountTextView"
-        app:layout_constraintStart_toStartOf="parent"
-
-        android:layout_marginStart="32dp"
-
-        android:background="@drawable/authentication_button"
-        android:visibility="gone"
-
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:text="@string/start_button"
-        android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
-
-    <!-- Step Goal TextView -->
-    <TextView
-        android:id="@+id/stepGoalTextView"
-
-        android:layout_width="98dp"
-        android:layout_height="31dp"
-
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="24dp"
-
-        android:fontFamily="@font/ralewayb"
-        android:text="@string/default_step_target"
-
-        android:textColor="@color/BlueYonder"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- StepCount TextView -->
-    <TextView
-        android:id="@+id/stepCountTextView"
-
-        android:layout_width="84dp"
-        android:layout_height="32dp"
-
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="10dp"
-
-        android:fontFamily="@font/ralewayb"
-        android:text="@string/default_step_count"
-        android:textAlignment="viewEnd"
-
-        android:textColor="@color/BlueYonder"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toStartOf="@id/stepGoalTextView"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Navigation at the bottom of the screen -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

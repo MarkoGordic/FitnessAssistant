@@ -90,7 +90,7 @@
     <string name="username_last_char_error">Username must end with a letter or a number</string>
 
     <!-- user interaction -->
-    <string name="please_enter_credentials">Please enter your Email and Password</string>
+    <string name="enter_credentials">Enter your Email and Password</string>
     <string name="forgot_password"><i><u>Forgot Password</u></i><b> ?</b></string>
     <string name="forgot_your_password">Forgot Your Password?</string>
     <string name="large_password_reset_text">That\'s OK, it happens…\n\n

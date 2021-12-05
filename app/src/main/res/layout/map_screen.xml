@@ -6,19 +6,66 @@
     android:layout_height="match_parent"
     android:background="@color/BackgroundColor">
 
-    <!-- Temporary TextView -->
+    <!-- StepCount TextView -->
     <TextView
-        android:id="@+id/temporaryTextView"
+        android:id="@+id/stepCountTextView"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/stepGoalTextView"
         app:layout_constraintTop_toTopOf="parent"
+
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="12dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:text="@string/default_step_count"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/BlueYonder"
+        android:textSize="28sp" />
+
+    <!-- Step Goal TextView -->
+    <TextView
+        android:id="@+id/stepGoalTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/startPedometerButton"
+        app:layout_constraintTop_toTopOf="@id/stepCountTextView"
+        app:layout_constraintBottom_toBottomOf="@id/stepCountTextView"
+
+        android:fontFamily="@font/ralewaym"
+        android:text="@string/default_step_target"
+        android:textColor="@color/BlueYonder"
+        android:textSize="28sp" />
+
+    <!-- Start Counting Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/startPedometerButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@id/stepGoalTextView"
+        app:layout_constraintTop_toTopOf="@id/stepGoalTextView"
+        app:layout_constraintStart_toEndOf="@id/stepGoalTextView"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:text="@string/this_will_be_added_soon"
-        android:textColor="@color/SpaceCadet"/>
+        android:background="@drawable/authentication_button"
+        android:visibility="gone"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:text="@string/start_button"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="@color/BackgroundColor"
+        android:textFontWeight="600" />
 
     <!-- Navigation at the bottom of the screen -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

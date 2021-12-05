@@ -35,19 +35,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/authentication_button"
+        android:text="@string/change"
+
+        android:textAlignment="center"
+
+        android:textAllCaps="false"
+
+        android:textColor="@color/default_white_color"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/userNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/userNameTextView"
-        app:layout_constraintBottom_toBottomOf="@id/userNameTextView"
-
-        android:layout_marginEnd="32dp"
-
-        android:background="@drawable/authentication_button"
-
-        android:text="@string/change"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/default_white_color"
-        android:textSize="16sp"/>
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <!-- UserEmail TextView -->
     <TextView

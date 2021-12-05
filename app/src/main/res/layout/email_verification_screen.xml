@@ -41,7 +41,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="48dp"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"
@@ -58,11 +58,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            app:layout_constraintBottom_toTopOf="@id/userEmailNotVerifiedTextView"
+            app:layout_constraintBottom_toTopOf="@id/upperLine"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="16dp"
 
             android:fontFamily="@font/ralewaym"
             android:includeFontPadding="false"
@@ -71,6 +71,22 @@
             android:textColor="@color/BlueYonder"
             android:textFontWeight="600"
             android:textSize="17sp"/>
+
+        <!-- Upper Line Separator -->
+        <View
+            android:id="@+id/upperLine"
+
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+
+            app:layout_constraintStart_toStartOf="@id/verifyEmailMessageTextView"
+            app:layout_constraintEnd_toEndOf="@id/verifyEmailMessageTextView"
+            app:layout_constraintBottom_toTopOf="@id/userEmailNotVerifiedTextView"
+            app:layout_constrainedWidth="true"
+
+            android:layout_marginBottom="32dp"
+
+            android:background="@color/SpaceCadet"/>
 
         <!-- UserEmail TextView -->
         <TextView
@@ -95,6 +111,22 @@
             android:textFontWeight="600"
             android:textSize="17sp"/>
 
+        <!-- Lower Line Separator -->
+        <View
+            android:id="@+id/lowerLine"
+
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+
+            app:layout_constraintStart_toStartOf="@id/resendEmailMessageTextView"
+            app:layout_constraintEnd_toEndOf="@id/resendEmailMessageTextView"
+            app:layout_constraintTop_toBottomOf="@id/userEmailNotVerifiedTextView"
+            app:layout_constrainedWidth="true"
+
+            android:layout_marginTop="32dp"
+
+            android:background="@color/SpaceCadet"/>
+
         <!-- ResendEmailMessage TextView -->
         <TextView
             android:id="@+id/resendEmailMessageTextView"
@@ -106,9 +138,9 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/userEmailNotVerifiedTextView"
+            app:layout_constraintTop_toBottomOf="@id/lowerLine"
 
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/ralewaym"
             android:includeFontPadding="false"
             android:text="@string/verification_will_be_sent"
@@ -130,7 +162,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="32dp"
 
             android:background="@drawable/authentication_button"
 
