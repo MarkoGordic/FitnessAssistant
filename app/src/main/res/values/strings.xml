@@ -26,6 +26,7 @@
     <string name="sign_in">Sign In</string>
     <string name="reset_password">Reset Password</string>
     <string name="back_button_description">Return to previous activity</string>
+    <string name="settings_description">Goes to SettingsFragment</string>
     <string name="create_account">Create an Account</string>
     <string name="register">Register</string>
     <string name="confirm_password">Confirm Password</string>
@@ -107,9 +108,7 @@
     <string name="hold_for_signing_out">Hold the button to sign out</string>
     <string name="successful_verification_sent">Email verification has been sent</string>
     <string name="unsuccessful_verification_sent">Something went wrong.\nCheck if the email is already in your inbox or try again later.</string>
-    <string name="user_email">User Email</string>
     <string name="verified_false">verified: false</string>
-    <string name="user_name">User Name</string>
     <string name="account_created_username_update_unsuccessful">Account created, username update unsuccessful</string>
     <string name="google_sign_in_unsuccessful">Google Sign In Unsuccessful</string>
     <string name="facebook_sign_in_unsuccessful">Facebook Sign In Unsuccessful</string>

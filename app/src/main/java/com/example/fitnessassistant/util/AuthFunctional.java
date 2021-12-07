@@ -502,7 +502,7 @@ public class AuthFunctional {
                                     }
                                 else if (AuthFunctional.currentlyOnline) // try to reload the user
                                         user.reload().addOnCompleteListener(task1 -> {
-                                            if (!task1.isSuccessful()) {
+                                            if (!task1.isSuccessful())
                                                 try { // throw the exception to check errors
                                                     if (task1.getException() != null)
                                                         throw task1.getException();
@@ -511,8 +511,6 @@ public class AuthFunctional {
                                                 } catch (Exception e2) { // else notify user
                                                     Toast.makeText(context, context.getString(R.string.email_change_unsuccessful), Toast.LENGTH_LONG).show();
                                                 }
-                                            } else
-                                                dispUser(context, user); // if task is successful refresh the displayed user
                                         });
                             });
                         }
@@ -711,7 +709,7 @@ public class AuthFunctional {
                                     }
                                 else if (AuthFunctional.currentlyOnline) // try to reload the user
                                     user.reload().addOnCompleteListener(task1 -> {
-                                        if (!task1.isSuccessful()) {
+                                        if (!task1.isSuccessful())
                                             try {
                                                 if (task1.getException() != null)
                                                     throw task1.getException();
@@ -720,8 +718,6 @@ public class AuthFunctional {
                                             } catch (Exception e2) { // else notify user
                                                 Toast.makeText(context, context.getString(R.string.username_change_unsuccessful), Toast.LENGTH_LONG).show();
                                             }
-                                        } else
-                                            dispUser(context, user);
                                     });
                             });
                         }
@@ -736,9 +732,9 @@ public class AuthFunctional {
         TextView userEmailView = ((Activity) context).findViewById(R.id.userEmailTextView);
         // checking if textViews are null in case we are not on the profile page
         if(userNameView != null)
-            userNameView.setText(String.format("%s: %s", context.getString(R.string.user_name), currentUser.getDisplayName()));
+            userNameView.setText(currentUser.getDisplayName());
         if(userEmailView != null)
-            userEmailView.setText(String.format("%s: %s", context.getString(R.string.user_email), currentUser.getEmail()));
+            userEmailView.setText(currentUser.getEmail());
     }
 
     // if user is signed out, go to sign in
