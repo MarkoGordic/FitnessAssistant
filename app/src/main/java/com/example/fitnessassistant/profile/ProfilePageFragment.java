@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,42 +54,8 @@ public class ProfilePageFragment extends Fragment {
     // setting up oCListeners
     @SuppressLint("ClickableViewAccessibility")
     private void setUpOnClickListeners(View view) {
-        // changeUsernameTextView (pencil) listener
-        view.findViewById(R.id.userNameTextView).setOnTouchListener((v, event) -> {
-            final int DRAWABLE_RIGHT = 2; // index of right drawables
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                // ACTION_DOWN = finger on screen, ACTION_UP = finger on -> off screen
-                // getRawX() is where touch is registered, anything on x axis greater than eTRightPosition - 2 * drawableWidth is registered
-                if (event.getRawX() >= (v.getRight() - 2 * ((TextView) v).getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                    if (AuthFunctional.currentlyOnline)
-                        AuthFunctional.setUpUserNameChange(getActivity());
-                    else // if there is no internet, the animated notification quickly flashes
-                        AuthFunctional.quickFlash(getContext(), view.findViewById(R.id.notification_layout_id));
-                    return true;
-                }
-            }
-            return true;
-        });
-
-        // changeEmailTextView (pencil) listener
-        view.findViewById(R.id.userEmailTextView).setOnTouchListener((v, event) -> {
-            final int DRAWABLE_RIGHT = 2; // index of right drawables
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                // ACTION_DOWN = finger on screen, ACTION_UP = finger on -> off screen
-                // getRawX() is where touch is registered, anything on x axis greater than eTRightPosition - 2 * drawableWidth is registered
-                if (event.getRawX() >= (v.getRight() - 2 * ((TextView) v).getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                    if (AuthFunctional.currentlyOnline)
-                        AuthFunctional.setUpEmailChange(getActivity());
-                    else // if there is no internet, the animated notification quickly flashes
-                        AuthFunctional.quickFlash(getContext(), view.findViewById(R.id.notification_layout_id));
-                    return true;
-                }
-            }
-            return true;
-        });
-
-        // settingsButton listener - adds a settings fragment
-        view.findViewById(R.id.settingsButton).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.in_app_container, InAppActivity.settingsFragment).addToBackStack(null).commit());
+        // settingsButton listener - adds a settings fragment, hides current
+        view.findViewById(R.id.settingsButton).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container,InAppActivity.settingsFragment).addToBackStack(null).commit());
     }
 
     @Nullable

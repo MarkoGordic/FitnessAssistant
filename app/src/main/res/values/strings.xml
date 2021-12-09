@@ -1,21 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- OVERALL -->
     <!-- App Name -->
     <string name="app_name">FitnessAssistant</string>
+    <!-- App Version -->
+    <string name="app_version">App ver 1.0.0</string>
     <!-- Privacy Policy Link -->
     <string name="privacy_policy_link" tools:ignore="TypographyDashes">https://www.termsfeed.com/live/cb6a31f0-6c44-406f-b3c0-1dbc3b41dddf</string>
 
-    <!-- COM.EXAMPLE.PEDOMETER -->
     <!-- Pedometer File keys -->
     <string name="pedometer_file_key">PedometerData</string>
     <!-- Used for Pedometer Permission -->
     <string name="android_q_needed">This feature requests Android 10(Q)</string>
     <string name="activity_recognition_permission">Activity Recognition Permission</string>
     <string name="activity_recognition_rationale">FitnessAssistant will now request activity recognition permission on your device.\n\nThis is required in order to use StepCounter services.</string>
-
-    <!-- COM.EXAMPLE.AUTHENTICATION -->
+\
     <!-- Sign In / Register strings -->
-    <!-- IDs for sign in -->
     <!-- web client ID for Google Sign In - default - tools:ignore was used because of the warning -->
     <string name="server_client_id" tools:ignore="TypographyDashes">545598236576-1uj5ad6vbdt4b3c2fdvk356qad0r5di3.apps.googleusercontent.com</string>
     <!-- Facebook app ID -->
@@ -45,6 +43,10 @@
     <string name="change">Change</string>
     <string name="continue_ad">Continue</string>
     <string name="change_password">Change Password</string>
+    <string name="your_profile">Your Profile</string>
+    <string name="settings">Settings</string>
+    <string name="link_accounts">Link Accounts</string>
+    <string name='privacy'>Privacy</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -147,11 +149,8 @@
     <string name="password_change_unsuccessful">Password Change Unsuccessful</string>
     <string name="email_change_unsuccessful">Email Change Unsuccessful</string>
 
-    <!-- COM.EXAMPLE.NETWORK -->
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>
 
-
-    <!-- COM.EXAMPLE.HOMEPAGE -->
     <!-- NavBar strings -->
     <string name="activity">Activity</string>
     <string name="stats">Stats</string>

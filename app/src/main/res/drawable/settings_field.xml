@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Used for settings fields (rounded border) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/BackgroundColor" />
+    <stroke android:width="1dp" android:color="@color/DarkerGrayColor" />
+    <padding android:left="0dp" android:top="12dp"
+        android:right="0dp" android:bottom="12dp" />
+    <corners android:radius="8dp" />
+</shape>

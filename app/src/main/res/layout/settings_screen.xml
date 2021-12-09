@@ -1,237 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settingsScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/BackgroundColor">
 
-    <!-- Back Button -->
-    <ImageButton
-        android:id="@+id/backButton"
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/backButton"
 
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
-        android:paddingStart="20dp"
-        android:paddingEnd="4dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="4dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="4dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="4dp"
 
-        android:src="@drawable/back"
-        android:background="@color/BackgroundColor"
-        android:contentDescription="@string/back_button_description"/>
+            android:src="@drawable/back"
+            android:background="@color/BackgroundColor"
+            android:contentDescription="@string/back_button_description"/>
 
-    <!-- Change Password Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/changePasswordButton"
+<LinearLayout
+    android:id="@+id/settingLayout"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/FAlinkingButton"
+    android:orientation="vertical"
 
-        android:layout_marginBottom="32dp"
+    android:padding="32dp">
 
-        android:background="@drawable/authentication_button"
+        <!-- Settings Header -->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
 
-        android:text="@string/change_password"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/default_white_color"
-        android:textSize="16sp"/>
+            android:text="@string/settings"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
 
-    <!-- TODO add in a drawable logo in link button -->
-    <!-- Create Account Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/FAlinkingButton"
+        <!-- separator -->
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
 
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/facebookLinkingButton"
+            android:background="@color/BlueYonder"/>
 
-        android:layout_marginBottom="32dp"
+        <!-- Settings.Profile Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:background="@drawable/authentication_button"
+            android:layout_marginTop="5dp"
 
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+            android:text="@string/profile"
+            android:paddingStart="8dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/BlueYonder"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-        android:text="@string/link_with_fitness_assistant"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/default_white_color"
-        android:textSize="16sp" />
+        <!-- LinkAccounts TextView -->
+        <TextView
+            android:id="@+id/linkAccountsTextView"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/settings_field"
+
+            app:drawableStartCompat="@drawable/link"
+            app:drawableEndCompat="@drawable/forward"
+            android:drawablePadding="12dp"
+
+            android:text="@string/link_accounts"
+            android:textColor="@color/SpaceCadet"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- ChangeUsername TextView -->
+        <TextView
+            android:id="@+id/changeUserNameTextView"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="5dp"
+
+            android:background="@drawable/settings_field"
+
+            app:drawableStartCompat="@drawable/user_focused"
+            app:drawableEndCompat="@drawable/forward"
+            android:drawablePadding="12dp"
+
+            android:text="@string/change_your_username"
+            android:textColor="@color/SpaceCadet"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- ChangeEmail TextView -->
+        <TextView
+            android:id="@+id/changeEmailTextView"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="5dp"
+
+            android:background="@drawable/settings_field"
+
+            app:drawableStartCompat="@drawable/mail_focused"
+            app:drawableEndCompat="@drawable/forward"
+            android:drawablePadding="12dp"
+
+            android:text="@string/change_your_email"
+            android:textColor="@color/SpaceCadet"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- ChangePassword TextView -->
+        <TextView
+            android:id="@+id/changePasswordTextView"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="5dp"
+
+            android:background="@drawable/settings_field"
+
+            app:drawableStartCompat="@drawable/lock_focused"
+            app:drawableEndCompat="@drawable/forward"
+            android:drawablePadding="12dp"
+
+            android:text="@string/change_password"
+            android:textColor="@color/SpaceCadet"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- separator -->
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+
+            android:layout_marginTop="20dp"
+
+            android:background="@color/BlueYonder"/>
+
+        <!-- Settings.Privacy Header -->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="5dp"
+
+            android:text="@string/privacy"
+            android:paddingStart="8dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/BlueYonder"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <!-- PrivacyPolicy TextView -->
+        <TextView
+            android:id="@+id/ppTextView"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/settings_field"
+
+            app:drawableStartCompat="@drawable/document"
+            app:drawableEndCompat="@drawable/forward"
+            android:drawablePadding="12dp"
+
+            android:text="@string/privacy_policy"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/SpaceCadet"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- separator -->
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+
+            android:layout_marginTop="20dp"
+
+            android:background="@color/BlueYonder"/>
+
+        <!-- SignOut TextView -->
+        <TextView
+            android:id="@+id/signOutAccountTextView"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="10dp"
 
 
+            android:background="@drawable/settings_field"
 
-    <!-- Facebook Linking Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/facebookLinkingButton"
+            app:drawableStartCompat="@drawable/sign_out"
+            android:drawablePadding="12dp"
 
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
+            android:text="@string/sign_out"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/Flame"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/custom_fb_button"
-        android:drawableStart="@drawable/ic_facebook"
+        <!-- DeleteAccount TextView -->
+        <TextView
+            android:id="@+id/deleteAccountTextView"
 
-        android:drawablePadding="24dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
 
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+            android:layout_marginTop="5dp"
 
-        android:text="@string/link"
+            android:background="@drawable/settings_field"
 
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
+            app:drawableStartCompat="@drawable/trash"
+            android:drawablePadding="12dp"
 
-        android:textColor="@color/default_white_color"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/googleLinkingButton"
+            android:text="@string/delete_account"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/Flame"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TextContrastCheck,DuplicateSpeakableTextCheck" />
+        <!-- App Version TextView -->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
 
-    <!-- Facebook Linking Progress Circle -->
-    <ProgressBar
-        android:id="@+id/facebookLinkingProgressBar"
+            android:layout_marginTop="20dp"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:text="@string/app_version"
+            android:textAlignment="center"
+            android:textColor="#5D5C5C"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
 
-        app:layout_constraintBottom_toBottomOf="@id/facebookLinkingButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/facebookLinkingButton"
-
-        android:elevation="2dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/BlueYonder"
-        android:visibility="gone" />
-
-    <!-- Google Linking Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/googleLinkingButton"
-
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/signOutButton"
-
-        android:layout_marginBottom="24dp"
-
-        android:background="@drawable/custom_google_button"
-        android:drawableStart="@drawable/ic_google"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:drawablePadding="24dp"
-
-        android:text="@string/link"
-        android:textColor="@color/common_google_signin_btn_text_light_default"
-        android:textAlignment="textStart"
-        android:textSize="16sp"
-        android:textAllCaps="false"/>
-
-    <!-- Google Linking Progress Circle -->
-    <ProgressBar
-        android:id="@+id/googleLinkingProgressBar"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="@id/googleLinkingButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/googleLinkingButton"
-
-        android:elevation="2dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/BlueYonder"
-        android:visibility="gone" />
-
-    <!-- Sign Out Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signOutButton"
-
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/deleteAccountButton"
-        app:layout_constraintStart_toStartOf="parent"
-
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="256dp"
-
-        android:background="@drawable/authentication_button"
-
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:text="@string/sign_out"
-        android:textSize="16sp"
-        android:textAllCaps="false"
-        android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
-
-    <!-- Delete Account Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/deleteAccountButton"
-
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/signOutButton"
-
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="256dp"
-
-        android:background="@drawable/authentication_button"
-
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:text="@string/delete_account"
-        android:textSize="16sp"
-        android:textAllCaps="false"
-        android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
-
-    <!-- PrivacyPolicy TextView -->
-    <TextView
-        android:id="@+id/ppTextView"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signOutButton"
-
-        android:layout_marginTop="32dp"
-
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:paddingStart="36dp"
-        android:paddingEnd="36dp"
-        android:text="@string/privacy_policy"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="17sp"/>
+</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

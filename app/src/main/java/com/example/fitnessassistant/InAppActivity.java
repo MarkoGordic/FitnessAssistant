@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
+import com.example.fitnessassistant.profile.LinkAccountsFragment;
 import com.example.fitnessassistant.profile.ProfilePageFragment;
 import com.example.fitnessassistant.profile.SettingsFragment;
 import com.example.fitnessassistant.workout.WorkoutPageFragment;
@@ -23,6 +24,7 @@ public class InAppActivity extends AppCompatActivity {
     private final Fragment workoutFragment = new WorkoutPageFragment();
     private final Fragment profileFragment = new ProfilePageFragment();
     public static final Fragment settingsFragment = new SettingsFragment();
+    public static final Fragment linkAccountsFragment = new LinkAccountsFragment();
     // and fragment manager
     private final FragmentManager fm = getSupportFragmentManager();
     // and setting the currently active fragment as home

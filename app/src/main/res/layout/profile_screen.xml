@@ -1,86 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/profileScreen"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/profileScreen"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/BackgroundColor">
+
+    <!-- Main Layout -->
+<LinearLayout
+    android:id="@+id/settingLayout"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/BackgroundColor">
 
-    <!-- Settings Button -->
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/settingsButton"
+    android:orientation="vertical"
 
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+    android:padding="32dp">
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        android:paddingStart="4dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="4dp"
-
-        android:background="@color/BackgroundColor"
-        app:srcCompat="@drawable/gear"
-        android:contentDescription="@string/settings_description"/>
-
-    <!-- ProfilePicture ImageView -->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/profilePicture"
-
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="88dp"/>
-
-    <!-- UserName TextView -->
-    <TextView
-        android:id="@+id/userNameTextView"
-
-        android:layout_width="wrap_content"
+    <!-- Header Row -->
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:weightSum="20">
 
-        app:layout_constraintStart_toEndOf="@id/profilePicture"
-        app:layout_constraintTop_toTopOf="@id/profilePicture"
-        app:layout_constraintBottom_toBottomOf="@id/profilePicture"
+        <TextView
+            android:id="@+id/profileTextView"
 
-        app:drawableEndCompat="@drawable/pencil"
-        android:drawablePadding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:paddingStart="20dp"
-        android:paddingEnd="16dp"
-        android:textColor="@color/SpaceCadet"
-        android:textFontWeight="600"
-        android:textSize="24sp" />
+            android:layout_weight="19"
+            android:layout_gravity="center_vertical"
 
-    <!-- UserEmail TextView -->
-    <TextView
-        android:id="@+id/userEmailTextView"
+            android:text="@string/your_profile"
+            android:textColor="@color/SpaceCadet"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
-        android:layout_width="wrap_content"
+        <!-- Settings Button -->
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/settingsButton"
+
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+
+            android:background="@color/BackgroundColor"
+            android:contentDescription="@string/settings_description"
+            app:srcCompat="@drawable/gear" />
+    </TableRow>
+
+    <!-- User Profile -->
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
 
-        app:layout_constraintStart_toStartOf="@id/profilePicture"
-        app:layout_constraintTop_toBottomOf="@id/profilePicture"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp" />
 
-        android:layout_marginTop="16dp"
+        <TextView
+            android:id="@+id/userNameTextView"
 
-        app:drawableEndCompat="@drawable/pencil"
-        android:drawablePadding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:textColor="@color/SpaceCadet"
-        android:paddingStart="4dp"
-        android:paddingEnd="16dp"
-        android:textFontWeight="600"
-        android:textSize="18sp"/>
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/profilePicture"
+
+            android:textColor="@color/SpaceCadet"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/userEmailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/userNameTextView"
+            android:layout_toEndOf="@id/profilePicture"
+
+            android:paddingStart="2dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/BlueYonder"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+    </RelativeLayout>
+
+    <!-- bottom line -->
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/DarkerGrayColor"/>
+
+</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
