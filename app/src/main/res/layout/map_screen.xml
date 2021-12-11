@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/startPedometerButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/stepCountTextView"
         app:layout_constraintBottom_toBottomOf="@id/stepCountTextView"
 
@@ -41,30 +41,5 @@
         android:text="@string/default_step_target"
         android:textColor="@color/BlueYonder"
         android:textSize="28sp" />
-
-    <!-- Start Counting Button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/startPedometerButton"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintBottom_toBottomOf="@id/stepGoalTextView"
-        app:layout_constraintTop_toTopOf="@id/stepGoalTextView"
-        app:layout_constraintStart_toEndOf="@id/stepGoalTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        android:background="@drawable/authentication_button"
-        android:visibility="gone"
-
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:text="@string/start_button"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:textColor="@color/BackgroundColor"
-        android:textFontWeight="600" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

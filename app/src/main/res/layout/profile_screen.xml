@@ -1,105 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:id="@+id/profileScreen"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/BackgroundColor">
-
-    <!-- Main Layout -->
-<LinearLayout
-    android:id="@+id/settingLayout"
-
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/profileScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/BackgroundColor">
 
-    android:orientation="vertical"
+        <!-- Main Layout -->
+    <LinearLayout
+        android:id="@+id/settingLayout"
 
-    android:padding="32dp">
-
-    <!-- Header Row -->
-    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="20">
+        android:layout_height="match_parent"
 
-        <TextView
-            android:id="@+id/profileTextView"
+        android:orientation="vertical"
 
-            android:layout_width="wrap_content"
+        android:padding="32dp">
+
+        <!-- Header Row -->
+        <TableRow
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="20">
 
-            android:layout_weight="19"
-            android:layout_gravity="center_vertical"
+            <TextView
+                android:id="@+id/profileTextView"
 
-            android:text="@string/your_profile"
-            android:textColor="@color/SpaceCadet"
-            android:textSize="32sp"
-            android:textStyle="bold" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        <!-- Settings Button -->
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/settingsButton"
+                android:layout_weight="19"
+                android:layout_gravity="center_vertical"
 
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+                android:text="@string/your_profile"
+                android:textColor="@color/SpaceCadet"
+                android:textSize="32sp"
+                android:textStyle="bold" />
 
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
+            <!-- Settings Button -->
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/settingsButton"
 
-            android:background="@color/BackgroundColor"
-            android:contentDescription="@string/settings_description"
-            app:srcCompat="@drawable/gear" />
-    </TableRow>
+                android:layout_width="48dp"
+                android:layout_height="48dp"
 
-    <!-- User Profile -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/profilePicture"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="10dp" />
+                android:background="@color/BackgroundColor"
+                android:contentDescription="@string/settings_description"
+                app:srcCompat="@drawable/gear" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/userNameTextView"
-
-            android:layout_width="wrap_content"
+        <!-- User Profile -->
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
 
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/profilePicture"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="10dp" />
 
-            android:textColor="@color/SpaceCadet"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/userNameTextView"
 
-        <TextView
-            android:id="@+id/userEmailTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/profilePicture"
+
+                android:textColor="@color/SpaceCadet"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/userEmailTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@id/userNameTextView"
+                android:layout_toEndOf="@id/profilePicture"
+
+                android:paddingStart="2dp"
+                android:paddingEnd="0dp"
+                android:textColor="@color/BlueYonder"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+        </RelativeLayout>
+
+        <!-- bottom line -->
+        <View
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="1dp"
 
-            android:layout_below="@id/userNameTextView"
-            android:layout_toEndOf="@id/profilePicture"
+            android:background="@color/DarkerGrayColor"/>
 
-            android:paddingStart="2dp"
-            android:paddingEnd="0dp"
-            android:textColor="@color/BlueYonder"
-            android:textSize="14sp"
-            android:textStyle="italic" />
+    </LinearLayout>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- bottom line -->
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-
-        android:background="@color/DarkerGrayColor"/>
-
-</LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

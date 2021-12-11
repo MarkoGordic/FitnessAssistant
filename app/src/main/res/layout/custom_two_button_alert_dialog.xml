@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/settings_field"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="10dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <!-- Dialog Header -->
+    <TextView
+        android:id="@+id/dialog_header"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+
+        android:text="@string/re_authenticate_your_account"
+        android:textSize="22sp"
+        android:textColor="@color/SpaceCadet"
+        android:textStyle="bold" />
+
+    <!-- Dialog Message -->
+    <TextView
+        android:id="@+id/dialog_message"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="10dp"
+
+        android:gravity="center"
+
+        android:text="@string/re_authentication_message"
+        android:textSize="17sp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/BlueYonder"/>
+
+    <!-- Dialog Input -->
+    <EditText
+        android:id="@+id/dialog_input"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+
+        android:layout_marginTop="26dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+
+        android:autofillHints="password"
+        android:hint="@string/re_enter_your_password"
+        android:inputType="textPassword"
+
+        android:background="@drawable/custom_input"
+        android:drawableEnd="@drawable/custom_lock"
+
+        android:includeFontPadding="false"
+        android:fontFamily="@font/ralewaym"
+        android:paddingHorizontal="16sp"
+        android:textColor="@color/SpaceCadet"
+        android:textColorHint="@color/BlueYonder"
+        android:textSize="20sp"/>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp">
+
+        <!-- Dialog Positive Button -->
+        <Button
+            android:id="@+id/dialog_positive_button"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+
+            android:layout_gravity="center"
+
+            android:layout_marginEnd="35dp"
+
+            android:text="@string/link"
+            android:textColor="@color/SpaceCadet"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <!-- Dialog Negative Button -->
+        <Button
+            android:id="@+id/dialog_negative_button"
+
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+
+            android:layout_marginStart="35dp"
+
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/Flame"
+
+            android:textSize="16sp"
+            tools:ignore="TextContrastCheck" />
+    </TableRow>
+
+</LinearLayout>

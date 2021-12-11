@@ -2,8 +2,9 @@ package com.example.fitnessassistant.profile;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.CreateAccountActivity;
-import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.ActivityResultFunctional;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.facebook.AccessToken;
@@ -52,8 +51,6 @@ import java.util.List;
 
 public class LinkAccountsFragment extends Fragment {
     private final ActivityResultFunctional<Intent, ActivityResult> activityLauncher = ActivityResultFunctional.registerActivityForResult(this);
-    private NetworkManager networkManager;
-    private FirebaseAuth.AuthStateListener authListener;
     private GoogleSignInClient googleLinkingClient;
     private CallbackManager facebookCallbackManager;
 
@@ -73,7 +70,7 @@ public class LinkAccountsFragment extends Fragment {
                                 if (task.getException() != null)
                                     throw task.getException();
                             } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                             } catch (Exception e2) { // if it's any other we notify the user the unlinking process was unsuccessful
                                 view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                 Toast.makeText(getContext(), getString(R.string.google_unlinking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -81,7 +78,7 @@ public class LinkAccountsFragment extends Fragment {
                         }
                     }));
                 } else
-                    AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
             });
         }
     }
@@ -112,7 +109,7 @@ public class LinkAccountsFragment extends Fragment {
                                                             if (task1.getException() != null)
                                                                 throw task1.getException();
                                                         } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                                            AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                                                         } catch (Exception e2) { // else notify user
                                                             Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                                                         }
@@ -126,7 +123,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                     if (task2.getException() != null)
                                                                         throw task2.getException();
                                                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                                    AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                                                                 } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
                                                                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                                                     Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -135,57 +132,57 @@ public class LinkAccountsFragment extends Fragment {
                                                         });
                                                 });
                                         } else { // if user has our account, ask him to re-authenticate with his password
-                                            EditText passwordInput = new EditText(getActivity());
-                                            passwordInput.setHint(R.string.re_enter_your_password);
-                                            passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                                            passwordInput.setTransformationMethod(new AuthFunctional.MyPasswordTransformationMethod());
+                                            // creating a custom alert dialog for password input
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                            builder.setView(R.layout.custom_two_button_alert_dialog);
+                                            builder.setOnDismissListener(dialogInterface -> AuthFunctional.finishLoading(view, requireView().findViewById(R.id.googleLinkingProgressBar)));
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                            EditText passwordInput = dialog.findViewById(R.id.dialog_input);
+                                            AuthFunctional.setUpPassword(passwordInput);
 
-                                            FrameLayout layout = new FrameLayout(getActivity());
-                                            layout.setPaddingRelative(45, 0, 45, 0);
-                                            layout.addView(passwordInput);
+                                            dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view2 -> dialog.dismiss());
 
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                            builder.setTitle(R.string.re_authenticate_your_account)
-                                                    .setMessage(R.string.re_authentication_message)
-                                                    .setView(layout)
-                                                    .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
-                                                    .setPositiveButton(R.string.link, (dialog, i) -> {
-                                                        if (!TextUtils.isEmpty(passwordInput.getText().toString())){
-                                                            dialog.dismiss(); // we create credential based on user's email and given password
-                                                            if(AuthFunctional.currentlyOnline)
-                                                                currentUser.reauthenticate(EmailAuthProvider.getCredential(currentUser.getEmail(), passwordInput.getText().toString())).addOnCompleteListener(task12 -> {
-                                                                    if (!task12.isSuccessful()) {
-                                                                        try { // throw the exception to check errors
-                                                                            if (task12.getException() != null)
-                                                                                throw task12.getException();
-                                                                        } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                                                            AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
-                                                                        } catch (Exception e2) { // else notify user
-                                                                            Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
+                                            dialog.findViewById(R.id.dialog_positive_button).setOnClickListener(view2 -> {
+                                                if(TextUtils.isEmpty(passwordInput.getText().toString())){
+                                                    AuthFunctional.myError(getContext(), passwordInput, getString(R.string.empty_password));
+                                                } else if (passwordInput.getText().length() <= 5)
+                                                    AuthFunctional.myError(getContext(), passwordInput, getString(R.string.password_not_enough_characters));
+                                                else {
+                                                    dialog.dismiss(); // we create credential based on user's email and given password
+                                                    if(AuthFunctional.currentlyOnline)
+                                                        currentUser.reauthenticate(EmailAuthProvider.getCredential(currentUser.getEmail(), passwordInput.getText().toString())).addOnCompleteListener(task12 -> {
+                                                            if (!task12.isSuccessful()) {
+                                                                try { // throw the exception to check errors
+                                                                    if (task12.getException() != null)
+                                                                        throw task12.getException();
+                                                                } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                } catch (Exception e2) { // else notify user
+                                                                    Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
+                                                                }
+                                                            } else
+                                                                currentUser.linkWithCredential(credential).addOnCompleteListener(task2 -> {
+                                                                    if (task2.isSuccessful())
+                                                                        setUpLinkingSystem(requireView());
+                                                                    else {
+                                                                        try { // if we fail, throw the exception
+                                                                            if (task2.getException() != null)
+                                                                                throw task2.getException();
+                                                                        } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
+                                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                        } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
+                                                                            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
+                                                                            Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
                                                                         }
-                                                                    } else
-                                                                        currentUser.linkWithCredential(credential).addOnCompleteListener(task2 -> {
-                                                                            if (task2.isSuccessful())
-                                                                                setUpLinkingSystem(requireView());
-                                                                            else {
-                                                                                try { // if we fail, throw the exception
-                                                                                    if (task2.getException() != null)
-                                                                                        throw task2.getException();
-                                                                                } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                                                    AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
-                                                                                } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
-                                                                                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
-                                                                                    Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
-                                                                                }
-                                                                            }
-                                                                        });
+                                                                    }
                                                                 });
-                                                            else  // if we're offline, the animated notification quickly flashes
-                                                                AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
-                                                        }
-                                                    })
-                                                    .setOnDismissListener(dialogInterface -> AuthFunctional.finishLoading(view, requireView().findViewById(R.id.googleLinkingProgressBar)));
-                                            builder.create().show();
+                                                        });
+                                                    else  // if we're offline, the animated notification quickly flashes
+                                                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                }
+                                            });
                                         }
                                     } else // in case somehow user got here, but there is no user available, we get him back to sign in
                                         AuthFunctional.refreshUser(getActivity());
@@ -200,7 +197,7 @@ public class LinkAccountsFragment extends Fragment {
                                     if (task.getException() != null)
                                         throw task.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                    AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                                 } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
                                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                     Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -210,7 +207,7 @@ public class LinkAccountsFragment extends Fragment {
                 } catch (ApiException e){ // if there is an error, check if we're currently offline
                     AuthFunctional.finishLoading(view, requireView().findViewById(R.id.googleLinkingProgressBar));
                     if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
-                        AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                     else{ // else quick flash the button and tell the user the linking was unsuccessful by toasting
                         view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                         Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -234,7 +231,7 @@ public class LinkAccountsFragment extends Fragment {
                             if (task.getException() != null)
                                 throw task.getException();
                         } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                            AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                         } catch (Exception e2) { // else notify user
                             Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                         }
@@ -248,7 +245,7 @@ public class LinkAccountsFragment extends Fragment {
                                     if (task1.getException() != null)
                                         throw task1.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                    AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                                 } catch (Exception e2) { // if it's any other we notify the user the unlinking process was unsuccessful
                                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                     Toast.makeText(getContext(), getString(R.string.facebook_unlinking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -293,7 +290,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                         if (task1.getException() != null)
                                                                             throw task1.getException();
                                                                     } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                                                        AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                                                                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                                                                     } catch (Exception e2) { // else notify user
                                                                         Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                                                                     }
@@ -308,7 +305,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                                 if (task2.getException() != null)
                                                                                     throw task2.getException();
                                                                             } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                                                AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                                                                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                                                                             } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
                                                                                 view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                                                                 Toast.makeText(getContext(), getString(R.string.facebook_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -319,60 +316,58 @@ public class LinkAccountsFragment extends Fragment {
                                                         }
                                                     });
                                                 } else { // if user has our account, re-authenticate the user with the given password
-                                                    EditText passwordInput = new EditText(getActivity());
-                                                    passwordInput.setHint(R.string.re_enter_your_password);
-                                                    passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                                                    passwordInput.setTransformationMethod(new AuthFunctional.MyPasswordTransformationMethod());
+                                                    // creating a custom alert dialog for password input
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                                    builder.setView(R.layout.custom_two_button_alert_dialog);
+                                                    builder.setOnDismissListener(dialogInterface -> AuthFunctional.finishLoading(view, requireView().findViewById(R.id.facebookLinkingProgressBar)));
+                                                    AlertDialog dialog = builder.create();
+                                                    dialog.show();
+                                                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                                    EditText passwordInput = dialog.findViewById(R.id.dialog_input);
+                                                    AuthFunctional.setUpPassword(passwordInput);
 
-                                                    FrameLayout layout = new FrameLayout(getActivity());
-                                                    layout.setPaddingRelative(45, 0, 45, 0);
-                                                    layout.addView(passwordInput);
+                                                    dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view2 -> dialog.dismiss());
 
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                                    builder.setTitle(R.string.re_authenticate_your_account)
-                                                            .setMessage(R.string.re_authentication_message)
-                                                            .setView(layout)
-                                                            .setNegativeButton(R.string.cancel, (dialog, i) -> dialog.dismiss())
-                                                            .setPositiveButton(R.string.link, (dialog, i) -> {
-                                                                if (TextUtils.isEmpty(passwordInput.getText().toString()))
-                                                                    passwordInput.setError(getString(R.string.empty_password));
-                                                                else {
-                                                                    dialog.dismiss(); // we create credential based on user's email and given password
-                                                                    if(AuthFunctional.currentlyOnline)
-                                                                        currentUser.reauthenticate(EmailAuthProvider.getCredential(currentUser.getEmail(), passwordInput.getText().toString())).addOnCompleteListener(task12 -> {
-                                                                            if (!task12.isSuccessful())
-                                                                                try { // throw the exception to check errors
-                                                                                    if (task12.getException() != null)
-                                                                                        throw task12.getException();
-                                                                                } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                                                                    AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
-                                                                                } catch (Exception e2) { // else notify user
-                                                                                    Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
+                                                    dialog.findViewById(R.id.dialog_positive_button).setOnClickListener(view2 -> {
+                                                        if(TextUtils.isEmpty(passwordInput.getText().toString())){
+                                                            AuthFunctional.myError(getContext(), passwordInput, getString(R.string.empty_password));
+                                                        } else if (passwordInput.getText().length() <= 5)
+                                                            AuthFunctional.myError(getContext(), passwordInput, getString(R.string.password_not_enough_characters));
+                                                        else {
+                                                            dialog.dismiss(); // we create credential based on user's email and given password
+                                                            if(AuthFunctional.currentlyOnline)
+                                                                currentUser.reauthenticate(EmailAuthProvider.getCredential(currentUser.getEmail(), passwordInput.getText().toString())).addOnCompleteListener(task12 -> {
+                                                                    if (!task12.isSuccessful())
+                                                                        try { // throw the exception to check errors
+                                                                            if (task12.getException() != null)
+                                                                                throw task12.getException();
+                                                                        } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
+                                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                        } catch (Exception e2) { // else notify user
+                                                                            Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    else
+                                                                        currentUser.linkWithCredential(credential).addOnCompleteListener(task2 -> {
+                                                                            if (task2.isSuccessful())
+                                                                                setUpLinkingSystem(requireView());
+                                                                            else {
+                                                                                LoginManager.getInstance().logOut();
+                                                                                try { // if we fail, throw the exception
+                                                                                    if (task2.getException() != null)
+                                                                                        throw task2.getException();
+                                                                                } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
+                                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                                } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
+                                                                                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
+                                                                                    Toast.makeText(getContext(), getString(R.string.facebook_linking_unsuccessful), Toast.LENGTH_LONG).show();
                                                                                 }
-                                                                            else
-                                                                                currentUser.linkWithCredential(credential).addOnCompleteListener(task2 -> {
-                                                                                    if (task2.isSuccessful())
-                                                                                        setUpLinkingSystem(requireView());
-                                                                                    else {
-                                                                                        LoginManager.getInstance().logOut();
-                                                                                        try { // if we fail, throw the exception
-                                                                                            if (task2.getException() != null)
-                                                                                                throw task2.getException();
-                                                                                        } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                                                            AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
-                                                                                        } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
-                                                                                            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
-                                                                                            Toast.makeText(getContext(), getString(R.string.facebook_linking_unsuccessful), Toast.LENGTH_LONG).show();
-                                                                                        }
-                                                                                    }
-                                                                                });
+                                                                            }
                                                                         });
-                                                                    else // if we're offline, the animated notification quickly flashes
-                                                                        AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
-                                                                }
-                                                            })
-                                                            .setOnDismissListener(dialogInterface -> AuthFunctional.finishLoading(view, requireView().findViewById(R.id.facebookLinkingProgressBar)));
-                                                    builder.create().show();
+                                                                });
+                                                            else // if we're offline, the animated notification quickly flashes
+                                                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                        }
+                                                    });
                                                 }
                                             } else // in case somehow user got here, but there is no user available, we get him back to sign in
                                                 AuthFunctional.refreshUser(LinkAccountsFragment.this.getActivity());
@@ -389,7 +384,7 @@ public class LinkAccountsFragment extends Fragment {
                                             if (task.getException() != null)
                                                 throw task.getException();
                                         } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                            AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                                         } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
                                             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                             Toast.makeText(getContext(), getString(R.string.facebook_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -419,13 +414,13 @@ public class LinkAccountsFragment extends Fragment {
                 public void onCancel() {
                     Toast.makeText(getContext(), R.string.facebook_linking_unsuccessful , Toast.LENGTH_LONG).show();
                     if(!AuthFunctional.currentlyOnline)
-                        AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                 }
                 @Override
                 public void onError(@NonNull FacebookException e) {
                     Toast.makeText(getContext(), R.string.facebook_linking_unsuccessful , Toast.LENGTH_LONG).show();
                     if(!AuthFunctional.currentlyOnline)
-                        AuthFunctional.quickFlash(getContext(), requireView().findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                 }
             });
             LoginManager.getInstance().logInWithReadPermissions(requireActivity(), facebookCallbackManager , Arrays.asList("email", "public_profile")); // asking for the use of email and public profile on sign in
@@ -492,7 +487,7 @@ public class LinkAccountsFragment extends Fragment {
                 if(AuthFunctional.currentlyOnline) // google tokens expire early (thus this is handled)
                     googleLinkingClient.silentSignIn().addOnCompleteListener(task -> activityLauncher.launch(new Intent(getActivity(), CreateAccountActivity.class), result -> setUpLinkingSystem(view)));
                 else // no network notification flashes
-                    AuthFunctional.quickFlash(getContext(), view.findViewById(R.id.notification_layout_id));
+                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
             });
         else
             ourLinkButton.setVisibility(View.GONE);
@@ -518,11 +513,6 @@ public class LinkAccountsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        networkManager = new NetworkManager(requireActivity().getApplication());
-
-        // setting up listener for firebase
-        authListener = firebaseAuth -> AuthFunctional.refreshUser(getActivity());
-
         // setting up Google client
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.server_client_id)).requestEmail().build();
         googleLinkingClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions);
@@ -531,22 +521,4 @@ public class LinkAccountsFragment extends Fragment {
         facebookCallbackManager = CallbackManager.Factory.create();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(getActivity(),requireView().findViewById(R.id.linkAccountsScreen));
-        // adding the listener for firebase to change the UI
-        FirebaseAuth.getInstance().addAuthStateListener(authListener);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // unregistering this activity when another activity comes into the foreground or else
-        networkManager.unregisterConnectionObserver(getActivity());
-        // removing the listener when activity pauses
-        if(authListener != null)
-            FirebaseAuth.getInstance().removeAuthStateListener(authListener);
-    }
 }

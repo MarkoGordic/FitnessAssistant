@@ -6,13 +6,15 @@
     <!-- Privacy Policy Link -->
     <string name="privacy_policy_link" tools:ignore="TypographyDashes">https://www.termsfeed.com/live/cb6a31f0-6c44-406f-b3c0-1dbc3b41dddf</string>
 
-    <!-- Pedometer File keys -->
-    <string name="pedometer_file_key">PedometerData</string>
+    <!-- TODO delete this and change the code setting it when pedometer works properly -->
+    <string name="pedometer_can_start">Pedometer can start/continue</string>
+
     <!-- Used for Pedometer Permission -->
-    <string name="android_q_needed">This feature requests Android 10(Q)</string>
-    <string name="activity_recognition_permission">Activity Recognition Permission</string>
-    <string name="activity_recognition_rationale">FitnessAssistant will now request activity recognition permission on your device.\n\nThis is required in order to use StepCounter services.</string>
-\
+    <string name="activity_recognition_access">FitnessAssistant would like to access Activity Recognition on your device</string>
+    <string name="activity_recognition_access_denied">Activity Recognition Permission</string>
+    <string name="activity_recognition_access_message_denied_forever">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="activity_recognition_access_message_denied">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>StepCounter section</b> once again.</string>
+
     <!-- Sign In / Register strings -->
     <!-- web client ID for Google Sign In - default - tools:ignore was used because of the warning -->
     <string name="server_client_id" tools:ignore="TypographyDashes">545598236576-1uj5ad6vbdt4b3c2fdvk356qad0r5di3.apps.googleusercontent.com</string>
@@ -39,7 +41,7 @@
     <string name="delete_account">Delete Account</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
-    <string name="privacy_policy"><u>Privacy Policy</u></string>
+    <string name="privacy_policy">Privacy Policy</string>
     <string name="change">Change</string>
     <string name="continue_ad">Continue</string>
     <string name="change_password">Change Password</string>
@@ -56,15 +58,6 @@
     <string name="email_not_registered">This email isn\'t connected with a FitnessAssistant account.
         Please create an account.</string>
     <string name="invalid_email">Text entered is not an email address. Please try again.</string>
-    <string name="email_register_error">Email local part must:\n
-        -be at least 1 and at most 64 characters long\n
-        -start with letters, numbers, underscores or hyphens (_-)\n
-        -continue with letters, numbers, underscores, hyphens and non-consecutive dots(_-.)\n
-        Email domain must:\n
-        -start with one or more letters and numbers\n
-        -not start with a hyphen(-)\n
-        -continue with letters, numbers, hyphens and non-consecutive dots(-.) only\n
-        -end with at least two letters</string>
     <string name="email_already_registered">This email is already connected with a FitnessAssistant account.
         Use it to sign in or create a new account using another one.</string>
     <string name="email_connected_via_google">This email is connected with a FitnessAssistant account using Google Sign In.
@@ -77,12 +70,7 @@
     <string name="password_not_enough_characters">Password must be >5 characters</string>
     <string name="incorrect_password">"The password you entered is incorrect. Please try again."</string>
     <string name="passwords_not_equal">Passwords must be equal</string>
-    <string name="password_not_strong_enough">Password is not strong enough. Password must:\n
-        -contain at least one lowercase character (a-z)\n
-        -contain at least one uppercase character (A-Z)\n
-        -contain at least one digit (0-9)\n
-        -contain at least one special character (!@#&amp;(){}:;\',?/*~$^+=&lt;&gt;)\n
-        -have a length of 6 to 20 characters</string>
+    <string name="password_not_strong_enough">Password is not strong enough. Password must contain at least one lowercase and uppercase character, one digit and one special character (!@#&amp;(){}:;\',?/*~$^+=&lt;&gt;)</string>
     <!-- username errors -->
     <string name="empty_name">Username cannot be empty</string>
     <string name="username_first_char_error">Username must start with a letter or a number</string>
@@ -146,8 +134,11 @@
     <string name="enter_your_new_password">Enter your new password</string>
     <string name="enter_your_new_username">Enter your new username</string>
     <string name="username_change_unsuccessful">Username Change Unsuccessful</string>
+    <string name="username_change_successful">Username Change Successful</string>
     <string name="password_change_unsuccessful">Password Change Unsuccessful</string>
+    <string name="password_change_successful">Password Change Successful</string>
     <string name="email_change_unsuccessful">Email Change Unsuccessful</string>
+    <string name="email_change_successful">Email Change Successful</string>
 
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>
 

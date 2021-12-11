@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -36,7 +38,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                         if (task1.getException() != null)
                             throw task1.getException();
                     } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                     } catch (Exception e2) { // else notify user
                         Toast.makeText(getApplicationContext(), getString(R.string.account_created_username_update_unsuccessful), Toast.LENGTH_LONG).show();
                     }
@@ -86,7 +88,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                     if (task.getException() != null)
                                         throw task.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                    AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                                    AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                                 } catch (Exception e2) { // else errors are checked
                                     AuthFunctional.emailAlreadyRegistered(getApplicationContext(), emailEdit, email);
                                     Toast.makeText(getApplicationContext(), getString(R.string.register_unsuccessful), Toast.LENGTH_LONG).show();
@@ -104,7 +106,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                     if (task.getException() != null)
                                         throw task.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                    AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                                    AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                                 } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
                                     view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                     Toast.makeText(getApplicationContext(), getString(R.string.email_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -135,13 +137,21 @@ public class CreateAccountActivity extends AppCompatActivity {
         setUpOnClickListeners();
 
         networkManager = new NetworkManager(getApplication());
+
+        // setting up the flashing animation for the no network notification
+        Animation flash = new AlphaAnimation(0.0f, 1.0f);
+        flash.setDuration(800); // flash duration
+        flash.setStartOffset(1600); // staying visible duration
+        flash.setRepeatMode(Animation.REVERSE);
+        flash.setRepeatCount(Animation.INFINITE);
+        findViewById(R.id.no_network_notification).startAnimation(flash);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(this,findViewById(R.id.createAccountScreen));
+        networkManager.registerConnectionObserver(this,findViewById(R.id.no_network_text_view));
     }
 
     @Override

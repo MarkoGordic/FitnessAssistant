@@ -3,6 +3,7 @@ package com.example.fitnessassistant.authentication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -56,7 +57,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                 // if there is no internet, we can't reload, just load previously saved user's info and quickly flash the notification about connectivity
                 ((TextView) findViewById(R.id.userEmailNotVerifiedTextView)).setText(String.format("%s (%s)", user.getEmail(), getString(R.string.verified_false)));
                 findViewById(R.id.userEmailNotVerifiedTextView).setAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
-                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                 ((SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout)).setRefreshing(false);
             } else { // if there is internet, we try to reload the user
                 user.reload().addOnCompleteListener(task -> {
@@ -82,12 +83,13 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
     // sets up listeners for refreshing, signing out(changing credentials) and verifying email
     private void setUpOnClickListeners(){
-        // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
+        // swipeRefreshLayout refresh listener - refreshes UI
         ((SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(this::updateUI);
 
+        // changeCredentialsButton listener - back button
         findViewById(R.id.changeCredentialsButton).setOnClickListener(view -> {
             if(!AuthFunctional.currentlyOnline) // if there is no internet, the animated notification quick flashes
-                AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
             else {
                 if (changeCredentialsButtonPressed) {
                     FirebaseAuth.getInstance().signOut();
@@ -107,7 +109,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if(user != null) // probably redundant, reload(update) user
                 if(!AuthFunctional.currentlyOnline) { // if there is no internet, the animated notification quick flashes
-                    AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                    AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                     AuthFunctional.finishLoading(view, findViewById(R.id.sendEmailVerificationBar));
                 } else { // if there is internet, we try to reload the user
                     user.reload().addOnCompleteListener(task -> {
@@ -130,7 +132,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                         if(task1.getException() != null)
                                             throw task1.getException();
                                     } catch (FirebaseNetworkException e1){ // if it's a network error, the no connectivity notification quickly flashes
-                                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                                        AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                                     } catch (Exception e2){ // notify the user about the other error
                                         ((TextView)findViewById(R.id.resendEmailMessageTextView)).setText(getString(R.string.unsuccessful_verification_sent));
                                         findViewById(R.id.resendEmailMessageTextView).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
@@ -152,6 +154,14 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
         networkManager = new NetworkManager(getApplication());
 
+        // setting up the flashing animation for the no network notification
+        Animation flash = new AlphaAnimation(0.0f, 1.0f);
+        flash.setDuration(800); // flash duration
+        flash.setStartOffset(1600); // staying visible duration
+        flash.setRepeatMode(Animation.REVERSE);
+        flash.setRepeatCount(Animation.INFINITE);
+        findViewById(R.id.no_network_notification).startAnimation(flash);
+
         // setting up listener for firebase
         authListener = firebaseAuth -> updateUI();
     }
@@ -160,7 +170,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(this,findViewById(R.id.emailVerificationScreen));
+        networkManager.registerConnectionObserver(this,findViewById(R.id.no_network_text_view));
         // adding the listener for firebase to change the UI
         FirebaseAuth.getInstance().addAuthStateListener(authListener);
     }

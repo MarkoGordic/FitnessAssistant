@@ -7,6 +7,44 @@
     android:layout_height="match_parent"
     android:background="@color/BackgroundColor">
 
+    <!-- Layout for the no network notification -->
+    <LinearLayout
+        android:id="@+id/no_network_notification"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:gravity="center"
+
+        android:background="@color/BlueYonder"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/no_network_text_view"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:drawableStartCompat="@drawable/signal"
+            android:drawablePadding="10dp"
+
+            android:gravity="center_horizontal"
+
+            android:visibility="gone"
+
+            android:text="@string/limited_or_no_connectivity"
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:textColor="@color/default_white_color"
+            android:textFontWeight="600"
+            android:textSize="12sp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp" />
+
+    </LinearLayout>
+
     <!-- Back Button -->
     <ImageButton
         android:id="@+id/backToSignInButton"
@@ -15,7 +53,7 @@
         android:layout_height="64dp"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_network_notification"
 
         android:paddingStart="20dp"
         android:paddingEnd="4dp"

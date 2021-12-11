@@ -3,6 +3,7 @@ package com.example.fitnessassistant.authentication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -69,7 +70,7 @@ public class SignInActivity extends AppCompatActivity {
                     try{ // if we fail, throw the exception
                         throw e;
                     } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                        AuthFunctional.quickFlash(this, findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                     } catch(Exception e2){ // if it's any other we set the authentication error
                         AuthFunctional.setAuthenticationError(getApplicationContext(), emailEdit.getText().toString(), emailEdit, passEdit, findViewById(R.id.forgotPasswordTextView), findViewById(R.id.createAccountTextView));
                     }
@@ -97,7 +98,7 @@ public class SignInActivity extends AppCompatActivity {
                         try{ // if we fail, throw the exception
                             throw e;
                         } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                            AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                         } catch(Exception e2){ // if it's any other we notify the user the sign in process was unsuccessful
                             view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                             Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
@@ -106,7 +107,7 @@ public class SignInActivity extends AppCompatActivity {
                 } catch (ApiException e){ // if there is an error, check if we're currently not online
                     AuthFunctional.finishLoading(view, findViewById(R.id.googleSignInProgressBar));
                     if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
-                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                     else{ // else quick flash the button and tell the user the sign in was unsuccessful by toasting
                         view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                         Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
@@ -140,7 +141,7 @@ public class SignInActivity extends AppCompatActivity {
                                                 try { // if we fail, throw the exception and sign out of fb
                                                     throw e;
                                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                    AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                                                    AuthFunctional.quickFlash(SignInActivity.this, findViewById(R.id.no_network_notification));
                                                 } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
                                                     findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                                     Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
@@ -164,7 +165,7 @@ public class SignInActivity extends AppCompatActivity {
                                             if (task.getException() != null)
                                                 throw task.getException();
                                         } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                                            AuthFunctional.quickFlash(SignInActivity.this, findViewById(R.id.no_network_notification));
                                         } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
                                             view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                             Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
@@ -194,13 +195,13 @@ public class SignInActivity extends AppCompatActivity {
                 public void onCancel() {
                     Toast.makeText(getApplicationContext(), R.string.facebook_sign_in_unsuccessful , Toast.LENGTH_LONG).show();
                     if(!AuthFunctional.currentlyOnline)
-                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(SignInActivity.this, findViewById(R.id.no_network_notification));
                 }
                 @Override
                 public void onError(@NonNull FacebookException e) {
                     Toast.makeText(getApplicationContext(), R.string.facebook_sign_in_unsuccessful , Toast.LENGTH_LONG).show();
                     if(!AuthFunctional.currentlyOnline)
-                        AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                        AuthFunctional.quickFlash(SignInActivity.this, findViewById(R.id.no_network_notification));
                 }
             });
         });
@@ -254,6 +255,14 @@ public class SignInActivity extends AppCompatActivity {
 
         networkManager = new NetworkManager(getApplication());
 
+        // setting up the flashing animation for the no network notification
+        Animation flash = new AlphaAnimation(0.0f, 1.0f);
+        flash.setDuration(800); // flash duration
+        flash.setStartOffset(1600); // staying visible duration
+        flash.setRepeatMode(Animation.REVERSE);
+        flash.setRepeatCount(Animation.INFINITE);
+        findViewById(R.id.no_network_notification).startAnimation(flash);
+
         // setting up listener for firebase
         authListener = firebaseAuth -> updateUI();
 
@@ -269,7 +278,7 @@ public class SignInActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(this,findViewById(R.id.signInScreen));
+        networkManager.registerConnectionObserver(this,findViewById(R.id.no_network_text_view));
         // adding the listener for firebase to change the UI
         FirebaseAuth.getInstance().addAuthStateListener(authListener);
     }

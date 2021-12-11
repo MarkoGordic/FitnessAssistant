@@ -101,7 +101,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                                 throw task.getException();
                             }
                         } catch (FirebaseNetworkException e1){ // in case it's a network error - notification quickly flashes
-                            AuthFunctional.quickFlash(getApplicationContext(), findViewById(R.id.notification_layout_id));
+                            AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                         } catch (Exception e2){ // in other cases, it's an invalid email input
                             AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.invalid_email));
                         }
@@ -118,13 +118,21 @@ public class PasswordResetActivity extends AppCompatActivity {
         setUpOnClickListeners();
 
         networkManager = new NetworkManager(getApplication());
+
+        // setting up the flashing animation for the no network notification
+        Animation flash = new AlphaAnimation(0.0f, 1.0f);
+        flash.setDuration(800); // flash duration
+        flash.setStartOffset(1600); // staying visible duration
+        flash.setRepeatMode(Animation.REVERSE);
+        flash.setRepeatCount(Animation.INFINITE);
+        findViewById(R.id.no_network_notification).startAnimation(flash);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         // registering this activity when user comes first time or returns
-        networkManager.registerConnectionObserver(this,findViewById(R.id.passwordResetScreen));
+        networkManager.registerConnectionObserver(this,findViewById(R.id.no_network_text_view));
     }
 
     @Override
