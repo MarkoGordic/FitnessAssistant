@@ -106,11 +106,13 @@ public class SignInActivity extends AppCompatActivity {
                     });
                 } catch (ApiException e){ // if there is an error, check if we're currently not online
                     AuthFunctional.finishLoading(view, findViewById(R.id.googleSignInProgressBar));
+                    e.printStackTrace();
                     if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
                         AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                     else{ // else quick flash the button and tell the user the sign in was unsuccessful by toasting
                         view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                         Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
                     }
                 }
             });
