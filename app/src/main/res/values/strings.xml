@@ -54,6 +54,9 @@
     <string name="settings">Settings</string>
     <string name="link_accounts">Link Accounts</string>
     <string name='privacy'>Privacy</string>
+    <string name="preferences">Preferences</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
 
     <!-- errors -->
     <!-- general errors -->

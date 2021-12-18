@@ -10,14 +10,14 @@
     <color name="default_white_color">#FFFFFF</color>
 
     <!-- Our palette -->
-    <color name="BackgroundColor">#242933</color>
-    <color name="NonBackgroundColor">#a2a3a3</color>
-    <color name="NotSelectedDefaultColor">#8c8c8c</color>
+    <color name="backgroundColor">#111419</color>
+    <color name="NonBackgroundColor">#979999</color>
+    <color name="NotSelectedDefaultColor">#3b3d40</color>
     <!-- main blue colors -->
-    <color name="SelectedColor">#c2b8cc</color>
-    <color name="MaximumBluePurple">#ADC0FF</color>
-    <color name="BlueYonder">#152451</color>
+    <color name="SpaceCadet">#6cb8d9</color>
+    <color name="MaximumBluePurple">#38708c</color>
+    <color name="BlueYonder">#74a1b3</color>
     <!-- main orange colors -->
-    <color name="MangoTango">#EB5E28</color>
-    <color name="Flame">#FF7E47</color>
+    <color name="MangoTango">#cc7047</color>
+    <color name="Flame">#cc7450</color>
 </resources>

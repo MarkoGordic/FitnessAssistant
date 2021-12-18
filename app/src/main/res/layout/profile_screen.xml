@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/profileScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/BackgroundColor">
+    android:background="@color/backgroundColor">
 
         <!-- Main Layout -->
     <LinearLayout
@@ -36,7 +36,7 @@
                 android:layout_gravity="center_vertical"
 
                 android:text="@string/your_profile"
-                android:textColor="@color/SelectedColor"
+                android:textColor="@color/SpaceCadet"
                 android:textSize="32sp"
                 android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
 
-                android:background="@color/BackgroundColor"
+                android:background="@color/backgroundColor"
                 android:contentDescription="@string/settings_description"
                 app:srcCompat="@drawable/gear" />
         </TableRow>
@@ -76,7 +76,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@id/profilePicture"
 
-                android:textColor="@color/SelectedColor"
+                android:textColor="@color/SpaceCadet"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 

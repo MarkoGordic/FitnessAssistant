@@ -4,7 +4,7 @@
     android:id="@+id/openingScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/BackgroundColor">
+    android:background="@color/backgroundColor">
 
     <!-- Opening Screen with the logo -->
     <!-- TODO Add the logo instead of the textView -->
@@ -43,7 +43,7 @@
             android:includeFontPadding="false"
             android:text="@string/assistant"
             android:textAlignment="center"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
             android:textSize="30sp"/>
 

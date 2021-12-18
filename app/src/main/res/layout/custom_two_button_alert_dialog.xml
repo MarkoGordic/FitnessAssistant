@@ -33,7 +33,7 @@
 
         android:text="@string/re_authenticate_your_account"
         android:textSize="22sp"
-        android:textColor="@color/SelectedColor"
+        android:textColor="@color/SpaceCadet"
         android:textStyle="bold" />
 
     <!-- Dialog Message -->
@@ -73,7 +73,7 @@
         android:includeFontPadding="false"
         android:fontFamily="@font/ralewaym"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SelectedColor"
+        android:textColor="@color/SpaceCadet"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
@@ -98,7 +98,7 @@
             android:layout_marginEnd="35dp"
 
             android:text="@string/link"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:textAllCaps="false"
             android:textSize="16sp"
 

@@ -1,16 +1,15 @@
 package com.example.fitnessassistant;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.fitnessassistant.authentication.SignInActivity;
+import com.example.fitnessassistant.uiprefs.ColorMode;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -35,8 +34,10 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+
+        // apply the color mode needed
+        ColorMode.applyColorMode(this, null);
+
         openingAnimation();
     }
 

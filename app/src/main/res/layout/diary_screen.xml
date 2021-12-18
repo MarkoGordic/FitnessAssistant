@@ -4,7 +4,7 @@
     android:id="@+id/diaryScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/BackgroundColor">
+    android:background="@color/backgroundColor">
 
     <!-- Temporary TextView -->
     <TextView
@@ -18,6 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
 
         android:text="@string/this_will_be_added_soon"
-        android:textColor="@color/SelectedColor"/>
+        android:textColor="@color/SpaceCadet"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

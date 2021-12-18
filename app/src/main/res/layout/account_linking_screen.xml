@@ -37,7 +37,7 @@
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
         android:textAlignment="center"
-        android:textColor="@color/SelectedColor"
+        android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
         android:textSize="35sp" />
 
@@ -57,7 +57,7 @@
         android:paddingBottom="4dp"
 
         android:src="@drawable/back"
-        android:background="@color/BackgroundColor"
+        android:background="@color/backgroundColor"
         android:contentDescription="@string/back_button_description"/>
 
 

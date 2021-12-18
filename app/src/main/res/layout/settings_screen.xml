@@ -4,7 +4,7 @@
     android:id="@+id/settingsScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/BackgroundColor">
+    android:background="@color/backgroundColor">
 
         <!-- Back Button -->
         <ImageButton
@@ -22,7 +22,7 @@
             android:paddingBottom="4dp"
 
             android:src="@drawable/back"
-            android:background="@color/BackgroundColor"
+            android:background="@color/backgroundColor"
             android:contentDescription="@string/back_button_description"/>
 
 <LinearLayout
@@ -42,9 +42,53 @@
 
             android:text="@string/settings"
             android:textAlignment="center"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:textSize="28sp"
             android:textStyle="bold"/>
+
+        <!-- separator -->
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+
+            android:layout_marginTop="20dp"
+
+            android:background="@color/BlueYonder"/>
+
+        <!-- Settings.Profile Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="5dp"
+
+            android:text="@string/preferences"
+            android:paddingStart="8dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/BlueYonder"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- LinkAccounts TextView -->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/darkModeSwitch"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/settings_field"
+
+            app:drawableStartCompat="@drawable/moon"
+            android:drawablePadding="12dp"
+
+            android:text="@string/dark_mode"
+            android:textColor="@color/SpaceCadet"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <!-- separator -->
         <View
@@ -85,7 +129,7 @@
             android:drawablePadding="12dp"
 
             android:text="@string/link_accounts"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:paddingStart="16dp"
             android:paddingEnd="12dp"
             android:textSize="20sp"
@@ -107,7 +151,7 @@
             android:drawablePadding="12dp"
 
             android:text="@string/change_your_username"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:paddingStart="16dp"
             android:paddingEnd="12dp"
             android:textSize="20sp"
@@ -129,7 +173,7 @@
             android:drawablePadding="12dp"
 
             android:text="@string/change_your_email"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:paddingStart="16dp"
             android:paddingEnd="12dp"
             android:textSize="20sp"
@@ -151,7 +195,7 @@
             android:drawablePadding="12dp"
 
             android:text="@string/change_password"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:paddingStart="16dp"
             android:paddingEnd="12dp"
             android:textSize="20sp"
@@ -198,7 +242,7 @@
             android:text="@string/privacy_policy"
             android:paddingStart="16dp"
             android:paddingEnd="12dp"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:textSize="20sp"
             android:textStyle="bold" />
 

@@ -5,7 +5,7 @@
     android:id="@+id/signInScreen"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/BackgroundColor">
+    android:background="@color/backgroundColor">
 
     <!-- Layout for the no network notification -->
     <LinearLayout
@@ -58,13 +58,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="24dp"
 
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
         android:text="@string/sign_in"
         android:textAlignment="center"
-        android:textColor="@color/SelectedColor"
+        android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
         android:textSize="35sp" />
 
@@ -79,7 +79,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="24dp"
 
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
@@ -114,7 +114,7 @@
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SelectedColor"
+        android:textColor="@color/SpaceCadet"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp" />
 
@@ -143,7 +143,7 @@
         android:includeFontPadding="false"
         android:fontFamily="@font/ralewaym"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SelectedColor"
+        android:textColor="@color/SpaceCadet"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
@@ -171,7 +171,7 @@
             android:paddingEnd="2dp"
             android:text="@string/not_a_member_yet"
             android:textAlignment="center"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
             android:textSize="13sp"
             tools:ignore="TextContrastCheck" />
@@ -191,7 +191,7 @@
             android:paddingEnd="2dp"
             android:text="@string/register_u"
             android:textAlignment="center"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
             android:textSize="13sp" />
 
@@ -214,7 +214,7 @@
         android:includeFontPadding="false"
         android:text="@string/forgot_password"
         android:textAlignment="center"
-        android:textColor="@color/SelectedColor"
+        android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
         android:textSize="13sp" />
 
@@ -225,12 +225,12 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toTopOf="@id/forgotPasswordTextView"
+        app:layout_constraintTop_toBottomOf="@id/forgotPasswordTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/orSeparator"
 
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
 
         android:background="@drawable/authentication_button"
 
@@ -239,7 +239,7 @@
         android:textSize="16sp"
         android:text="@string/sign_in"
         android:textAllCaps="false"
-        android:textColor="@color/BackgroundColor"
+        android:textColor="@color/backgroundColor"
         android:textFontWeight="600"
 
         tools:ignore="DuplicateSpeakableTextCheck" />
@@ -273,7 +273,7 @@
         app:layout_constraintBottom_toBottomOf="@id/orSeparator"
         app:layout_constrainedWidth="true"
 
-        android:background="@color/SelectedColor"/>
+        android:background="@color/SpaceCadet"/>
 
     <!-- OR Separator -->
     <TextView
@@ -296,7 +296,7 @@
         android:includeFontPadding="false"
         android:text="@string/or"
         android:textAlignment="center"
-        android:textColor="@color/SelectedColor"
+        android:textColor="@color/SpaceCadet"
         android:textFontWeight="600"
         android:textSize="22sp" />
 
@@ -313,7 +313,7 @@
         app:layout_constraintBottom_toBottomOf="@id/orSeparator"
         app:layout_constrainedWidth="true"
 
-        android:background="@color/SelectedColor"/>
+        android:background="@color/SpaceCadet"/>
 
     <!-- Facebook Sign In Button -->
     <androidx.appcompat.widget.AppCompatButton
@@ -372,7 +372,7 @@
         app:layout_constraintStart_toStartOf="@id/signInButton"
         app:layout_constraintTop_toBottomOf="@id/facebookSignInButton"
 
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
 
         android:background="@drawable/custom_google_button"
         android:drawableStart="@drawable/ic_google"

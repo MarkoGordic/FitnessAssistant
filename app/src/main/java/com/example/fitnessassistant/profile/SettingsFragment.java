@@ -1,7 +1,9 @@
 package com.example.fitnessassistant.profile;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,11 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -102,7 +106,7 @@ public class SettingsFragment extends Fragment {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                 Drawable trash = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(requireContext(), R.drawable.trash)));
-                DrawableCompat.setTint(trash, requireContext().getColor(R.color.SelectedColor));
+                DrawableCompat.setTint(trash, requireContext().getColor(R.color.SpaceCadet));
                 ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(trash);
 
                 ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.delete_your_account);
@@ -122,6 +126,38 @@ public class SettingsFragment extends Fragment {
             }
             else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+        });
+
+
+        SwitchCompat darkModeSwitch = view.findViewById(R.id.darkModeSwitch);
+
+        // setChecked of darkModeSwitch dependant of what mode is active
+        if(ColorMode.ACTIVE_MODE.equals(ColorMode.DARK_MODE)){
+            darkModeSwitch.setChecked(true);
+            darkModeSwitch.setText(R.string.dark_mode);
+            darkModeSwitch.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.moon),null,null,null);
+        } else{
+            darkModeSwitch.setChecked(false);
+            darkModeSwitch.setText(R.string.light_mode);
+            darkModeSwitch.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.sun),null,null,null);
+        }
+
+        // set onCheckedListener for darkModeSwitch
+        ((SwitchCompat) view.findViewById(R.id.darkModeSwitch)).setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if(isChecked){
+                compoundButton.setText(R.string.dark_mode);
+                compoundButton.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.moon),null,null,null);
+                ColorMode.applyColorMode(requireActivity(), ColorMode.DARK_MODE);
+            } else{
+                compoundButton.setText(R.string.light_mode);
+                compoundButton.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.sun),null,null,null);
+                ColorMode.applyColorMode(requireActivity(), ColorMode.LIGHT_MODE);
+            }
+            // putting it into prefs, so that it can be used if user enters the app again
+            SharedPreferences prefs = requireActivity().getSharedPreferences("ui_preferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("ui_preferences", true);
+            editor.apply();
         });
     }
 

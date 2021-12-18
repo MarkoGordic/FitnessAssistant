@@ -9,7 +9,7 @@
         android:id="@+id/emailVerificationScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/BackgroundColor">
+        android:background="@color/backgroundColor">
 
         <!-- Layout for the no network notification -->
         <LinearLayout
@@ -65,7 +65,7 @@
             android:paddingBottom="4dp"
 
             android:src="@drawable/back"
-            android:background="@color/BackgroundColor"
+            android:background="@color/backgroundColor"
             android:contentDescription="@string/back_button_description"/>
 
         <!-- Email Drawable -->
@@ -100,7 +100,7 @@
             android:includeFontPadding="false"
             android:text="@string/verify_your_email"
             android:textAlignment="center"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
             android:textSize="35sp"/>
 
@@ -139,7 +139,7 @@
 
             android:layout_marginBottom="32dp"
 
-            android:background="@color/SelectedColor"/>
+            android:background="@color/SpaceCadet"/>
 
         <!-- UserEmail TextView -->
         <TextView
@@ -157,7 +157,7 @@
 
             android:fontFamily="@font/ralewaym"
             android:includeFontPadding="false"
-            android:textColor="@color/SelectedColor"
+            android:textColor="@color/SpaceCadet"
             android:textStyle="bold"
             android:paddingStart="2dp"
             android:paddingEnd="2dp"
@@ -178,7 +178,7 @@
 
             android:layout_marginTop="32dp"
 
-            android:background="@color/SelectedColor"/>
+            android:background="@color/SpaceCadet"/>
 
         <!-- ResendEmailMessage TextView -->
         <TextView
@@ -224,7 +224,7 @@
             android:text="@string/send_email_verification"
             android:textSize="16sp"
             android:textAllCaps="false"
-            android:textColor="@color/BackgroundColor"
+            android:textColor="@color/backgroundColor"
             android:textFontWeight="600" />
 
         <!-- Sending Email Verification Progress Circle -->

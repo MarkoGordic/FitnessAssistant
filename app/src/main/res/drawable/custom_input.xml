@@ -6,15 +6,15 @@
 
     <item android:state_enabled="true" android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/BackgroundColor" />
+            <solid android:color="@color/backgroundColor" />
             <corners android:radius="10dp"/>
-            <stroke android:color="@color/SelectedColor" android:width="1.5dp"/>
+            <stroke android:color="@color/SpaceCadet" android:width="1.5dp"/>
         </shape>
     </item>
 
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/BackgroundColor" />
+            <solid android:color="@color/backgroundColor" />
             <corners android:radius="10dp"/>
             <stroke android:color="@color/BlueYonder" android:width="1dp"/>
         </shape>

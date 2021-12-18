@@ -767,9 +767,9 @@ public class AuthFunctional {
     }
 
     // used to change textView content
-    public static void dispUser(Context context, FirebaseUser currentUser){
-        TextView userNameView = ((Activity) context).findViewById(R.id.userNameTextView);
-        TextView userEmailView = ((Activity) context).findViewById(R.id.userEmailTextView);
+    public static void dispUser(View view, FirebaseUser currentUser){
+        TextView userNameView = view.findViewById(R.id.userNameTextView);
+        TextView userEmailView = view.findViewById(R.id.userEmailTextView);
         // checking if textViews are null in case we are not on the profile page
         if(userNameView != null)
             userNameView.setText(currentUser.getDisplayName());

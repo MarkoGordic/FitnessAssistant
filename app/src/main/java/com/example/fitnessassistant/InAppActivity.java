@@ -16,6 +16,7 @@ import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.profile.LinkAccountsFragment;
 import com.example.fitnessassistant.profile.ProfilePageFragment;
 import com.example.fitnessassistant.profile.SettingsFragment;
+import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.workout.WorkoutPageFragment;
@@ -86,6 +87,9 @@ public class InAppActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // applying the color mode needed
+        ColorMode.applyColorMode(this, null);
+
         setContentView(R.layout.in_app_screen);
 
         // setting up network manager
