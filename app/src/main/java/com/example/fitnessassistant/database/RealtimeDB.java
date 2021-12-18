@@ -22,7 +22,7 @@ public class RealtimeDB {
                             throw task.getException();
                     }
                     else{
-                        System.out.println("***REMOVED***");
+                        System.out.println("Registration successful!");
                     }
                 } catch (Exception e){
                     e.printStackTrace();
