@@ -6,6 +6,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- AccountLinking Drawable -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/linkAccountsImageView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/accountLinkingTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_marginBottom="32dp"
+
+        app:srcCompat="@drawable/link" />
+
+    <!-- AccountLinking TextView -->
+    <TextView
+        android:id="@+id/accountLinkingTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/backButton"
+        app:layout_constraintBottom_toTopOf="@id/FAlinkingButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:text="@string/link_accounts"
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:textAlignment="center"
+        android:textColor="@color/SelectedColor"
+        android:textFontWeight="600"
+        android:textSize="35sp" />
+
     <!-- Back Button -->
     <ImageButton
         android:id="@+id/backButton"
@@ -31,8 +66,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/FAlinkingButton"
 
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="72dp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,8 +91,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/facebookLinkingButton"
 
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="72dp"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,12 +101,11 @@
 
         android:background="@drawable/custom_fb_button"
         android:drawableStart="@drawable/ic_facebook"
-        android:drawablePadding="24dp"
 
-        android:text="@string/link"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:textAlignment="textStart"
+        android:text="@string/link_with_facebook"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/default_white_color"
         android:textSize="16sp"
@@ -98,8 +132,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/googleLinkingButton"
 
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="72dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,13 +143,12 @@
 
         android:background="@drawable/custom_google_button"
         android:drawableStart="@drawable/ic_google"
-        android:drawablePadding="24dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
 
-        android:text="@string/link"
+        android:text="@string/link_with_google"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:textColor="@color/common_google_signin_btn_text_light_default"
-        android:textAlignment="textStart"
+        android:textAlignment="center"
         android:textSize="16sp"
         android:textAllCaps="false"/>
 

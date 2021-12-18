@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
@@ -138,7 +139,10 @@ public class LinkAccountsFragment extends Fragment {
                                             builder.setOnDismissListener(dialogInterface -> AuthFunctional.finishLoading(view, requireView().findViewById(R.id.googleLinkingProgressBar)));
                                             AlertDialog dialog = builder.create();
                                             dialog.show();
+
                                             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                            ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
+
                                             EditText passwordInput = dialog.findViewById(R.id.dialog_input);
                                             AuthFunctional.setUpPassword(passwordInput);
 
@@ -322,7 +326,10 @@ public class LinkAccountsFragment extends Fragment {
                                                     builder.setOnDismissListener(dialogInterface -> AuthFunctional.finishLoading(view, requireView().findViewById(R.id.facebookLinkingProgressBar)));
                                                     AlertDialog dialog = builder.create();
                                                     dialog.show();
+
                                                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                                    ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
+
                                                     EditText passwordInput = dialog.findViewById(R.id.dialog_input);
                                                     AuthFunctional.setUpPassword(passwordInput);
 
@@ -439,22 +446,21 @@ public class LinkAccountsFragment extends Fragment {
         boolean hasOurAccount  = false;
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
+        if(user != null)
             for(UserInfo info : user.getProviderData()){
                 if(info.getProviderId().contains(GoogleAuthProvider.PROVIDER_ID))
                     signedInWithGoogle = true;
                 if(info.getProviderId().contains(FacebookAuthProvider.PROVIDER_ID))
                     signedInWithFacebook = true;
-                if(info.getProviderId().contains(EmailAuthProvider.PROVIDER_ID)){
+                if(info.getProviderId().contains(EmailAuthProvider.PROVIDER_ID))
                     hasOurAccount = true;
-                }
             }
-        } else // if somehow this happens we make sure it doesn't happen :)
+        else // if somehow this happens we make sure it doesn't happen :)
             AuthFunctional.refreshUser(getActivity());
 
         // setting up onClickListener and text for Google Linking
         if(signedInWithGoogle){
-            googleLinkButton.setText(R.string.unlink);
+            googleLinkButton.setText(R.string.unlink_google);
             if(!signedInWithFacebook && !hasOurAccount)
                 googleLinkButton.setOnClickListener(view1 -> {
                     view1.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
@@ -463,13 +469,13 @@ public class LinkAccountsFragment extends Fragment {
             else
                 setUpGoogleUnlinkingSystem(googleLinkButton);
         } else{
-            googleLinkButton.setText(R.string.link);
+            googleLinkButton.setText(R.string.link_with_google);
             setUpGoogleLinkingSystem(googleLinkButton, hasOurAccount);
         }
 
         // setting up onClickListener and text for Facebook Linking
         if(signedInWithFacebook){
-            fbLinkButton.setText(R.string.unlink);
+            fbLinkButton.setText(R.string.unlink_facebook);
             if(!signedInWithGoogle && !hasOurAccount)
                 fbLinkButton.setOnClickListener(view1 -> {
                     view1.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
@@ -478,7 +484,7 @@ public class LinkAccountsFragment extends Fragment {
             else
                 setUpFacebookUnlinkingSystem(fbLinkButton);
         } else {
-            fbLinkButton.setText(R.string.link);
+            fbLinkButton.setText(R.string.link_with_facebook);
             setUpFacebookLinkingSystem(fbLinkButton, hasOurAccount);
         }
 
@@ -520,5 +526,4 @@ public class LinkAccountsFragment extends Fragment {
         // setting up the Facebook callback manager
         facebookCallbackManager = CallbackManager.Factory.create();
     }
-
 }

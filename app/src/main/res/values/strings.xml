@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- App Name -->
     <string name="app_name">FitnessAssistant</string>
+    <string name="fitness">Fitness</string>
+    <string name="assistant">Assistant</string>
     <!-- App Version -->
     <string name="app_version">App ver 1.0.0</string>
     <!-- Privacy Policy Link -->
@@ -31,13 +33,16 @@
     <string name="register">Register</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="username">Username</string>
-    <string name="send_email_verification">Send the Mail</string>
+    <string name="send_email_verification">Resend Mail</string>
     <string name="sign_out">Sign Out</string>
     <string name="or">OR</string>
     <string name="continue_with_google">Continue with Google</string>
-    <string name="unlink">Unlink</string>
     <string name="link">Link</string>
     <string name="link_with_fitness_assistant">Link our Account</string>
+    <string name="link_with_facebook">Link with Facebook</string>
+    <string name="link_with_google">Link with Google</string>
+    <string name="unlink_facebook">Unlink Facebook</string>
+    <string name="unlink_google">Unlink Google</string>
     <string name="delete_account">Delete Account</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
@@ -88,10 +93,10 @@
         Just enter the email address you used to register and we\'ll send you a reset link.</string>
     <string name="link_will_be_sent"><i>The link in the email will expire in 1 hour. Firebase doesn\'t check the strength of the password, so make sure you set a strong one.</i></string>
     <string name="link_has_been_sent">Email has been sent</string>
-    <string name="register_agreement"><i>By registering for a new FitnessAssistant\naccount you must agree to our <u>Privacy Policy</u></i></string>
+    <string name="register_agreement">By registering for a new FitnessAssistant\naccount you must agree to our <u>Privacy Policy</u></string>
     <string name="register_for_free">Start your fitness journey for free</string>
-    <string name="not_a_member_yet"><i>Not a member yet</i><b> ?</b></string>
-    <string name="create_account_u"><i><u>Create account </u></i></string>
+    <string name="not_a_member_yet"><i>Not a member yet </i><b>   -></b></string>
+    <string name="register_u"><i><u>Register </u></i></string>
     <string name="verify_your_email">Verify your Email</string>
     <string name="verification_will_be_sent"><i>If you somehow haven\'t received any mail we can send you another one.\nIf you\'ve made a mistake simply sign out. (go back)</i></string>
     <string name="email_verification_required">We have sent you an email verification link.\nVerify now to finish creating your account.\n(Google sign in overwrites current credentials)</string>
@@ -105,7 +110,7 @@
     <string name="password_reset_unsuccessful">Password Reset Unsuccessful</string>
     <string name="facebook_error_password">Use that email to sign in via Email/Password</string>
     <string name="facebook_error_google">Use that email to sign in via Google</string>
-    <string name="sign_in_privacy_policy_agreement"><i>By continuing you agree to the sign-in provider\'s Privacy Policy</i></string>
+    <string name="sign_in_privacy_policy_agreement">By continuing you agree to the sign-in provider\'s Privacy Policy</string>
     <string name="press_again_to_sign_out">Press again to Sign Out</string>
     <string name="google_linking_unsuccessful">Linking with Google unsuccessful</string>
     <string name="google_unlinking_unsuccessful">Unlinking with Google unsuccessful</string>
@@ -144,7 +149,7 @@
 
     <!-- NavBar strings -->
     <string name="activity">Activity</string>
-    <string name="stats">Stats</string>
+    <string name="diary">Diary</string>
     <string name="home">Home</string>
     <string name="workout">Workout</string>
     <string name="profile">Profile</string>

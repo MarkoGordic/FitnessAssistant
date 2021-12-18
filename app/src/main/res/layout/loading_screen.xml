@@ -8,7 +8,7 @@
 
     <!-- Opening Screen with the logo -->
     <!-- TODO Add the logo instead of the textView -->
-    <TextView
+    <RelativeLayout
         android:id="@+id/appLogo"
 
         android:layout_width="wrap_content"
@@ -17,13 +17,36 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
 
-        android:fontFamily="@font/raleway"
-        android:includeFontPadding="false"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="30sp" />
+        <TextView
+            android:id="@+id/fitnessTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/raleway"
+            android:includeFontPadding="false"
+            android:text="@string/fitness"
+            android:textAlignment="center"
+            android:textColor="@color/Flame"
+            android:textFontWeight="600"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_toEndOf="@id/fitnessTextView"
+
+            android:fontFamily="@font/raleway"
+            android:includeFontPadding="false"
+            android:text="@string/assistant"
+            android:textAlignment="center"
+            android:textColor="@color/SelectedColor"
+            android:textFontWeight="600"
+            android:textSize="30sp"/>
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

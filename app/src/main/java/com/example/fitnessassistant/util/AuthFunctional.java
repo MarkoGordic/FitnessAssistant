@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
@@ -444,7 +445,10 @@ public class AuthFunctional {
                 builder.setView(R.layout.custom_two_button_alert_dialog);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
+
                 EditText passwordInput = dialog.findViewById(R.id.dialog_input);
                 AuthFunctional.setUpPassword(passwordInput);
 
@@ -477,7 +481,10 @@ public class AuthFunctional {
             builder.setView(R.layout.custom_two_button_alert_dialog);
             AlertDialog dialog = builder.create();
             dialog.show();
+
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.mail_focused);
+
             ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.change_your_email);
             ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.change_email_message);
 
@@ -542,7 +549,10 @@ public class AuthFunctional {
                 builder.setView(R.layout.custom_ok_alert_dialog);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
+
                 ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.no_fa_account_error);
                 ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.no_fa_message);
                 dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view -> dialog.dismiss());
@@ -551,7 +561,10 @@ public class AuthFunctional {
                 builder.setView(R.layout.custom_two_button_alert_dialog);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
+
                 EditText passwordInput = dialog.findViewById(R.id.dialog_input);
                 AuthFunctional.setUpPassword(passwordInput);
 
@@ -587,12 +600,15 @@ public class AuthFunctional {
     private static void changePassword(Context context){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
-            // creating a custom alert dialog for email input
+            // creating a custom alert dialog for password input
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setView(R.layout.custom_two_button_alert_dialog);
             AlertDialog dialog = builder.create();
             dialog.show();
+
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.lock_focused);
+
             ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.change_your_password);
             ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.change_password_message);
 
@@ -643,7 +659,10 @@ public class AuthFunctional {
                 builder.setView(R.layout.custom_ok_alert_dialog);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
+
                 ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.no_fa_account_error);
                 ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.no_fa_message);
                 dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view -> dialog.dismiss());
@@ -652,7 +671,10 @@ public class AuthFunctional {
                 builder.setView(R.layout.custom_two_button_alert_dialog);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
+
                 EditText passwordInput = dialog.findViewById(R.id.dialog_input);
                 AuthFunctional.setUpPassword(passwordInput);
 
@@ -694,7 +716,10 @@ public class AuthFunctional {
             builder.setView(R.layout.custom_two_button_alert_dialog);
             AlertDialog dialog = builder.create();
             dialog.show();
+
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
+
             ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.change_your_username);
             ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.change_username_message);
 

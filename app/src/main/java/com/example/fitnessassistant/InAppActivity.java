@@ -28,17 +28,17 @@ public class InAppActivity extends AppCompatActivity {
     // auth listener for refreshing user and UI
     private FirebaseAuth.AuthStateListener authListener;
     // setting up all fragments
-    private final MapPageFragment mapFragment = new MapPageFragment();
-    private final DiaryPageFragment diaryFragment = new DiaryPageFragment();
-    private final HomePageFragment homeFragment = new HomePageFragment();
-    private final WorkoutPageFragment workoutFragment = new WorkoutPageFragment();
-    private final ProfilePageFragment profileFragment = new ProfilePageFragment();
-    public static final SettingsFragment settingsFragment = new SettingsFragment();
-    public static final LinkAccountsFragment linkAccountsFragment = new LinkAccountsFragment();
+    private MapPageFragment mapFragment;
+    private DiaryPageFragment diaryFragment;
+    private HomePageFragment homeFragment;
+    private WorkoutPageFragment workoutFragment;
+    private ProfilePageFragment profileFragment;
+    public static SettingsFragment settingsFragment;
+    public static LinkAccountsFragment linkAccountsFragment;
     // and fragment manager
     private final FragmentManager fm = getSupportFragmentManager();
     // and setting the currently active fragment as home
-    private Fragment active = homeFragment;
+    private Fragment active;
 
     // return to previous fragment (if it exists)
     @Override
@@ -90,6 +90,16 @@ public class InAppActivity extends AppCompatActivity {
 
         // setting up network manager
         networkManager = new NetworkManager(getApplication());
+
+        mapFragment = new MapPageFragment();
+        diaryFragment = new DiaryPageFragment();
+        homeFragment = new HomePageFragment();
+        workoutFragment = new WorkoutPageFragment();
+        profileFragment = new ProfilePageFragment();
+        settingsFragment = new SettingsFragment();
+        linkAccountsFragment = new LinkAccountsFragment();
+
+        active = homeFragment;
 
         // setting up listener for firebase
         authListener = firebaseAuth -> AuthFunctional.refreshUser(this);

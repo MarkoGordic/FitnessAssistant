@@ -36,7 +36,7 @@
                 android:layout_gravity="center_vertical"
 
                 android:text="@string/your_profile"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/SelectedColor"
                 android:textSize="32sp"
                 android:textStyle="bold" />
 
@@ -76,7 +76,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@id/profilePicture"
 
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/SelectedColor"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
 
-            android:background="@color/DarkerGrayColor"/>
+            android:background="@color/NonBackgroundColor"/>
 
     </LinearLayout>
 

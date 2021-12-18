@@ -58,13 +58,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="36dp"
 
         android:fontFamily="@font/ralewayb"
         android:includeFontPadding="false"
         android:text="@string/sign_in"
         android:textAlignment="center"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textFontWeight="600"
         android:textSize="35sp" />
 
@@ -79,7 +79,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="30dp"
 
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
@@ -114,7 +114,7 @@
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp" />
 
@@ -143,9 +143,59 @@
         android:includeFontPadding="false"
         android:fontFamily="@font/ralewaym"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
+
+    <!-- grouping textViews for creating an account -->
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signInButton"
+        app:layout_constraintBottom_toTopOf="@id/orSeparator">
+
+        <!-- notAMember TextView -->
+        <TextView
+            android:id="@+id/notAMemberTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:text="@string/not_a_member_yet"
+            android:textAlignment="center"
+            android:textColor="@color/SelectedColor"
+            android:textFontWeight="600"
+            android:textSize="13sp"
+            tools:ignore="TextContrastCheck" />
+
+        <!-- createAccount TextView -->
+        <TextView
+            android:id="@+id/registerTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_toEndOf="@id/notAMemberTextView"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:text="@string/register_u"
+            android:textAlignment="center"
+            android:textColor="@color/SelectedColor"
+            android:textFontWeight="600"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
 
     <!-- ForgotPassword TextView -->
     <TextView
@@ -164,57 +214,9 @@
         android:includeFontPadding="false"
         android:text="@string/forgot_password"
         android:textAlignment="center"
-        android:textColor="@color/Flame"
+        android:textColor="@color/SelectedColor"
         android:textFontWeight="600"
-        android:textSize="14sp" />
-
-    <!-- notAMember TextView -->
-    <TextView
-        android:id="@+id/notAMemberTextView"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="1dp"
-        android:fontFamily="@font/ralewaym"
-
-        android:includeFontPadding="false"
-        android:paddingStart="2dp"
-
-        android:paddingEnd="2dp"
-        android:text="@string/not_a_member_yet"
-        android:textAlignment="center"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@id/forgotPasswordTextView"
-        app:layout_constraintStart_toStartOf="@id/edtTxtPassword"
-        app:layout_constraintTop_toTopOf="@+id/forgotPasswordTextView"
-        tools:ignore="TextContrastCheck" />
-
-    <!-- createAccount TextView -->
-    <TextView
-        android:id="@+id/createAccountTextView"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintStart_toEndOf="@id/notAMemberTextView"
-        app:layout_constraintTop_toTopOf="@+id/forgotPasswordTextView"
-        app:layout_constraintBottom_toBottomOf="@id/forgotPasswordTextView"
-
-        android:layout_marginTop="1dp"
-
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:paddingStart="2dp"
-        android:paddingEnd="2dp"
-        android:text="@string/create_account_u"
-        android:textAlignment="center"
-        android:textColor="@color/SpaceCadet"
-        android:textFontWeight="600"
-        android:textSize="13sp"/>
+        android:textSize="13sp" />
 
     <!-- Sign In Button-->
     <androidx.appcompat.widget.AppCompatButton
@@ -228,7 +230,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/orSeparator"
 
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="40dp"
 
         android:background="@drawable/authentication_button"
 
@@ -271,7 +273,7 @@
         app:layout_constraintBottom_toBottomOf="@id/orSeparator"
         app:layout_constrainedWidth="true"
 
-        android:background="@color/SpaceCadet"/>
+        android:background="@color/SelectedColor"/>
 
     <!-- OR Separator -->
     <TextView
@@ -285,7 +287,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="60dp"
 
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
@@ -294,7 +296,7 @@
         android:includeFontPadding="false"
         android:text="@string/or"
         android:textAlignment="center"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textFontWeight="600"
         android:textSize="22sp" />
 
@@ -311,7 +313,7 @@
         app:layout_constraintBottom_toBottomOf="@id/orSeparator"
         app:layout_constrainedWidth="true"
 
-        android:background="@color/SpaceCadet"/>
+        android:background="@color/SelectedColor"/>
 
     <!-- Facebook Sign In Button -->
     <androidx.appcompat.widget.AppCompatButton
@@ -324,7 +326,7 @@
         app:layout_constraintEnd_toEndOf="@id/signInButton"
         app:layout_constraintTop_toBottomOf="@id/orSeparator"
 
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
 
         android:background="@drawable/custom_fb_button"
         android:drawableStart="@drawable/ic_facebook"
@@ -370,7 +372,7 @@
         app:layout_constraintStart_toStartOf="@id/signInButton"
         app:layout_constraintTop_toBottomOf="@id/facebookSignInButton"
 
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="15dp"
 
         android:background="@drawable/custom_google_button"
         android:drawableStart="@drawable/ic_google"
@@ -412,7 +414,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/googleSignInButton"
 
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
 
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"

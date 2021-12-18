@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -35,9 +36,15 @@ public class PermissionFunctional {
                 builder.setView(R.layout.custom_ok_alert_dialog);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                // disables the user to cancel the given dialog
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.device);
+
                 ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_recognition_access);
-                ((TextView) dialog.findViewById(R.id.dialog_message)).setVisibility(View.GONE);
+                dialog.findViewById(R.id.dialog_message).setVisibility(View.GONE);
                 dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> {
                     dialog.dismiss();
                     permissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION);
@@ -50,9 +57,15 @@ public class PermissionFunctional {
             builder.setView(R.layout.custom_ok_alert_dialog);
             AlertDialog dialog = builder.create();
             dialog.show();
+            // disables the user to cancel the given dialog
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.device);
+
             ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_recognition_access);
-            ((TextView) dialog.findViewById(R.id.dialog_message)).setVisibility(View.GONE);
+            dialog.findViewById(R.id.dialog_message).setVisibility(View.GONE);
             dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> {
                 dialog.dismiss();
                 permissionLauncher.launch("com.google.android.gms.permission.ACTIVITY_RECOGNITION");

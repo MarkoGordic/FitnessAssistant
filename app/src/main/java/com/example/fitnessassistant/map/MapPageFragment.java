@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
@@ -32,7 +33,10 @@ public class MapPageFragment extends Fragment {
             builder.setView(R.layout.custom_ok_alert_dialog);
             AlertDialog dialog = builder.create();
             dialog.show();
+
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.exclamation);
+
             ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_recognition_access_denied);
             dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
 

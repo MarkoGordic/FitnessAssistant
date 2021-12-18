@@ -72,7 +72,7 @@ public class SignInActivity extends AppCompatActivity {
                     } catch(FirebaseNetworkException e1){ // if it's this one, it's network problems, so we quick flash the notification of no connectivity
                         AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
                     } catch(Exception e2){ // if it's any other we set the authentication error
-                        AuthFunctional.setAuthenticationError(getApplicationContext(), emailEdit.getText().toString(), emailEdit, passEdit, findViewById(R.id.forgotPasswordTextView), findViewById(R.id.createAccountTextView));
+                        AuthFunctional.setAuthenticationError(getApplicationContext(), emailEdit.getText().toString(), emailEdit, passEdit, findViewById(R.id.forgotPasswordTextView), findViewById(R.id.registerTextView));
                     }
                 });
             }
@@ -82,7 +82,7 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.forgotPasswordTextView).setOnClickListener(view -> startActivity(new Intent(this, PasswordResetActivity.class)));
 
         // createAccount listener - going to the CreateAccountActivity
-        findViewById(R.id.createAccountTextView).setOnClickListener(view -> startActivity(new Intent(this, CreateAccountActivity.class)));
+        findViewById(R.id.registerTextView).setOnClickListener(view -> startActivity(new Intent(this, CreateAccountActivity.class)));
 
         // googleSignInButton listener - gives google sign in pop-up
         findViewById(R.id.googleSignInButton).setOnClickListener(view -> {

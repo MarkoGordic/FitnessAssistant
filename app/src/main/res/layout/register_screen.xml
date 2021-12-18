@@ -64,9 +64,24 @@
         android:background="@color/BackgroundColor"
         android:contentDescription="@string/back_button_description"/>
 
+    <!-- User Drawable -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/userImageView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/createAnAccountTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_marginBottom="32dp"
+
+        app:srcCompat="@drawable/user_focused" />
+
     <!-- CreateAnAccount TextView -->
     <TextView
-        android:id="@+id/registerTextView"
+        android:id="@+id/createAnAccountTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,7 +96,7 @@
         android:includeFontPadding="false"
         android:text="@string/create_account"
         android:textAlignment="center"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textFontWeight="600"
         android:textSize="35sp"/>
 
@@ -133,7 +148,7 @@
         android:includeFontPadding="false"
         android:fontFamily="@font/ralewaym"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
@@ -163,7 +178,7 @@
         android:includeFontPadding="false"
         android:fontFamily="@font/ralewaym"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
@@ -192,7 +207,7 @@
         android:includeFontPadding="false"
         android:fontFamily="@font/ralewaym"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
@@ -221,52 +236,57 @@
         android:includeFontPadding="false"
         android:fontFamily="@font/ralewaym"
         android:paddingHorizontal="16sp"
-        android:textColor="@color/SpaceCadet"
+        android:textColor="@color/SelectedColor"
         android:textColorHint="@color/BlueYonder"
         android:textSize="20sp"/>
 
-    <!-- Privacy Policy TextView -->
-    <TextView
-        android:id="@+id/privacyPolicyTextView"
+    <LinearLayout
+        android:id="@+id/tableRowCA"
+        android:orientation="horizontal"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:clickable="true"
+        android:gravity="center"
 
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="40dp"
-        android:fontFamily="@font/ralewaym"
-
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="1dp"
-        android:text="@string/register_agreement"
-
-        android:textAlignment="textStart"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="13sp"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="@id/privacyPolicyCheckbox"
         app:layout_constraintStart_toStartOf="@id/confirmPasswordEditTextForRegister"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditTextForRegister"
-        tools:ignore="TextContrastCheck" />
-
-    <!-- Privacy Policy Checkbox -->
-    <CheckBox
-        android:id="@+id/privacyPolicyCheckbox"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
         app:layout_constraintEnd_toEndOf="@id/confirmPasswordEditTextForRegister"
-        app:layout_constraintTop_toTopOf="@id/privacyPolicyTextView"
-        app:layout_constraintBottom_toBottomOf="@id/privacyPolicyTextView"
+        app:layout_constraintTop_toBottomOf="@id/confirmPasswordEditTextForRegister"
+        app:layout_constrainedWidth="true"
 
-        android:layout_marginEnd="48dp"
+        android:layout_marginTop="16dp">
 
-        android:buttonTint="@color/Flame"/>
+
+        <!-- Privacy Policy TextView -->
+        <TextView
+            android:id="@+id/privacyPolicyTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:clickable="true"
+            android:fontFamily="@font/ralewaym"
+
+            android:text="@string/register_agreement"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="1dp"
+            android:textColor="@color/Flame"
+            android:textFontWeight="600"
+            android:textSize="13sp"
+            tools:ignore="TextContrastCheck" />
+
+        <!-- Privacy Policy Checkbox -->
+        <CheckBox
+            android:id="@+id/privacyPolicyCheckbox"
+
+            android:layout_marginStart="24dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:buttonTint="@color/Flame"/>
+
+    </LinearLayout>
 
     <!-- Register Button -->
     <androidx.appcompat.widget.AppCompatButton
@@ -275,11 +295,11 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/privacyPolicyTextView"
+        app:layout_constraintTop_toBottomOf="@id/tableRowCA"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
 
         android:background="@drawable/authentication_button"
 

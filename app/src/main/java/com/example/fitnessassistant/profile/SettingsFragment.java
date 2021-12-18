@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
@@ -25,6 +29,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 // TODO idea: Save Notification and Dark Mode Settings in SharedPreferences
 
@@ -38,7 +44,7 @@ public class SettingsFragment extends Fragment {
         // linkAccountsTextView listener - shows LinkAccountsFragment, hides current fragment
         view.findViewById(R.id.linkAccountsTextView).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.linkAccountsFragment).addToBackStack(null).commit());
 
-        // changeUserNameTextView listener - alert dialog
+        // changeUserNameTextView listener - calling the alert dialog
         view.findViewById(R.id.changeUserNameTextView).setOnClickListener(view1 -> {
             if (AuthFunctional.currentlyOnline)
                 AuthFunctional.setUpUserNameChange(getActivity());
@@ -46,7 +52,7 @@ public class SettingsFragment extends Fragment {
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
         });
 
-        // changeEmailTextView listener - alert dialog
+        // changeEmailTextView listener - calling the alert dialog
         view.findViewById(R.id.changeEmailTextView).setOnClickListener(view1 -> {
             if (AuthFunctional.currentlyOnline)
                 AuthFunctional.setUpEmailChange(getActivity());
@@ -54,7 +60,7 @@ public class SettingsFragment extends Fragment {
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
         });
 
-        // changePasswordButton listener - alert dialog
+        // changePasswordButton listener - calling the alert dialog
         view.findViewById(R.id.changePasswordTextView).setOnClickListener(view1 -> {
             if(AuthFunctional.currentlyOnline)
                 AuthFunctional.setUpPasswordChange(getActivity());
@@ -92,7 +98,13 @@ public class SettingsFragment extends Fragment {
                 builder.setView(R.layout.custom_two_button_alert_dialog);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                Drawable trash = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(requireContext(), R.drawable.trash)));
+                DrawableCompat.setTint(trash, requireContext().getColor(R.color.SelectedColor));
+                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(trash);
+
                 ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.delete_your_account);
                 ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.account_deletion_message);
 
