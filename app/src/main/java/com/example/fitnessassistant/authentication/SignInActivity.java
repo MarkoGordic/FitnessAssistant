@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.RealtimeDB;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.ActivityResultFunctional;
 import com.example.fitnessassistant.util.AuthFunctional;
@@ -102,6 +103,12 @@ public class SignInActivity extends AppCompatActivity {
                         } catch(Exception e2){ // if it's any other we notify the user the sign in process was unsuccessful
                             view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                             Toast.makeText(getApplicationContext(), getString(R.string.google_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
+                        }
+                    }).addOnSuccessListener(authResult -> {
+                        if(authResult.getAdditionalUserInfo() != null){
+                            if(authResult.getAdditionalUserInfo().isNewUser()){
+                                RealtimeDB.registerNewUser();
+                            }
                         }
                     });
                 } catch (ApiException e){ // if there is an error, check if we're currently not online
