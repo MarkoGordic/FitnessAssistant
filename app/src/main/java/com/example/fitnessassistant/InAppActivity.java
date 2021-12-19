@@ -1,6 +1,9 @@
 package com.example.fitnessassistant;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
@@ -87,6 +90,16 @@ public class InAppActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // determining weather device rebooted or not
+        SharedPreferences savedKeys = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = savedKeys.edit();
+
+        editor.putBoolean("reboot", ((System.currentTimeMillis() - SystemClock.elapsedRealtime()) - (savedKeys.getLong("key_oldDelta", 0))) > 100);
+
+        editor.putLong("key_oldDelta", (System.currentTimeMillis() - SystemClock.elapsedRealtime()));
+        editor.apply();
+
         // applying the color mode needed
         ColorMode.applyColorMode(this, null);
 
