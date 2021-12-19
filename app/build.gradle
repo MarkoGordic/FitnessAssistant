@@ -43,6 +43,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0-beta04'
 }
 
 apply plugin: 'com.google.gms.google-services'

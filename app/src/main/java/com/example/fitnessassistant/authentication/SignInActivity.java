@@ -75,6 +75,9 @@ public class SignInActivity extends AppCompatActivity {
                     } catch(Exception e2){ // if it's any other we set the authentication error
                         AuthFunctional.setAuthenticationError(getApplicationContext(), emailEdit.getText().toString(), emailEdit, passEdit, findViewById(R.id.forgotPasswordTextView), findViewById(R.id.registerTextView));
                     }
+                }).addOnSuccessListener(authResult -> {
+                    if(authResult.getAdditionalUserInfo() != null && authResult.getAdditionalUserInfo().isNewUser())
+                        RealtimeDB.registerNewUser();
                 });
             }
         });
@@ -155,6 +158,9 @@ public class SignInActivity extends AppCompatActivity {
                                                     findViewById(R.id.facebookSignInButton).startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                                     Toast.makeText(getApplicationContext(), getString(R.string.facebook_sign_in_unsuccessful), Toast.LENGTH_LONG).show();
                                                 }
+                                            }).addOnSuccessListener(authResult -> {
+                                                if(authResult.getAdditionalUserInfo() != null && authResult.getAdditionalUserInfo().isNewUser())
+                                                    RealtimeDB.registerNewUser();
                                             });
                                         } else {
                                             AuthFunctional.finishLoading(view, findViewById(R.id.facebookSignInProgressBar));
