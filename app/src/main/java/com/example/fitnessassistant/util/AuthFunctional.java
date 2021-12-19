@@ -35,6 +35,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
+import com.example.fitnessassistant.database.RealtimeDB;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -407,7 +408,7 @@ public class AuthFunctional {
                         Toast.makeText(context, context.getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                     }
                 else
-                    user.delete();
+                    RealtimeDB.removeUser();
             });
     }
 
