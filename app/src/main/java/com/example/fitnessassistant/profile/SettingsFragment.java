@@ -1,18 +1,25 @@
 package com.example.fitnessassistant.profile;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,12 +41,33 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Locale;
 import java.util.Objects;
 
 // TODO idea: Save Notification and Dark Mode Settings in SharedPreferences
 
 public class SettingsFragment extends Fragment {
     private GoogleSignInClient googleLinkingClient;
+
+    // used to get emoji for given locale
+    private String localeToEmoji(Locale locale) {
+        String countryCode = locale.getCountry();
+        int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
+        int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
+        return new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
+    }
+
+    // used to restart the application (0.5 sec upon calling for any unfinished tasks)
+    public static void restartApp(Context context, long delayMillis){
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+        ComponentName componentName = intent.getComponent();
+        Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+        new Handler().postDelayed(() -> {
+            context.startActivity(mainIntent);
+            Runtime.getRuntime().exit(0);
+        }, delayMillis);
+    }
 
     private void setUpOnClickListeners(View view){
         // backButton listener - calls activity's onBackPressed()
@@ -154,10 +182,74 @@ public class SettingsFragment extends Fragment {
                 ColorMode.applyColorMode(requireActivity(), ColorMode.LIGHT_MODE);
             }
             // putting it into prefs, so that it can be used if user enters the app again
-            SharedPreferences prefs = requireActivity().getSharedPreferences("ui_preferences", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("ui_preferences", true);
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
+            editor.putBoolean("theme_changed", true);
             editor.apply();
+        });
+
+        // selectLanguageTextView listener - gives alert dialogs for choosing the language
+        view.findViewById(R.id.selectLanguageTextView).setOnClickListener(view1 -> {
+
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(requireContext());
+            builder1.setView(R.layout.select_choice_dialog);
+            Dialog dialog = builder1.create();
+            dialog.show();
+            ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.world);
+            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.select_a_language);
+
+            ((Button) dialog.findViewById(R.id.dialog_negative_button)).setText(R.string.cancel);
+            dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view22 -> dialog.dismiss());
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_singlechoice);
+
+            // sets text with emojis
+            String serbian = String.format("%s  %s", localeToEmoji(new Locale("sr", "RS")), getString(R.string.serbian));
+            String english = String.format("%s  %s", localeToEmoji(new Locale("en", "GB")), getString(R.string.english));
+
+            arrayAdapter.add(serbian);
+            arrayAdapter.add(english);
+
+            ListView languageList = dialog.findViewById(R.id.languagesList);
+            languageList.setAdapter(arrayAdapter);
+
+            languageList.setOnItemClickListener((parent, view23, position, id) -> {
+                dialog.dismiss();
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(requireContext());
+                builder2.setView(R.layout.custom_two_button_alert_dialog);
+                Dialog dialog1 = builder2.create();
+                dialog1.show();
+
+                dialog1.findViewById(R.id.dialog_drawable).setVisibility(View.GONE);
+                dialog1.findViewById(R.id.dialog_input).setVisibility(View.GONE);
+
+                ((TextView) dialog1.findViewById(R.id.dialog_header)).setText(R.string.your_selected_language_is);
+
+                ((Button) dialog1.findViewById(R.id.dialog_negative_button)).setText(R.string.cancel);
+                dialog1.findViewById(R.id.dialog_negative_button).setOnClickListener(view24 -> {
+                    dialog1.dismiss();
+                    dialog.show();
+                });
+
+                ((Button) dialog1.findViewById(R.id.dialog_positive_button)).setText(R.string.continue_ad);
+
+                // prepares dialogs based on country/language chosen
+                if(arrayAdapter.getItem(position).equals(serbian)) {
+                    ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(serbian);
+                    dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
+                        dialog1.dismiss();
+                        PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "sr").apply();
+                        restartApp(requireContext(), 500);
+                    });
+                } else if(arrayAdapter.getItem(position).equals(english)) {
+                    ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(english);
+                    dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
+                        dialog1.dismiss();
+                        PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "en").apply();
+                        restartApp(requireContext(), 500);
+                    });
+                }
+
+            });
         });
     }
 

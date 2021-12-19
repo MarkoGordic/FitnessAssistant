@@ -1,10 +1,10 @@
 package com.example.fitnessassistant.uiprefs;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -17,10 +17,9 @@ public class ColorMode {
 
     // used to apply the given theme/color mode (dark/light)
     public static void applyColorMode(Activity activity, String mode){
-        SharedPreferences preferences = activity.getSharedPreferences("ui_preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(activity).edit();
         if(ACTIVE_MODE == null){
-            mode = preferences.getString("mode", NONE);
+            mode = PreferenceManager.getDefaultSharedPreferences(activity).getString("mode", NONE);
 
             if (mode.equals(NONE)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)

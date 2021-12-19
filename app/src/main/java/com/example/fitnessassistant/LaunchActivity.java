@@ -1,7 +1,10 @@
 package com.example.fitnessassistant;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -10,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnessassistant.authentication.SignInActivity;
 import com.example.fitnessassistant.uiprefs.ColorMode;
+import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
@@ -34,11 +38,24 @@ public class LaunchActivity extends AppCompatActivity {
         findViewById(R.id.appLogo).startAnimation(openAnim);
     }
 
+    // providing only one context through contextWrapper
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleExt.toLangIfDiff(newBase, PreferenceManager.getDefaultSharedPreferences(newBase).getString("langPref", "sys")));
+    }
+
+    // applying config changes
+    @Override
+    public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+        super.applyOverrideConfiguration(getBaseContext().getResources().getConfiguration());
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseApp.initializeApp(/*context=*/ this);
+        // initializing safety net
+        FirebaseApp.initializeApp(this);
         FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
         firebaseAppCheck.installAppCheckProviderFactory(SafetyNetAppCheckProviderFactory.getInstance());
 
@@ -46,10 +63,5 @@ public class LaunchActivity extends AppCompatActivity {
         ColorMode.applyColorMode(this, null);
 
         openingAnimation();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

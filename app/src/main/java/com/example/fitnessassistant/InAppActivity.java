@@ -1,6 +1,8 @@
 package com.example.fitnessassistant;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -20,6 +22,7 @@ import com.example.fitnessassistant.profile.LinkAccountsFragment;
 import com.example.fitnessassistant.profile.ProfilePageFragment;
 import com.example.fitnessassistant.profile.SettingsFragment;
 import com.example.fitnessassistant.uiprefs.ColorMode;
+import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.workout.WorkoutPageFragment;
@@ -85,6 +88,18 @@ public class InAppActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    // providing one and only context available, throught contextWrapper
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleExt.toLangIfDiff(newBase, PreferenceManager.getDefaultSharedPreferences(newBase).getString("langPref", "sys")));
+    }
+
+    // applying config changes
+    @Override
+    public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+        super.applyOverrideConfiguration(getBaseContext().getResources().getConfiguration());
     }
 
     @Override

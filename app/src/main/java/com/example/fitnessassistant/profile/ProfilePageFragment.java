@@ -1,10 +1,10 @@
 package com.example.fitnessassistant.profile;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,6 @@ import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
 import com.example.fitnessassistant.util.AuthFunctional;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,13 +80,11 @@ public class ProfilePageFragment extends Fragment {
         }
 
         // if we got back from dark/light mode switched we go to the settings
-        if(requireActivity().getSharedPreferences("ui_preferences", Context.MODE_PRIVATE).getBoolean("mode_changed", false)){
-            ((BottomNavigationView) requireActivity().findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.profile);
-            view.findViewById(R.id.settingsButton).performClick();
-            SharedPreferences prefs = requireActivity().getSharedPreferences("ui_preferences", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("ui_preferences", false);
+        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("theme_changed", false)){
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
+            editor.putBoolean("theme_changed", false);
             editor.apply();
+            SettingsFragment.restartApp(requireContext(), 0);
         }
         return view;
     }

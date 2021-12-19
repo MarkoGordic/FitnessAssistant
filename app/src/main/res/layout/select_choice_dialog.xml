@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/settings_field"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="20dp"
-    android:paddingBottom="20dp"
+    android:paddingBottom="10dp"
     android:paddingStart="10dp"
     android:paddingEnd="10dp">
 
@@ -30,39 +31,46 @@
 
         android:gravity="center"
 
+        android:text="@string/re_authenticate_your_account"
         android:textSize="22sp"
         android:textColor="@color/SpaceCadet"
         android:textStyle="bold" />
 
-    <!-- Dialog Message -->
-    <TextView
-        android:id="@+id/dialog_message"
+    <!-- Languages ListView -->
+    <ListView
+        android:id="@+id/languagesList"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
 
         android:gravity="center"
 
+        android:text="@string/re_authentication_message"
         android:textSize="17sp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:textColor="@color/BlueYonder"/>
+        android:textColor="@color/BlueYonder"
+        />
 
-    <!-- Dialog OK Button -->
+    <!-- Dialog Negative Button -->
     <Button
-        android:id="@+id/dialog_ok_button"
+        android:id="@+id/dialog_negative_button"
 
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginTop="15dp"
+
         android:layout_gravity="center"
 
-        android:layout_marginTop="20dp"
+        android:text="@string/cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/Flame"
 
-        android:background="@drawable/authentication_button"
+        android:textSize="16sp"
+        tools:ignore="TextContrastCheck" />
 
-        android:text="@string/ok"
-        android:textSize="16sp" />
 </LinearLayout>

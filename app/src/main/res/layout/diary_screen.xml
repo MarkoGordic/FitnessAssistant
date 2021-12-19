@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        android:text="@string/this_will_be_added_soon"
+        android:text="@string/coming_soon"
         android:textColor="@color/SpaceCadet"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -104,7 +104,7 @@
     <string name="register_u"><i><u>Register </u></i></string>
     <string name="verify_your_email">Verify your Email</string>
     <string name="verification_will_be_sent"><i>If you somehow haven\'t received any mail we can send you another one.\nIf you\'ve made a mistake simply sign out. (go back)</i></string>
-    <string name="email_verification_required">We have sent you an email verification link.\nVerify now to finish creating your account.\n(Google sign in overwrites current credentials)</string>
+    <string name="email_verification_required">We have sent you an email verification link.\nVerify now to finish creating your account.\n</string>
     <string name="hold_for_signing_out">Hold the button to sign out</string>
     <string name="successful_verification_sent">Email verification has been sent</string>
     <string name="unsuccessful_verification_sent">Something went wrong.\nCheck if the email is already in your inbox or try again later.</string>
@@ -135,8 +135,8 @@
     <string name="change_your_username">Change Username</string>
     <string name="change_your_email">Change Email</string>
     <string name="change_your_password">Change Password</string>
-    <string name="change_username_message"><b>Please note: </b>Provide a valid username.\nInvalid usernames will NOT change your old one.</string>
-    <string name="change_email_message"><b>Please note: </b>Provide a valid email.\nYou\'ll have to verify it on your next sign in.</string>
+    <string name="change_username_message"><b>Please note: </b>Provide a valid username.\nInvalid usernames <b>won\'t</b> change your old one.</string>
+    <string name="change_email_message"><b>Please note: </b>Provide a valid email.\n<b>You\'ll have</b> to verify it on your next sign in.</string>
     <string name="change_password_message"><b>Please note: </b>Provide a strong password.\nWeak passwords <b>won\'t</b> change your old one.</string>
     <string name="no_fa_account_error">No FitnessAssistant Account</string>
     <string name="no_fa_message">This change is available for users registered with our FitnessAssistant account. Please create an account first.</string>
@@ -150,7 +150,7 @@
     <string name="email_change_unsuccessful">Email Change Unsuccessful</string>
     <string name="email_change_successful">Email Change Successful</string>
 
-    <string name="select_a_language">Select A Language: </string>
+    <string name="select_a_language">Select a Language: </string>
     <string name="serbian">Serbian (SRB)</string>
     <string name="english">English (ENG)</string>
     <string name="your_selected_language_is">Your Selected Language is: </string>
@@ -163,7 +163,7 @@
     <string name="home">Home</string>
     <string name="workout">Workout</string>
     <string name="profile">Profile</string>
-    
+
     <!-- Greeting strings -->
     <string name="welcome_text">Hello! 👋 </string>
     <string name="good_morning">Good Morning </string>
@@ -177,5 +177,5 @@
     <string name="start_button">Start Counting</string>
 
 
-    <string name="coming_soon">This will be added soon</string>
+    <string name="coming_soon">COMING SOON</string>
 </resources>
