@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "545598236576",
+    "firebase_url": "https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "fitness-assistant-app",
     "storage_bucket": "fitness-assistant-app.appspot.com"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "com.example.fitnessassistant",
             "certificate_hash": "051249954f3d5f65448c6007f42d1f0345a18200"
+          }
+        },
+        {
+          "client_id": "545598236576-qkf7i2dp0pv1urol2vk79oj8rvce9glr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fitnessassistant",
+            "certificate_hash": "dc90596542ad9f2dfb899e857e79979cc395bae4"
           }
         },
         {
