@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fitnessassistant.authentication.SignInActivity;
+import com.example.fitnessassistant.notifications.NotificationController;
 import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.google.firebase.FirebaseApp;
@@ -53,6 +54,9 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initializing notification channels
+        NotificationController.createNotificationChannel(this, "Pedometer", "Showing step counter data.");
 
         // initializing safety net
         FirebaseApp.initializeApp(this);
