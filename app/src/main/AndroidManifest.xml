@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.fitnessassistant">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -25,32 +26,44 @@
 
     <activity
         android:name=".LaunchActivity"
+        android:screenOrientation="portrait"
         android:exported="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        tools:ignore="LockedOrientationActivity">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
     <activity android:name=".InAppActivity"
+        android:screenOrientation="portrait"
         android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:launchMode="singleTop">
+        android:launchMode="singleTop"
+        tools:ignore="LockedOrientationActivity">
     </activity>
     <activity
         android:name=".authentication.SignInActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:screenOrientation="portrait"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        tools:ignore="LockedOrientationActivity">
     </activity>
     <activity
         android:name=".authentication.PasswordResetActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:screenOrientation="portrait"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        tools:ignore="LockedOrientationActivity">
     </activity>
     <activity
         android:name=".authentication.CreateAccountActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar" >
+        android:screenOrientation="portrait"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        tools:ignore="LockedOrientationActivity">
     </activity>
     <activity
         android:name=".authentication.EmailVerificationActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:screenOrientation="portrait"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        tools:ignore="LockedOrientationActivity">
     </activity>
 </application>
 

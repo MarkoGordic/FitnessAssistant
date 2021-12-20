@@ -61,7 +61,19 @@ public class LaunchActivity extends AppCompatActivity {
 
         // apply the color mode needed
         ColorMode.applyColorMode(this, null);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         openingAnimation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // if activity gets paused, we remove any animations attached
+        if(findViewById(R.id.appLogo) != null)
+            findViewById(R.id.appLogo).setAnimation(null);
     }
 }

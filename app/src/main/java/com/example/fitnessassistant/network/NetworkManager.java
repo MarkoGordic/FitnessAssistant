@@ -22,11 +22,13 @@ public class NetworkManager {
         csMonitor.observe(lifecycleOwner, connected -> {
             if(!connected){
                 // if we're offline notification is visible and currentlyOnline is false
-                notificationView.setVisibility(View.VISIBLE);
+                if(notificationView != null)
+                    notificationView.setVisibility(View.VISIBLE);
                 AuthFunctional.currentlyOnline = false;
             } else{
                 // if we're online notification is not present and currentlyOnline is true
-                notificationView.setVisibility(View.GONE);
+                if(notificationView != null)
+                    notificationView.setVisibility(View.GONE);
                 AuthFunctional.currentlyOnline = true;
             }
         });

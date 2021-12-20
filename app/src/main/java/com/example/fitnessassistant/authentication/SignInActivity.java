@@ -301,5 +301,8 @@ public class SignInActivity extends AppCompatActivity {
         // removing the listener when activity pauses
         if(authListener != null)
             FirebaseAuth.getInstance().removeAuthStateListener(authListener);
+        // if activity gets paused, we remove any animations attached
+        if(findViewById(R.id.appLogo) != null)
+            findViewById(R.id.appLogo).setAnimation(null);
     }
 }

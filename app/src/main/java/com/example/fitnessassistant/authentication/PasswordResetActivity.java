@@ -140,5 +140,8 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onPause();
         // unregistering this activity when another activity comes into the foreground or else
         networkManager.unregisterConnectionObserver(this);
+        // if activity gets paused, we remove any animations attached
+        if(findViewById(R.id.linkSentTextView) != null)
+            findViewById(R.id.linkSentTextView).setAnimation(null);
     }
 }

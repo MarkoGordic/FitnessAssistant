@@ -13,10 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.util.AuthFunctional;
-import com.example.fitnessassistant.InAppActivity;
 import com.facebook.login.LoginManager;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -183,5 +183,11 @@ public class EmailVerificationActivity extends AppCompatActivity {
         // removing the listener when activity pauses
         if(authListener != null)
             FirebaseAuth.getInstance().removeAuthStateListener(authListener);
+
+        // if activity gets paused, we remove any animations attached
+        if(findViewById(R.id.appLogo) != null)
+            findViewById(R.id.appLogo).setAnimation(null);
+        if(findViewById(R.id.resendEmailMessageTextView) != null)
+            findViewById(R.id.resendEmailMessageTextView).setAnimation(null);
     }
 }
