@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundColor"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/stepsTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:text="Steps"
+        android:textAlignment="center"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/lastTimeUpdated"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/stepsTextView"
+        android:layout_alignStart="@id/stepsTextView"
+
+        android:layout_marginTop="2dp"
+
+        android:fontFamily="@font/ralewaym"
+
+        android:includeFontPadding="false"
+        android:text="Today 19:41"
+        android:textAlignment="center"
+        android:textColor="@color/DarkBlueYonder"
+        android:textFontWeight="600"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/stepCountTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/lastTimeUpdated"
+        android:layout_alignStart="@id/lastTimeUpdated"
+
+        android:layout_marginTop="20dp"
+
+        android:fontFamily="@font/ralewaym"
+
+        android:includeFontPadding="false"
+        android:text="3.780"
+        android:textAlignment="center"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/stepsTV"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@id/stepCountTextView"
+        android:layout_marginStart="4dp"
+
+        android:layout_marginBottom="2dp"
+        android:layout_toEndOf="@id/stepCountTextView"
+
+        android:fontFamily="@font/raleway"
+
+        android:includeFontPadding="false"
+        android:text="steps"
+        android:textAlignment="center"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/averageThisWeekTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/stepCountTextView"
+        android:layout_alignStart="@id/stepCountTextView"
+
+        android:layout_marginTop="32dp"
+
+        android:fontFamily="@font/ralewayb"
+
+        android:includeFontPadding="false"
+        android:text="AVERAGE THIS WEEK"
+        android:textAlignment="center"
+        android:textColor="@color/DarkBlueYonder"
+        android:textFontWeight="600"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/averageStepCountTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/averageThisWeekTextView"
+        android:layout_alignStart="@id/averageThisWeekTextView"
+        android:layout_marginTop="4dp"
+
+        android:fontFamily="@font/ralewaym"
+
+        android:includeFontPadding="false"
+        android:text="3.780"
+        android:textAlignment="center"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/averageStepsTV"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@id/averageStepCountTextView"
+        android:layout_marginStart="4dp"
+
+        android:layout_marginBottom="2dp"
+        android:layout_toEndOf="@id/averageStepCountTextView"
+
+        android:fontFamily="@font/raleway"
+
+        android:includeFontPadding="false"
+        android:text="steps"
+        android:textAlignment="center"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        android:textSize="20sp" />
+
+</RelativeLayout>

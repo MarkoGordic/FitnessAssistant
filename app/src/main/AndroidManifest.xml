@@ -3,81 +3,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.fitnessassistant">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-    <!-- Required for API 28 and below -->
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" android:maxSdkVersion="28"/>
-    <!-- Used for API 29+ -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Required for API 28 and below -->
+    <uses-permission
+        android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"
+        android:maxSdkVersion="28" /> <!-- Used for API 29+ -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-<application
-    android:allowBackup="false"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/Theme.FitnessAssistant" >
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FitnessAssistant">
+        <receiver
+            android:name=".pedometer.PedometerWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-    <service
-        android:name=".pedometer.Pedometer"
-        android:enabled="true"
-        android:exported="false"
-        />
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/pedometer_widget_info" />
+        </receiver>
 
-    <receiver
-        android:name=".pedometer.Restarter"
-        android:enabled="true"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="restartservice" />
-        </intent-filter>
-    </receiver>
+        <service
+            android:name=".pedometer.Pedometer"
+            android:enabled="true"
+            android:exported="false" />
 
-    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <receiver
+            android:name=".pedometer.Restarter"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartservice" />
+            </intent-filter>
+        </receiver>
 
-    <activity
-        android:name=".LaunchActivity"
-        android:screenOrientation="portrait"
-        android:exported="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        tools:ignore="LockedOrientationActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    <activity android:name=".InAppActivity"
-        android:screenOrientation="portrait"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:launchMode="singleTop"
-        tools:ignore="LockedOrientationActivity">
-    </activity>
-    <activity
-        android:name=".authentication.SignInActivity"
-        android:screenOrientation="portrait"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        tools:ignore="LockedOrientationActivity">
-    </activity>
-    <activity
-        android:name=".authentication.PasswordResetActivity"
-        android:screenOrientation="portrait"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        tools:ignore="LockedOrientationActivity">
-    </activity>
-    <activity
-        android:name=".authentication.CreateAccountActivity"
-        android:screenOrientation="portrait"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        tools:ignore="LockedOrientationActivity">
-    </activity>
-    <activity
-        android:name=".authentication.EmailVerificationActivity"
-        android:screenOrientation="portrait"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        tools:ignore="LockedOrientationActivity">
-    </activity>
-</application>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".LaunchActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InAppActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="LockedOrientationActivity"></activity>
+        <activity
+            android:name=".authentication.SignInActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="LockedOrientationActivity"></activity>
+        <activity
+            android:name=".authentication.PasswordResetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="LockedOrientationActivity"></activity>
+        <activity
+            android:name=".authentication.CreateAccountActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="LockedOrientationActivity"></activity>
+        <activity
+            android:name=".authentication.EmailVerificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="LockedOrientationActivity"></activity>
+    </application>
 
 </manifest>
