@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/settingsScreen"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
 
@@ -25,11 +25,19 @@
             android:background="@color/backgroundColor"
             android:contentDescription="@string/back_button_description"/>
 
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="parent">
+
 <LinearLayout
     android:id="@+id/settingLayout"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
 
     android:orientation="vertical"
 
@@ -333,5 +341,7 @@
             android:textStyle="bold"/>
 
 </LinearLayout>
+
+</ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

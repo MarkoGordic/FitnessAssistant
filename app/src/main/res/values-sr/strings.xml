@@ -55,8 +55,8 @@
     <string name="link_accounts">Poveži Naloge</string>
     <string name='privacy'>Privatnost</string>
     <string name="preferences">Izbori</string>
-    <string name="dark_mode">Tamni Mod</string>
-    <string name="light_mode">Svetli Mod</string>
+    <string name="dark_mode">Tamna Tema</string>
+    <string name="light_mode">Svetla Tema</string>
     <string name="select_language">Izaberi jezik</string>
     <string name="ok">OK</string>
 
@@ -137,7 +137,7 @@
     <string name="change_your_password">Promenite Lozinku</string>
     <string name="change_username_message"><b>Molimo da: </b>Unesete ispravno korisničko ime.\nNepravilna korisnička imena <b>neće</b> izmeniti staro.</string>
     <string name="change_email_message"><b>Molimo da: </b>Unesete ispravan email.\n<b>Moraćete</b> ga verifikovati po sledećoj prijavi.</string>
-    <string name="change_password_message"><b>Molimo da: </b>Unesete jaku lozinku.\nSlabe lozinke <b>neće</b> izmeniti staru.</string>
+    <string name="change_password_message"><b>Molimo da: </b>Unesete jaku lozinku.\nSlabe lozinke <b>neće</b> izmeniti staruf.</string>
     <string name="no_fa_account_error">Nema FitnessAssistant Naloga</string>
     <string name="no_fa_message">Ova izmena je moguća samo korisnicima sa FitnessAssistant nalogom. Molimo Vas da napravite nalog.</string>
     <string name="enter_your_new_email">Unesite novi email</string>
