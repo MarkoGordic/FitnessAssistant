@@ -2,6 +2,8 @@ package com.example.fitnessassistant.util;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,7 +30,7 @@ public class PermissionFunctional {
         permissionLauncher = launcher;
     }
 
-    public void checkActivityRecognitionPermission(Pedometer pedometer){
+    public void checkActivityRecognitionPermission(Context context){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
                 // alert dialog to let user know we're requesting activity recognition
@@ -50,11 +52,7 @@ public class PermissionFunctional {
                     permissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION);
                 });
             } else {
-                if(pedometer == null){
-                    // setting up pedometer
-                    pedometer = new Pedometer(fragment.requireContext(), fragment.requireView().findViewById(R.id.stepCountTextView));
-                }
-                pedometer.reRegisterSensor();
+                context.startService(new Intent(context, Pedometer.class));
             }
         } else if (ContextCompat.checkSelfPermission(fragment.requireContext(), "com.google.android.gms.permission.ACTIVITY_RECOGNITION") != PackageManager.PERMISSION_GRANTED) {
             // alert dialog to let user know we're requesting activity recognition
@@ -76,11 +74,7 @@ public class PermissionFunctional {
                 permissionLauncher.launch("com.google.android.gms.permission.ACTIVITY_RECOGNITION");
             });
         } else{
-            if(pedometer == null){
-                // setting up pedometer
-                pedometer = new Pedometer(fragment.requireContext(), fragment.requireView().findViewById(R.id.stepCountTextView));
-            }
-            pedometer.reRegisterSensor();
+             context.startService(new Intent(context, Pedometer.class));
         }
     }
 }

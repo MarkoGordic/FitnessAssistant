@@ -3,6 +3,7 @@ package com.example.fitnessassistant;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -61,11 +62,7 @@ public class InAppActivity extends AppCompatActivity {
     // launcher for the permission
     public final ActivityResultLauncher<String> permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
         if(result){
-            if(pedometer == null){
-                // setting up pedometer
-                pedometer = new Pedometer(getApplicationContext(), findViewById(R.id.stepCountTextView));
-            }
-            pedometer.reRegisterSensor();
+            startService(new Intent(getApplicationContext(), Pedometer.class));
         } else {
             // creates an alert dialog with rationale shown
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -109,7 +106,7 @@ public class InAppActivity extends AppCompatActivity {
             if(item.getItemId() == R.id.map){
                 fm.beginTransaction().hide(active).show(mapFragment).commit();
                 // user can access this fragment only if he granted the activity recognition permission
-                new PermissionFunctional(mapFragment, permissionLauncher).checkActivityRecognitionPermission(pedometer);
+                new PermissionFunctional(mapFragment, permissionLauncher).checkActivityRecognitionPermission(getApplicationContext());
                 active = mapFragment;
                 return true;
             } else if(item.getItemId() == R.id.diary){

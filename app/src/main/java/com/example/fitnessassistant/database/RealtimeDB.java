@@ -51,4 +51,21 @@ public class RealtimeDB {
         }
     }
 
+    // method for saving user's data on start
+    public static void updateUsername(String username){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users");
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.child(userID).child("username").setValue(username);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
 }

@@ -22,6 +22,21 @@
     android:supportsRtl="true"
     android:theme="@style/Theme.FitnessAssistant" >
 
+    <service
+        android:name=".pedometer.Pedometer"
+        android:enabled="true"
+        android:exported="false"
+        />
+
+    <receiver
+        android:name=".pedometer.Restarter"
+        android:enabled="true"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="restartservice" />
+        </intent-filter>
+    </receiver>
+
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
     <activity

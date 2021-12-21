@@ -748,6 +748,7 @@ public class AuthFunctional {
                             }
                         else{
                             Toast.makeText(context, R.string.username_change_successful, Toast.LENGTH_SHORT).show();
+                            RealtimeDB.updateUsername(usernameInput.getText().toString()); // TODO : Test
                             if (AuthFunctional.currentlyOnline) // try to reload the user
                                 user.reload().addOnCompleteListener(task1 -> {
                                     if (!task1.isSuccessful())

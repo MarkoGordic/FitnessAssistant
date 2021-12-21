@@ -3,6 +3,7 @@ package com.example.fitnessassistant.pedometer;
 import static java.lang.Math.abs;
 
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,17 +11,18 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.IBinder;
 import android.text.format.DateFormat;
-import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.notifications.NotificationController;
 
 import java.util.Date;
 
-public class Pedometer implements SensorEventListener {
-    private final SensorManager sensorManager;
-    private final TextView stepsText;
+public class Pedometer extends Service implements SensorEventListener {
+    private SensorManager sensorManager;
     private String currentDate;
     private String lastKnownDate;
 
@@ -29,16 +31,60 @@ public class Pedometer implements SensorEventListener {
     float lastNotificationSteps = 0.0f;
 
     // Required difference in steps before app pushes another notification to user
-    int requiredDifferenceInSteps = 3;
+    int requiredDifferenceInSteps = 2;
 
-    private final PendingIntent pendingIntent;
-    private final Context context;
+    private PendingIntent pendingIntent;
+    private Context context;
 
-    private final SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
-    public Pedometer(Context context, TextView textView){
+    public Pedometer(){
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        context = getApplicationContext();
+        Intent intent1 = new Intent(context, InAppActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        pendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_IMMUTABLE);
+        sharedPreferences = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+
+        currentDate = getCurrentDateFormatted();
+        lastKnownDate = getCurrentDateFormatted();
+
+        // in case we already have current date saved, pull saved data
+        if(sharedPreferences.contains(currentDate)){
+            lastKnownSteps = sharedPreferences.getFloat(currentDate, 0);
+            currentSteps = -2;
+
+            lastNotificationSteps = sharedPreferences.getFloat(currentDate, 0);
+            NotificationController.pushNotification(this.context, "Pedometer", ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000", pendingIntent, false, 25, true, false);
+        }
+
+        reRegisterSensor();
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("restartservice");
+        broadcastIntent.setClass(this, Restarter.class);
+        sendBroadcast(broadcastIntent);
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    public Pedometer(Context context){
         this.context = context;
-        this.stepsText = textView;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
         sharedPreferences = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
@@ -54,8 +100,6 @@ public class Pedometer implements SensorEventListener {
         if(sharedPreferences.contains(currentDate)){
             lastKnownSteps = sharedPreferences.getFloat(currentDate, 0);
             currentSteps = -2;
-            if(stepsText != null)
-                stepsText.setText(String.valueOf(sharedPreferences.getFloat(currentDate, 0)));
 
             lastNotificationSteps = sharedPreferences.getFloat(currentDate, 0);
             NotificationController.pushNotification(this.context, "Pedometer", ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000", pendingIntent, false, 25, true, false);
@@ -107,9 +151,6 @@ public class Pedometer implements SensorEventListener {
             NotificationController.pushNotification(this.context, "Pedometer", ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000", pendingIntent, false, 25, true, false);
             lastNotificationSteps = newSteps;
         }
-
-        if(stepsText != null)
-            stepsText.setText(String.valueOf(newSteps));
     }
 
     @Override
