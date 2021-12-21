@@ -146,6 +146,7 @@
     <string name="password_change_successful">Password Change Successful</string>
     <string name="email_change_unsuccessful">Email Change Unsuccessful</string>
     <string name="email_change_successful">Email Change Successful</string>
+    <string name="unable_to_refresh">Unable To Refresh</string>
 
     <string name="select_a_language">Select a Language: </string>
     <string name="serbian">Serbian (SRB)</string>

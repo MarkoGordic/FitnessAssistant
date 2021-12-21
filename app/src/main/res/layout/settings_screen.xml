@@ -1,29 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settingsScreen"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
-
-        <!-- Back Button -->
-        <ImageButton
-            android:id="@+id/backButton"
-
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            android:paddingStart="20dp"
-            android:paddingEnd="4dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="4dp"
-
-            android:src="@drawable/back"
-            android:background="@color/backgroundColor"
-            android:contentDescription="@string/back_button_description"/>
 
 <ScrollView
     android:layout_width="match_parent"
@@ -42,6 +24,29 @@
     android:orientation="vertical"
 
     android:padding="32dp">
+
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/backButton"
+
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+
+            android:layout_marginStart="-32dp"
+            android:layout_marginTop="-32dp"
+
+            android:background="@color/backgroundColor"
+            android:contentDescription="@string/back_button_description"
+
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="4dp"
+
+            android:src="@drawable/back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <!-- Settings Header -->
         <TextView

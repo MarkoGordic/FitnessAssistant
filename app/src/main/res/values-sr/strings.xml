@@ -33,13 +33,13 @@
     <string name="send_email_verification">Ponovo Mail pošalji</string>
     <string name="sign_out">Odjava</string>
     <string name="or">ILI</string>
-    <string name="continue_with_google">Nastavi sa Google</string>
+    <string name="continue_with_google">Continue with Google</string>
     <string name="link">Poveži</string>
     <string name="link_with_fitness_assistant">Poveži naš nalog</string>
-    <string name="link_with_facebook">Poveži sa Facebook</string>
-    <string name="link_with_google">Poveži sa Google</string>
-    <string name="unlink_facebook">Odveži Facebook</string>
-    <string name="unlink_google">Odveži Google</string>
+    <string name="link_with_facebook">Link with Facebook</string>
+    <string name="link_with_google">Link with Google</string>
+    <string name="unlink_facebook">Unlink Facebook</string>
+    <string name="unlink_google">Unlink Google</string>
     <string name="delete_account">Obriši Nalog</string>
     <string name="cancel">Odustani</string>
     <string name="delete">Obriši</string>
@@ -96,7 +96,7 @@
     <string name="link_will_be_sent"><i>Link u mejlu ističe nakon 60 minuta. Firebase ne proverava jačinu nove lozinke, pa podsećamo da podesite jaku.</i></string>
     <string name="link_has_been_sent">Mejl je poslat</string>
     <string name="register_agreement">Registrovanjem za novi FitnessAssistant\nnalog prihvatate naša <u>Pravila o privatnosti</u></string>
-    <string name="register_for_free">Budite fit potpuno besplatno</string>
+    <string name="register_for_free">Započnite odmah potpuno besplatno</string>
     <string name="not_a_member_yet"><i>Niste korisnik </i><b>   -></b></string>
     <string name="register_u"><i><u>Registrujte se </u></i></string>
     <string name="verify_your_email">Verifikujte vaš Email</string>
@@ -146,6 +146,7 @@
     <string name="password_change_successful">Izmena Lozinke Uspešna</string>
     <string name="email_change_unsuccessful">Izmena Mejla Neuspešna</string>
     <string name="email_change_successful">Izmena Mejla Uspešna</string>
+    <string name="unable_to_refresh">Osvežavanje Neuspešno</string>
 
     <string name="select_a_language">Izaberite Jezik: </string>
     <string name="serbian">Srpski (SRB)</string>

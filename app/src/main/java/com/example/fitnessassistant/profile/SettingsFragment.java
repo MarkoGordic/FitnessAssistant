@@ -44,8 +44,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Locale;
 import java.util.Objects;
 
-// TODO idea: Save Notification and Dark Mode Settings in SharedPreferences
-
 public class SettingsFragment extends Fragment {
     private GoogleSignInClient googleLinkingClient;
 
@@ -269,5 +267,4 @@ public class SettingsFragment extends Fragment {
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.server_client_id)).requestEmail().build();
         googleLinkingClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions);
     }
-
 }
