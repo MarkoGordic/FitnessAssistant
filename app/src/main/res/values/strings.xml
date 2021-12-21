@@ -56,6 +56,7 @@
     <string name="light_mode">Light Mode</string>
     <string name="select_language">Select Language</string>
     <string name="ok">OK</string>
+    <string name="change_profile_picture">Change Profile Picture</string>
 
     <!-- errors -->
     <!-- general errors -->

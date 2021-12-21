@@ -169,6 +169,28 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <!-- ChangeProfilePicture TextView -->
+        <TextView
+            android:id="@+id/changeProfilePicture"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="5dp"
+
+            android:background="@drawable/settings_field"
+
+            app:drawableStartCompat="@drawable/portrait"
+            app:drawableEndCompat="@drawable/forward"
+            android:drawablePadding="12dp"
+
+            android:text="@string/change_profile_picture"
+            android:textColor="@color/SpaceCadet"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <!-- ChangeUsername TextView -->
         <TextView
             android:id="@+id/changeUserNameTextView"
