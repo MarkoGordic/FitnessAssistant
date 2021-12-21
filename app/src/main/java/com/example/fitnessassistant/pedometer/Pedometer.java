@@ -22,6 +22,7 @@ public class Pedometer implements SensorEventListener {
     private final SensorManager sensorManager;
     private final TextView stepsText;
     private String currentDate;
+    private String lastKnownDate;
 
     float currentSteps = -1.0f;
     float lastKnownSteps = 0.0f;
@@ -42,6 +43,7 @@ public class Pedometer implements SensorEventListener {
 
         sharedPreferences = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
         currentDate = getCurrentDateFormatted();
+        lastKnownDate = getCurrentDateFormatted();
 
         // setting up variables required for notifications
         Intent intent = new Intent(context, InAppActivity.class);
@@ -71,6 +73,8 @@ public class Pedometer implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
+        currentDate = getCurrentDateFormatted();
+
         if(currentSteps == -2){
             lastKnownSteps = sensorEvent.values[0] - sharedPreferences.getFloat(currentDate, 0);
             currentSteps = sensorEvent.values[0];
@@ -86,7 +90,13 @@ public class Pedometer implements SensorEventListener {
         int newSteps = Math.round(currentSteps) - Math.round(lastKnownSteps);
 
         // saving newest data from pedometer for later usage
-        currentDate = getCurrentDateFormatted();
+        // In case we detect date change, we will reset counter to 0
+        if(!currentDate.equals(lastKnownDate)){
+            lastKnownDate = currentDate;
+            lastKnownSteps = sensorEvent.values[0];
+            newSteps = Math.round(currentSteps) - Math.round(lastKnownSteps);
+        }
+
         SharedPreferences.Editor editor =  sharedPreferences.edit();
         editor.putFloat(currentDate, newSteps);
         editor.apply();
