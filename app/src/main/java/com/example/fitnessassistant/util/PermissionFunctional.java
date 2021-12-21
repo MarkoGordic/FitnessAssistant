@@ -52,7 +52,7 @@ public class PermissionFunctional {
                     permissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION);
                 });
             } else {
-                context.startService(new Intent(context, Pedometer.class));
+                context.startForegroundService(new Intent(context, Pedometer.class));
             }
         } else if (ContextCompat.checkSelfPermission(fragment.requireContext(), "com.google.android.gms.permission.ACTIVITY_RECOGNITION") != PackageManager.PERMISSION_GRANTED) {
             // alert dialog to let user know we're requesting activity recognition
@@ -74,7 +74,7 @@ public class PermissionFunctional {
                 permissionLauncher.launch("com.google.android.gms.permission.ACTIVITY_RECOGNITION");
             });
         } else{
-             context.startService(new Intent(context, Pedometer.class));
+             context.startForegroundService(new Intent(context, Pedometer.class));
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.fitnessassistant.pedometer;
 
 import static java.lang.Math.abs;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -15,9 +16,11 @@ import android.os.IBinder;
 import android.text.format.DateFormat;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.fitnessassistant.InAppActivity;
-import com.example.fitnessassistant.notifications.NotificationController;
+import com.example.fitnessassistant.R;
 
 import java.util.Date;
 
@@ -31,25 +34,25 @@ public class Pedometer extends Service implements SensorEventListener {
     float lastNotificationSteps = 0.0f;
 
     // Required difference in steps before app pushes another notification to user
-    int requiredDifferenceInSteps = 2;
-
-    private PendingIntent pendingIntent;
-    private Context context;
+    int requiredDifferenceInSteps = 1;
 
     private SharedPreferences sharedPreferences;
 
-    public Pedometer(){
+    public Pedometer(){ }
 
+    @Override
+    public void onCreate(){
+        Notification notification = pushPedometerNotification(this, "Starting Pedometer service...", "Please wait...");
+
+        startForeground(25, notification);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        context = getApplicationContext();
-        Intent intent1 = new Intent(context, InAppActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        pendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_IMMUTABLE);
-        sharedPreferences = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
-        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        sharedPreferences = getApplicationContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+        sensorManager = (SensorManager) getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+
+        reRegisterSensor();
 
         currentDate = getCurrentDateFormatted();
         lastKnownDate = getCurrentDateFormatted();
@@ -60,52 +63,10 @@ public class Pedometer extends Service implements SensorEventListener {
             currentSteps = -2;
 
             lastNotificationSteps = sharedPreferences.getFloat(currentDate, 0);
-            NotificationController.pushNotification(this.context, "Pedometer", ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000", pendingIntent, false, 25, true, false);
+            pushPedometerNotification(getApplicationContext(), ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000");
         }
 
-        reRegisterSensor();
         return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("restartservice");
-        broadcastIntent.setClass(this, Restarter.class);
-        sendBroadcast(broadcastIntent);
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    public Pedometer(Context context){
-        this.context = context;
-        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-
-        sharedPreferences = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
-        currentDate = getCurrentDateFormatted();
-        lastKnownDate = getCurrentDateFormatted();
-
-        // setting up variables required for notifications
-        Intent intent = new Intent(context, InAppActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        // in case we already have current date saved, pull saved data
-        if(sharedPreferences.contains(currentDate)){
-            lastKnownSteps = sharedPreferences.getFloat(currentDate, 0);
-            currentSteps = -2;
-
-            lastNotificationSteps = sharedPreferences.getFloat(currentDate, 0);
-            NotificationController.pushNotification(this.context, "Pedometer", ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000", pendingIntent, false, 25, true, false);
-        }
-
-        reRegisterSensor();
     }
 
     public void reRegisterSensor(){
@@ -148,15 +109,55 @@ public class Pedometer extends Service implements SensorEventListener {
 
         // pushing new notification for current steps
         if(abs(newSteps - lastNotificationSteps) >= requiredDifferenceInSteps) {
-            NotificationController.pushNotification(this.context, "Pedometer", ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000", pendingIntent, false, 25, true, false);
+            pushPedometerNotification(this, ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000");
             lastNotificationSteps = newSteps;
         }
+    }
+
+    // TODO : Put app icon when done
+    public static Notification pushPedometerNotification(Context context, String textTitle, String textContent){
+        Intent intent = new Intent(context, InAppActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Pedometer")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle((CharSequence) textTitle)
+                .setContentText((CharSequence) textContent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(false)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setOngoing(true)
+                .setShowWhen(false);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(25, builder.build());
+
+        return builder.build();
+    }
+
+    public static String getCurrentDateFormatted(){
+        return (String) DateFormat.format("yyyyMMdd", new Date());
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {}
 
-    public static String getCurrentDateFormatted(){
-        return (String) DateFormat.format("yyyyMMdd", new Date());
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("restartservice");
+        broadcastIntent.setClass(this, Restarter.class);
+
+        sendBroadcast(broadcastIntent);
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }

@@ -40,8 +40,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class InAppActivity extends AppCompatActivity {
-    // pedometer
-    private Pedometer pedometer;
     // network manager for network connectivity checking
     private NetworkManager networkManager;
     // auth listener for refreshing user and UI
@@ -62,7 +60,7 @@ public class InAppActivity extends AppCompatActivity {
     // launcher for the permission
     public final ActivityResultLauncher<String> permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
         if(result){
-            startService(new Intent(getApplicationContext(), Pedometer.class));
+            startForegroundService(new Intent(getApplicationContext(), Pedometer.class));
         } else {
             // creates an alert dialog with rationale shown
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -205,10 +203,6 @@ public class InAppActivity extends AppCompatActivity {
 
         // setting up listener for firebase
         authListener = firebaseAuth -> AuthFunctional.refreshUser(this);
-
-        // re-registering the pedometer sensor
-        if(pedometer != null)
-            pedometer.reRegisterSensor();
     }
 
     @Override
