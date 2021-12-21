@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -16,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.pedometer.Pedometer;
 
 // used primary for requesting the activity recognition permission, could become generic so that it fits any permission
 public class PermissionFunctional {
@@ -28,7 +28,7 @@ public class PermissionFunctional {
         permissionLauncher = launcher;
     }
 
-    public void checkActivityRecognitionPermission(){
+    public void checkActivityRecognitionPermission(Pedometer pedometer){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
                 // alert dialog to let user know we're requesting activity recognition
@@ -49,8 +49,13 @@ public class PermissionFunctional {
                     dialog.dismiss();
                     permissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION);
                 });
-            } else
-                Toast.makeText(fragment.requireContext(), R.string.pedometer_can_start, Toast.LENGTH_LONG).show();                          // this is probably always false
+            } else {
+                if(pedometer == null){
+                    // setting up pedometer
+                    pedometer = new Pedometer(fragment.requireContext(), fragment.requireView().findViewById(R.id.stepCountTextView));
+                }
+                pedometer.reRegisterSensor();
+            }
         } else if (ContextCompat.checkSelfPermission(fragment.requireContext(), "com.google.android.gms.permission.ACTIVITY_RECOGNITION") != PackageManager.PERMISSION_GRANTED) {
             // alert dialog to let user know we're requesting activity recognition
             AlertDialog.Builder builder = new AlertDialog.Builder(fragment.requireContext());
@@ -70,7 +75,12 @@ public class PermissionFunctional {
                 dialog.dismiss();
                 permissionLauncher.launch("com.google.android.gms.permission.ACTIVITY_RECOGNITION");
             });
-        } else
-            Toast.makeText(fragment.requireContext(), R.string.pedometer_can_start, Toast.LENGTH_LONG).show();
+        } else{
+            if(pedometer == null){
+                // setting up pedometer
+                pedometer = new Pedometer(fragment.requireContext(), fragment.requireView().findViewById(R.id.stepCountTextView));
+            }
+            pedometer.reRegisterSensor();
+        }
     }
 }

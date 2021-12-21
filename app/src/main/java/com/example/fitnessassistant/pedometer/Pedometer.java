@@ -52,7 +52,8 @@ public class Pedometer implements SensorEventListener {
         if(sharedPreferences.contains(currentDate)){
             lastKnownSteps = sharedPreferences.getFloat(currentDate, 0);
             currentSteps = -2;
-            stepsText.setText(String.valueOf(sharedPreferences.getFloat(currentDate, 0)));
+            if(stepsText != null)
+                stepsText.setText(String.valueOf(sharedPreferences.getFloat(currentDate, 0)));
 
             lastNotificationSteps = sharedPreferences.getFloat(currentDate, 0);
             NotificationController.pushNotification(this.context, "Pedometer", ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000", pendingIntent, false, 25, true, false);
@@ -97,8 +98,8 @@ public class Pedometer implements SensorEventListener {
             lastNotificationSteps = newSteps;
         }
 
-        // TODO fix - this can result in a NullPointerException if user is not at homePage
-        stepsText.setText(String.valueOf(newSteps));
+        if(stepsText != null)
+            stepsText.setText(String.valueOf(newSteps));
     }
 
     @Override

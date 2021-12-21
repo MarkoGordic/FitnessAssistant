@@ -8,9 +8,6 @@
     <!-- Privacy Policy Link -->
     <string name="privacy_policy_link" tools:ignore="TypographyDashes">https://www.termsfeed.com/live/cb6a31f0-6c44-406f-b3c0-1dbc3b41dddf</string>
 
-    <!-- TODO delete this and change the code setting it when pedometer works properly -->
-    <string name="pedometer_can_start">Pedometer can start/continue</string>
-
     <!-- Used for Pedometer Permission -->
     <string name="activity_recognition_access">FitnessAssistant would like to access Activity Recognition on your device</string>
     <string name="activity_recognition_access_denied">Activity Recognition Permission</string>

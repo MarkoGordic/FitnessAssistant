@@ -1,16 +1,24 @@
 package com.example.fitnessassistant;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -18,6 +26,7 @@ import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.profile.LinkAccountsFragment;
 import com.example.fitnessassistant.profile.ProfilePageFragment;
 import com.example.fitnessassistant.profile.SettingsFragment;
@@ -30,6 +39,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class InAppActivity extends AppCompatActivity {
+    // pedometer
+    private Pedometer pedometer;
     // network manager for network connectivity checking
     private NetworkManager networkManager;
     // auth listener for refreshing user and UI
@@ -46,6 +57,38 @@ public class InAppActivity extends AppCompatActivity {
     private final FragmentManager fm = getSupportFragmentManager();
     // and setting the currently active fragment as home
     private Fragment active;
+
+    // launcher for the permission
+    public final ActivityResultLauncher<String> permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
+        if(result){
+            if(pedometer == null){
+                // setting up pedometer
+                pedometer = new Pedometer(getApplicationContext(), findViewById(R.id.stepCountTextView));
+            }
+            pedometer.reRegisterSensor();
+        } else {
+            // creates an alert dialog with rationale shown
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(R.layout.custom_ok_alert_dialog);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.exclamation);
+
+            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_recognition_access_denied);
+            dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+
+            // showing messages (one case if user selected don't ask again, other if user just selected deny)
+            if(!shouldShowRequestPermissionRationale(Manifest.permission.ACTIVITY_RECOGNITION))
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_recognition_access_message_denied_forever);
+            else
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_recognition_access_message_denied);
+
+            // redirects user to home
+            ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.home);
+        }
+    });
 
     // return to previous fragment (if it exists)
     @Override
@@ -66,7 +109,7 @@ public class InAppActivity extends AppCompatActivity {
             if(item.getItemId() == R.id.map){
                 fm.beginTransaction().hide(active).show(mapFragment).commit();
                 // user can access this fragment only if he granted the activity recognition permission
-                new PermissionFunctional(mapFragment, mapFragment.permissionLauncher).checkActivityRecognitionPermission();
+                new PermissionFunctional(mapFragment, permissionLauncher).checkActivityRecognitionPermission(pedometer);
                 active = mapFragment;
                 return true;
             } else if(item.getItemId() == R.id.diary){
@@ -165,6 +208,10 @@ public class InAppActivity extends AppCompatActivity {
 
         // setting up listener for firebase
         authListener = firebaseAuth -> AuthFunctional.refreshUser(this);
+
+        // re-registering the pedometer sensor
+        if(pedometer != null)
+            pedometer.reRegisterSensor();
     }
 
     @Override
