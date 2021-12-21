@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fitnessassistant.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +22,7 @@ import java.util.GregorianCalendar;
 public class HomePageFragment extends Fragment {
     // gives welcome message based on time
     private void greetUser(View view){
+        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setRefreshing(true);
         TextView welcomeTextView = view.findViewById(R.id.welcomeMessageTextView); // TextView in top right corner for welcome message
 
         Calendar calendar = GregorianCalendar.getInstance();
@@ -37,14 +40,27 @@ public class HomePageFragment extends Fragment {
             welcomeTextView.setText(getString(R.string.good_night));
         if(FirebaseAuth.getInstance().getCurrentUser() != null) // greet the user, don't just say welcome :)
             welcomeTextView.setText(String.format("%s, %s", welcomeTextView.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+        else
+            Toast.makeText(requireContext(), R.string.unable_to_refresh, Toast.LENGTH_SHORT).show();
+        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setRefreshing(false);
+    }
+
+    private void setUpOnClickListeners(View view){
+        // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
+        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> greetUser(view));
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // returning the view
         final View view = inflater.inflate(R.layout.home_screen, container, false);
-        greetUser(view);
+        setUpOnClickListeners(view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        greetUser(requireView());
     }
 }

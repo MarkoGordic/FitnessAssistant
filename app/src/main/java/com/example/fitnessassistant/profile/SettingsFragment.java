@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -40,14 +42,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Locale;
 import java.util.Objects;
 
-// TODO idea: Save Notification and Dark Mode Settings in SharedPreferences
-
 public class SettingsFragment extends Fragment {
     private GoogleSignInClient googleLinkingClient;
+    // TODO let user crop the image selected
+    ActivityResultLauncher<String> imageGetter = registerForActivityResult(new ActivityResultContracts.GetContent(), URI -> {
+        if(FirebaseAuth.getInstance().getCurrentUser() != null)
+            FirebaseAuth.getInstance().getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(URI).build()).addOnCompleteListener(task -> onResume());
+    });
 
     // used to get emoji for given locale
     private String localeToEmoji(Locale locale) {
@@ -75,6 +81,8 @@ public class SettingsFragment extends Fragment {
 
         // linkAccountsTextView listener - shows LinkAccountsFragment, hides current fragment
         view.findViewById(R.id.linkAccountsTextView).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.linkAccountsFragment).addToBackStack(null).commit());
+
+        view.findViewById(R.id.changeProfilePicture).setOnClickListener(view1 -> imageGetter.launch("image/*"));
 
         // changeUserNameTextView listener - calling the alert dialog
         view.findViewById(R.id.changeUserNameTextView).setOnClickListener(view1 -> {
@@ -269,5 +277,4 @@ public class SettingsFragment extends Fragment {
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.server_client_id)).requestEmail().build();
         googleLinkingClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions);
     }
-
 }

@@ -62,11 +62,11 @@ public class ProfilePageFragment extends Fragment {
     // setting up oCListeners
     @SuppressLint("ClickableViewAccessibility")
     private void setUpOnClickListeners(View view) {
-        // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
+        // swipeRefreshLayout refresh listener - refreshes while updating UI
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> displayCurrentUser(view));
-                // settingsButton listener - adds a settings fragment, hides current
-                view.findViewById(R.id.settingsButton).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.settingsFragment).addToBackStack(null).commit());
-    }
+        // settingsButton listener - adds a settings fragment, hides current
+        view.findViewById(R.id.settingsButton).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.settingsFragment).addToBackStack(null).commit());
+}
 
     @Nullable
     @Override
@@ -74,10 +74,6 @@ public class ProfilePageFragment extends Fragment {
         final View view = inflater.inflate(R.layout.profile_screen, container, false);
         // setting up the view
         setUpOnClickListeners(view);
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) { // loads user's profile pic
-            Glide.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into((ImageView) view.findViewById(R.id.profilePicture));
-            displayCurrentUser(view);
-        }
 
         // if we got back from dark/light mode switched we go to the settings
         if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("theme_changed", false)){
@@ -86,6 +82,16 @@ public class ProfilePageFragment extends Fragment {
             editor.apply();
             SettingsFragment.restartApp(requireContext(), 0);
         }
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) { // loads user's profile pic
+            Glide.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into((ImageView) requireView().findViewById(R.id.profilePicture));
+            displayCurrentUser(requireView());
+        }
     }
 }

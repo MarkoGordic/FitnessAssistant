@@ -14,27 +14,17 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.pedometer.Pedometer;
 
 // used primary for requesting the activity recognition permission, could become generic so that it fits any permission
 public class PermissionFunctional {
-    private final Fragment fragment;
-    private final ActivityResultLauncher<String> permissionLauncher;
-
-    public PermissionFunctional(Fragment fragment, ActivityResultLauncher<String> launcher){
-        this.fragment = fragment;
-        // launcher for permissions
-        permissionLauncher = launcher;
-    }
-
-    public void checkActivityRecognitionPermission(Context context){
+    public static void checkActivityRecognitionPermission(Context context, ActivityResultLauncher<String> permissionLauncher){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
                 // alert dialog to let user know we're requesting activity recognition
-                AlertDialog.Builder builder = new AlertDialog.Builder(fragment.requireContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setView(R.layout.custom_ok_alert_dialog);
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -54,9 +44,9 @@ public class PermissionFunctional {
             } else {
                 context.startForegroundService(new Intent(context, Pedometer.class));
             }
-        } else if (ContextCompat.checkSelfPermission(fragment.requireContext(), "com.google.android.gms.permission.ACTIVITY_RECOGNITION") != PackageManager.PERMISSION_GRANTED) {
+        } else if (ContextCompat.checkSelfPermission(context, "com.google.android.gms.permission.ACTIVITY_RECOGNITION") != PackageManager.PERMISSION_GRANTED) {
             // alert dialog to let user know we're requesting activity recognition
-            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.requireContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setView(R.layout.custom_ok_alert_dialog);
             AlertDialog dialog = builder.create();
             dialog.show();

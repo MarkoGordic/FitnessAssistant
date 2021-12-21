@@ -88,10 +88,12 @@ public class InAppActivity extends AppCompatActivity {
     // return to previous fragment (if it exists)
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getBackStackEntryCount() == 0)
+        if(fm.getBackStackEntryCount() == 0)
             super.onBackPressed();
         else
-            getSupportFragmentManager().popBackStack();
+            fm.popBackStack();
+            if(fm.getBackStackEntryCount() == 1)
+                active.onResume();
     }
 
     private void setNavigationListener(){
@@ -104,24 +106,29 @@ public class InAppActivity extends AppCompatActivity {
             if(item.getItemId() == R.id.map){
                 fm.beginTransaction().hide(active).show(mapFragment).commit();
                 // user can access this fragment only if he granted the activity recognition permission
-                new PermissionFunctional(mapFragment, permissionLauncher).checkActivityRecognitionPermission(getApplicationContext());
+                PermissionFunctional.checkActivityRecognitionPermission(this, permissionLauncher);
                 active = mapFragment;
+                active.onResume();
                 return true;
             } else if(item.getItemId() == R.id.diary){
                 fm.beginTransaction().hide(active).show(diaryFragment).commit();
                 active = diaryFragment;
+                active.onResume();
                 return true;
             } else if(item.getItemId() == R.id.home){
                 fm.beginTransaction().hide(active).show(homeFragment).commit();
                 active = homeFragment;
+                active.onResume();
                 return true;
             } else if(item.getItemId() == R.id.workout){
                 fm.beginTransaction().hide(active).show(workoutFragment).commit();
                 active = workoutFragment;
+                active.onResume();
                 return true;
             } else if(item.getItemId() == R.id.profile) {
                 fm.beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
+                active.onResume();
                 return true;
             }
             return false;
