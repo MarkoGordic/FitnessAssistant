@@ -5,6 +5,8 @@ import static java.lang.Math.abs;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +15,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
+import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -36,7 +40,14 @@ public class Pedometer extends Service implements SensorEventListener {
     // Required difference in steps before app pushes another notification to user
     int requiredDifferenceInSteps = 1;
 
+    // Array for step count in last 6 days (for stats on widget)
+    private final int[] pedometerHistory = new int[6];
+
+    // Current sum of steps in last 6 days
+    private int currentHistorySum;
+
     private SharedPreferences sharedPreferences;
+    private SharedPreferences prefs;
 
     public Pedometer(){ }
 
@@ -44,12 +55,23 @@ public class Pedometer extends Service implements SensorEventListener {
     public void onCreate(){
         Notification notification = pushPedometerNotification(this, "Starting Pedometer service...", "Please wait...");
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = getApplicationContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+        currentDate = getCurrentDateFormatted();
+
+        for(int i = 0; i < 6; i++)
+            pedometerHistory[i] = (int)sharedPreferences.getFloat(String.valueOf(Integer.parseInt(currentDate) - i - 1), 0);
+
+        currentHistorySum = 0;
+        for(int i = 0; i < 6; i++)
+            currentHistorySum += pedometerHistory[i];
+
+
         startForeground(25, notification);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        sharedPreferences = getApplicationContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
         sensorManager = (SensorManager) getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
 
         reRegisterSensor();
@@ -95,17 +117,37 @@ public class Pedometer extends Service implements SensorEventListener {
 
         int newSteps = Math.round(currentSteps) - Math.round(lastKnownSteps);
 
-        // saving newest data from pedometer for later usage
         // In case we detect date change, we will reset counter to 0
         if(!currentDate.equals(lastKnownDate)){
             lastKnownDate = currentDate;
             lastKnownSteps = sensorEvent.values[0];
             newSteps = Math.round(currentSteps) - Math.round(lastKnownSteps);
+
+            // we also need to recalculate sum of step history
+            for(int i = 0; i < 6; i++)
+                pedometerHistory[i] = (int)sharedPreferences.getFloat(String.valueOf(Integer.parseInt(currentDate) - i - 1), 0);
+
+            currentHistorySum = 0;
+            for(int i = 0; i < 6; i++)
+                currentHistorySum += pedometerHistory[i];
         }
 
+        // saving newest data from pedometer for later usage
         SharedPreferences.Editor editor =  sharedPreferences.edit();
         editor.putFloat(currentDate, newSteps);
         editor.apply();
+
+        // updating widget if widget exists on home screen
+        if(prefs.getBoolean("PedometerWidget", false)) {
+            Context context = this;
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget);
+            ComponentName thisWidget = new ComponentName(context, PedometerWidget.class);
+            remoteViews.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
+            remoteViews.setTextViewText(R.id.averageStepCountTextView, String.valueOf((currentHistorySum + newSteps) / 7));
+
+            appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+        }
 
         // pushing new notification for current steps
         if(abs(newSteps - lastNotificationSteps) >= requiredDifferenceInSteps) {
