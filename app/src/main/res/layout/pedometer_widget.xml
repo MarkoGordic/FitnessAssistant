@@ -20,7 +20,6 @@
 
         android:paddingStart="2dp"
         android:paddingEnd="4dp"
-        android:text="@string/steps"
         android:textColor="@color/Flame"
         android:textFontWeight="600"
         android:textSize="25sp" />
@@ -117,7 +116,6 @@
 
             android:fontFamily="@font/raleway"
             android:includeFontPadding="false"
-            android:text="@string/steps_small"
             android:textAlignment="center"
             android:textColor="@color/NonBackgroundColor"
             android:textFontWeight="600"
@@ -173,9 +171,8 @@
 
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="@string/weekly_average"
-        android:textAllCaps="true"
         android:textAlignment="center"
+        android:textAllCaps="true"
         android:textColor="@color/BlueYonder"
         android:textFontWeight="600"
         android:textSize="12sp"
@@ -233,7 +230,6 @@
             android:includeFontPadding="false"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:text="@string/steps_small"
             android:textAlignment="center"
             android:textColor="@color/NonBackgroundColor"
             android:textFontWeight="600"
@@ -257,9 +253,8 @@
 
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="@string/step_streak"
-        android:textAllCaps="true"
         android:textAlignment="center"
+        android:textAllCaps="true"
         android:textColor="@color/BlueYonder"
         android:textFontWeight="600"
         android:textSize="12sp"
@@ -317,7 +312,6 @@
             android:includeFontPadding="false"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:text="@string/days"
             android:textAlignment="center"
             android:textColor="@color/NonBackgroundColor"
             android:textFontWeight="600"

@@ -1,9 +1,13 @@
 package com.example.fitnessassistant.uiprefs;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.LocaleList;
+
+import com.example.fitnessassistant.pedometer.PedometerWidget;
 
 import java.util.Locale;
 
@@ -12,7 +16,7 @@ public class LocaleExt {
     private static final String SYSTEM_LANG = "sys";
 
     // checks if language is what it should be
-    private static boolean isAppLangDiff(Context context, String prefLang) {
+    public static boolean isAppLangDiff(Context context, String prefLang) {
         Configuration appConfig = context.getResources().getConfiguration();
         Configuration sysConfig = Resources.getSystem().getConfiguration();
         String appLang = appConfig.getLocales().get(0).getDisplayLanguage();
@@ -26,15 +30,15 @@ public class LocaleExt {
     }
 
     // changes language if it's not what it should be
-    public static Context toLangIfDiff(Context context, String lang) {
+    public static Context toLangIfDiff(Context context, String lang, boolean updateWidgets) {
         if(isAppLangDiff(context, lang)) {
-            return toLang(context, lang);
+            return toLang(context, lang, updateWidgets);
         } else
             return context;
     }
 
     // changes language
-    private static Context toLang(Context context, String toLang) {
+    private static Context toLang(Context context, String toLang, boolean updateWidgets) {
         Configuration config = context.getResources().getConfiguration();
 
         Locale toLocale = langToLocale(toLang);
@@ -47,7 +51,15 @@ public class LocaleExt {
 
         config.setLayoutDirection(toLocale);
 
-        return context.createConfigurationContext(config);
+        Context newContext = context.createConfigurationContext(config);
+
+        if(updateWidgets) {
+            for (int id : AppWidgetManager.getInstance(newContext).getAppWidgetIds(new ComponentName(newContext, PedometerWidget.class))) {
+                PedometerWidget.updateAppWidget(newContext, AppWidgetManager.getInstance(newContext), id);
+            }
+        }
+
+        return newContext;
     }
 
     // gets locale based on language

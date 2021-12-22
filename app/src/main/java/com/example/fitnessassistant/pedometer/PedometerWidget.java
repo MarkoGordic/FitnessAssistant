@@ -1,5 +1,7 @@
 package com.example.fitnessassistant.pedometer;
 
+import static com.example.fitnessassistant.uiprefs.LocaleExt.toLangIfDiff;
+
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -12,10 +14,16 @@ import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.R;
 
+// TODO: me - fix design, check for signed out user
+// TODO: Gordic - stopService if user is signed out
+// TODO: me - stopService onButtonClick
+//  add step goal
+//  add questions...
+
 public class PedometerWidget extends AppWidgetProvider {
     private SharedPreferences sharedPreferences;
 
-    private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)));
     }
 
@@ -67,12 +75,21 @@ public class PedometerWidget extends AppWidgetProvider {
         }
     }
 
-    // gettingRemoteView based on changing screen size
-    private RemoteViews getRemoteViews(Context context, int height){
+    private static void updateWidgetLang(RemoteViews views, Context context, String lang){
+        Context newContext = toLangIfDiff(context, lang, false);
+        views.setTextViewText(R.id.widgetHeader, newContext.getText(R.string.steps));
+        views.setTextViewText(R.id.stepsTV, newContext.getText(R.string.steps_small));
+        views.setTextViewText(R.id.weeklyAverageTextView, newContext.getText(R.string.weekly_average));
+        views.setTextViewText(R.id.averageStepsTV, newContext.getText(R.string.steps_small));
+        views.setTextViewText(R.id.stepStreakTextView, newContext.getText(R.string.step_streak));
+        views.setTextViewText(R.id.dayStreakTV, newContext.getText(R.string.days));
+    }
 
+    // gettingRemoteView based on changing screen size
+    private static RemoteViews getRemoteViews(Context context, int height){
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget);
 
-        System.out.println("CURRENT HEIGHT: " + height);
+        updateWidgetLang(views, context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"));
 
         views.setImageViewResource(R.id.widgetImageLarge, R.drawable.mail_focused);
         views.setImageViewResource(R.id.streakImageView, R.drawable.gear);
