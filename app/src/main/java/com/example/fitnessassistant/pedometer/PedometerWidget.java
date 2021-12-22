@@ -3,8 +3,11 @@ package com.example.fitnessassistant.pedometer;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.R;
@@ -12,9 +15,8 @@ import com.example.fitnessassistant.R;
 public class PedometerWidget extends AppWidgetProvider {
     private SharedPreferences sharedPreferences;
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget);
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+    private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)));
     }
 
     @Override
@@ -37,4 +39,71 @@ public class PedometerWidget extends AppWidgetProvider {
         editor.putBoolean("PedometerWidget", false);
         editor.apply();
     }
+
+    // handling resize for samsung devices
+    private void handleResize(Context context, Intent intent){
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
+        int appWidgetId = intent.getIntExtra("widgetId", 0);
+        int widgetSpanX = intent.getIntExtra("widgetspanx",0);
+        int widgetSpanY = intent.getIntExtra("widgetspany", 0);
+
+        if(appWidgetId > 0 && widgetSpanX > 0 && widgetSpanY > 0){
+            Bundle newOptions = new Bundle();
+
+            newOptions.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,widgetSpanX * 74);
+            newOptions.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT,widgetSpanY * 74);
+
+            onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        }
+    }
+
+    // handling resize for samsung devices
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        if(intent.getAction().contentEquals("com.sec.android.widgetapp.APPWIDGET_RESIZE")){
+            handleResize(context, intent);
+        }
+    }
+
+    // gettingRemoteView based on changing screen size
+    private RemoteViews getRemoteViews(Context context, int height){
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget);
+
+        System.out.println("CURRENT HEIGHT: " + height);
+
+        views.setImageViewResource(R.id.widgetImageLarge, R.drawable.mail_focused);
+        views.setImageViewResource(R.id.streakImageView, R.drawable.gear);
+        views.setImageViewResource(R.id.widgetImageSmall, R.drawable.mail_focused);
+
+        if(height >= 220){
+            views.setViewVisibility(R.id.weeklyAverageTextView, View.VISIBLE);
+            views.setViewVisibility(R.id.horizontalLay, View.VISIBLE);
+            views.setViewVisibility(R.id.stepStreakTextView, View.VISIBLE);
+            views.setViewVisibility(R.id.horizontalLay2, View.VISIBLE);
+
+            views.setViewVisibility(R.id.widgetImageLarge, View.VISIBLE);
+            views.setViewVisibility(R.id.widgetImageSmall, View.GONE);
+        } else{
+            views.setViewVisibility(R.id.weeklyAverageTextView, View.GONE);
+            views.setViewVisibility(R.id.horizontalLay, View.GONE);
+            views.setViewVisibility(R.id.stepStreakTextView, View.GONE);
+            views.setViewVisibility(R.id.horizontalLay2, View.GONE);
+
+            views.setViewVisibility(R.id.widgetImageLarge, View.GONE);
+            views.setViewVisibility(R.id.widgetImageSmall, View.VISIBLE);
+        }
+
+        return views;
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)));
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+    }
+
+
 }

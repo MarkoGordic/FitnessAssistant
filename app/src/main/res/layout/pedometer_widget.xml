@@ -1,144 +1,336 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="160dp"
+    android:layout_height="300dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/backgroundColor"
-    android:padding="24dp">
+    android:padding="10dp">
 
+    <!-- Widget Header -->
     <TextView
-        android:id="@+id/stepsTextView"
+        android:id="@+id/widgetHeader"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
 
         android:fontFamily="@font/ralewaym"
+        android:gravity="center_vertical"
+
         android:includeFontPadding="false"
-        android:text="Steps"
-        android:textAlignment="center"
+
+        android:paddingStart="2dp"
+        android:paddingEnd="4dp"
+        android:text="@string/steps"
         android:textColor="@color/Flame"
         android:textFontWeight="600"
-        android:textSize="28sp" />
+        android:textSize="25sp" />
 
+    <!-- Widget Date -->
     <TextView
-        android:id="@+id/lastTimeUpdated"
+        android:id="@+id/widgetDateTextView"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
 
-        android:layout_below="@id/stepsTextView"
-        android:layout_alignStart="@id/stepsTextView"
-
-        android:layout_marginTop="2dp"
+        android:layout_below="@id/widgetHeader"
 
         android:fontFamily="@font/ralewaym"
+        android:gravity="center"
 
         android:includeFontPadding="false"
-        android:text="Today 19:41"
-        android:textAlignment="center"
-        android:textColor="@color/DarkBlueYonder"
+
+        android:paddingStart="2dp"
+        android:paddingEnd="4dp"
+        android:text="@string/zero"
+        android:textColor="@color/NonBackgroundColor"
         android:textFontWeight="600"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/stepCountTextView"
+    <!-- Widget Main Drawable -->
+    <ImageView
+        android:id="@+id/widgetImageLarge"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_below="@id/lastTimeUpdated"
-        android:layout_alignStart="@id/lastTimeUpdated"
+        android:layout_alignTop="@id/widgetHeader"
+        android:layout_alignBottom="@id/widgetHeader"
+        android:layout_alignParentEnd="true"
+        tools:ignore="ContentDescription"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
-        android:layout_marginTop="20dp"
+    <!-- DailySteps ProgressBar -->
+    <ProgressBar
+        android:id="@+id/pedometerProgressBar"
 
-        android:fontFamily="@font/ralewaym"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_below="@id/widgetDateTextView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
 
-        android:includeFontPadding="false"
-        android:text="3.780"
-        android:textAlignment="center"
-        android:textColor="@color/BlueYonder"
-        android:textFontWeight="600"
-        android:textSize="36sp" />
+        android:indeterminateOnly="false"
 
-    <TextView
-        android:id="@+id/stepsTV"
+        android:progressDrawable="@drawable/pedometer_circle"
+        android:rotation="145" />
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignBottom="@id/stepCountTextView"
-        android:layout_marginStart="4dp"
-
-        android:layout_marginBottom="2dp"
-        android:layout_toEndOf="@id/stepCountTextView"
-
-        android:fontFamily="@font/raleway"
-
-        android:includeFontPadding="false"
-        android:text="steps"
-        android:textAlignment="center"
-        android:textColor="@color/BlueYonder"
-        android:textFontWeight="600"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/averageThisWeekTextView"
+    <!-- Layout for Daily Steps -->
+    <LinearLayout
+        android:id="@+id/linearLay"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_below="@id/stepCountTextView"
-        android:layout_alignStart="@id/stepCountTextView"
+        android:layout_alignStart="@id/pedometerProgressBar"
+        android:layout_alignTop="@id/pedometerProgressBar"
+        android:layout_alignEnd="@id/pedometerProgressBar"
+        android:layout_alignBottom="@id/pedometerProgressBar"
 
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+
+        android:orientation="vertical">
+
+        <!-- StepCount -->
+        <TextView
+            android:id="@+id/stepCountTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:text="@string/zero"
+            android:textAlignment="center"
+            android:textColor="@color/MangoTango"
+            android:textFontWeight="600"
+            android:textSize="22sp"
+            tools:ignore="TextContrastCheck" />
+
+        <!-- steps TextView -->
+        <TextView
+            android:id="@+id/stepsTV"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/raleway"
+            android:includeFontPadding="false"
+            android:text="@string/steps_small"
+            android:textAlignment="center"
+            android:textColor="@color/NonBackgroundColor"
+            android:textFontWeight="600"
+            android:textSize="18sp" />
+
+        <!-- layout used mostly for small view -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+            <!-- covering the circular progress bar -->
+            <TextView
+                android:id="@+id/coverView"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/backgroundColor" />
+
+            <!-- drawable for small view -->
+            <ImageView
+                android:id="@+id/widgetImageSmall"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+
+                android:paddingTop="12dp"
+                android:paddingBottom="0dp"
+                android:visibility="gone"
+                tools:ignore="ContentDescription"
+                tools:visibility="visible" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- weekly average TextView -->
+    <TextView
+        android:id="@+id/weeklyAverageTextView"
+
+        android:layout_width="140dp"
+        android:layout_height="15dp"
+
+        android:layout_below="@id/pedometerProgressBar"
+
+        android:layout_alignStart="@id/widgetHeader"
+
+        android:layout_marginTop="-10dp"
 
         android:fontFamily="@font/ralewayb"
 
+        android:gravity="center"
         android:includeFontPadding="false"
-        android:text="AVERAGE THIS WEEK"
-        android:textAlignment="center"
-        android:textColor="@color/DarkBlueYonder"
-        android:textFontWeight="600"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/averageStepCountTextView"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_below="@id/averageThisWeekTextView"
-        android:layout_alignStart="@id/averageThisWeekTextView"
-        android:layout_marginTop="4dp"
-
-        android:fontFamily="@font/ralewaym"
-
-        android:includeFontPadding="false"
-        android:text="3.780"
+        android:text="@string/weekly_average"
+        android:textAllCaps="true"
         android:textAlignment="center"
         android:textColor="@color/BlueYonder"
         android:textFontWeight="600"
-        android:textSize="24sp" />
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:ignore="TextContrastCheck"
+        tools:visibility="visible" />
 
+    <!-- layout for weekly steps -->
+    <LinearLayout
+        android:id="@+id/horizontalLay"
+
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+
+        android:layout_marginTop="2dp"
+
+        android:layout_below="@id/weeklyAverageTextView"
+
+        android:layout_alignStart="@id/weeklyAverageTextView"
+
+        android:gravity="center"
+        android:orientation="horizontal"
+
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!-- step count -->
+        <TextView
+            android:id="@+id/averageStepCountTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+
+            android:text="@string/zero"
+
+            android:textAlignment="center"
+            android:textColor="@color/MangoTango"
+            android:textFontWeight="600"
+            android:textSize="17sp"
+            tools:ignore="TextContrastCheck" />
+
+        <!-- steps TextView -->
+        <TextView
+            android:id="@+id/averageStepsTV"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="2dp"
+
+            android:fontFamily="@font/raleway"
+            android:includeFontPadding="false"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="@string/steps_small"
+            android:textAlignment="center"
+            android:textColor="@color/NonBackgroundColor"
+            android:textFontWeight="600"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <!-- StepStreak TextView -->
     <TextView
-        android:id="@+id/averageStepsTV"
+        android:id="@+id/stepStreakTextView"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="15dp"
 
-        android:layout_alignBottom="@id/averageStepCountTextView"
-        android:layout_marginStart="4dp"
+        android:layout_below="@id/horizontalLay"
 
-        android:layout_marginBottom="2dp"
-        android:layout_toEndOf="@id/averageStepCountTextView"
+        android:layout_alignStart="@id/widgetHeader"
 
-        android:fontFamily="@font/raleway"
+        android:layout_marginTop="20dp"
 
+        android:fontFamily="@font/ralewayb"
+
+        android:gravity="center"
         android:includeFontPadding="false"
-        android:text="steps"
+        android:text="@string/step_streak"
+        android:textAllCaps="true"
         android:textAlignment="center"
         android:textColor="@color/BlueYonder"
         android:textFontWeight="600"
-        android:textSize="20sp" />
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:ignore="TextContrastCheck"
+        tools:visibility="visible" />
+
+    <!-- layout for streak -->
+    <LinearLayout
+        android:id="@+id/horizontalLay2"
+
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+
+        android:layout_below="@id/stepStreakTextView"
+
+        android:layout_marginTop="2dp"
+
+        android:layout_alignStart="@id/stepStreakTextView"
+
+        android:gravity="center"
+        android:orientation="horizontal"
+
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!-- streakNumber textView -->
+        <TextView
+            android:id="@+id/streakNumberTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+
+            android:text="@string/zero"
+
+            android:textAlignment="center"
+            android:textColor="@color/MangoTango"
+            android:textFontWeight="600"
+            android:textSize="17sp"
+            tools:ignore="TextContrastCheck" />
+
+        <!-- days TextView -->
+        <TextView
+            android:id="@+id/dayStreakTV"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="2dp"
+
+            android:fontFamily="@font/raleway"
+            android:includeFontPadding="false"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="@string/days"
+            android:textAlignment="center"
+            android:textColor="@color/NonBackgroundColor"
+            android:textFontWeight="600"
+            android:textSize="15sp" />
+
+        <!-- streak drawable -->
+        <ImageView
+            android:id="@+id/streakImageView"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
 
 </RelativeLayout>

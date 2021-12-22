@@ -43,7 +43,7 @@
     <string name="delete_account">Obriši Nalog</string>
     <string name="cancel">Odustani</string>
     <string name="delete">Obriši</string>
-    <string name="privacy_policy">Pravila o privatnosti</string>
+    <string name="privacy_policy">Politika o privatnosti</string>
     <string name="change">Izmeni</string>
     <string name="continue_ad">Nastavi</string>
     <string name="change_password">Menjaj lozinku</string>
@@ -113,7 +113,7 @@
     <string name="password_reset_unsuccessful">Reset Lozinke Neuspešan</string>
     <string name="facebook_error_password">Iskoristite taj email za prijavu preko Email/Lozinke</string>
     <string name="facebook_error_google">Iskoristite taj email za prijavu preko Google-a</string>
-    <string name="sign_in_privacy_policy_agreement">Slažete se da prihvatate Pravila o privatnosti provajdera kojim se prijavljujete</string>
+    <string name="sign_in_privacy_policy_agreement">Slažete se da prihvatate Politiku privatnosti provajdera kojim se prijavljujete</string>
     <string name="press_again_to_sign_out">Pritisnite ponovo za Odjavu</string>
     <string name="google_linking_unsuccessful">Povezivanje Google-a neuspešno</string>
     <string name="google_unlinking_unsuccessful">Odvezivanje Google-a neuspešno</string>
@@ -172,8 +172,13 @@
     <string name="good_night">Laku noć </string>
 
     <!-- Step Counter strings -->
+    <string name="steps">Koraci</string>
+    <string name="steps_small">koraka</string>
+    <string name="weekly_average">nedeljni prosek</string>
+    <string name="step_streak">cilj koraka zaredom</string>
+    <string name="days">dana</string>
     <string name="default_step_target">/ 10000</string>
-    <string name="default_step_count">0</string>
+    <string name="zero">0</string>
     <string name="start_button">Započni Brojanje</string>
 
 
