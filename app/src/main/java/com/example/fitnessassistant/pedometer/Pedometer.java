@@ -10,6 +10,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -26,6 +27,7 @@ import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.notifications.NotificationController;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Date;
 
@@ -173,11 +175,19 @@ public class Pedometer extends Service implements SensorEventListener {
     public void onDestroy() {
         super.onDestroy();
 
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("restartservice");
-        broadcastIntent.setClass(this, Restarter.class);
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction("restartservice");
+            broadcastIntent.setClass(this, Restarter.class);
 
-        sendBroadcast(broadcastIntent);
+            sendBroadcast(broadcastIntent);
+        }
+        else{
+            stopForeground(true);
+            stopSelf();
+            getPackageManager().setComponentEnabledSetting(new ComponentName(this, Restarter.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+            sensorManager.unregisterListener(this);
+        }
     }
 
     @Nullable

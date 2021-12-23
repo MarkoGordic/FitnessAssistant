@@ -36,6 +36,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
 import com.example.fitnessassistant.database.RealtimeDB;
+import com.example.fitnessassistant.pedometer.Pedometer;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -407,8 +408,12 @@ public class AuthFunctional {
                     } catch (Exception e2) { // else notify user
                         Toast.makeText(context, context.getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                     }
-                else
+                else {
+                    // Removing user from database
                     RealtimeDB.removeUser();
+                    // Stopping Pedometer service
+                    context.stopService(new Intent(context, Pedometer.class));
+                }
             });
     }
 

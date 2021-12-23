@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.facebook.login.LoginManager;
@@ -125,6 +126,8 @@ public class SettingsFragment extends Fragment {
                 FirebaseAuth.getInstance().signOut();
                 // signing out from facebook because they save it separately
                 LoginManager.getInstance().logOut();
+                // stopping Pedometer service
+                requireActivity().stopService(new Intent(requireActivity(), Pedometer.class));
             }else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
             return true; // returns true -> onClick doesn't get triggered

@@ -7,6 +7,12 @@ import android.content.Intent;
 public class Restarter extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        context.startForegroundService(new Intent(context, Pedometer.class));
+        switch (intent.getAction()) {
+            case "restartservice":
+            case Intent.ACTION_BOOT_COMPLETED:
+                context.startForegroundService(new Intent(context, Pedometer.class));
+                break;
+        }
+
     }
 }
