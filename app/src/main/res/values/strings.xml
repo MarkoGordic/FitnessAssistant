@@ -177,7 +177,9 @@
     <string name="default_step_target">/ 10000</string>
     <string name="zero">0</string>
     <string name="start_button">Start Counting</string>
-
+    <string name="your_today_goal">Your today goal is 10000.</string>
+    <string name="starting_pedometer_service">Starting Pedometer Service…</string>
+    <string name="registering_steps">Registering steps…</string>
 
     <string name="coming_soon">This will be added soon</string>
 </resources>

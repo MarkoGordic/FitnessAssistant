@@ -14,9 +14,7 @@ import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.R;
 
-// TODO: me - fix check for signed out user
-// TODO: Gordic - stopService if user is signed out
-// TODO: me - stopService onButtonClick
+// TODO: Gordic - stopService if user is signed out (check for signed out user)
 //  add step goal
 //  add questions...
 
@@ -76,7 +74,7 @@ public class PedometerWidget extends AppWidgetProvider {
     }
 
     private static void updateWidgetLang(RemoteViews views, Context context, String lang){
-        Context newContext = toLangIfDiff(context, lang, false);
+        Context newContext = toLangIfDiff(context, lang, false, true);
         views.setTextViewText(R.id.widgetHeader, newContext.getText(R.string.steps));
         views.setTextViewText(R.id.stepsTV, newContext.getText(R.string.steps_small));
         views.setTextViewText(R.id.weeklyAverageTextView, newContext.getText(R.string.weekly_average));

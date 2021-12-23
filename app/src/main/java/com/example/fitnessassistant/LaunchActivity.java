@@ -42,7 +42,7 @@ public class LaunchActivity extends AppCompatActivity {
     // providing only one context through contextWrapper
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleExt.toLangIfDiff(newBase, PreferenceManager.getDefaultSharedPreferences(newBase).getString("langPref", "sys"), true));
+        super.attachBaseContext(LocaleExt.toLangIfDiff(newBase, PreferenceManager.getDefaultSharedPreferences(newBase).getString("langPref", "sys"), true, true));
     }
 
     // applying config changes

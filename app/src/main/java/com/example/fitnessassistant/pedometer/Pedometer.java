@@ -20,15 +20,17 @@ import android.text.format.DateFormat;
 import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.notifications.NotificationController;
+import com.example.fitnessassistant.uiprefs.LocaleExt;
 
 import java.util.Date;
 
 public class Pedometer extends Service implements SensorEventListener {
+    private Context updatedContext;
     private SensorManager sensorManager;
     private String currentDate;
     private String lastKnownDate;
@@ -51,9 +53,14 @@ public class Pedometer extends Service implements SensorEventListener {
 
     public Pedometer(){ }
 
+    private void updateLang(){
+        updatedContext = LocaleExt.toLangIfDiff(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(this).getString("langPref", "sys"), true, false);
+    }
+
     @Override
     public void onCreate(){
-        Notification notification = pushPedometerNotification(this, "Starting Pedometer service...", "Please wait...");
+        updateLang();
+        Notification notification = pushPedometerNotification(this, updatedContext.getString(R.string.starting_pedometer_service), updatedContext.getString(R.string.registering_steps));
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences = getApplicationContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
@@ -85,7 +92,8 @@ public class Pedometer extends Service implements SensorEventListener {
             currentSteps = -2;
 
             lastNotificationSteps = sharedPreferences.getFloat(currentDate, 0);
-            pushPedometerNotification(getApplicationContext(), ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000");
+            updateLang();
+            pushPedometerNotification(updatedContext, ((int) sharedPreferences.getFloat(currentDate, 0)) + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal));
         }
 
         return START_STICKY;
@@ -153,7 +161,8 @@ public class Pedometer extends Service implements SensorEventListener {
 
         // pushing new notification for current steps
         if(abs(newSteps - lastNotificationSteps) >= requiredDifferenceInSteps) {
-            pushPedometerNotification(this, ((int) sharedPreferences.getFloat(currentDate, 0)) + " steps", "Your today's goal is 10000");
+            updateLang();
+            pushPedometerNotification(this, ((int) sharedPreferences.getFloat(currentDate, 0)) + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal));
             lastNotificationSteps = newSteps;
         }
     }
@@ -164,21 +173,12 @@ public class Pedometer extends Service implements SensorEventListener {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Pedometer")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle((CharSequence) textTitle)
-                .setContentText((CharSequence) textContent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(false)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setOngoing(true)
-                .setShowWhen(false);
+        Notification notification = NotificationController.createNotification(context, "Pedometer", textTitle, textContent, pendingIntent, false,true, false);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(25, builder.build());
+        notificationManager.notify(25, notification);
 
-        return builder.build();
+        return notification;
     }
 
     public static String getCurrentDateFormatted(){

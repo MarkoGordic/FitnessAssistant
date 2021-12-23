@@ -7,6 +7,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.LocaleList;
 
+import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.PedometerWidget;
 
 import java.util.Locale;
@@ -30,15 +32,15 @@ public class LocaleExt {
     }
 
     // changes language if it's not what it should be
-    public static Context toLangIfDiff(Context context, String lang, boolean updateWidgets) {
+    public static Context toLangIfDiff(Context context, String lang, boolean updateWidgets, boolean updateNotifications) {
         if(isAppLangDiff(context, lang)) {
-            return toLang(context, lang, updateWidgets);
+            return toLang(context, lang, updateWidgets, updateNotifications);
         } else
             return context;
     }
 
     // changes language
-    private static Context toLang(Context context, String toLang, boolean updateWidgets) {
+    private static Context toLang(Context context, String toLang, boolean updateWidgets, boolean updateNotifications) {
         Configuration config = context.getResources().getConfiguration();
 
         Locale toLocale = langToLocale(toLang);
@@ -58,6 +60,8 @@ public class LocaleExt {
                 PedometerWidget.updateAppWidget(newContext, AppWidgetManager.getInstance(newContext), id);
             }
         }
+        if(updateNotifications)
+            Pedometer.pushPedometerNotification(newContext, ((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + newContext.getString(R.string.steps_small), newContext.getString(R.string.your_today_goal));
 
         return newContext;
     }
