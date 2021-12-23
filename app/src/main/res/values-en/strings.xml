@@ -174,8 +174,6 @@
     <string name="steps">Steps</string>
     <string name="steps_small">steps</string>
     <string name="weekly_average">weekly average</string>
-    <string name="step_streak">step streak</string>
-    <string name="days">days</string>
     <string name="default_step_target">/ 10000</string>
     <string name="zero">0</string>
     <string name="start_button">Start Counting</string>

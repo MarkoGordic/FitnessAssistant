@@ -146,6 +146,8 @@ public class Pedometer extends Service implements SensorEventListener {
             remoteViews.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
             remoteViews.setTextViewText(R.id.averageStepCountTextView, String.valueOf((currentHistorySum + newSteps) / 7));
 
+            remoteViews.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round((newSteps / 10000.0) * 69), false);
+
             appWidgetManager.updateAppWidget(thisWidget, remoteViews);
         }
 

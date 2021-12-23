@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.R;
 
-// TODO: me - fix design, check for signed out user
+// TODO: me - fix check for signed out user
 // TODO: Gordic - stopService if user is signed out
 // TODO: me - stopService onButtonClick
 //  add step goal
@@ -81,8 +81,6 @@ public class PedometerWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.stepsTV, newContext.getText(R.string.steps_small));
         views.setTextViewText(R.id.weeklyAverageTextView, newContext.getText(R.string.weekly_average));
         views.setTextViewText(R.id.averageStepsTV, newContext.getText(R.string.steps_small));
-        views.setTextViewText(R.id.stepStreakTextView, newContext.getText(R.string.step_streak));
-        views.setTextViewText(R.id.dayStreakTV, newContext.getText(R.string.days));
     }
 
     // gettingRemoteView based on changing screen size
@@ -92,22 +90,17 @@ public class PedometerWidget extends AppWidgetProvider {
         updateWidgetLang(views, context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"));
 
         views.setImageViewResource(R.id.widgetImageLarge, R.drawable.mail_focused);
-        views.setImageViewResource(R.id.streakImageView, R.drawable.gear);
         views.setImageViewResource(R.id.widgetImageSmall, R.drawable.mail_focused);
 
         if(height >= 220){
-            views.setViewVisibility(R.id.weeklyAverageTextView, View.VISIBLE);
-            views.setViewVisibility(R.id.horizontalLay, View.VISIBLE);
-            views.setViewVisibility(R.id.stepStreakTextView, View.VISIBLE);
-            views.setViewVisibility(R.id.horizontalLay2, View.VISIBLE);
+            views.setViewVisibility(R.id.widgetHeader, View.VISIBLE);
+            views.setViewVisibility(R.id.weeklyVerticalLay, View.VISIBLE);
 
             views.setViewVisibility(R.id.widgetImageLarge, View.VISIBLE);
             views.setViewVisibility(R.id.widgetImageSmall, View.GONE);
         } else{
-            views.setViewVisibility(R.id.weeklyAverageTextView, View.GONE);
-            views.setViewVisibility(R.id.horizontalLay, View.GONE);
-            views.setViewVisibility(R.id.stepStreakTextView, View.GONE);
-            views.setViewVisibility(R.id.horizontalLay2, View.GONE);
+            views.setViewVisibility(R.id.widgetHeader, View.GONE);
+            views.setViewVisibility(R.id.weeklyVerticalLay, View.GONE);
 
             views.setViewVisibility(R.id.widgetImageLarge, View.GONE);
             views.setViewVisibility(R.id.widgetImageSmall, View.VISIBLE);

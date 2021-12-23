@@ -175,8 +175,6 @@
     <string name="steps">Koraci</string>
     <string name="steps_small">koraka</string>
     <string name="weekly_average">nedeljni prosek</string>
-    <string name="step_streak">cilj koraka zaredom</string>
-    <string name="days">dana</string>
     <string name="default_step_target">/ 10000</string>
     <string name="zero">0</string>
     <string name="start_button">Započni Brojanje</string>

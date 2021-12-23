@@ -4,7 +4,7 @@
     android:resizeMode="vertical"
     android:minHeight="225dp"
     android:minWidth="160dp"
-    android:minResizeHeight="45dp"
+    android:minResizeHeight="110dp"
     android:minResizeWidth="160dp"
     android:previewImage="@drawable/pedometer_widget_preview"
 
