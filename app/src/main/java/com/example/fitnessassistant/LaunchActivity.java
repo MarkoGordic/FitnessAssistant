@@ -56,7 +56,8 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // initializing notification channels
-        NotificationController.createNotificationChannel(this, "Pedometer", "Showing step counter data.", false);
+        NotificationController.createNotificationChannel(this, "Pedometer", "Pedometer", "Showing step counter data.", false);
+        NotificationController.createNotificationChannel(this,  "ActivityRecognition", "Activity Detection", "Automatic workout/activity detection updates.", true);
 
         // initializing safety net
         FirebaseApp.initializeApp(this);

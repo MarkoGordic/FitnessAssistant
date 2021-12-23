@@ -49,6 +49,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //noinspection GradleDependency
     implementation 'androidx.core:core:1.6.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.0'
 
 }
 
