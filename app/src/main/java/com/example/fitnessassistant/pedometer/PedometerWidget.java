@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.R;
 
-// TODO: Gordic - stopService if user is signed out (check for signed out user)
+// TODO: Gordic - stopService if user is signed out (check for signed out user), stopService onClick
 //  add step goal
 //  add questions...
 
@@ -35,14 +35,12 @@ public class PedometerWidget extends AppWidgetProvider {
     public void onEnabled(Context context){
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("PedometerWidget", true);
         editor.apply();
     }
 
     public void onDisabled(Context context){
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("PedometerWidget", false);
         editor.apply();
     }
 

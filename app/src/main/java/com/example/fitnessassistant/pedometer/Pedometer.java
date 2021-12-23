@@ -42,14 +42,7 @@ public class Pedometer extends Service implements SensorEventListener {
     // Required difference in steps before app pushes another notification to user
     int requiredDifferenceInSteps = 1;
 
-    // Array for step count in last 6 days (for stats on widget)
-    private final int[] pedometerHistory = new int[6];
-
-    // Current sum of steps in last 6 days
-    private int currentHistorySum;
-
     private SharedPreferences sharedPreferences;
-    private SharedPreferences prefs;
 
     public Pedometer(){ }
 
@@ -57,22 +50,33 @@ public class Pedometer extends Service implements SensorEventListener {
         updatedContext = LocaleExt.toLangIfDiff(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(this).getString("langPref", "sys"), true, false);
     }
 
+    private int calculateWeeklyAverage(){
+        int currentHistorySum = 0;
+
+        for(int i = 0; i < 7; i++)
+            currentHistorySum += (int)sharedPreferences.getFloat(String.valueOf(Integer.parseInt(currentDate) - i), 0);
+
+        return currentHistorySum / 7;
+    }
+
+    private void updatePedometerWidgetData(int newSteps){
+        for (int id : AppWidgetManager.getInstance(updatedContext).getAppWidgetIds(new ComponentName(updatedContext, PedometerWidget.class))) {
+            PedometerWidget.updateAppWidget(updatedContext, AppWidgetManager.getInstance(updatedContext), id);
+            RemoteViews rView = new RemoteViews(getPackageName(), R.layout.pedometer_widget);
+            rView.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
+            rView.setTextViewText(R.id.averageStepCountTextView, String.valueOf(calculateWeeklyAverage()));
+            rView.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round((newSteps / 10000.0) * 69), false);
+            AppWidgetManager.getInstance(updatedContext).updateAppWidget(id, rView);
+        }
+    }
+
     @Override
     public void onCreate(){
         updateLang();
         Notification notification = pushPedometerNotification(this, updatedContext.getString(R.string.starting_pedometer_service), updatedContext.getString(R.string.registering_steps));
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences = getApplicationContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
         currentDate = getCurrentDateFormatted();
-
-        for(int i = 0; i < 6; i++)
-            pedometerHistory[i] = (int)sharedPreferences.getFloat(String.valueOf(Integer.parseInt(currentDate) - i - 1), 0);
-
-        currentHistorySum = 0;
-        for(int i = 0; i < 6; i++)
-            currentHistorySum += pedometerHistory[i];
-
 
         startForeground(25, notification);
     }
@@ -80,7 +84,6 @@ public class Pedometer extends Service implements SensorEventListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         sensorManager = (SensorManager) getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
-
         reRegisterSensor();
 
         currentDate = getCurrentDateFormatted();
@@ -91,9 +94,9 @@ public class Pedometer extends Service implements SensorEventListener {
             lastKnownSteps = sharedPreferences.getFloat(currentDate, 0);
             currentSteps = -2;
 
-            lastNotificationSteps = sharedPreferences.getFloat(currentDate, 0);
-            updateLang();
-            pushPedometerNotification(updatedContext, ((int) sharedPreferences.getFloat(currentDate, 0)) + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal));
+            lastNotificationSteps = lastKnownSteps;
+            pushPedometerNotification(updatedContext, (int) lastNotificationSteps + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal));
+            updatePedometerWidgetData((int) lastNotificationSteps);
         }
 
         return START_STICKY;
@@ -130,14 +133,6 @@ public class Pedometer extends Service implements SensorEventListener {
             lastKnownDate = currentDate;
             lastKnownSteps = sensorEvent.values[0];
             newSteps = Math.round(currentSteps) - Math.round(lastKnownSteps);
-
-            // we also need to recalculate sum of step history
-            for(int i = 0; i < 6; i++)
-                pedometerHistory[i] = (int)sharedPreferences.getFloat(String.valueOf(Integer.parseInt(currentDate) - i - 1), 0);
-
-            currentHistorySum = 0;
-            for(int i = 0; i < 6; i++)
-                currentHistorySum += pedometerHistory[i];
         }
 
         // saving newest data from pedometer for later usage
@@ -145,24 +140,10 @@ public class Pedometer extends Service implements SensorEventListener {
         editor.putFloat(currentDate, newSteps);
         editor.apply();
 
-        // updating widget if widget exists on home screen
-        if(prefs.getBoolean("PedometerWidget", false)) {
-            Context context = this;
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget);
-            ComponentName thisWidget = new ComponentName(context, PedometerWidget.class);
-            remoteViews.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
-            remoteViews.setTextViewText(R.id.averageStepCountTextView, String.valueOf((currentHistorySum + newSteps) / 7));
-
-            remoteViews.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round((newSteps / 10000.0) * 69), false);
-
-            appWidgetManager.updateAppWidget(thisWidget, remoteViews);
-        }
-
         // pushing new notification for current steps
         if(abs(newSteps - lastNotificationSteps) >= requiredDifferenceInSteps) {
-            updateLang();
             pushPedometerNotification(this, ((int) sharedPreferences.getFloat(currentDate, 0)) + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal));
+            updatePedometerWidgetData(newSteps);
             lastNotificationSteps = newSteps;
         }
     }

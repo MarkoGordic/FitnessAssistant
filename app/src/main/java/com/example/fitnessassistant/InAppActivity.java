@@ -151,7 +151,7 @@ public class InAppActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // determining weather device rebooted or not
+        // determining whether device rebooted or not
         SharedPreferences savedKeys = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = savedKeys.edit();
 
