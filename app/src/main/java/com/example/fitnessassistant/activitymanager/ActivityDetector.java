@@ -6,12 +6,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.fitnessassistant.InAppActivity;
+import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.notifications.NotificationController;
+import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.ActivityTransition;
 import com.google.android.gms.location.ActivityTransitionRequest;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityDetector extends Service {
+    private Context updatedContext;
 
     public static void startTransitionRecognition(Context context) {
         List<ActivityTransition> transitions = new ArrayList<>();
@@ -81,6 +85,7 @@ public class ActivityDetector extends Service {
 
     }
 
+    // TODO where should this be used?
     public static void stopActivityRecognition(Context context){
         Intent intent = new Intent(context, ActivityDetectorReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -94,6 +99,10 @@ public class ActivityDetector extends Service {
                 .addOnFailureListener(Throwable::printStackTrace);
     }
 
+    private void updateLang(){
+        updatedContext = LocaleExt.toLangIfDiff(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(this).getString("langPref", "sys"), true, false);
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_STICKY;
@@ -101,7 +110,8 @@ public class ActivityDetector extends Service {
 
     @Override
     public void onCreate() {
-        Notification notification = pushActivityUpdateNotification(this, "Background Activity Detection", "Background activity detection started!");
+        updateLang();
+        Notification notification = pushActivityUpdateNotification(this, updatedContext.getString(R.string.background_activity_detection), updatedContext.getString(R.string.background_activity_detection_started));
         startTransitionRecognition(this);
 
         startForeground(26, notification);
@@ -112,13 +122,15 @@ public class ActivityDetector extends Service {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        Notification notification = NotificationController.createNotification(context, "Activity Recognition", textTitle, textContent, pendingIntent, false,true, false);
+        Notification notification = NotificationController.createNotification(context, "ActivityRecognition", textTitle, textContent, pendingIntent, false,true, false);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(26, notification);
 
         return notification;
     }
+
+    // TODO ask Gordic is onDestroy here needed?
 
     @Nullable
     @Override

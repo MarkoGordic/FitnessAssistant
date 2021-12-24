@@ -181,5 +181,24 @@
     <string name="starting_pedometer_service">Starting Pedometer Service…</string>
     <string name="registering_steps">Registering steps…</string>
 
+    <!-- Notification Strings -->
+    <string name="pedometer">Pedometer</string>
+    <string name="pedometer_desc">Showing step counter data.</string>
+    <string name="activity_detection">Activity Detection</string>
+    <string name="activity_detection_desc">Automatic workout/activity detection updates.</string>
+
+    <!-- Activity Detection Strings -->
+    <string name="background_activity_detection">Background Activity Detection</string>
+    <string name="background_activity_detection_started">Background activity detection started!</string>
+    <string name="activity_detected">Activity Detected!</string>
+    <string name="in_vehicle">In Vehicle</string>
+    <string name="on_bicycle">On Bicycle</string>
+    <string name="on_foot">On Foot</string>
+    <string name="running">Running</string>
+    <string name="still">Still</string>
+    <string name="tilting">Tilting</string>
+    <string name="unknown">Unknown</string>
+    <string name="walking">Walking</string>
+
     <string name="coming_soon">COMING SOON</string>
 </resources>

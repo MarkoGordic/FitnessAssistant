@@ -182,5 +182,24 @@
     <string name="starting_pedometer_service">Otpočinjanje brojenja koraka…</string>
     <string name="registering_steps">Registrovanje koraka…</string>
 
+    <!-- Notification Strings -->
+    <string name="pedometer">Pedometar</string>
+    <string name="pedometer_desc">Prikazivanje podataka o praćenju koraka.</string>
+    <string name="activity_detection">Prepoznavanje aktivnosti</string>
+    <string name="activity_detection_desc">Automatska detekcija ažuriranja aktivnosti</string>
+
+    <!-- Activity Detection Strings -->
+    <string name="background_activity_detection">Pozadinska Detekcija Aktivnosti</string>
+    <string name="background_activity_detection_started">Pozadinska detekcija aktivnosti započeta!</string>
+    <string name="activity_detected">Aktivnost Detektovana!</string>
+    <string name="in_vehicle">U Vozilu</string>
+    <string name="on_bicycle">Na Biciklu</string>
+    <string name="on_foot">Na Nogama</string>
+    <string name="running">Trčanje</string>
+    <string name="still">Mirno</string>
+    <string name="tilting">Naginjanje</string>
+    <string name="unknown">Nepoznato</string>
+    <string name="walking">Hodanje</string>
+
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>
