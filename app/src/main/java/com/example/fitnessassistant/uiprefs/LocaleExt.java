@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.os.LocaleList;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.activitymanager.ActivityDetector;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.PedometerWidget;
 
@@ -56,15 +55,14 @@ public class LocaleExt {
 
         Context newContext = context.createConfigurationContext(config);
 
-        if(updateWidgets) {
+        if(updateWidgets)
             for (int id : AppWidgetManager.getInstance(newContext).getAppWidgetIds(new ComponentName(newContext, PedometerWidget.class))) {
-                PedometerWidget.updateAppWidget(newContext, AppWidgetManager.getInstance(newContext), id);
+                PedometerWidget.updateAppWidget(newContext, AppWidgetManager.getInstance(newContext), id, AppWidgetManager.getInstance(context).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT), PedometerWidget.defaultBehavior);
             }
-        }
-        if(updateNotifications) {
-            Pedometer.pushPedometerNotification(newContext, ((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + newContext.getString(R.string.steps_small), newContext.getString(R.string.your_today_goal));
-            ActivityDetector.pushActivityUpdateNotification(newContext, newContext.getString(R.string.background_activity_detection), newContext.getString(R.string.background_activity_detection_started));
-        }
+
+        if(updateNotifications)
+            if(!PedometerWidget.defaultBehavior)
+                Pedometer.pushPedometerNotification(newContext, ((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + newContext.getString(R.string.steps_small), newContext.getString(R.string.your_today_goal));
 
         return newContext;
     }

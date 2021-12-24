@@ -3,7 +3,6 @@ package com.example.fitnessassistant;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -27,7 +26,6 @@ import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.network.NetworkManager;
-import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.profile.LinkAccountsFragment;
 import com.example.fitnessassistant.profile.ProfilePageFragment;
 import com.example.fitnessassistant.profile.SettingsFragment;
@@ -35,6 +33,7 @@ import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.example.fitnessassistant.util.PermissionFunctional;
+import com.example.fitnessassistant.util.ServiceFunctional;
 import com.example.fitnessassistant.workout.WorkoutPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,9 +58,9 @@ public class InAppActivity extends AppCompatActivity {
 
     // launcher for the permission
     public final ActivityResultLauncher<String> permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
-        if(result){
-            startForegroundService(new Intent(getApplicationContext(), Pedometer.class));
-        } else {
+        if(result)
+            ServiceFunctional.startPedometerService(this);
+        else {
             // creates an alert dialog with rationale shown
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setView(R.layout.custom_ok_alert_dialog);
@@ -135,7 +134,7 @@ public class InAppActivity extends AppCompatActivity {
         });
     }
 
-    // providing one and only context available, throught contextWrapper
+    // providing one and only context available, throughout contextWrapper
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleExt.toLangIfDiff(newBase, PreferenceManager.getDefaultSharedPreferences(newBase).getString("langPref", "sys"), true, true));

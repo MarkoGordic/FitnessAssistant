@@ -14,21 +14,27 @@ import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.R;
 
-// TODO: Gordic - stopService if user is signed out (check for signed out user), stopService onClick
+
+// TODO: stopService onClick
+//  add default widget
 //  add step goal
 //  add questions...
 
+
+// TODO test resizing widget once again on more phones
 public class PedometerWidget extends AppWidgetProvider {
     private SharedPreferences sharedPreferences;
+    public static boolean defaultBehavior = true;
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)));
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int height, boolean shouldShowDefaultWidget) {
+        defaultBehavior = shouldShowDefaultWidget;
+        appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, height));
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            updateAppWidget(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT), defaultBehavior);
         }
     }
 
@@ -71,43 +77,52 @@ public class PedometerWidget extends AppWidgetProvider {
         }
     }
 
+
     private static void updateWidgetLang(RemoteViews views, Context context, String lang){
         Context newContext = toLangIfDiff(context, lang, false, true);
-        views.setTextViewText(R.id.widgetHeader, newContext.getText(R.string.steps));
-        views.setTextViewText(R.id.stepsTV, newContext.getText(R.string.steps_small));
-        views.setTextViewText(R.id.weeklyAverageTextView, newContext.getText(R.string.weekly_average));
-        views.setTextViewText(R.id.averageStepsTV, newContext.getText(R.string.steps_small));
+        if(defaultBehavior)
+            views.setTextViewText(R.id.permissionRequiredTextView, newContext.getText(R.string.permissions_required));
+        else {
+            views.setTextViewText(R.id.widgetHeader, newContext.getText(R.string.steps));
+            views.setTextViewText(R.id.stepsTV, newContext.getText(R.string.steps_small));
+            views.setTextViewText(R.id.weeklyAverageTextView, newContext.getText(R.string.weekly_average));
+            views.setTextViewText(R.id.averageStepsTV, newContext.getText(R.string.steps_small));
+        }
     }
 
     // gettingRemoteView based on changing screen size
     private static RemoteViews getRemoteViews(Context context, int height){
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget);
+        RemoteViews views;
+        if(defaultBehavior) {
+            views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget_default);
+            updateWidgetLang(views, context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"));
+        }else {
+            views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget);
+            updateWidgetLang(views, context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"));
 
-        updateWidgetLang(views, context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"));
+            views.setImageViewResource(R.id.widgetImageLarge, R.drawable.mail_focused);
+            views.setImageViewResource(R.id.widgetImageSmall, R.drawable.mail_focused);
 
-        views.setImageViewResource(R.id.widgetImageLarge, R.drawable.mail_focused);
-        views.setImageViewResource(R.id.widgetImageSmall, R.drawable.mail_focused);
+            if (height >= 220) {
+                views.setViewVisibility(R.id.widgetHeader, View.VISIBLE);
+                views.setViewVisibility(R.id.weeklyVerticalLay, View.VISIBLE);
 
-        if(height >= 220){
-            views.setViewVisibility(R.id.widgetHeader, View.VISIBLE);
-            views.setViewVisibility(R.id.weeklyVerticalLay, View.VISIBLE);
+                views.setViewVisibility(R.id.widgetImageLarge, View.VISIBLE);
+                views.setViewVisibility(R.id.widgetImageSmall, View.GONE);
+            } else {
+                views.setViewVisibility(R.id.widgetHeader, View.GONE);
+                views.setViewVisibility(R.id.weeklyVerticalLay, View.GONE);
 
-            views.setViewVisibility(R.id.widgetImageLarge, View.VISIBLE);
-            views.setViewVisibility(R.id.widgetImageSmall, View.GONE);
-        } else{
-            views.setViewVisibility(R.id.widgetHeader, View.GONE);
-            views.setViewVisibility(R.id.weeklyVerticalLay, View.GONE);
-
-            views.setViewVisibility(R.id.widgetImageLarge, View.GONE);
-            views.setViewVisibility(R.id.widgetImageSmall, View.VISIBLE);
+                views.setViewVisibility(R.id.widgetImageLarge, View.GONE);
+                views.setViewVisibility(R.id.widgetImageSmall, View.VISIBLE);
+            }
         }
-
         return views;
     }
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)));
+        updateAppWidget(context, appWidgetManager, appWidgetId, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT), defaultBehavior);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
     }
 

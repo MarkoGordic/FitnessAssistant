@@ -85,7 +85,6 @@ public class ActivityDetector extends Service {
 
     }
 
-    // TODO where should this be used?
     public static void stopActivityRecognition(Context context){
         Intent intent = new Intent(context, ActivityDetectorReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -129,8 +128,6 @@ public class ActivityDetector extends Service {
 
         return notification;
     }
-
-    // TODO ask Gordic is onDestroy here needed?
 
     @Nullable
     @Override

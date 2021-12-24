@@ -1,7 +1,10 @@
 package com.example.fitnessassistant.database;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
+import com.example.fitnessassistant.util.ServiceFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +35,7 @@ public class RealtimeDB {
     }
 
     // method for removing user's data from database
-    public static void removeUser(){
+    public static void removeUser(Context context){
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users");
@@ -42,7 +45,7 @@ public class RealtimeDB {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     db.child(userID).removeValue();
-                    FirebaseAuth.getInstance().getCurrentUser().delete();
+                    FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task -> ServiceFunctional.stopPedometerService(context));
                 }
 
                 @Override

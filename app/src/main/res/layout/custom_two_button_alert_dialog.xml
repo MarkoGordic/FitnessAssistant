@@ -47,11 +47,12 @@
 
         android:gravity="center"
 
-        android:text="@string/re_authentication_message"
-        android:textSize="17sp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:textColor="@color/BlueYonder"/>
+        android:text="@string/re_authentication_message"
+        android:textColor="@color/BlueYonder"
+        android:textSize="17sp"
+        tools:ignore="TextContrastCheck" />
 
     <!-- Dialog Input -->
     <EditText

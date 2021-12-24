@@ -36,7 +36,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
 import com.example.fitnessassistant.database.RealtimeDB;
-import com.example.fitnessassistant.pedometer.Pedometer;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -410,9 +409,7 @@ public class AuthFunctional {
                     }
                 else {
                     // Removing user from database
-                    RealtimeDB.removeUser();
-                    // Stopping Pedometer service
-                    context.stopService(new Intent(context, Pedometer.class));
+                    RealtimeDB.removeUser(context);
                 }
             });
     }
@@ -753,7 +750,7 @@ public class AuthFunctional {
                             }
                         else{
                             Toast.makeText(context, R.string.username_change_successful, Toast.LENGTH_SHORT).show();
-                            RealtimeDB.updateUsername(usernameInput.getText().toString()); // TODO : Test
+                            RealtimeDB.updateUsername(usernameInput.getText().toString());
                             if (AuthFunctional.currentlyOnline) // try to reload the user
                                 user.reload().addOnCompleteListener(task1 -> {
                                     if (!task1.isSuccessful())

@@ -31,7 +31,6 @@
 
         android:gravity="center"
 
-        android:text="@string/re_authenticate_your_account"
         android:textSize="22sp"
         android:textColor="@color/SpaceCadet"
         android:textStyle="bold" />
@@ -44,15 +43,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="10dp"
-
-        android:gravity="center"
-
-        android:text="@string/re_authentication_message"
-        android:textSize="17sp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:textColor="@color/BlueYonder"
-        />
+        android:gravity="center"/>
 
     <!-- Dialog Negative Button -->
     <Button
@@ -66,7 +57,6 @@
 
         android:layout_gravity="center"
 
-        android:text="@string/cancel"
         android:textAllCaps="false"
         android:textColor="@color/Flame"
 

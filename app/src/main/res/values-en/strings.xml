@@ -180,6 +180,7 @@
     <string name="your_today_goal">Your goal for today is 10000.</string>
     <string name="starting_pedometer_service">Starting Pedometer Service…</string>
     <string name="registering_steps">Registering steps…</string>
+    <string name="permissions_required">Permissions Required</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometer</string>

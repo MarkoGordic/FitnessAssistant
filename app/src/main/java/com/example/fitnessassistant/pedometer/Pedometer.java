@@ -63,12 +63,13 @@ public class Pedometer extends Service implements SensorEventListener {
 
     private void updatePedometerWidgetData(int newSteps){
         for (int id : AppWidgetManager.getInstance(updatedContext).getAppWidgetIds(new ComponentName(updatedContext, PedometerWidget.class))) {
-            PedometerWidget.updateAppWidget(updatedContext, AppWidgetManager.getInstance(updatedContext), id);
-            RemoteViews rView = new RemoteViews(getPackageName(), R.layout.pedometer_widget);
-            rView.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
-            rView.setTextViewText(R.id.averageStepCountTextView, String.valueOf(calculateWeeklyAverage()));
-            rView.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round((newSteps / 10000.0) * 69), false);
-            AppWidgetManager.getInstance(updatedContext).updateAppWidget(id, rView);
+            if(!PedometerWidget.defaultBehavior) {
+                RemoteViews rView = new RemoteViews(getPackageName(), R.layout.pedometer_widget);
+                rView.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
+                rView.setTextViewText(R.id.averageStepCountTextView, String.valueOf(calculateWeeklyAverage()));
+                rView.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round((newSteps / 10000.0) * 69), false);
+                AppWidgetManager.getInstance(updatedContext).updateAppWidget(id, rView);
+            }
         }
     }
 
@@ -150,7 +151,7 @@ public class Pedometer extends Service implements SensorEventListener {
         }
     }
 
-    // TODO : Put app icon when done
+    // TODO Put logo
     public static Notification pushPedometerNotification(Context context, String textTitle, String textContent){
         Intent intent = new Intent(context, InAppActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

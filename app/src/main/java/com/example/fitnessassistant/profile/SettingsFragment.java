@@ -14,10 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,9 +35,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.uiprefs.ColorMode;
+import com.example.fitnessassistant.uiprefs.LanguageAdapter;
 import com.example.fitnessassistant.util.AuthFunctional;
+import com.example.fitnessassistant.util.ServiceFunctional;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,6 +46,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -127,7 +129,7 @@ public class SettingsFragment extends Fragment {
                 // signing out from facebook because they save it separately
                 LoginManager.getInstance().logOut();
                 // stopping Pedometer service
-                requireActivity().stopService(new Intent(requireActivity(), Pedometer.class));
+                ServiceFunctional.stopPedometerService(requireActivity());
             }else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
             return true; // returns true -> onClick doesn't get triggered
@@ -202,7 +204,7 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.selectLanguageTextView).setOnClickListener(view1 -> {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(requireContext());
-            builder1.setView(R.layout.select_choice_dialog);
+            builder1.setView(R.layout.custom_select_choice_dialog);
             Dialog dialog = builder1.create();
             dialog.show();
             ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.world);
@@ -211,19 +213,21 @@ public class SettingsFragment extends Fragment {
             ((Button) dialog.findViewById(R.id.dialog_negative_button)).setText(R.string.cancel);
             dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view22 -> dialog.dismiss());
 
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_singlechoice);
-
             // sets text with emojis
             String serbian = String.format("%s  %s", localeToEmoji(new Locale("sr", "RS")), getString(R.string.serbian));
             String english = String.format("%s  %s", localeToEmoji(new Locale("en", "GB")), getString(R.string.english));
 
-            arrayAdapter.add(serbian);
-            arrayAdapter.add(english);
+            ListView listView = dialog.findViewById(R.id.languagesList);
+            ArrayList<String> languageList = new ArrayList<>();
 
-            ListView languageList = dialog.findViewById(R.id.languagesList);
-            languageList.setAdapter(arrayAdapter);
+            languageList.add(serbian);
+            languageList.add(english);
 
-            languageList.setOnItemClickListener((parent, view23, position, id) -> {
+            LanguageAdapter languageAdapter = new LanguageAdapter(requireContext(), languageList);
+
+            listView.setAdapter(languageAdapter);
+
+            listView.setOnItemClickListener((parent, view23, position, id) -> {
                 dialog.dismiss();
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(requireContext());
                 builder2.setView(R.layout.custom_two_button_alert_dialog);
@@ -243,23 +247,39 @@ public class SettingsFragment extends Fragment {
 
                 ((Button) dialog1.findViewById(R.id.dialog_positive_button)).setText(R.string.continue_ad);
 
-                // prepares dialogs based on country/language chosen
-                if(arrayAdapter.getItem(position).equals(serbian)) {
-                    ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(serbian);
-                    dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
-                        dialog1.dismiss();
-                        PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "sr").apply();
-                        restartApp(requireContext(), 500);
-                    });
-                } else if(arrayAdapter.getItem(position).equals(english)) {
-                    ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(english);
-                    dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
-                        dialog1.dismiss();
-                        PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "en").apply();
-                        restartApp(requireContext(), 500);
-                    });
-                }
+                // get language selected
+                String languageSelected = languageAdapter.getItem(position);
 
+//                android:padding="20dp"
+
+                // prepares dialogs based on country/language chosen
+                if(languageSelected != null) {
+                    if (languageSelected.equals(serbian)) {
+                        // setting up language UI
+                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(serbian);
+                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                        dialog1.findViewById(R.id.dialog_message).setPadding(0,30,0,10);
+                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextColor(requireContext().getColor(R.color.SpaceCadet));
+
+                        dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
+                            dialog1.dismiss();
+                            PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "sr").apply();
+                            restartApp(requireContext(), 500);
+                        });
+                    } else if (languageSelected.equals(english)) {
+                        // setting up language UI
+                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(english);
+                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                        dialog1.findViewById(R.id.dialog_message).setPadding(0,30,0,10);
+                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextColor(requireContext().getColor(R.color.SpaceCadet));
+
+                        dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
+                            dialog1.dismiss();
+                            PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "en").apply();
+                            restartApp(requireContext(), 500);
+                        });
+                    }
+                }
             });
         });
     }

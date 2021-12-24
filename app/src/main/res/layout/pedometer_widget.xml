@@ -18,9 +18,7 @@
 
         android:fontFamily="@font/ralewaym"
         android:gravity="center_vertical"
-
         android:includeFontPadding="false"
-
         android:paddingStart="2dp"
         android:paddingEnd="0dp"
         android:textColor="@color/Flame"
