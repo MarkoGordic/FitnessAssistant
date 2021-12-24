@@ -1,4 +1,4 @@
-package com.example.fitnessassistant.activitymanager;
+package com.example.fitnessassistant.activitydetector;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -26,46 +26,9 @@ import java.util.List;
 
 public class ActivityDetector extends Service {
     private Context updatedContext;
+    private static final List<ActivityTransition> transitions = new ArrayList<>();
 
     public static void startTransitionRecognition(Context context) {
-        List<ActivityTransition> transitions = new ArrayList<>();
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.IN_VEHICLE)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.IN_VEHICLE)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build());
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                        .build());
-        transitions.add(
-                new ActivityTransition.Builder()
-                    .setActivityType(DetectedActivity.WALKING)
-                    .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                    .build());
-        transitions.add(
-                new ActivityTransition.Builder()
-                    .setActivityType(DetectedActivity.WALKING)
-                    .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                    .build());
-        transitions.add(
-                new ActivityTransition.Builder()
-                    .setActivityType(DetectedActivity.STILL)
-                    .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                    .build());
-        transitions.add(
-                new ActivityTransition.Builder()
-                    .setActivityType(DetectedActivity.STILL)
-                    .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-                    .build());
-
         ActivityTransitionRequest request = new ActivityTransitionRequest(transitions);
 
         Intent intent = new Intent(context, ActivityDetectorReceiver.class);
@@ -109,6 +72,7 @@ public class ActivityDetector extends Service {
 
     @Override
     public void onCreate() {
+        createTransitions();
         updateLang();
         Notification notification = pushActivityUpdateNotification(this, updatedContext.getString(R.string.background_activity_detection), updatedContext.getString(R.string.background_activity_detection_started));
         startTransitionRecognition(this);
@@ -116,17 +80,59 @@ public class ActivityDetector extends Service {
         startForeground(26, notification);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        stopActivityRecognition(this);
+        stopForeground(true);
+        stopSelf();
+    }
+
     public static Notification pushActivityUpdateNotification(Context context, String textTitle, String textContent){
         Intent intent = new Intent(context, InAppActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        Notification notification = NotificationController.createNotification(context, "ActivityRecognition", textTitle, textContent, pendingIntent, false,true, false);
+        Notification notification = NotificationController.createNotification(context, "ActivityDetection", textTitle, textContent, pendingIntent, false,true, false);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(26, notification);
 
         return notification;
+    }
+
+    private void createTransitions(){
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.IN_VEHICLE)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.IN_VEHICLE)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.WALKING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.WALKING)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.STILL)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+                        .build());
+        transitions.add(
+                new ActivityTransition.Builder()
+                        .setActivityType(DetectedActivity.STILL)
+                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+                        .build());
     }
 
     @Nullable

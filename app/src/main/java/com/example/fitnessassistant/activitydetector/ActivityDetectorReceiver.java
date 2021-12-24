@@ -20,9 +20,7 @@ public class ActivityDetectorReceiver extends BroadcastReceiver {
             if (result != null) {
                 for(ActivityTransitionEvent event : result.getTransitionEvents()){
 
-                    // TODO Push notification for now,
-                    //  implement complex detection system
-
+                    // TODO Push notification for now, implement complex detection system
                     // update context to newest locale detected
                     context = LocaleExt.toLangIfDiff(context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"), true, true);
 
