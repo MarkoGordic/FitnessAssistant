@@ -19,6 +19,9 @@
     <string name="server_client_id" tools:ignore="TypographyDashes">545598236576-1uj5ad6vbdt4b3c2fdvk356qad0r5di3.apps.googleusercontent.com</string>
     <!-- Facebook app ID -->
     <string name="facebook_app_id">416273409983887</string>
+    <!-- Maps API Key -->
+    <string name="maps_api_key">AIzaSyAuHLv-Gt-_-0lI-OVjv0NCtVSCjd3ITMg</string>
+
     <!-- overall -->
     <string name="email">Email</string>
     <string name="password">Lozinka</string>
