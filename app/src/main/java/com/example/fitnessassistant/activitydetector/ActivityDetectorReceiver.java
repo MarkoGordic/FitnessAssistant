@@ -1,4 +1,4 @@
-package com.example.fitnessassistant.activitymanager;
+package com.example.fitnessassistant.activitydetector;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

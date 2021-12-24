@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessAssistant">
+
         <receiver
             android:name=".pedometer.PedometerWidget"
             android:exported="true">
@@ -35,6 +36,11 @@
             android:enabled="true"
             android:exported="false" />
 
+        <service
+            android:name=".activitydetector.ActivityDetector"
+            android:exported="false"
+            android:enabled="true"/>
+
         <receiver
             android:name=".pedometer.Restarter"
             android:enabled="true"
@@ -47,7 +53,7 @@
         </receiver>
 
         <receiver
-            android:name=".activitymanager.ActivityDetectorReceiver"
+            android:name=".activitydetector.ActivityDetectorReceiver"
             android:exported="false"
             android:permission="com.google.android.gms.permission.ACTIVITY_RECOGNITION">
             <intent-filter>

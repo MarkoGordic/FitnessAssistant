@@ -57,7 +57,7 @@ public class LaunchActivity extends AppCompatActivity {
 
         // initializing notification channels
         NotificationController.createNotificationChannel(this, "Pedometer", getString(R.string.pedometer), getString(R.string.pedometer_desc), false);
-        NotificationController.createNotificationChannel(this,  "ActivityRecognition", getString(R.string.activity_detection), getString(R.string.activity_detection_desc), true);
+        NotificationController.createNotificationChannel(this,  "ActivityDetection", getString(R.string.activity_detection), getString(R.string.activity_detection_desc), true);
 
         // initializing safety net
         FirebaseApp.initializeApp(this);
