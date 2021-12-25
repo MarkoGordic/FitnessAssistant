@@ -14,6 +14,14 @@
     <string name="activity_recognition_access_message_denied_forever">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
     <string name="activity_recognition_access_message_denied">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>StepCounter section</b> once again.</string>
 
+    <!-- Used for Location Permission -->
+    <string name="location_access">FitnessAssistant would like to access your location</string>
+    <string name="location_access_denied">Location Permission</string>
+    <string name="location_access_access_message_denied_forever">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="location_access_access_message_denied">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>StepCounter section</b> once again.</string>
+    <string name="activity_tracking">Activity Tracking</string>
+    <string name="activity_tracking_desc">Realtime tracking of your workout/activity.</string>
+
     <!-- Sign In / Register strings -->
     <!-- web client ID for Google Sign In - default - tools:ignore was used because of the warning -->
     <string name="server_client_id" tools:ignore="TypographyDashes">545598236576-1uj5ad6vbdt4b3c2fdvk356qad0r5di3.apps.googleusercontent.com</string>

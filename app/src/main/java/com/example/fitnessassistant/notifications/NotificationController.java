@@ -11,8 +11,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.fitnessassistant.R;
 
 public class NotificationController {
-    public static void createNotificationChannel(Context context, String channelID, String channelName, String channelDescription, boolean showBadge){
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+    public static void createNotificationChannel(Context context, String channelID, String channelName, String channelDescription, boolean showBadge, int importance){
         NotificationChannel channel = new NotificationChannel(channelID, channelName, importance);
         channel.setShowBadge(showBadge);
         channel.setDescription(channelDescription);

@@ -22,6 +22,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.fitnessassistant.activitytracker.ActivityTrackingFragment;
 import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
@@ -49,6 +50,7 @@ public class InAppActivity extends AppCompatActivity {
     private HomePageFragment homeFragment;
     private WorkoutPageFragment workoutFragment;
     private ProfilePageFragment profileFragment;
+    public static ActivityTrackingFragment activityTrackingFragment;
     public static SettingsFragment settingsFragment;
     public static LinkAccountsFragment linkAccountsFragment;
     // and fragment manager
@@ -104,8 +106,14 @@ public class InAppActivity extends AppCompatActivity {
             getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             if(item.getItemId() == R.id.map){
                 fm.beginTransaction().hide(active).show(mapFragment).commit();
+
+                // TODO : Request permissions at the moment app need it
                 // user can access this fragment only if he granted the activity recognition permission
                 PermissionFunctional.checkActivityRecognitionPermission(this, permissionLauncher);
+                PermissionFunctional.checkFineLocationPermission(this, permissionLauncher);
+                // Background location won't be accepted until user click on "Allow all the time" when question prompts
+                //PermissionFunctional.checkBackgroundLocationPermission(this, permissionLauncher);
+
                 active = mapFragment;
                 active.onResume();
                 return true;
@@ -174,6 +182,7 @@ public class InAppActivity extends AppCompatActivity {
         profileFragment = new ProfilePageFragment();
         settingsFragment = new SettingsFragment();
         linkAccountsFragment = new LinkAccountsFragment();
+        activityTrackingFragment = new ActivityTrackingFragment();
 
         active = homeFragment;
 
