@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.activitytracker;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,92 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.Vector;
 
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap googleMap = null;
     private MapView mapView;
+
+    private boolean isTracing = false;
+    private Vector<Vector<LatLng>> pathHistory = new Vector<>();
+
+    private final int polylineColor = Color.BLUE;
+    private final float polylineWidth = 7f;
+
+    private void subscribeToObservers(){
+        LocationService.isTracking.observe(getViewLifecycleOwner(), this::updateTracking);
+
+        LocationService.pathHistory.observe(getViewLifecycleOwner(), newPath -> {
+            pathHistory = newPath;
+            addLatestPathToMap();
+            focusUserOnMap();
+        });
+    }
+
+    private void toggleActivityTracking(){
+        if(isTracing) {
+            updateLocationService("pause_service");
+        } else {
+            updateLocationService("start_or_resume_service");
+        }
+    }
+
+    private void updateTracking(Boolean isTracing){
+        this.isTracing = isTracing;
+
+        if(!isTracing){
+            // Setup buttons
+        }
+        else{
+            // Setup buttons
+        }
+    }
+
+    private void focusUserOnMap(){
+        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty()){
+            float mapZoom = 18f;
+            googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                            pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1),
+                            mapZoom
+                    )
+            );
+        }
+    }
+
+    private void addWholePathToMap(){
+        for(int i = 0; i < pathHistory.size(); i++){
+            PolylineOptions polylineOptions = new PolylineOptions()
+                    .color(polylineColor)
+                    .width(polylineWidth)
+                    .addAll(pathHistory.get(i));
+
+            googleMap.addPolyline(polylineOptions);
+        }
+    }
+
+    private void addLatestPathToMap(){
+        if(!pathHistory.isEmpty() && pathHistory.get(pathHistory.size() - 1).size() > 1){
+            LatLng preLastLatLng = pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 2);
+            LatLng lastLatLng = pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1);
+
+            PolylineOptions polylineOptions = new PolylineOptions()
+                    .color(polylineColor)
+                    .width(polylineWidth)
+                    .add(preLastLatLng)
+                    .add(lastLatLng);
+
+            googleMap.addPolyline(polylineOptions);
+        }
+    }
 
     @Nullable
     @Override
@@ -30,12 +109,9 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         mapView.getMapAsync(this);
 
-        view.findViewById(R.id.btnToggleRun).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateLocationService("start_or_resume_service");
-            }
-        });
+        view.findViewById(R.id.btnToggleRun).setOnClickListener(v -> toggleActivityTracking());
+
+        subscribeToObservers();
 
         return view;
     }
@@ -43,6 +119,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
+        addWholePathToMap();
     }
 
     private void updateLocationService(String state){

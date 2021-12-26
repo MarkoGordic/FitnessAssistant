@@ -1,11 +1,11 @@
 package com.example.fitnessassistant.activitytracker;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.IBinder;
 import android.os.Looper;
@@ -13,44 +13,50 @@ import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.notifications.NotificationController;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Vector;
 
 // TODO : When user clicks on foreground notification, he needs to be redirected directly to this fragment
 
-public class LocationService extends Service {
-    MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
-    MutableLiveData<ArrayList<LatLng>> pathHistory = new MutableLiveData<>();
+public class LocationService extends LifecycleService {
+    public static MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
+    public static MutableLiveData<Vector<Vector<LatLng>>> pathHistory = new MutableLiveData<>();
     private boolean isRunning = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
-    private void initializeData(){
-        isTracking.postValue(true);
-        pathHistory.postValue(new ArrayList<>());
+    private void addNewPathSegment(){
+        if(pathHistory.getValue() != null) {
+            Vector<Vector<LatLng>> temp = pathHistory.getValue();
+            Vector<LatLng> temp1 = new Vector<>();
+            temp1.add(null);
+            temp.add(temp1);
+            pathHistory.postValue(temp);
+        }
     }
 
-    /*@Override
+    @Override
     public void onCreate() {
         super.onCreate();
-        initializeData();
-        fusedLocationProviderClient = new FusedLocationProviderClient(this);
+        isTracking.postValue(true);
 
-        isTracking.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-            }
+        isTracking.observe(this, aBoolean -> {
+            if(isTracking.getValue() != null)
+                updateTrackingStatus(isTracking.getValue());
         });
     }
 
@@ -61,22 +67,20 @@ public class LocationService extends Service {
             List<Location> locations = locationResult.getLocations();
 
             // We proceed if tracking is currently on
-            if(isTracking){
-                // Adding every location since last call
-                for(int i = 0; i < locations.size(); i++){
-                    addNewPathPoint(locations.get(i));
+            if(isTracking.getValue() != null) {
+                if (isTracking.getValue()) {
+                    // Adding every location since last call
+                    for (int i = 0; i < locations.size(); i++) {
+                        addNewPathPoint(locations.get(i));
+                    }
                 }
             }
         }
     };
 
-    // !! IMPORTANT, Android Studio usually even after checking permission thick we haven't check
-    //               we need to suppress that warning using SuppressLint
-    @SuppressLint("MissingPermission")
     private void updateTrackingStatus(boolean isTracking){
-        if(this.isTracking){
-            // TODO : Check if we have location permissions
-            if(true){
+        if (isTracking) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 // Interval between location updates
                 int updateInterval = 5000;
                 int fastestUpdateInterval = 2000;
@@ -97,19 +101,39 @@ public class LocationService extends Service {
         // converting location to LatLng variable
         LatLng newPoint = new LatLng(location.getLatitude(), location.getLongitude());
 
-        pathHistory.get(pathHistory.size() - 1).add(newPoint);
+        if(pathHistory.getValue() == null){
+            Vector<Vector<LatLng>> temp = new Vector<>();
+            Vector<LatLng> temp1 = new Vector<>();
+            temp1.add(newPoint);
+            temp.add(temp1);
+            pathHistory.postValue(temp);
+        }
+        else{
+            Vector<Vector<LatLng>> temp = pathHistory.getValue();
+            Vector<LatLng> temp1 = temp.get(temp.size() - 1);
+            if(temp1.get(temp1.size() - 1) == null){
+                temp1.add(temp1.size() - 1, newPoint);
+            } else{
+                temp1.add(newPoint);
+            }
+            temp.add(temp1);
+            pathHistory.postValue(temp);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        switch (intent.getStringExtra("state")){
+        switch (Objects.requireNonNull(intent).getStringExtra("state")){
             case "start_or_resume_service":
                 if(!isRunning){
                     startForegroundService();
                     isRunning = true;
+                } else {
+                    startForegroundService();
                 }
                 break;
             case "pause_service":
+                pauseService();
             case "stop_service":
                 break;
         }
@@ -118,11 +142,16 @@ public class LocationService extends Service {
     }
 
     private void startForegroundService(){
-        pathHistory.add(new ArrayList<>());
+        addNewPathSegment();
+        isTracking.postValue(true);
 
         Notification notification = pushActivityTrackingNotification(this, "Activity Tracking", "00:00:00");
         startForeground(27, notification);
-    }*/
+    }
+
+    private void pauseService(){
+        isTracking.postValue(false);
+    }
 
     // TODO Put logo, Add translation later
     public static Notification pushActivityTrackingNotification(Context context, String textTitle, String textContent){
@@ -140,7 +169,8 @@ public class LocationService extends Service {
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(@NonNull Intent intent) {
+        super.onBind(intent);
         return null;
     }
 }
