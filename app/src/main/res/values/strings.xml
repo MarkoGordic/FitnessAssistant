@@ -12,13 +12,13 @@
     <string name="activity_recognition_access">FitnessAssistant would like to access Activity Recognition on your device</string>
     <string name="activity_recognition_access_denied">Activity Recognition Permission</string>
     <string name="activity_recognition_access_message_denied_forever">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
-    <string name="activity_recognition_access_message_denied">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>StepCounter section</b> once again.</string>
+    <string name="activity_recognition_access_message_denied">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>Activity section</b> once again.</string>
 
     <!-- Used for Location Permission -->
     <string name="location_access">FitnessAssistant would like to access your location</string>
     <string name="location_access_denied">Location Permission</string>
     <string name="location_access_access_message_denied_forever">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
-    <string name="location_access_access_message_denied">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>StepCounter section</b> once again.</string>
+    <string name="location_access_access_message_denied">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>Activity section</b> once again.</string>
 
 
     <!-- Sign In / Register strings -->
@@ -192,6 +192,7 @@
     <string name="starting_pedometer_service">Starting Pedometer Service…</string>
     <string name="registering_steps">Registering steps…</string>
     <string name="permissions_required">Permissions Required</string>
+    <string name="widget_background_description">Sets background of the widget.</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometer</string>

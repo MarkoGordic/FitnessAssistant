@@ -14,12 +14,9 @@ import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.R;
 
-
 // TODO: stopService onClick
-//  add default widget
 //  add step goal
 //  add questions...
-
 
 // TODO test resizing widget once again on more phones
 public class PedometerWidget extends AppWidgetProvider {
@@ -96,9 +93,15 @@ public class PedometerWidget extends AppWidgetProvider {
         if(defaultBehavior) {
             views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget_default);
             updateWidgetLang(views, context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"));
-        }else {
+
+            // set rounded background
+            views.setImageViewResource(R.id.widgetBackground, R.drawable.widget_background);
+        } else {
             views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget);
             updateWidgetLang(views, context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"));
+
+            // set rounded background
+            views.setImageViewResource(R.id.widgetBackground, R.drawable.widget_background);
 
             views.setImageViewResource(R.id.widgetImageLarge, R.drawable.mail_focused);
             views.setImageViewResource(R.id.widgetImageSmall, R.drawable.mail_focused);

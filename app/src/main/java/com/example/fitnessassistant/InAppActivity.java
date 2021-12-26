@@ -106,10 +106,10 @@ public class InAppActivity extends AppCompatActivity {
             getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             if(item.getItemId() == R.id.map){
                 fm.beginTransaction().hide(active).show(mapFragment).commit();
-
-                // TODO : Request permissions at the moment app need it
                 // user can access this fragment only if he granted the activity recognition permission
                 PermissionFunctional.checkActivityRecognitionPermission(this, permissionLauncher);
+
+                // TODO : Request permissions at the moment app need it
                 PermissionFunctional.checkFineLocationPermission(this, permissionLauncher);
                 // Background location won't be accepted until user click on "Allow all the time" when question prompts
                 //PermissionFunctional.checkBackgroundLocationPermission(this, permissionLauncher);

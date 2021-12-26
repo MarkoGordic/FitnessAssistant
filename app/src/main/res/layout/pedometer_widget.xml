@@ -1,222 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="160dp"
     android:layout_height="300dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/backgroundColor"
-    android:padding="10dp">
+    android:background="@android:color/transparent" >
 
-    <!-- Widget Header -->
-    <TextView
-        android:id="@+id/widgetHeader"
+    <ImageView
+        android:id="@+id/widgetBackground"
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/widget_background"
+        android:contentDescription="@string/widget_background_description" />
 
-        android:layout_above="@id/pedometerProgressBar"
-        android:layout_alignParentTop="true"
-
-        android:fontFamily="@font/ralewaym"
-        android:gravity="center_vertical"
-        android:includeFontPadding="false"
-        android:paddingStart="2dp"
-        android:paddingEnd="0dp"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="25sp" />
-
-    <!-- Widget Main Drawable -->
-    <ImageView
-        android:id="@+id/widgetImageLarge"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignTop="@id/widgetHeader"
-        android:layout_alignBottom="@id/widgetHeader"
-        android:layout_alignEnd="@id/widgetHeader"
-        tools:ignore="ContentDescription"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <!-- DailySteps ProgressBar -->
-    <ProgressBar
-        android:id="@+id/pedometerProgressBar"
-
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-
-        android:layout_centerInParent="true"
-
-        android:indeterminateOnly="false"
-        android:progressDrawable="@drawable/pedometer_circle"
-        android:rotation="147" />
-
-    <!-- Layout for Daily Steps -->
     <RelativeLayout
-        android:id="@+id/linearLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <!-- Widget Header -->
+        <TextView
+            android:id="@+id/widgetHeader"
 
-        android:layout_alignStart="@id/pedometerProgressBar"
-        android:layout_alignTop="@id/pedometerProgressBar"
-        android:layout_alignEnd="@id/pedometerProgressBar"
-        android:layout_alignBottom="@id/pedometerProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-        android:orientation="vertical">
+            android:layout_above="@id/pedometerProgressBar"
+            android:layout_alignParentTop="true"
 
-        <LinearLayout
-            android:id="@+id/inLinearLay"
+            android:fontFamily="@font/ralewaym"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:paddingStart="2dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/Flame"
+            android:textFontWeight="600"
+            android:textSize="25sp" />
+
+        <!-- Widget Main Drawable -->
+        <ImageView
+            android:id="@+id/widgetImageLarge"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
 
-            android:gravity="center"
+            android:layout_alignTop="@id/widgetHeader"
+            android:layout_alignBottom="@id/widgetHeader"
+            android:layout_alignEnd="@id/widgetHeader"
+            tools:ignore="ContentDescription"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <!-- DailySteps ProgressBar -->
+        <ProgressBar
+            android:id="@+id/pedometerProgressBar"
+
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+
+            android:layout_centerInParent="true"
+
+            android:indeterminateOnly="false"
+            android:progressDrawable="@drawable/pedometer_circle"
+            android:rotation="147" />
+
+        <!-- Layout for Daily Steps -->
+        <RelativeLayout
+            android:id="@+id/linearLay"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignStart="@id/pedometerProgressBar"
+            android:layout_alignTop="@id/pedometerProgressBar"
+            android:layout_alignEnd="@id/pedometerProgressBar"
+            android:layout_alignBottom="@id/pedometerProgressBar"
 
             android:orientation="vertical">
-            <!-- StepCount -->
-            <TextView
-                android:id="@+id/stepCountTextView"
 
+            <LinearLayout
+                android:id="@+id/inLinearLay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
 
-                android:fontFamily="@font/ralewaym"
-                android:includeFontPadding="false"
-                android:text="@string/zero"
-                android:textAlignment="center"
-                android:textColor="@color/MangoTango"
-                android:textFontWeight="600"
-                android:textSize="22sp"
-                tools:ignore="TextContrastCheck" />
+                android:gravity="center"
 
-            <!-- steps TextView -->
-            <TextView
-                android:id="@+id/stepsTV"
+                android:orientation="vertical">
+                <!-- StepCount -->
+                <TextView
+                    android:id="@+id/stepCountTextView"
 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:text="@string/zero"
+                    android:textAlignment="center"
+                    android:textColor="@color/MangoTango"
+                    android:textFontWeight="600"
+                    android:textSize="22sp"
+                    tools:ignore="TextContrastCheck" />
+
+                <!-- steps TextView -->
+                <TextView
+                    android:id="@+id/stepsTV"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/raleway"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/NonBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- layout used mostly for small view -->
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@id/inLinearLay"
+                android:layout_alignParentBottom="true">
+                <!-- covering the circular progress bar -->
+                <TextView
+                    android:id="@+id/coverView"
 
-                android:fontFamily="@font/raleway"
-                android:includeFontPadding="false"
-                android:textColor="@color/NonBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="18sp" />
-        </LinearLayout>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/backgroundColor" />
 
-        <!-- layout used mostly for small view -->
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_below="@id/inLinearLay"
-            android:layout_alignParentBottom="true">
-            <!-- covering the circular progress bar -->
-            <TextView
-                android:id="@+id/coverView"
+                <!-- drawable for small view -->
+                <ImageView
+                    android:id="@+id/widgetImageSmall"
 
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/backgroundColor" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-            <!-- drawable for small view -->
-            <ImageView
-                android:id="@+id/widgetImageSmall"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:padding="12dp"
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:padding="12dp"
-
-                android:visibility="gone"
-                tools:ignore="ContentDescription"
-                tools:visibility="visible" />
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription"
+                    tools:visibility="visible" />
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/weeklyVerticalLay"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_below="@id/pedometerProgressBar"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@id/widgetHeader"
-
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible" >
-        <!-- weekly average TextView -->
-        <TextView
-            android:id="@+id/weeklyAverageTextView"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:fontFamily="@font/ralewayb"
-
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="@color/BlueYonder"
-            android:textFontWeight="600"
-            android:textSize="12sp"
-            tools:ignore="TextContrastCheck" />
-
-        <!-- layout for weekly steps -->
         <LinearLayout
-            android:id="@+id/horizontalLay"
+            android:id="@+id/weeklyVerticalLay"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_marginBottom="10dp"
+            android:layout_below="@id/pedometerProgressBar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@id/widgetHeader"
 
             android:gravity="center"
-            android:orientation="horizontal" >
-
-            <!-- step count -->
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible" >
+            <!-- weekly average TextView -->
             <TextView
-                android:id="@+id/averageStepCountTextView"
+                android:id="@+id/weeklyAverageTextView"
 
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/ralewaym"
+                android:fontFamily="@font/ralewayb"
+
+                android:gravity="center"
                 android:includeFontPadding="false"
-
-                android:text="@string/zero"
-
                 android:textAlignment="center"
-                android:textColor="@color/MangoTango"
+                android:textAllCaps="true"
+                android:textColor="@color/BlueYonder"
                 android:textFontWeight="600"
-                android:textSize="17sp"
+                android:textSize="12sp"
                 tools:ignore="TextContrastCheck" />
 
-            <!-- steps TextView -->
-            <TextView
-                android:id="@+id/averageStepsTV"
+            <!-- layout for weekly steps -->
+            <LinearLayout
+                android:id="@+id/horizontalLay"
 
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginTop="2dp"
+                android:layout_marginBottom="10dp"
 
-                android:fontFamily="@font/raleway"
-                android:includeFontPadding="false"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:textAlignment="center"
-                android:textColor="@color/NonBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="15sp" />
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <!-- step count -->
+                <TextView
+                    android:id="@+id/averageStepCountTextView"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+
+                    android:textAlignment="center"
+                    android:textColor="@color/MangoTango"
+                    android:textFontWeight="600"
+                    android:textSize="17sp"
+                    tools:ignore="TextContrastCheck" />
+
+                <!-- steps TextView -->
+                <TextView
+                    android:id="@+id/averageStepsTV"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="2dp"
+
+                    android:fontFamily="@font/raleway"
+                    android:includeFontPadding="false"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/NonBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="15sp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
+    </RelativeLayout>
 </RelativeLayout>

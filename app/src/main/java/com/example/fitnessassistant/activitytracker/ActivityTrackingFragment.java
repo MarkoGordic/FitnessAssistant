@@ -25,7 +25,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen, container, false);
 
-        mapView = (MapView) view.findViewById(R.id.mapView);
+        mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);

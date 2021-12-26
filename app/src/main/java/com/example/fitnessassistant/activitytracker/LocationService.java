@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO : When user click on foreground notification, he need to be redirected directly to this fragment
+// TODO : When user clicks on foreground notification, he needs to be redirected directly to this fragment
 
 public class LocationService extends Service {
     MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
@@ -124,7 +124,7 @@ public class LocationService extends Service {
         startForeground(27, notification);
     }*/
 
-    // TODO Put logo
+    // TODO Put logo, Add translation later
     public static Notification pushActivityTrackingNotification(Context context, String textTitle, String textContent){
         Intent intent = new Intent(context, InAppActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

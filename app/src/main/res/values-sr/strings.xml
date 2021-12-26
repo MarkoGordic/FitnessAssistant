@@ -9,16 +9,16 @@
     <string name="privacy_policy_link" tools:ignore="TypographyDashes">https://www.termsfeed.com/live/cb6a31f0-6c44-406f-b3c0-1dbc3b41dddf</string>
 
     <!-- Used for Pedometer Permission -->
-    <string name="activity_recognition_access">FitnessAssistant želi da dobije dozvolu za prepoznavanju aktivnosti na Vašem uređaju</string>
+    <string name="activity_recognition_access">FitnessAssistant želi da dobije dozvolu za prepoznavanje aktivnosti na Vašem uređaju</string>
     <string name="activity_recognition_access_denied">Dozvola Za Prepoznavanje Aktivnosti</string>
     <string name="activity_recognition_access_message_denied_forever">Brojač koraka <b>ne može pravilno</b> da funkcioniše bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
-    <string name="activity_recognition_access_message_denied">Brojač koraka <b>ne može pravilno</b> da funkcioniše. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju brojača koraka</b> ponovo.</string>
+    <string name="activity_recognition_access_message_denied">Brojač koraka <b>ne može pravilno</b> da funkcioniše. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju Aktivnost</b> ponovo.</string>
 
     <!-- Used for Location Permission -->
     <string name="location_access">FitnessAssistant želi da dobije dozvolu za pristup lokaciji Vašeg uređaka </string>
     <string name="location_access_denied">Dozvola Za Pristup Lokaciji</string>
     <string name="location_access_access_message_denied_forever">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
-    <string name="location_access_access_message_denied">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju fizičkih aktivnosti</b> ponovo.</string>
+    <string name="location_access_access_message_denied">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju Aktivnost</b> ponovo.</string>
 
 
     <!-- Sign In / Register strings -->
@@ -192,6 +192,7 @@
     <string name="starting_pedometer_service">Otpočinjanje brojenja koraka…</string>
     <string name="registering_steps">Registrovanje koraka…</string>
     <string name="permissions_required">Permisije Potrebne</string>
+    <string name="widget_background_description">Podešava pozadinu vidžeta.</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometar</string>

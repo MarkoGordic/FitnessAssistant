@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="160dp"
     android:layout_height="300dp"
-    android:background="@color/backgroundColor"
-    android:padding="10dp">
+    android:background="@android:color/transparent" >
 
-    <TextView
-        android:id="@+id/permissionRequiredTextView"
+    <ImageView
+        android:id="@+id/widgetBackground"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/widget_background_description"
+        android:src="@drawable/widget_background"
+        tools:ignore="ImageContrastCheck" />
 
-        android:fontFamily="@font/ralewaym"
-        android:text="@string/permissions_required"
-        android:textAlignment="center"
-        android:includeFontPadding="false"
-        android:textColor="@color/Flame"
-        android:textFontWeight="600"
-        android:textSize="14sp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
+        <TextView
+            android:id="@+id/permissionRequiredTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+
+            android:fontFamily="@font/ralewaym"
+            android:textAlignment="center"
+            android:includeFontPadding="false"
+            android:textColor="@color/Flame"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+    </RelativeLayout>
 </RelativeLayout>
