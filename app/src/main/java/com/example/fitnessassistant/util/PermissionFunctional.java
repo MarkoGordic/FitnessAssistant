@@ -3,7 +3,6 @@ package com.example.fitnessassistant.util;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,7 +15,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.activitydetector.ActivityDetector;
 
 // used primary for requesting the activity recognition permission, could become generic so that it fits any permission
 public class PermissionFunctional {
@@ -41,10 +39,8 @@ public class PermissionFunctional {
                     dialog.dismiss();
                     permissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION);
                 });
-            } else {
+            } else
                 ServiceFunctional.startPedometerService(context);
-                context.startService(new Intent(context, ActivityDetector.class));
-            }
         } else if (ContextCompat.checkSelfPermission(context, "com.google.android.gms.permission.ACTIVITY_RECOGNITION") != PackageManager.PERMISSION_GRANTED) {
             // alert dialog to let user know we're requesting activity recognition
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -64,10 +60,8 @@ public class PermissionFunctional {
                 dialog.dismiss();
                 permissionLauncher.launch("com.google.android.gms.permission.ACTIVITY_RECOGNITION");
             });
-        } else {
+        } else
             ServiceFunctional.startPedometerService(context);
-            context.startService(new Intent(context, ActivityDetector.class));
-        }
     }
 
     public static void checkFineLocationPermission(Context context, ActivityResultLauncher<String> permissionLauncher){

@@ -62,10 +62,12 @@ public class Pedometer extends Service implements SensorEventListener {
 
     public static void updatePedometerWidgetData(Context updatedContext, int newSteps){
         for (int id : AppWidgetManager.getInstance(updatedContext).getAppWidgetIds(new ComponentName(updatedContext, PedometerWidget.class))) {
-            RemoteViews rView = new RemoteViews(updatedContext.getPackageName(), R.layout.pedometer_widget);
-            rView.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
-            rView.setTextViewText(R.id.averageStepCountTextView, String.valueOf(calculateWeeklyAverage(updatedContext)));
-            rView.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round((newSteps / 10000.0) * 69), false);
+            RemoteViews rView = PedometerWidget.getRemoteViews(updatedContext, AppWidgetManager.getInstance(updatedContext).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
+            if(ServiceFunctional.getPedometerShouldRun(updatedContext)) {
+                rView.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
+                rView.setTextViewText(R.id.averageStepCountTextView, String.valueOf(calculateWeeklyAverage(updatedContext)));
+                rView.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round((newSteps / 10000.0) * 69), false);
+            }
             AppWidgetManager.getInstance(updatedContext).updateAppWidget(id, rView);
         }
     }

@@ -1,5 +1,6 @@
 package com.example.fitnessassistant.pedometer;
 
+import static com.example.fitnessassistant.pedometer.Pedometer.getCurrentDateFormatted;
 import static com.example.fitnessassistant.uiprefs.LocaleExt.toLangIfDiff;
 
 import android.appwidget.AppWidgetManager;
@@ -14,9 +15,6 @@ import android.widget.RemoteViews;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
-//  todo add step goal
-//      add questions...
-
 // TODO test resizing widget once again on more phones
 public class PedometerWidget extends AppWidgetProvider {
 
@@ -26,9 +24,7 @@ public class PedometerWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
-        }
+        Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(String.valueOf(Integer.parseInt(getCurrentDateFormatted())), 0));
     }
 
     // handling resize for samsung devices
@@ -72,7 +68,7 @@ public class PedometerWidget extends AppWidgetProvider {
     }
 
     // gettingRemoteView based on changing screen size
-    private static RemoteViews getRemoteViews(Context context, int height){
+    public static RemoteViews getRemoteViews(Context context, int height){
         RemoteViews views;
         if(!ServiceFunctional.getPedometerShouldRun(context)) {
             views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget_default);

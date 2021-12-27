@@ -15,6 +15,9 @@ import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
+//  todo add step goal
+//      add questions...
+
 public class MapPageFragment extends Fragment {
 
     public void setUpUI(boolean pedometerRuns){
