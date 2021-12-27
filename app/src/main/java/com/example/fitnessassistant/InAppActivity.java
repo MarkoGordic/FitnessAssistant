@@ -3,6 +3,7 @@ package com.example.fitnessassistant;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -146,6 +147,21 @@ public class InAppActivity extends AppCompatActivity {
         mapFragment.setUpUI(pedometerRuns);
     }
 
+    // if intent given has it, go to desired fragment
+    private void goToDesiredFragment(Intent intent){
+        if(intent != null && intent.getStringExtra("desiredFragment") != null && intent.getStringExtra("desiredFragment").equals("MapFragment")){
+            ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.map);
+            active = mapFragment;
+        }
+    }
+
+    // if new intent is registered
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        goToDesiredFragment(intent);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,8 +192,6 @@ public class InAppActivity extends AppCompatActivity {
         linkAccountsFragment = new LinkAccountsFragment();
         activityTrackingFragment = new ActivityTrackingFragment();
 
-        active = homeFragment;
-
         // setting up listener for firebase
         authListener = firebaseAuth -> AuthFunctional.refreshUser(this);
 
@@ -189,16 +203,19 @@ public class InAppActivity extends AppCompatActivity {
         flash.setRepeatCount(Animation.INFINITE);
         findViewById(R.id.no_network_notification).startAnimation(flash);
 
-        // managing all fragments
+        active = homeFragment;
+
         fm.beginTransaction().add(R.id.in_app_container, mapFragment).hide(mapFragment).commit();
         fm.beginTransaction().add(R.id.in_app_container, diaryFragment).hide(diaryFragment).commit();
-        fm.beginTransaction().add(R.id.in_app_container, homeFragment).commit();
+        fm.beginTransaction().add(R.id.in_app_container, active).commit();
         fm.beginTransaction().add(R.id.in_app_container, workoutFragment).hide(workoutFragment).commit();
         fm.beginTransaction().add(R.id.in_app_container, profileFragment).hide(profileFragment).commit();
         setNavigationListener();
 
         if(ServiceFunctional.getPedometerShouldRun(this))
             ServiceFunctional.startPedometerService(this);
+
+        goToDesiredFragment(getIntent());
     }
 
     @Override

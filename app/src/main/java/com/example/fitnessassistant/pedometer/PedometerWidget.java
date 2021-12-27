@@ -3,6 +3,7 @@ package com.example.fitnessassistant.pedometer;
 import static com.example.fitnessassistant.pedometer.Pedometer.getCurrentDateFormatted;
 import static com.example.fitnessassistant.uiprefs.LocaleExt.toLangIfDiff;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
@@ -100,6 +102,14 @@ public class PedometerWidget extends AppWidgetProvider {
                 views.setViewVisibility(R.id.widgetImageSmall, View.VISIBLE);
             }
         }
+
+        // adding pendingIntent to get us to MapFragment
+        Intent intent = new Intent(context, InAppActivity.class);
+        intent.putExtra("desiredFragment", "MapFragment");
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        views.setOnClickPendingIntent(R.id.widgetBackground, pendingIntent);
+
         return views;
     }
 
