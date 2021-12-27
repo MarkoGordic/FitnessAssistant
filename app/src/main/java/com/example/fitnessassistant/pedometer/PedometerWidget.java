@@ -6,45 +6,29 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.util.ServiceFunctional;
 
-// TODO: stopService onClick
-//  add step goal
-//  add questions...
+//  todo add step goal
+//      add questions...
 
 // TODO test resizing widget once again on more phones
 public class PedometerWidget extends AppWidgetProvider {
-    private SharedPreferences sharedPreferences;
-    public static boolean defaultBehavior = true;
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int height, boolean shouldShowDefaultWidget) {
-        defaultBehavior = shouldShowDefaultWidget;
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int height) {
         appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, height));
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT), defaultBehavior);
+            updateAppWidget(context, appWidgetManager, appWidgetId, appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
         }
-    }
-
-    public void onEnabled(Context context){
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.apply();
-    }
-
-    public void onDisabled(Context context){
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.apply();
     }
 
     // handling resize for samsung devices
@@ -77,8 +61,8 @@ public class PedometerWidget extends AppWidgetProvider {
 
     private static void updateWidgetLang(RemoteViews views, Context context, String lang){
         Context newContext = toLangIfDiff(context, lang, false, true);
-        if(defaultBehavior)
-            views.setTextViewText(R.id.permissionRequiredTextView, newContext.getText(R.string.permissions_required));
+        if(!ServiceFunctional.getPedometerShouldRun(newContext))
+            views.setTextViewText(R.id.permissionRequiredTextView, newContext.getText(R.string.step_counter_not_active));
         else {
             views.setTextViewText(R.id.widgetHeader, newContext.getText(R.string.steps));
             views.setTextViewText(R.id.stepsTV, newContext.getText(R.string.steps_small));
@@ -90,7 +74,7 @@ public class PedometerWidget extends AppWidgetProvider {
     // gettingRemoteView based on changing screen size
     private static RemoteViews getRemoteViews(Context context, int height){
         RemoteViews views;
-        if(defaultBehavior) {
+        if(!ServiceFunctional.getPedometerShouldRun(context)) {
             views = new RemoteViews(context.getPackageName(), R.layout.pedometer_widget_default);
             updateWidgetLang(views, context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"));
 
@@ -125,7 +109,7 @@ public class PedometerWidget extends AppWidgetProvider {
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        updateAppWidget(context, appWidgetManager, appWidgetId, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT), defaultBehavior);
+        updateAppWidget(context, appWidgetManager, appWidgetId, newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
     }
 

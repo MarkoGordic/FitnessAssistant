@@ -61,8 +61,8 @@ public class ActivityDetector extends Service {
                 .addOnFailureListener(Throwable::printStackTrace);
     }
 
-    private void updateLang(){
-        updatedContext = LocaleExt.toLangIfDiff(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(this).getString("langPref", "sys"), true, false);
+    private synchronized void updateLang(){
+        updatedContext = LocaleExt.toLangIfDiff(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(this).getString("langPref", "sys"), true, true);
     }
 
     @Override

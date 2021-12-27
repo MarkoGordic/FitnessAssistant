@@ -204,6 +204,7 @@
                     android:includeFontPadding="false"
 
                     android:textAlignment="center"
+                    android:text="@string/zero"
                     android:textColor="@color/MangoTango"
                     android:textFontWeight="600"
                     android:textSize="17sp"

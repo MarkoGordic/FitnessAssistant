@@ -11,7 +11,6 @@
     <!-- Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Dangerous ! -->
 
     <application
         android:allowBackup="false"
@@ -60,7 +59,6 @@
             tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="restartservice"/>
             </intent-filter>
         </receiver>
 

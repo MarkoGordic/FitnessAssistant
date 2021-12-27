@@ -45,7 +45,11 @@ public class RealtimeDB {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     db.child(userID).removeValue();
-                    FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task -> ServiceFunctional.stopPedometerService(context));
+                    FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(task -> {
+                        // stopping pedometer service
+                        ServiceFunctional.setPedometerShouldRun(context, false);
+                        ServiceFunctional.stopPedometerService(context);
+                    });
                 }
 
                 @Override

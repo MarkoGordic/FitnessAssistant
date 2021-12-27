@@ -10,6 +10,7 @@ import android.os.LocaleList;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.PedometerWidget;
+import com.example.fitnessassistant.util.ServiceFunctional;
 
 import java.util.Locale;
 
@@ -57,13 +58,14 @@ public class LocaleExt {
 
         if(updateWidgets)
             for (int id : AppWidgetManager.getInstance(newContext).getAppWidgetIds(new ComponentName(newContext, PedometerWidget.class))) {
-                PedometerWidget.updateAppWidget(newContext, AppWidgetManager.getInstance(newContext), id, AppWidgetManager.getInstance(context).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT), PedometerWidget.defaultBehavior);
+                PedometerWidget.updateAppWidget(newContext, AppWidgetManager.getInstance(newContext), id, AppWidgetManager.getInstance(context).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
             }
 
         if(updateNotifications)
-            if(!PedometerWidget.defaultBehavior)
+            if(ServiceFunctional.getPedometerShouldRun(newContext)) {
                 Pedometer.pushPedometerNotification(newContext, ((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + newContext.getString(R.string.steps_small), newContext.getString(R.string.your_today_goal));
-
+                Pedometer.updatePedometerWidgetData(newContext ,((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)));
+            }
         return newContext;
     }
 

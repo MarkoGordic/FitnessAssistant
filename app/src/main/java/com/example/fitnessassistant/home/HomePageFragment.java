@@ -67,6 +67,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        greetUser(requireView());
+        if(getView() != null)
+            greetUser(getView());
     }
 }

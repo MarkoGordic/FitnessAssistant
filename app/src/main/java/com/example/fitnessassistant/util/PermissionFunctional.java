@@ -94,34 +94,4 @@ public class PermissionFunctional {
             // Start needed services
         }
     }
-
-    public static void checkBackgroundLocationPermission(Context context, ActivityResultLauncher<String> permissionLauncher){
-        // TODO check for version Q, check for else
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // alert dialog to let user know we're requesting fine location recognition
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setView(R.layout.custom_ok_alert_dialog);
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                // disables the user to cancel the given dialog
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
-
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.marker);
-
-                ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.location_access);
-                dialog.findViewById(R.id.dialog_message).setVisibility(View.GONE);
-                dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> {
-                    dialog.dismiss();
-                    permissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
-                });
-            } else {
-                // Start needed services
-            }
-        } else {
-            // Handle this
-        }
-    }
 }

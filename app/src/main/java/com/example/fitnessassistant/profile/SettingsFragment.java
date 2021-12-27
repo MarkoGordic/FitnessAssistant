@@ -129,6 +129,7 @@ public class SettingsFragment extends Fragment {
                 // signing out from facebook because they save it separately
                 LoginManager.getInstance().logOut();
                 // stopping Pedometer service
+                ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
                 ServiceFunctional.stopPedometerService(requireActivity());
             }else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
@@ -160,7 +161,7 @@ public class SettingsFragment extends Fragment {
                 dialog.findViewById(R.id.dialog_positive_button).setOnClickListener(view2 -> {
                     dialog.dismiss();
                     if(AuthFunctional.currentlyOnline) // signing in silently (because google id tokens expire really quick)
-                        googleLinkingClient.silentSignIn().addOnCompleteListener(task -> AuthFunctional.setUpDeletion(getActivity()));
+                        googleLinkingClient.silentSignIn().addOnCompleteListener(task -> AuthFunctional.setUpDeletion(requireActivity()));
                     else // no network notification flashes
                         AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
                 });
@@ -185,6 +186,8 @@ public class SettingsFragment extends Fragment {
 
         // set onCheckedListener for darkModeSwitch
         ((SwitchCompat) view.findViewById(R.id.darkModeSwitch)).setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if(ServiceFunctional.getPedometerShouldRun(requireActivity()))
+                ServiceFunctional.stopPedometerService(requireActivity());
             if(isChecked){
                 compoundButton.setText(R.string.dark_mode);
                 compoundButton.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.moon),null,null,null);
@@ -250,8 +253,6 @@ public class SettingsFragment extends Fragment {
                 // get language selected
                 String languageSelected = languageAdapter.getItem(position);
 
-//                android:padding="20dp"
-
                 // prepares dialogs based on country/language chosen
                 if(languageSelected != null) {
                     if (languageSelected.equals(serbian)) {
@@ -264,6 +265,8 @@ public class SettingsFragment extends Fragment {
                         dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
                             dialog1.dismiss();
                             PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "sr").apply();
+                            if(ServiceFunctional.getPedometerShouldRun(requireActivity()))
+                                ServiceFunctional.stopPedometerService(requireActivity());
                             restartApp(requireContext(), 500);
                         });
                     } else if (languageSelected.equals(english)) {
@@ -276,6 +279,8 @@ public class SettingsFragment extends Fragment {
                         dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
                             dialog1.dismiss();
                             PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "en").apply();
+                            if(ServiceFunctional.getPedometerShouldRun(requireActivity()))
+                                ServiceFunctional.stopPedometerService(requireActivity());
                             restartApp(requireContext(), 500);
                         });
                     }
