@@ -26,7 +26,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private GoogleMap googleMap = null;
     private MapView mapView;
 
-    private boolean isTracing = false;
+    private boolean isTracking = false;
     private Vector<Vector<LatLng>> pathHistory = new Vector<>();
 
     private final int polylineColor = Color.BLUE;
@@ -43,22 +43,31 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void toggleActivityTracking(){
-        if(isTracing) {
+        if(isTracking) {
             updateLocationService("pause_service");
         } else {
             updateLocationService("start_or_resume_service");
         }
     }
 
-    private void updateTracking(Boolean isTracing){
-        this.isTracing = isTracing;
+    // TODO ovo se moze koristiti samo ukoliko smo stalno u app i na ovom fragmentu, u suprotnom ces morati da se igras sa sharedPreferences :/
+    private void updateTracking(Boolean tracking){
+        this.isTracking = tracking;
 
-        if(!isTracing){
-            // Setup buttons
+        if(isTracking){
+            requireView().findViewById(R.id.startButton).setVisibility(View.INVISIBLE);
+            requireView().findViewById(R.id.pauseButton).setOnClickListener(v -> {
+                // TODO pause functionality
+            });
         }
-        else{
-            // Setup buttons
+        else {
+            requireView().findViewById(R.id.startButton).setOnClickListener(v -> toggleActivityTracking());
+            requireView().findViewById(R.id.pauseButton).setVisibility(View.INVISIBLE);
         }
+
+        requireView().findViewById(R.id.stopTracking).setOnClickListener(v -> {
+            // TODO stopTracking functionality
+        });
     }
 
     private void focusUserOnMap(){
@@ -108,8 +117,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);
-
-        view.findViewById(R.id.btnToggleRun).setOnClickListener(v -> toggleActivityTracking());
 
         subscribeToObservers();
 
