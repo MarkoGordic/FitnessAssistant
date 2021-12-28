@@ -223,5 +223,9 @@
     <!-- Map Strings -->
     <string name="map_view">Map View</string>
 
+    <!-- Activity Tracking Strings -->
+    <string name="pause_activity_tracking">Pause</string>
+    <string name="resume_activity_tracking">Resume</string>
+
     <string name="coming_soon">This will be added soon</string>
 </resources>

@@ -3,6 +3,7 @@ package com.example.fitnessassistant.activitytracker;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.DecimalFormat;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +29,13 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     private GoogleMap googleMap = null;
     private MapView mapView;
+    private TextView stopwatch;
+    private TextView distance;
+    private TextView speed;
+    private TextView averageSpeed;
+
+    private final DecimalFormat distanceFormat = new DecimalFormat("#.##");
+    private final DecimalFormat speedFormat = new DecimalFormat("#.#");
 
     private boolean isTracking = false;
     private Vector<Vector<LatLng>> pathHistory = new Vector<>();
@@ -38,18 +47,51 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     // method which is used to set up observers
     private void subscribeToObservers(){
+        // For service updates
         LocationService.isTracking.observe(getViewLifecycleOwner(), this::updateTracking);
 
+        // For map updates
         LocationService.pathHistory.observe(getViewLifecycleOwner(), newPath -> {
             pathHistory = newPath;
             addLatestPathToMap();
             focusUserOnMap();
         });
 
+        // For timer updates
         LocationService.timeInMilliseconds.observe(getViewLifecycleOwner(), aLong -> {
             currentTimeInMilliseconds = aLong;
             String formattedTime = ActivityTrackingFragment.getFormattedTimer(true, currentTimeInMilliseconds);
-            ((TextView) requireView().findViewById(R.id.tvTimer)).setText(formattedTime);
+            stopwatch.setText(formattedTime);
+        });
+
+        // For distance updates
+        LocationService.totalDistanceInKm.observe(getViewLifecycleOwner(), newDistance -> {
+
+            // Can i use requireContext here ?
+            if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("distanceUnit", "km").equals("km")){
+                //distance.setText(String.valueOf(distanceFormat.format(newDistance)));
+            }else{
+                // In case user wants miles, we need to convert distance value
+                //distance.setText(distanceFormat.format(newDistance * 0.621371));
+            }
+        });
+
+        // For speed updates
+        LocationService.currentSpeed.observe(getViewLifecycleOwner(), newSpeed -> {
+            if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("speedUnit", "km").equals("km")){
+                //speed.setText(String.valueOf(speedFormat.format(newSpeed)));
+            }else{
+                //speed.setText(speedFormat.format(newSpeed * 0.621371));
+            }
+        });
+
+        // For average speed updates
+        LocationService.averageSpeed.observe(getViewLifecycleOwner(), newAverageSpeed -> {
+            if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("speedUnit", "km").equals("km")){
+                //averageSpeed.setText(String.valueOf(speedFormat.format(newAverageSpeed)));
+            }else{
+                //averageSpeed.setText(speedFormat.format(newAverageSpeed * 0.621371));
+            }
         });
     }
 
@@ -120,6 +162,13 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen, container, false);
+
+        stopwatch = view.findViewById(R.id.tvTimer);
+
+        // TODO: Link distance TextView here
+        // TODO: Link speed TextView here
+        // TODO: Link average speed TextView here
+        // TODO: After linking, uncomment lines on top of this class
 
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);

@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.activitytracker;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,12 +14,14 @@ import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.MutableLiveData;
+
 import com.example.fitnessassistant.InAppActivity;
-import com.example.fitnessassistant.notifications.NotificationController;
+import com.example.fitnessassistant.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -37,8 +40,17 @@ public class LocationService extends LifecycleService {
     public static MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
     public static MutableLiveData<Vector<Vector<LatLng>>> pathHistory = new MutableLiveData<>();
 
-    public static  MutableLiveData<Long> timeInSeconds = new MutableLiveData<>();
+    public static MutableLiveData<Long> timeInSeconds = new MutableLiveData<>();
     public static MutableLiveData<Long> timeInMilliseconds = new MutableLiveData<>();
+
+    private LatLng lastLatLng = null;
+    public static MutableLiveData<Double> totalDistanceInKm = new MutableLiveData<>();
+
+    public static MutableLiveData<Float> currentSpeed = new MutableLiveData<>();
+    public static MutableLiveData<Float> averageSpeed = new MutableLiveData<>();
+    private int speedUpdateCount = 0;
+    private float speedSum = 0f;
+
     private boolean isTimerEnabled = false;
     private long segmentTime = 0L;
     private long totalTime = 0L;
@@ -54,6 +66,37 @@ public class LocationService extends LifecycleService {
         isTracking.postValue(true);
         timeInMilliseconds.postValue(0L);
         timeInSeconds.postValue(0L);
+        totalDistanceInKm.postValue(0D);
+        currentSpeed.postValue(0F);
+        averageSpeed.postValue(0F);
+    }
+
+    private void calculateNewDistanceInKm(LatLng newLocation){
+        double lat1 = lastLatLng.latitude;
+        double lng1 = lastLatLng.longitude;
+        double lat2 = newLocation.latitude;
+        double lng2 = newLocation.longitude;
+
+        final int R = 6371;
+        // Radius of the earth in km
+        double dLat = deg2rad(lat2 - lat1);
+        // deg2rad below
+        double dLon = deg2rad(lng2 - lng1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // calculating final distance
+        double distance = R * c;
+
+        // Updating total distance
+        if(totalDistanceInKm.getValue() != null)
+            totalDistanceInKm.postValue(totalDistanceInKm.getValue() + distance);
+    }
+
+    // method which converts degrees to radians
+    private double deg2rad(double deg)
+    {
+        return deg * (Math.PI / 180);
     }
 
     // method for starting on screen stopwatch
@@ -102,8 +145,10 @@ public class LocationService extends LifecycleService {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         isTracking.observe(this, aBoolean -> {
-            if(isTracking.getValue() != null)
+            if(isTracking.getValue() != null) {
                 updateTrackingStatus(isTracking.getValue());
+                updateNotification();
+            }
         });
     }
 
@@ -125,28 +170,23 @@ public class LocationService extends LifecycleService {
         }
     };
 
-    private void updateTrackingStatus(boolean isTracking){
-        if (isTracking) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                // Interval between location updates
-                int updateInterval = 5000;
-                int fastestUpdateInterval = 2000;
-                LocationRequest request = LocationRequest
-                        .create()
-                        .setInterval(updateInterval)
-                        .setFastestInterval(fastestUpdateInterval)
-                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                fusedLocationProviderClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper());
-            }
-        } else {
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        }
-    }
-
     // method for adding new GPS point to path list
     private void addNewPathPoint(Location location){
         // converting location to LatLng variable
         LatLng newPoint = new LatLng(location.getLatitude(), location.getLongitude());
+
+        // calculating new distance
+        // TODO : Fix
+        //calculateNewDistanceInKm(newPoint);
+
+        // updating speed variables
+        speedUpdateCount++;
+        speedSum += location.getSpeed() * 3.6f;
+        currentSpeed.postValue(location.getSpeed() * 3.6f);
+        averageSpeed.postValue(speedSum / speedUpdateCount);
+
+        // saving new point as last
+        lastLatLng = newPoint;
 
         if(pathHistory.getValue() == null){
             Vector<Vector<LatLng>> temp = new Vector<>();
@@ -165,6 +205,24 @@ public class LocationService extends LifecycleService {
             }
             temp.add(temp1);
             pathHistory.postValue(temp);
+        }
+    }
+
+    private void updateTrackingStatus(boolean isTracking){
+        if (isTracking) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                // Interval between location updates
+                int updateInterval = 5000;
+                int fastestUpdateInterval = 2000;
+                LocationRequest request = LocationRequest
+                        .create()
+                        .setInterval(updateInterval)
+                        .setFastestInterval(fastestUpdateInterval)
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                fusedLocationProviderClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper());
+            }
+        } else {
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
     }
 
@@ -192,8 +250,11 @@ public class LocationService extends LifecycleService {
         startTimer();
         isTracking.postValue(true);
 
-        Notification notification = pushActivityTrackingNotification(this, "Activity Tracking", "00:00:00");
+        // Pushing base notification
+        Notification notification = pushActivityTrackingNotification(this, null, "00:00:00");
         startForeground(ACTIVITY_TRACKING_ID, notification);
+
+        timeInSeconds.observe(this, aLong -> updateNotification());
     }
 
     private void pauseService(){
@@ -201,19 +262,54 @@ public class LocationService extends LifecycleService {
         isTimerEnabled = false;
     }
 
+    private void updateNotification(){
+        PendingIntent pendingIntent;
+
+        if(isTracking.getValue() != null && timeInMilliseconds.getValue() != null)
+            if(isTracking.getValue()) {
+                Intent pauseIntent = new Intent(this, LocationService.class);
+                pauseIntent.putExtra("state", "pause_service");
+                pendingIntent = PendingIntent.getService(this, 1, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                pushActivityTrackingNotification(this, pendingIntent, ActivityTrackingFragment.getFormattedTimer(false, timeInMilliseconds.getValue()));
+            }else{
+                Intent resumeIntent = new Intent(this, LocationService.class);
+                resumeIntent.putExtra("state", "start_or_resume_service");
+                pendingIntent = PendingIntent.getService(this, 2, resumeIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                pushActivityTrackingNotification(this, pendingIntent, ActivityTrackingFragment.getFormattedTimer(false, timeInMilliseconds.getValue()));
+            }
+    }
+
     // TODO Put logo, Add translation later
-    public static Notification pushActivityTrackingNotification(Context context, String textTitle, String textContent){
+    // TODO Check this SuppressLint
+    @SuppressLint("RestrictedApi")
+    private Notification pushActivityTrackingNotification(Context context, PendingIntent action, String contentText){
         Intent intent = new Intent(context, InAppActivity.class);
         intent.putExtra("desiredFragment", "ActivityTrackingFragment");
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, ACTIVITY_TRACKING_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        Notification notification = NotificationController.createNotification(context, "ActivityTracking", textTitle, textContent, pendingIntent, false,true, false);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "ActivityTracking")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setContentTitle("FitnessAssistant Tracking")
+                .setContentText(contentText)
+                .setContentIntent(pendingIntent);
+
+        // TODO: put custom icons to actions
+        if(action != null) {
+            notificationBuilder.mActions.clear();
+            if (isTracking.getValue() != null)
+                if (isTracking.getValue())
+                    notificationBuilder.addAction(R.drawable.ic_launcher_foreground, context.getText(R.string.pause_activity_tracking), action);
+                else
+                    notificationBuilder.addAction(R.drawable.ic_launcher_foreground, context.getText(R.string.resume_activity_tracking), action);
+        }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(ACTIVITY_TRACKING_ID, notification);
+        notificationManager.notify(ACTIVITY_TRACKING_ID, notificationBuilder.build());
 
-        return notification;
+        return notificationBuilder.build();
     }
 
     @Nullable

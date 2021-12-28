@@ -223,5 +223,9 @@
     <!-- Map Strings -->
     <string name="map_view">Prikaz Mape</string>
 
+    <!-- Activity Tracking Strings -->
+    <string name="pause_activity_tracking">Pauziraj</string>
+    <string name="resume_activity_tracking">Nastavi</string>
+
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>
