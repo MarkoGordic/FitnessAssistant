@@ -158,12 +158,15 @@
     <string name="email_change_unsuccessful">Email Change Unsuccessful</string>
     <string name="email_change_successful">Email Change Successful</string>
     <string name="unable_to_refresh">Unable To Refresh</string>
+    <string name="swipe_up_to_use_the_map">Swipe button up for the Map</string>
 
+    <!-- Language Strings -->
     <string name="select_a_language">Select a Language: </string>
     <string name="serbian">Serbian (SRB)</string>
     <string name="english">English (ENG)</string>
     <string name="your_selected_language_is">Your Selected Language is: </string>
 
+    <!-- Network Strings -->
     <string name="limited_or_no_connectivity">Network connectivity limited or unavailable.</string>
 
     <!-- NavBar strings -->
@@ -215,6 +218,9 @@
     <string name="tilting">Tilting</string>
     <string name="unknown">Unknown</string>
     <string name="walking">Walking</string>
+
+    <!-- Map Strings -->
+    <string name="map_view">Map View</string>
 
     <string name="coming_soon">COMING SOON</string>
 </resources>

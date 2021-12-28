@@ -147,12 +147,25 @@ public class InAppActivity extends AppCompatActivity {
         mapFragment.setUpUI(pedometerRuns);
     }
 
+    public synchronized void putDesiredFragment(String desiredFragment){
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("desiredFragment",desiredFragment).apply();
+    }
+
+    public synchronized String getDesiredFragment(){
+        return PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("desiredFragment", null);
+    }
+
     // if intent given has it, go to desired fragment
     private void goToDesiredFragment(Intent intent){
-        if(intent != null && intent.getStringExtra("desiredFragment") != null && intent.getStringExtra("desiredFragment").equals("MapFragment")){
-            ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.map);
-            active = mapFragment;
-        }
+        if(intent != null && intent.getStringExtra("desiredFragment") != null)
+            if(intent.getStringExtra("desiredFragment").equals("MapFragment")){
+                ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.map);
+                active = mapFragment;
+            } else if(intent.getStringExtra("desiredFragment").equals("ActivityTrackingFragment")){
+                putDesiredFragment("ActivityTrackingFragment");
+                ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.map);
+                active = mapFragment;
+            }
     }
 
     // if new intent is registered

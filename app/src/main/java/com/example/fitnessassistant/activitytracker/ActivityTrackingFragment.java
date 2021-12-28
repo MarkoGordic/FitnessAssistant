@@ -27,7 +27,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     private GoogleMap googleMap = null;
     private MapView mapView;
-    private TextView stopwatch = null;
 
     private boolean isTracking = false;
     private Vector<Vector<LatLng>> pathHistory = new Vector<>();
@@ -50,7 +49,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         LocationService.timeInMilliseconds.observe(getViewLifecycleOwner(), aLong -> {
             currentTimeInMilliseconds = aLong;
             String formattedTime = ActivityTrackingFragment.getFormattedTimer(true, currentTimeInMilliseconds);
-            stopwatch.setText(formattedTime);
+            ((TextView) requireView().findViewById(R.id.tvTimer)).setText(formattedTime);
         });
     }
 
@@ -121,8 +120,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen, container, false);
-
-        stopwatch = view.findViewById(R.id.tvTimer);
 
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);

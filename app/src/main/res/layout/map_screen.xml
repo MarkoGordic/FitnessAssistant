@@ -8,6 +8,8 @@
     android:background="@color/backgroundColor">
 
     <LinearLayout
+        android:id="@+id/stepCountingLinear"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -69,6 +71,57 @@
             android:textFontWeight="600"
             android:textSize="16sp"
             tools:ignore="TouchTargetSizeCheck" />
+
+    </LinearLayout>
+
+    <!-- TODO try use only one TextView later -->
+    <LinearLayout
+        android:id="@+id/mapSwipeUp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        android:layout_marginBottom="72dp"
+
+        android:orientation="vertical"
+        tools:ignore="UseCompoundDrawables">
+
+        <!-- TODO fix border -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+
+            android:layout_marginBottom="-10dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:elevation="1dp"
+
+            android:background="@color/backgroundColor"
+
+            android:src="@drawable/up"
+            app:tint="@color/SpaceCadet"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/transparent_button"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:padding="10dp"
+            android:text="@string/map_view"
+            android:textAllCaps="false"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

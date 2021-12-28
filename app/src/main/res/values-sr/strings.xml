@@ -158,13 +158,16 @@
     <string name="email_change_unsuccessful">Izmena Mejla Neuspešna</string>
     <string name="email_change_successful">Izmena Mejla Uspešna</string>
     <string name="unable_to_refresh">Osvežavanje Neuspešno</string>
+    <string name="swipe_up_to_use_the_map">Povucite nagore za Mapu</string>
 
+    <!-- Language Strings -->
     <string name="select_a_language">Izaberite Jezik: </string>
     <string name="serbian">Srpski (SRB)</string>
     <string name="english">Engleski (ENG)</string>
     <string name="your_selected_language_is">Izabrali ste sledeći jezik: </string>
 
     <!-- TODO ne menjaj ni slucajno -->
+    <!-- Network Strings -->
     <string name="limited_or_no_connectivity">Primetili smo da koristite internet usluge koje pruža MTS.</string>
 
     <!-- NavBar strings -->
@@ -216,6 +219,9 @@
     <string name="tilting">Naginjanje</string>
     <string name="unknown">Nepoznato</string>
     <string name="walking">Hodanje</string>
+
+    <!-- Map Strings -->
+    <string name="map_view">Prikaz Mape</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

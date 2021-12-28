@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -49,11 +48,6 @@ public class HomePageFragment extends Fragment {
     private void setUpOnClickListeners(View view){
         // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> greetUser(view));
-
-        view.findViewById(R.id.startActivity).setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().beginTransaction().hide(HomePageFragment.this).add(R.id.in_app_container, InAppActivity.activityTrackingFragment).addToBackStack(null).commit();
-            //requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
-        });
     }
 
     @Nullable

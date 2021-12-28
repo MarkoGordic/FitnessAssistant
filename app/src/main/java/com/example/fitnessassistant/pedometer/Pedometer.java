@@ -31,6 +31,7 @@ import com.example.fitnessassistant.util.ServiceFunctional;
 import java.util.Date;
 
 public class Pedometer extends Service implements SensorEventListener {
+    private static final int PEDOMETER_ID = 25;
     private Context updatedContext;
     private SensorManager sensorManager;
     private String currentDate;
@@ -47,10 +48,7 @@ public class Pedometer extends Service implements SensorEventListener {
 
     // method for wiping all pedometer data on device
     public static void wipeData(Context context){
-        SharedPreferences data = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = data.edit();
-        editor.clear();
-        editor.apply();
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().clear().apply();
     }
 
     public Pedometer(){ }
@@ -90,7 +88,7 @@ public class Pedometer extends Service implements SensorEventListener {
         sharedPreferences = getApplicationContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
         currentDate = getCurrentDateFormatted();
 
-        startForeground(25, notification);
+        startForeground(PEDOMETER_ID, notification);
     }
 
     @Override
@@ -167,12 +165,12 @@ public class Pedometer extends Service implements SensorEventListener {
         Intent intent = new Intent(context, InAppActivity.class);
         intent.putExtra("desiredFragment", "MapFragment");
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, PEDOMETER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = NotificationController.createNotification(context, "Pedometer", textTitle, textContent, pendingIntent, false,true, false);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(25, notification);
+        notificationManager.notify(PEDOMETER_ID, notification);
 
         return notification;
     }

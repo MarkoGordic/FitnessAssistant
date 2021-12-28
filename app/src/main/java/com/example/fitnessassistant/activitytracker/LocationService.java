@@ -33,6 +33,7 @@ import java.util.Vector;
 // TODO : When user clicks on foreground notification, he needs to be redirected directly to this fragment
 
 public class LocationService extends LifecycleService {
+    private static final int ACTIVITY_TRACKING_ID = 27;
     public static MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
     public static MutableLiveData<Vector<Vector<LatLng>>> pathHistory = new MutableLiveData<>();
 
@@ -192,7 +193,7 @@ public class LocationService extends LifecycleService {
         isTracking.postValue(true);
 
         Notification notification = pushActivityTrackingNotification(this, "Activity Tracking", "00:00:00");
-        startForeground(27, notification);
+        startForeground(ACTIVITY_TRACKING_ID, notification);
     }
 
     private void pauseService(){
@@ -203,14 +204,14 @@ public class LocationService extends LifecycleService {
     // TODO Put logo, Add translation later
     public static Notification pushActivityTrackingNotification(Context context, String textTitle, String textContent){
         Intent intent = new Intent(context, InAppActivity.class);
-        // TODO add intentExtra desiredFragment
+        intent.putExtra("desiredFragment", "ActivityTrackingFragment");
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, ACTIVITY_TRACKING_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = NotificationController.createNotification(context, "ActivityTracking", textTitle, textContent, pendingIntent, false,true, false);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(27, notification);
+        notificationManager.notify(ACTIVITY_TRACKING_ID, notification);
 
         return notification;
     }

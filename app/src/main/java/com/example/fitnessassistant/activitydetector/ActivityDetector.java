@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityDetector extends Service {
+    private static final int ACTIVITY_DETECTOR_ID = 26;
     private Context updatedContext;
     private static final List<ActivityTransition> transitions = new ArrayList<>();
 
@@ -33,7 +34,7 @@ public class ActivityDetector extends Service {
 
         Intent intent = new Intent(context, ActivityDetectorReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, ACTIVITY_DETECTOR_ID, intent, PendingIntent.FLAG_IMMUTABLE);
 
         Task<Void> task = ActivityRecognition.getClient(context)
                 .requestActivityTransitionUpdates(request, pendingIntent);
@@ -51,7 +52,7 @@ public class ActivityDetector extends Service {
     public static void stopActivityRecognition(Context context){
         Intent intent = new Intent(context, ActivityDetectorReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, ACTIVITY_DETECTOR_ID, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // Transitions unsuccessfully registered
         ActivityRecognition.getClient(context).removeActivityTransitionUpdates(pendingIntent)
@@ -77,7 +78,7 @@ public class ActivityDetector extends Service {
         Notification notification = pushActivityUpdateNotification(this, updatedContext.getString(R.string.background_activity_detection), updatedContext.getString(R.string.background_activity_detection_started));
         startTransitionRecognition(this);
 
-        startForeground(26, notification);
+        startForeground(ACTIVITY_DETECTOR_ID, notification);
     }
 
     @Override
@@ -93,12 +94,12 @@ public class ActivityDetector extends Service {
         Intent intent = new Intent(context, InAppActivity.class);
         intent.putExtra("desiredFragment", "MapFragment");
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, ACTIVITY_DETECTOR_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = NotificationController.createNotification(context, "ActivityDetection", textTitle, textContent, pendingIntent, false,true, false);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(26, notification);
+        notificationManager.notify(ACTIVITY_DETECTOR_ID, notification);
 
         return notification;
     }
