@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 
@@ -34,8 +35,53 @@ import java.util.Vector;
 public class LocationService extends LifecycleService {
     public static MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
     public static MutableLiveData<Vector<Vector<LatLng>>> pathHistory = new MutableLiveData<>();
+
+    public static  MutableLiveData<Long> timeInSeconds = new MutableLiveData<>();
+    public static MutableLiveData<Long> timeInMilliseconds = new MutableLiveData<>();
+    private boolean isTimerEnabled = false;
+    private long segmentTime = 0L;
+    private long totalTime = 0L;
+    private long startTime = 0L;
+    private long lastSecondTimestamp = 0L;
+    private final int timerDelayMs = 100;
+    final Handler handler = new Handler();
+
     private boolean isRunning = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
+
+    private void initializeVariables(){
+        isTracking.postValue(true);
+        timeInMilliseconds.postValue(0L);
+        timeInSeconds.postValue(0L);
+    }
+
+    // method for starting on screen stopwatch
+    private void startTimer(){
+        addNewPathSegment();
+        isTracking.postValue(true);
+        startTime = System.currentTimeMillis();
+        isTimerEnabled = true;
+
+        // Starting background handle to calculate time
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(isTimerEnabled){
+                    segmentTime = System.currentTimeMillis() - startTime;
+                    timeInMilliseconds.postValue(totalTime + segmentTime);
+
+                    if(timeInMilliseconds.getValue() != null && timeInSeconds.getValue() != null)
+                        if(timeInMilliseconds.getValue() >= lastSecondTimestamp + 1000L){
+                            timeInSeconds.postValue(timeInSeconds.getValue() + 1);
+                            lastSecondTimestamp += 1000L;
+                        }
+
+                    handler.postDelayed(this, timerDelayMs);
+                }else
+                    totalTime += segmentTime;
+            }
+        });
+    }
 
     private void addNewPathSegment(){
         if(pathHistory.getValue() != null) {
@@ -50,7 +96,7 @@ public class LocationService extends LifecycleService {
     @Override
     public void onCreate() {
         super.onCreate();
-        isTracking.postValue(true);
+        initializeVariables();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -129,7 +175,7 @@ public class LocationService extends LifecycleService {
                     startForegroundService();
                     isRunning = true;
                 } else {
-                    startForegroundService();
+                    startTimer();
                 }
                 break;
             case "pause_service":
@@ -142,7 +188,7 @@ public class LocationService extends LifecycleService {
     }
 
     private void startForegroundService(){
-        addNewPathSegment();
+        startTimer();
         isTracking.postValue(true);
 
         Notification notification = pushActivityTrackingNotification(this, "Activity Tracking", "00:00:00");
@@ -151,6 +197,7 @@ public class LocationService extends LifecycleService {
 
     private void pauseService(){
         isTracking.postValue(false);
+        isTimerEnabled = false;
     }
 
     // TODO Put logo, Add translation later

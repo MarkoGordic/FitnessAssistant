@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,11 +21,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap googleMap = null;
     private MapView mapView;
+    private TextView stopwatch = null;
 
     private boolean isTracking = false;
     private Vector<Vector<LatLng>> pathHistory = new Vector<>();
@@ -32,6 +35,9 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private final int polylineColor = Color.BLUE;
     private final float polylineWidth = 7f;
 
+    private long currentTimeInMilliseconds = 0L;
+
+    // method which is used to set up observers
     private void subscribeToObservers(){
         LocationService.isTracking.observe(getViewLifecycleOwner(), this::updateTracking);
 
@@ -39,6 +45,12 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             pathHistory = newPath;
             addLatestPathToMap();
             focusUserOnMap();
+        });
+
+        LocationService.timeInMilliseconds.observe(getViewLifecycleOwner(), aLong -> {
+            currentTimeInMilliseconds = aLong;
+            String formattedTime = ActivityTrackingFragment.getFormattedTimer(true, currentTimeInMilliseconds);
+            stopwatch.setText(formattedTime);
         });
     }
 
@@ -54,16 +66,12 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private void updateTracking(Boolean tracking){
         this.isTracking = tracking;
 
-        if(isTracking){
+        /*if(isTracking){
             requireView().findViewById(R.id.startButton).setVisibility(View.INVISIBLE);
-            requireView().findViewById(R.id.pauseButton).setOnClickListener(v -> {
-                // TODO pause functionality
-            });
         }
         else {
-            requireView().findViewById(R.id.startButton).setOnClickListener(v -> toggleActivityTracking());
             requireView().findViewById(R.id.pauseButton).setVisibility(View.INVISIBLE);
-        }
+        }*/
 
         requireView().findViewById(R.id.stopTracking).setOnClickListener(v -> {
             // TODO stopTracking functionality
@@ -73,6 +81,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private void focusUserOnMap(){
         if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty()){
             float mapZoom = 18f;
+            // TODO : FATAL EXCEPTION - Ubacivanje u vector nije dobro, potrebno je opet proveriti da li je sve kako treba
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                             pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1),
@@ -113,10 +122,22 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen, container, false);
 
+        stopwatch = view.findViewById(R.id.tvTimer);
+
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);
+
+        // TODO : Find better solution for this
+        view.findViewById(R.id.pauseButton).setOnClickListener(v -> {
+            isTracking = true;
+            toggleActivityTracking();
+        });
+        view.findViewById(R.id.startButton).setOnClickListener(v -> {
+            isTracking = false;
+            toggleActivityTracking();
+        });
 
         subscribeToObservers();
 
@@ -168,5 +189,60 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
+    }
+
+    public static String getFormattedTimer(boolean showMilliseconds, long totalTimeInMilliseconds){
+        String formattedTimer = "";
+        long totalTimeInMs = totalTimeInMilliseconds;
+        long hours = TimeUnit.MILLISECONDS.toHours(totalTimeInMs);
+        totalTimeInMs -= TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(totalTimeInMs);
+        totalTimeInMs -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(totalTimeInMs);
+        if(!showMilliseconds){
+            if(hours < 10)
+                formattedTimer += "0";
+            formattedTimer += String.valueOf(hours);
+
+            formattedTimer += ":";
+
+            if(minutes < 10)
+                formattedTimer += "0";
+            formattedTimer += String.valueOf(minutes);
+
+            formattedTimer += ":";
+
+            if(seconds < 10)
+                formattedTimer += "0";
+            formattedTimer += String.valueOf(seconds);
+        }
+        else{
+            if(hours < 10)
+                formattedTimer += "0";
+            formattedTimer += String.valueOf(hours);
+
+            formattedTimer += ":";
+
+            if(minutes < 10)
+                formattedTimer += "0";
+            formattedTimer += String.valueOf(minutes);
+
+            formattedTimer += ":";
+
+            if(seconds < 10)
+                formattedTimer += "0";
+            formattedTimer += String.valueOf(seconds);
+
+            formattedTimer += ":";
+
+            totalTimeInMs -= TimeUnit.SECONDS.toMillis(seconds);
+            totalTimeInMs /= 10;
+
+            if(totalTimeInMs < 10)
+                formattedTimer += "0";
+            formattedTimer += String.valueOf(totalTimeInMs);
+        }
+
+        return formattedTimer;
     }
 }

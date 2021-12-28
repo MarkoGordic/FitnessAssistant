@@ -45,6 +45,14 @@ public class Pedometer extends Service implements SensorEventListener {
 
     private SharedPreferences sharedPreferences;
 
+    // method for wiping all pedometer data on device
+    public static void wipeData(Context context){
+        SharedPreferences data = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = data.edit();
+        editor.clear();
+        editor.apply();
+    }
+
     public Pedometer(){ }
 
     private synchronized void updateLang(){
