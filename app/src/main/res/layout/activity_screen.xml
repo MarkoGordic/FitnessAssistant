@@ -5,129 +5,141 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Todo hardcoded strings should never be used, extract them in a group and translate them-->
+    <View
+        android:id="@+id/topBar"
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clInnerLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/light_blue_50"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="14dp"
+
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:elevation="1dp"
+        android:background="@color/backgroundColor"/>
+
+    <ImageView
+        android:id="@+id/downClose"
+
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapView">
+        app:layout_constraintTop_toTopOf="@id/topBar"
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvTimer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00:00:00"
-            android:textSize="50sp"
-            app:layout_constraintBottom_toTopOf="@+id/startButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:background="@drawable/half_circle_down"
+        android:elevation="1dp"
+        android:layout_marginTop="-14dp"
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/startButton"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintStart_toEndOf="@id/pauseButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            android:background="@drawable/authentication_button"
-
-            android:fontFamily="@font/ralewayb"
-            android:includeFontPadding="false"
-            android:padding="10dp"
-            android:text="Start"
-            android:textAllCaps="false"
-            android:textColor="@color/backgroundColor"
-            android:textFontWeight="600"
-            android:textSize="16sp"
-            tools:ignore="TouchTargetSizeCheck"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/pauseButton"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/startButton"
-
-            android:layout_marginEnd="10dp"
-
-            android:background="@drawable/authentication_button"
-
-            android:fontFamily="@font/ralewayb"
-            android:includeFontPadding="false"
-            android:padding="10dp"
-            android:text="Stop"
-            android:textAllCaps="false"
-            android:textColor="@color/backgroundColor"
-            android:textFontWeight="600"
-            android:textSize="16sp"
-            tools:ignore="TouchTargetSizeCheck"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/stopTracking"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintTop_toBottomOf="@id/startButton"
-            app:layout_constraintStart_toStartOf="@id/pauseButton"
-            app:layout_constraintEnd_toEndOf="@id/startButton"
-
-            android:layout_marginTop="32dp"
-
-            android:background="@drawable/authentication_button"
-
-            android:fontFamily="@font/ralewayb"
-            android:includeFontPadding="false"
-            android:padding="10dp"
-            android:text="Stop Tracking"
-            android:textAllCaps="false"
-            android:textColor="@color/backgroundColor"
-            android:textFontWeight="600"
-            android:textSize="16sp"
-            tools:ignore="TouchTargetSizeCheck"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvLetsGo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Let's go, USERNAME!"
-        android:textAlignment="center"
-        android:textSize="50sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/clInnerLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/down"
+        app:tint="@color/SpaceCadet"
+        android:scaleType="fitCenter"
+        tools:ignore="ContentDescription,ImageContrastCheck" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
+
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/clInnerLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="match_parent"
+
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/timerLayout"
+        app:layout_constrainedHeight="true"
+
         tools:ignore="SpeakableTextPresentCheck" />
+
+    <TableRow
+        android:id="@+id/timerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/backgroundColor"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:weightSum="28">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvTimer"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="18"
+            android:gravity="center_horizontal"
+
+            android:fontFamily="@font/raleway"
+            android:includeFontPadding="false"
+            android:padding="10dp"
+            android:text="@string/starting_time"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="40sp" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            android:gravity="center"
+
+            android:layout_weight="5">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/startButton"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:background="@color/backgroundColor"
+
+                android:padding="16dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/play"
+                tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/pauseButton"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+
+                android:background="@color/backgroundColor"
+
+                android:src="@drawable/pause"
+                android:padding="16dp"
+                android:scaleType="fitCenter"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/stopTracking"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            android:layout_weight="5"
+            android:background="@color/backgroundColor"
+
+            android:src="@drawable/stop"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </TableRow>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

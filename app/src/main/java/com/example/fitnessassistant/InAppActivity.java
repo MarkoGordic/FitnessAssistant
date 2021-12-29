@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
@@ -86,6 +87,9 @@ public class InAppActivity extends AppCompatActivity {
     // return to previous fragment (if it exists)
     @Override
     public void onBackPressed() {
+        if(findViewById(R.id.bottomNavigation).getVisibility() == View.GONE)
+            findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
+
         if(fm.getBackStackEntryCount() == 0)
             super.onBackPressed();
         else

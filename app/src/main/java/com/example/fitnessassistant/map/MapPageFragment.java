@@ -47,6 +47,7 @@ public class MapPageFragment extends Fragment {
 
     public void goToActivityTrackingFragment(){
         requireActivity().getSupportFragmentManager().beginTransaction().hide(MapPageFragment.this).setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down).add(R.id.in_app_container, InAppActivity.activityTrackingFragment).addToBackStack(null).commit();
+        requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
     }
 
     private void setUpOnClickListeners(View view){

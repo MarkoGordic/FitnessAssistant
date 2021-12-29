@@ -74,7 +74,6 @@
 
     </LinearLayout>
 
-    <!-- TODO try use only one TextView later -->
     <LinearLayout
         android:id="@+id/mapSwipeUp"
 
@@ -90,7 +89,6 @@
         android:orientation="vertical"
         tools:ignore="UseCompoundDrawables">
 
-        <!-- TODO fix border -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,7 +98,6 @@
             android:layout_marginBottom="-10dp"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:elevation="1dp"
 
             android:background="@color/backgroundColor"
 
@@ -113,6 +110,8 @@
             android:layout_height="wrap_content"
 
             android:background="@drawable/transparent_button"
+
+            android:elevation="-1dp"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"

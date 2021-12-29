@@ -1,7 +1,6 @@
 package com.example.fitnessassistant.activitytracker;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -208,9 +207,10 @@ public class LocationService extends LifecycleService {
         }
     }
 
+    // TODO check if this really works for Android 12 - API 31 and 32 - on a real device (with approximate location)
     private void updateTrackingStatus(boolean isTracking){
         if (isTracking) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 // Interval between location updates
                 int updateInterval = 5000;
                 int fastestUpdateInterval = 2000;
@@ -280,8 +280,6 @@ public class LocationService extends LifecycleService {
     }
 
     // TODO Put logo, Add translation later
-    // TODO Check this SuppressLint
-    @SuppressLint("RestrictedApi")
     private Notification pushActivityTrackingNotification(Context context, PendingIntent action, String contentText){
         Intent intent = new Intent(context, InAppActivity.class);
         intent.putExtra("desiredFragment", "ActivityTrackingFragment");
@@ -296,14 +294,14 @@ public class LocationService extends LifecycleService {
                 .setContentText(contentText)
                 .setContentIntent(pendingIntent);
 
-        // TODO: put custom icons to actions
+        // icons get displayed in Android versions < 7,... we can never see them
         if(action != null) {
-            notificationBuilder.mActions.clear();
+            notificationBuilder.clearActions();
             if (isTracking.getValue() != null)
                 if (isTracking.getValue())
-                    notificationBuilder.addAction(R.drawable.ic_launcher_foreground, context.getText(R.string.pause_activity_tracking), action);
+                    notificationBuilder.addAction(R.drawable.pause, context.getText(R.string.pause_activity_tracking), action);
                 else
-                    notificationBuilder.addAction(R.drawable.ic_launcher_foreground, context.getText(R.string.resume_activity_tracking), action);
+                    notificationBuilder.addAction(R.drawable.play, context.getText(R.string.resume_activity_tracking), action);
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

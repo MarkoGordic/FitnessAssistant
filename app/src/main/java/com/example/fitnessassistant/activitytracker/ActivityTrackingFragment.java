@@ -1,19 +1,28 @@
 package com.example.fitnessassistant.activitytracker;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.util.PermissionFunctional;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -27,12 +36,57 @@ import java.util.concurrent.TimeUnit;
 
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
+    // launcher for the Activity Recognition Permission
+    public final ActivityResultLauncher<String[]> fineLocationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+        Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
+        Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
+
+        if(fineLocationGranted != null && fineLocationGranted)
+            onActivityTrackingStart();
+        else if (coarseLocationGranted != null && coarseLocationGranted){
+            // alert dialog to let user know that approximate location might not work the best and they should provide us fine location for best results
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setView(R.layout.custom_ok_alert_dialog);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            // disables the user to cancel the given dialog
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.marker);
+
+            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.location_access_denied);
+            ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.approximate_location_not_enough);
+            dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+        } else {
+            // creates an alert dialog with rationale shown
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setView(R.layout.custom_ok_alert_dialog);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.exclamation);
+
+            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.location_access_denied);
+            dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+
+            // showing messages (one case if user selected don't ask again, other if user just selected deny)
+            if(!shouldShowRequestPermissionRationale(Manifest.permission.ACTIVITY_RECOGNITION))
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.location_access_access_message_denied_forever);
+            else
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.location_access_access_message_denied);
+
+        }
+    });
+
     private GoogleMap googleMap = null;
     private MapView mapView;
-    private TextView stopwatch;
-    private TextView distance;
-    private TextView speed;
-    private TextView averageSpeed;
+    // TODO ne mozes ih cuvati ovde, memory leak je, samo pozovi requireView().findViewById gde ti treba
+//    private TextView distance;
+//    private TextView speed;
+//    private TextView averageSpeed;
 
     private final DecimalFormat distanceFormat = new DecimalFormat("#.##");
     private final DecimalFormat speedFormat = new DecimalFormat("#.#");
@@ -61,7 +115,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         LocationService.timeInMilliseconds.observe(getViewLifecycleOwner(), aLong -> {
             currentTimeInMilliseconds = aLong;
             String formattedTime = ActivityTrackingFragment.getFormattedTimer(true, currentTimeInMilliseconds);
-            stopwatch.setText(formattedTime);
+            ((TextView) requireView().findViewById(R.id.tvTimer)).setText(formattedTime);
         });
 
         // For distance updates
@@ -95,6 +149,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         });
     }
 
+    // TODO app crashes on resume service (probably Vector<>) and app crashes if permission is closed in app settings
+
     private void toggleActivityTracking(){
         if(isTracking) {
             updateLocationService("pause_service");
@@ -103,20 +159,22 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
-    // TODO ovo se moze koristiti samo ukoliko smo stalno u app i na ovom fragmentu, u suprotnom ces morati da se igras sa sharedPreferences :/
     private void updateTracking(Boolean tracking){
         this.isTracking = tracking;
 
-        /*if(isTracking){
-            requireView().findViewById(R.id.startButton).setVisibility(View.INVISIBLE);
-        }
-        else {
-            requireView().findViewById(R.id.pauseButton).setVisibility(View.INVISIBLE);
-        }*/
+        if(getView() != null) {
+            if (isTracking) {
+                getView().findViewById(R.id.startButton).setVisibility(View.GONE);
+                getView().findViewById(R.id.pauseButton).setVisibility(View.VISIBLE);
+            } else {
+                getView().findViewById(R.id.pauseButton).setVisibility(View.GONE);
+                getView().findViewById(R.id.startButton).setVisibility(View.VISIBLE);
+            }
 
-        requireView().findViewById(R.id.stopTracking).setOnClickListener(v -> {
-            // TODO stopTracking functionality
-        });
+            getView().findViewById(R.id.stopTracking).setOnClickListener(v -> {
+                // TODO stopTracking functionality
+            });
+        }
     }
 
     private void focusUserOnMap(){
@@ -158,12 +216,66 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    private void onActivityTrackingPause(){
+        isTracking = true;
+        toggleActivityTracking();
+
+        requireView().findViewById(R.id.startButton).setVisibility(View.GONE);
+        requireView().findViewById(R.id.pauseButton).setVisibility(View.VISIBLE);
+    }
+
+    public void onActivityTrackingStart(){
+        isTracking = false;
+        toggleActivityTracking();
+
+        requireView().findViewById(R.id.startButton).setVisibility(View.GONE);
+        requireView().findViewById(R.id.pauseButton).setVisibility(View.VISIBLE);
+    }
+
+    private void setUpOnClickListeners(View view){
+        // stopButton onClickListener
+        view.findViewById(R.id.pauseButton).setOnClickListener(v -> onActivityTrackingPause());
+
+        // startButton onClickListener
+        view.findViewById(R.id.startButton).setOnClickListener(v -> PermissionFunctional.checkFineLocationPermission(this, fineLocationPermissionLauncher));
+
+        // set up downClose on click listener
+        view.findViewById(R.id.downClose).setOnClickListener(view1 -> Toast.makeText(requireContext(), R.string.swipe_down_to_close_the_map, Toast.LENGTH_SHORT).show());
+
+        // set up downClose on touch listener (for swiping)
+        view.findViewById(R.id.downClose).setOnTouchListener(new View.OnTouchListener() {
+            // xCord and yCord of event registered
+            float xCord;
+            float yCord;
+            // len, used to determine what the event actually was
+            final float len = getResources().getDisplayMetrics().densityDpi / 6;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    // when button gets pressed, get cords of the click
+                    xCord = event.getX();
+                    yCord = event.getY();
+                } else if(event.getAction() == MotionEvent.ACTION_UP){
+                    // when button gets released, set cords to amount moved from ACTION_DOWN's click cords
+                    xCord -= event.getX();
+                    yCord -= event.getY();
+
+                    // if it's a solid swipe DOWN (<)
+                    if(yCord < len * 5)
+                        requireActivity().onBackPressed();
+                    else
+                        view.performClick(); // call onClickListener
+                }
+                return false;
+            }
+        });
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen, container, false);
-
-        stopwatch = view.findViewById(R.id.tvTimer);
 
         // TODO: Link distance TextView here
         // TODO: Link speed TextView here
@@ -175,16 +287,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         mapView.getMapAsync(this);
 
-        // TODO : Find better solution for this
-        view.findViewById(R.id.pauseButton).setOnClickListener(v -> {
-            isTracking = true;
-            toggleActivityTracking();
-        });
-        view.findViewById(R.id.startButton).setOnClickListener(v -> {
-            isTracking = false;
-            toggleActivityTracking();
-        });
-
+        setUpOnClickListeners(view);
         subscribeToObservers();
 
         return view;
@@ -212,6 +315,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        updateTracking(isTracking);
     }
 
     public void onPause() {
