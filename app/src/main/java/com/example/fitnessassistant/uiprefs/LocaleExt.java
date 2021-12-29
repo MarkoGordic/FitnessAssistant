@@ -63,8 +63,8 @@ public class LocaleExt {
 
         if(updateNotifications)
             if(ServiceFunctional.getPedometerShouldRun(newContext)) {
-                Pedometer.pushPedometerNotification(newContext, ((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + newContext.getString(R.string.steps_small), newContext.getString(R.string.your_today_goal));
-                Pedometer.updatePedometerWidgetData(newContext ,((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)));
+                Pedometer.pushPedometerNotification(newContext, ((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + newContext.getString(R.string.steps_small),newContext.getString(R.string.your_today_goal) + " " + newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000) + ".");
+                Pedometer.updatePedometerWidgetData(newContext ,((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)), null);
             }
         return newContext;
     }

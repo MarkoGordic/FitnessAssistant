@@ -66,13 +66,15 @@ public class Pedometer extends Service implements SensorEventListener {
         return currentHistorySum / 7;
     }
 
-    public static void updatePedometerWidgetData(Context updatedContext, int newSteps){
+    public static void updatePedometerWidgetData(Context updatedContext, int newSteps, Integer newStepGoal){
+        if(newStepGoal == null)
+            newStepGoal = updatedContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000);
         for (int id : AppWidgetManager.getInstance(updatedContext).getAppWidgetIds(new ComponentName(updatedContext, PedometerWidget.class))) {
             RemoteViews rView = PedometerWidget.getRemoteViews(updatedContext, AppWidgetManager.getInstance(updatedContext).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
             if(ServiceFunctional.getPedometerShouldRun(updatedContext)) {
                 rView.setTextViewText(R.id.stepCountTextView, String.valueOf(newSteps));
                 rView.setTextViewText(R.id.averageStepCountTextView, String.valueOf(calculateWeeklyAverage(updatedContext)));
-                rView.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round((newSteps / 10000.0) * 69), false);
+                rView.setProgressBar(R.id.pedometerProgressBar, 100, (int) Math.round(((double)newSteps / newStepGoal) * 69), false);
             }
             AppWidgetManager.getInstance(updatedContext).updateAppWidget(id, rView);
         }
@@ -107,8 +109,8 @@ public class Pedometer extends Service implements SensorEventListener {
             currentSteps = -2;
 
             lastNotificationSteps = lastKnownSteps;
-            pushPedometerNotification(updatedContext, (int) lastNotificationSteps + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal));
-            updatePedometerWidgetData(updatedContext, (int) lastNotificationSteps);
+            pushPedometerNotification(updatedContext, (int) lastNotificationSteps + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal) + " " + updatedContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000) + ".");
+            updatePedometerWidgetData(updatedContext, (int) lastNotificationSteps, null);
         }
 
         return START_STICKY;
@@ -154,8 +156,8 @@ public class Pedometer extends Service implements SensorEventListener {
 
         // pushing new notification for current steps
         if(abs(newSteps - lastNotificationSteps) >= requiredDifferenceInSteps) {
-            pushPedometerNotification(this, newSteps + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal));
-            updatePedometerWidgetData(updatedContext, newSteps);
+            pushPedometerNotification(this, newSteps + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal) + " " + updatedContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000) + ".");
+            updatePedometerWidgetData(updatedContext, newSteps, null);
             lastNotificationSteps = newSteps;
         }
     }

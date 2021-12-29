@@ -2,25 +2,31 @@ package com.example.fitnessassistant.map;
 
 import static java.lang.Math.abs;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
-//  todo add step goal
-//      add questions...
+//     todo add questions...
 
 public class MapPageFragment extends Fragment {
 
@@ -50,8 +56,25 @@ public class MapPageFragment extends Fragment {
         requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
     }
 
+    private void showKeyboard(EditText editText){
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(editText, InputMethodManager.HIDE_IMPLICIT_ONLY | InputMethodManager.SHOW_FORCED);
+    }
+
+    private void closeKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        View focusedView = requireActivity().getCurrentFocus();
+        if(focusedView != null)
+            inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+    }
+
     private void setUpOnClickListeners(View view){
         setUpStepCountingButton(view, null);
+
+        // settingUpStepGoal
+        ((TextView) view.findViewById(R.id.stepCountTextView)).setText(String.valueOf((int) requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 10000)));
+        ((TextView) view.findViewById(R.id.stepGoalTextView)).setText(String.valueOf(requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000)));
+        ((EditText) view.findViewById(R.id.edtStepGoal)).setText(String.valueOf(requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000)));
 
         // set up mapButton on click listener
         view.findViewById(R.id.mapSwipeUp).setOnClickListener(view1 -> Toast.makeText(requireContext(), R.string.swipe_up_to_use_the_map, Toast.LENGTH_SHORT).show());
@@ -84,6 +107,66 @@ public class MapPageFragment extends Fragment {
                 return false;
             }
         });
+
+        // request focus if pencil is pressed
+        view.findViewById(R.id.changeStepGoal).setOnClickListener(v -> {
+            showKeyboard(view.findViewById(R.id.edtStepGoal));
+            view.findViewById(R.id.edtStepGoal).requestFocus();
+        });
+
+        // used to put cursor on end
+        view.findViewById(R.id.edtStepGoal).setOnClickListener(v -> {
+            if(!((EditText) v).getText().toString().isEmpty())
+                ((EditText) v).setSelection(((EditText) v).getText().length());
+            v.requestFocus();
+        });
+        view.findViewById(R.id.edtStepGoal).setOnTouchListener((v, event) -> {
+            if(event.getAction() == MotionEvent.ACTION_UP) {
+                v.performClick();
+                return true;
+            }
+            return false;
+        });
+        ((EditText) view.findViewById(R.id.edtStepGoal)).setOnKeyListener((v, keyCode, event) -> {
+            v.performClick();
+            return false;
+        });
+
+        // onFocusChanged listener
+        ((EditText) view.findViewById(R.id.edtStepGoal)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            String lastSaved = null;
+            boolean isSaved = false;
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(lastSaved == null)
+                    lastSaved = ((EditText) v).getText().toString();
+                if (hasFocus) {
+                    showKeyboard((EditText) v);
+                    ((ImageView) view.findViewById(R.id.changeStepGoal)).setImageDrawable(ContextCompat.getDrawable(MapPageFragment.this.requireActivity(), R.drawable.check));
+                    view.findViewById(R.id.changeStepGoal).setOnClickListener(v1 -> {
+                        if(!((EditText) v).getText().toString().isEmpty()) {
+                            isSaved = true;
+                            lastSaved = ((EditText) v).getText().toString();
+                            // trim front zeros
+                            ((EditText) v).setText(((EditText) v).getText().toString().replaceFirst("^0+(?!$)", ""));
+                            int newStepGoal = Integer.parseInt(((EditText) view.findViewById(R.id.edtStepGoal)).getText().toString());
+                            MapPageFragment.this.requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("dailyStepGoal", newStepGoal).apply();
+                            ((TextView) view.findViewById(R.id.stepGoalTextView)).setText(String.valueOf(newStepGoal));
+                            if (ServiceFunctional.getPedometerShouldRun(MapPageFragment.this.requireActivity())) {
+                                Pedometer.updatePedometerWidgetData(MapPageFragment.this.requireActivity(), ((int) MapPageFragment.this.requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)), newStepGoal);
+                                Pedometer.pushPedometerNotification(MapPageFragment.this.requireActivity(), ((int) MapPageFragment.this.requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + MapPageFragment.this.requireContext().getString(R.string.steps_small), MapPageFragment.this.requireContext().getString(R.string.your_today_goal) + " " + newStepGoal + ".");
+                            }
+                        }
+                        v.clearFocus();
+                    });
+                } else {
+                    closeKeyboard();
+                    ((EditText) v).setText(lastSaved);
+                    ((ImageView) view.findViewById(R.id.changeStepGoal)).setImageDrawable(ContextCompat.getDrawable(MapPageFragment.this.requireActivity(), R.drawable.pencil));
+                    view.findViewById(R.id.changeStepGoal).setOnClickListener(v1 -> v.requestFocus());
+                }
+            }
+        });
     }
 
     @Nullable
@@ -106,5 +189,11 @@ public class MapPageFragment extends Fragment {
                 }
             }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        closeKeyboard();
     }
 }

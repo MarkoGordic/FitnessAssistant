@@ -26,7 +26,7 @@ public class PedometerWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(String.valueOf(Integer.parseInt(getCurrentDateFormatted())), 0));
+        Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(String.valueOf(Integer.parseInt(getCurrentDateFormatted())), 0), null);
     }
 
     // handling resize for samsung devices
@@ -85,8 +85,8 @@ public class PedometerWidget extends AppWidgetProvider {
             // set rounded background
             views.setImageViewResource(R.id.widgetBackground, R.drawable.widget_background);
 
-            views.setImageViewResource(R.id.widgetImageLarge, R.drawable.mail_focused);
-            views.setImageViewResource(R.id.widgetImageSmall, R.drawable.mail_focused);
+            views.setImageViewResource(R.id.widgetImageLarge, R.drawable.walk);
+            views.setImageViewResource(R.id.widgetImageSmall, R.drawable.walk);
 
             if (height >= 220) {
                 views.setViewVisibility(R.id.widgetHeader, View.VISIBLE);

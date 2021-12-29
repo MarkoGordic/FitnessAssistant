@@ -40,6 +40,17 @@
 
         <!-- Step Goal TextView -->
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/ralewaym"
+            android:text="@string/slash"
+            android:textColor="@color/BlueYonder"
+            android:textFontWeight="600"
+            android:textSize="28sp" />
+
+        <!-- Step Goal TextView -->
+        <TextView
             android:id="@+id/stepGoalTextView"
 
             android:layout_width="wrap_content"
@@ -72,6 +83,85 @@
             android:textSize="16sp"
             tools:ignore="TouchTargetSizeCheck" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/stepGoalPicker"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="35dp"
+
+        android:background="@drawable/setup_field"
+
+        app:layout_constraintTop_toBottomOf="@id/stepCountingLinear"
+
+        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/selectLanguageTextView"
+
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+
+                app:layout_constraintTop_toBottomOf="@id/stepCountingLinear"
+
+                android:gravity="center_vertical"
+                app:drawableStartCompat="@drawable/target"
+                android:drawablePadding="12dp"
+
+                android:text="@string/step_goal"
+                android:textColor="@color/SpaceCadet"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:drawableTint="@color/SpaceCadet" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet"/>
+
+        <EditText
+            android:id="@+id/edtStepGoal"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+
+            android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="5"
+            android:textAlignment="center"
+
+            android:textColor="@color/SpaceCadet"
+            android:textSize="18sp"
+            tools:ignore="TouchTargetSizeCheck, LabelFor,DuplicateSpeakableTextCheck,SpeakableTextPresentCheck" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet"/>
+
+        <ImageView
+            android:id="@+id/changeStepGoal"
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+
+            android:src="@drawable/pencil"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:tint="@color/SpaceCadet"
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
