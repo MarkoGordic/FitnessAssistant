@@ -28,11 +28,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
+
+import kotlin.jvm.internal.markers.KMutableList;
 
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
@@ -106,9 +109,11 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         // For map updates
         LocationService.pathHistory.observe(getViewLifecycleOwner(), newPath -> {
-            pathHistory = newPath;
-            addLatestPathToMap();
-            focusUserOnMap();
+            if(newPath.get(newPath.size() - 1).get(newPath.get(newPath.size() - 1).size() - 1) != null) {
+                pathHistory = newPath;
+                addLatestPathToMap();
+                focusUserOnMap();
+            }
         });
 
         // For timer updates

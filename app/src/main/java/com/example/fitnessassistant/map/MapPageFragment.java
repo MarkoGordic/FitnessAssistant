@@ -127,13 +127,13 @@ public class MapPageFragment extends Fragment {
             }
             return false;
         });
-        ((EditText) view.findViewById(R.id.edtStepGoal)).setOnKeyListener((v, keyCode, event) -> {
+        view.findViewById(R.id.edtStepGoal).setOnKeyListener((v, keyCode, event) -> {
             v.performClick();
             return false;
         });
 
         // onFocusChanged listener
-        ((EditText) view.findViewById(R.id.edtStepGoal)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        view.findViewById(R.id.edtStepGoal).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             String lastSaved = null;
             boolean isSaved = false;
             @Override

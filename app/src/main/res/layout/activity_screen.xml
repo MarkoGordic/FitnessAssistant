@@ -41,11 +41,174 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/timerLayout"
         app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@+id/timerLayout"
+        app:layout_constraintTop_toTopOf="parent"
 
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:layout_editor_absoluteX="188dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+
+        app:layout_constraintBottom_toTopOf="@id/statsLayout"
+        android:background="@color/SpaceCadet" />
+
+    <TableRow
+        android:id="@+id/statsLayout"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/layoutSeparator"
+        android:gravity="center"
+
+        android:background="@color/backgroundColor">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:gravity="center"
+
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:text="@string/distance"
+                android:padding="1dp"
+                android:textAllCaps="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/distanceTraveled"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:padding="1dp"
+                android:textAllCaps="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:gravity="center"
+
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:text="@string/speed"
+                android:padding="1dp"
+                android:textAllCaps="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/currentSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:padding="1dp"
+                android:textAllCaps="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:gravity="center"
+
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:text="@string/average_speed"
+                android:padding="1dp"
+                android:textAllCaps="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/averageSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:padding="1dp"
+                android:textAllCaps="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+    </TableRow>
+
+    <View
+        android:id="@+id/layoutSeparator"
+
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+
+        app:layout_constraintBottom_toTopOf="@id/timerLayout"
+        android:background="@color/SpaceCadet" />
 
     <TableRow
         android:id="@+id/timerLayout"
