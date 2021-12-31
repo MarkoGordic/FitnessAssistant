@@ -85,7 +85,7 @@ public class MapPageFragment extends Fragment {
             float xCord;
             float yCord;
             // len, used to determine what the event actually was
-            final float len = getResources().getDisplayMetrics().densityDpi / 6;
+            final float len = getResources().getDisplayMetrics().densityDpi / 6f;
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {

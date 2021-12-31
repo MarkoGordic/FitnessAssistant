@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
-// TODO : When user clicks on foreground notification, he needs to be redirected directly to this fragment
-
 public class LocationService extends LifecycleService {
     private static final int ACTIVITY_TRACKING_ID = 27;
     public static MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
@@ -207,7 +205,6 @@ public class LocationService extends LifecycleService {
         }
     }
 
-    // TODO check if this really works for Android 12 - API 31 and 32 - on a real device (with approximate location)
     private void updateTrackingStatus(boolean isTracking){
         if (isTracking) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -279,7 +276,7 @@ public class LocationService extends LifecycleService {
             }
     }
 
-    // TODO Put logo, Add translation later
+    // TODO Put logo
     private Notification pushActivityTrackingNotification(Context context, PendingIntent action, String contentText){
         Intent intent = new Intent(context, InAppActivity.class);
         intent.putExtra("desiredFragment", "ActivityTrackingFragment");
@@ -290,6 +287,7 @@ public class LocationService extends LifecycleService {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setAutoCancel(false)
                 .setOngoing(true)
+                // TODO translate this, and handle restarting on locale change
                 .setContentTitle("FitnessAssistant Tracking")
                 .setContentText(contentText)
                 .setContentIntent(pendingIntent);

@@ -17,8 +17,8 @@
     <!-- Used for Location Permission -->
     <string name="location_access">FitnessAssistant želi da dobije dozvolu za pristup lokaciji Vašeg uređaka </string>
     <string name="location_access_denied">Dozvola Za Pristup Lokaciji</string>
-    <string name="location_access_access_message_denied_forever">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
-    <string name="location_access_access_message_denied">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju Aktivnost</b> ponovo.</string>
+    <string name="location_access_message_denied_forever">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="location_access_message_denied">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju Aktivnost</b> ponovo.</string>
     <string name="approximate_location_not_enough">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez pristupa preciznoj lokaciji. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
 
     <!-- Sign In / Register strings -->
@@ -160,6 +160,7 @@
     <string name="unable_to_refresh">Osvežavanje Neuspešno</string>
     <string name="swipe_up_to_use_the_map">Povucite nagore za Mapu</string>
     <string name="swipe_down_to_close_the_map">Povucite nadole da zatvorite Mapu</string>
+    <string name="swipe_down_to_hide">Povucite nadole da prikrijete</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Izaberite Jezik: </string>

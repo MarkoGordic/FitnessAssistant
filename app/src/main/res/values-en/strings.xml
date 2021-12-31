@@ -17,8 +17,8 @@
     <!-- Used for Location Permission -->
     <string name="location_access">FitnessAssistant would like to access your location</string>
     <string name="location_access_denied">Location Permission</string>
-    <string name="location_access_access_message_denied_forever">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
-    <string name="location_access_access_message_denied">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>Activity section</b> once again.</string>
+    <string name="location_access_message_denied_forever">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="location_access_message_denied">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>Activity section</b> once again.</string>
     <string name="approximate_location_not_enough">Activity Tracking services <b>can\'t work properly</b> without precise location permission. If you want to grant this permission, head over to the <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
 
     <!-- Sign In / Register strings -->
@@ -158,8 +158,9 @@
     <string name="email_change_unsuccessful">Email Change Unsuccessful</string>
     <string name="email_change_successful">Email Change Successful</string>
     <string name="unable_to_refresh">Unable To Refresh</string>
-    <string name="swipe_up_to_use_the_map">Swipe button up for the Map</string>
-    <string name="swipe_down_to_close_the_map">Swipe button down to close the Map</string>
+    <string name="swipe_up_to_use_the_map">Swipe up for the Map</string>
+    <string name="swipe_down_to_close_the_map">Swipe down to close the Map</string>
+    <string name="swipe_down_to_hide">Swipe down to Hide</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Select a Language: </string>

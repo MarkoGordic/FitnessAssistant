@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
@@ -28,14 +30,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
-
-import kotlin.jvm.internal.markers.KMutableList;
 
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
@@ -77,19 +76,15 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
             // showing messages (one case if user selected don't ask again, other if user just selected deny)
             if(!shouldShowRequestPermissionRationale(Manifest.permission.ACTIVITY_RECOGNITION))
-                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.location_access_access_message_denied_forever);
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.location_access_message_denied_forever);
             else
-                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.location_access_access_message_denied);
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.location_access_message_denied);
 
         }
     });
 
     private GoogleMap googleMap = null;
     private MapView mapView;
-    // TODO ne mozes ih cuvati ovde, memory leak je, samo pozovi requireView().findViewById gde ti treba
-//    private TextView distance;
-//    private TextView speed;
-//    private TextView averageSpeed;
 
     private final DecimalFormat distanceFormat = new DecimalFormat("#.##");
     private final DecimalFormat speedFormat = new DecimalFormat("#.#");
@@ -154,8 +149,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         });
     }
 
-    // TODO app crashes on resume service (probably Vector<>) and app crashes if permission is closed in app settings
-
     private void toggleActivityTracking(){
         if(isTracking) {
             updateLocationService("pause_service");
@@ -185,7 +178,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private void focusUserOnMap(){
         if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty()){
             float mapZoom = 18f;
-            // TODO : FATAL EXCEPTION - Ubacivanje u vector nije dobro, potrebno je opet proveriti da li je sve kako treba
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                             pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1),
@@ -253,7 +245,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             float xCord;
             float yCord;
             // len, used to determine what the event actually was
-            final float len = getResources().getDisplayMetrics().densityDpi / 6;
+            final float len = getResources().getDisplayMetrics().densityDpi / 6f;
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -266,11 +258,52 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     xCord -= event.getX();
                     yCord -= event.getY();
 
-                    // if it's a solid swipe DOWN (<)
-                    if(yCord < len * 5)
+                    // if it's a swipe DOWN (<)
+                    if(yCord < -len * 2)
                         requireActivity().onBackPressed();
                     else
                         view.performClick(); // call onClickListener
+                }
+                return false;
+            }
+        });
+
+        // set up layoutClose on touch listener (for swiping)
+        view.findViewById(R.id.layoutClose).setOnTouchListener(new View.OnTouchListener() {
+            // xCord and yCord of event registered
+            float xCord;
+            float yCord;
+            // len, used to determine what the event actually was
+            final float len = getResources().getDisplayMetrics().densityDpi / 6f;
+            // this is used to determine if the layout is closed or not
+            boolean closedLayout = false;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    // when button gets pressed, get cords of the click
+                    xCord = event.getX();
+                    yCord = event.getY();
+                } else if(event.getAction() == MotionEvent.ACTION_UP) {
+                    // when button gets released, set cords to amount moved from ACTION_DOWN's click cords
+                    xCord -= event.getX();
+                    yCord -= event.getY();
+
+                    // if layout is not closed and user swipes down
+                    if (!closedLayout && yCord < -len * 3) {
+                        closedLayout = true;
+                        requireView().findViewById(R.id.timerLayout).setVisibility(View.GONE);
+                        requireView().findViewById(R.id.statsLayout).setVisibility(View.GONE);
+                        ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.up));
+                    } else if (closedLayout){
+                        closedLayout = false;
+                        requireView().findViewById(R.id.timerLayout).setVisibility(View.VISIBLE);
+                        requireView().findViewById(R.id.statsLayout).setVisibility(View.VISIBLE);
+                        ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.down));
+                    } else {
+                        view.performClick();
+                        Toast.makeText(requireContext(), R.string.swipe_down_to_hide, Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }
@@ -281,11 +314,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen, container, false);
-
-        // TODO: Link distance TextView here
-        // TODO: Link speed TextView here
-        // TODO: Link average speed TextView here
-        // TODO: After linking, uncomment lines on top of this class
 
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
