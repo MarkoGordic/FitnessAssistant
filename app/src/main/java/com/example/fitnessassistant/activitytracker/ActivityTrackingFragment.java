@@ -30,9 +30,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
@@ -104,7 +106,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         // For map updates
         LocationService.pathHistory.observe(getViewLifecycleOwner(), newPath -> {
-            if(newPath.get(newPath.size() - 1).get(newPath.get(newPath.size() - 1).size() - 1) != null) {
+            if(newPath.get(newPath.size() - 1).get(newPath.get(newPath.size() - 1).size() - 1) != null){
                 pathHistory = newPath;
                 addLatestPathToMap();
                 focusUserOnMap();
@@ -123,28 +125,28 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
             // Can i use requireContext here ?
             if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("distanceUnit", "km").equals("km")){
-                //distance.setText(String.valueOf(distanceFormat.format(newDistance)));
+                ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(String.valueOf(distanceFormat.format(newDistance)));
             }else{
                 // In case user wants miles, we need to convert distance value
-                //distance.setText(distanceFormat.format(newDistance * 0.621371));
+                ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(distanceFormat.format(newDistance * 0.621371));
             }
         });
 
         // For speed updates
         LocationService.currentSpeed.observe(getViewLifecycleOwner(), newSpeed -> {
             if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("speedUnit", "km").equals("km")){
-                //speed.setText(String.valueOf(speedFormat.format(newSpeed)));
+                ((TextView)requireView().findViewById(R.id.currentSpeed)).setText(String.valueOf(speedFormat.format(newSpeed)));
             }else{
-                //speed.setText(speedFormat.format(newSpeed * 0.621371));
+                ((TextView)requireView().findViewById(R.id.currentSpeed)).setText(speedFormat.format(newSpeed * 0.621371));
             }
         });
 
         // For average speed updates
         LocationService.averageSpeed.observe(getViewLifecycleOwner(), newAverageSpeed -> {
             if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("speedUnit", "km").equals("km")){
-                //averageSpeed.setText(String.valueOf(speedFormat.format(newAverageSpeed)));
+                ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(String.valueOf(speedFormat.format(newAverageSpeed)));
             }else{
-                //averageSpeed.setText(speedFormat.format(newAverageSpeed * 0.621371));
+                ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(speedFormat.format(newAverageSpeed * 0.621371));
             }
         });
     }
@@ -155,6 +157,37 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         } else {
             updateLocationService("start_or_resume_service");
         }
+    }
+
+    private void promptCancelTrackingDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setView(R.layout.cancel_tracking_dialog);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.findViewById(R.id.dialog_exit_save_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        dialog.findViewById(R.id.dialog_exit_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopActivity();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.findViewById(R.id.dialog_cancel_button).setOnClickListener(v -> dialog.dismiss());
+    }
+
+    private void stopActivity(){
+        updateLocationService("stop_service");
+        requireActivity().onBackPressed();
     }
 
     private void updateTracking(Boolean tracking){
@@ -168,10 +201,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 getView().findViewById(R.id.pauseButton).setVisibility(View.GONE);
                 getView().findViewById(R.id.startButton).setVisibility(View.VISIBLE);
             }
-
-            getView().findViewById(R.id.stopTracking).setOnClickListener(v -> {
-                // TODO stopTracking functionality
-            });
         }
     }
 
@@ -185,6 +214,32 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     )
             );
         }
+    }
+
+    private void focusPathOnMap(){
+        LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
+        for(int i = 0; i < pathHistory.size(); i++) {
+            for (int j = 0; j < pathHistory.get(i).size(); j++) {
+                pathBounds.include(pathHistory.get(i).get(j));
+            }
+        }
+
+        googleMap.moveCamera(
+                CameraUpdateFactory.newLatLngBounds(
+                        pathBounds.build(),
+                        mapView.getWidth(),
+                        mapView.getHeight(),
+                        (int)(mapView.getHeight() * 0.05f)
+                )
+        );
+    }
+
+    private void exitAndSaveActivity(){
+        googleMap.snapshot(bitmap->{
+            long dateRecorded = Calendar.getInstance().getTimeInMillis();
+
+            stopActivity();
+        });
     }
 
     private void addWholePathToMap(){
@@ -268,6 +323,11 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             }
         });
 
+        view.findViewById(R.id.stopTracking).setOnClickListener(v -> {
+            // TODO stopTracking functionality
+            promptCancelTrackingDialog();
+        });
+
         // set up layoutClose on touch listener (for swiping)
         view.findViewById(R.id.layoutClose).setOnTouchListener(new View.OnTouchListener() {
             // xCord and yCord of event registered
@@ -330,6 +390,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
         addWholePathToMap();
+        focusUserOnMap();
     }
 
     private void updateLocationService(String state){

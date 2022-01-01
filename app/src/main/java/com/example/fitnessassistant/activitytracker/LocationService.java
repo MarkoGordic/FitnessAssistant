@@ -56,7 +56,9 @@ public class LocationService extends LifecycleService {
     private final int timerDelayMs = 100;
     final Handler handler = new Handler();
 
-    private boolean isRunning = false;
+    private boolean serviceRunning = false;
+    private boolean serviceKilled = false;
+    private boolean createNewPath = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private void initializeVariables(){
@@ -69,25 +71,27 @@ public class LocationService extends LifecycleService {
     }
 
     private void calculateNewDistanceInKm(LatLng newLocation){
-        double lat1 = lastLatLng.latitude;
-        double lng1 = lastLatLng.longitude;
-        double lat2 = newLocation.latitude;
-        double lng2 = newLocation.longitude;
+        if(lastLatLng != null) {
+            double lat1 = lastLatLng.latitude;
+            double lng1 = lastLatLng.longitude;
+            double lat2 = newLocation.latitude;
+            double lng2 = newLocation.longitude;
 
-        final int R = 6371;
-        // Radius of the earth in km
-        double dLat = deg2rad(lat2 - lat1);
-        // deg2rad below
-        double dLon = deg2rad(lng2 - lng1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            final int R = 6371;
+            // Radius of the earth in km
+            double dLat = deg2rad(lat2 - lat1);
+            // deg2rad below
+            double dLon = deg2rad(lng2 - lng1);
+            double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        // calculating final distance
-        double distance = R * c;
+            // calculating final distance
+            double distance = R * c;
 
-        // Updating total distance
-        if(totalDistanceInKm.getValue() != null)
-            totalDistanceInKm.postValue(totalDistanceInKm.getValue() + distance);
+            // Updating total distance
+            if (totalDistanceInKm.getValue() != null)
+                totalDistanceInKm.postValue(totalDistanceInKm.getValue() + distance);
+        }
     }
 
     // method which converts degrees to radians
@@ -98,7 +102,7 @@ public class LocationService extends LifecycleService {
 
     // method for starting on screen stopwatch
     private void startTimer(){
-        addNewPathSegment();
+        createNewPath = true;
         isTracking.postValue(true);
         startTime = System.currentTimeMillis();
         isTimerEnabled = true;
@@ -122,16 +126,6 @@ public class LocationService extends LifecycleService {
                     totalTime += segmentTime;
             }
         });
-    }
-
-    private void addNewPathSegment(){
-        if(pathHistory.getValue() != null) {
-            Vector<Vector<LatLng>> temp = pathHistory.getValue();
-            Vector<LatLng> temp1 = new Vector<>();
-            temp1.add(null);
-            temp.add(temp1);
-            pathHistory.postValue(temp);
-        }
     }
 
     @Override
@@ -173,8 +167,7 @@ public class LocationService extends LifecycleService {
         LatLng newPoint = new LatLng(location.getLatitude(), location.getLongitude());
 
         // calculating new distance
-        // TODO : Fix
-        //calculateNewDistanceInKm(newPoint);
+        calculateNewDistanceInKm(newPoint);
 
         // updating speed variables
         speedUpdateCount++;
@@ -194,13 +187,15 @@ public class LocationService extends LifecycleService {
         }
         else{
             Vector<Vector<LatLng>> temp = pathHistory.getValue();
-            Vector<LatLng> temp1 = temp.get(temp.size() - 1);
-            if(temp1.get(temp1.size() - 1) == null){
-                temp1.add(temp1.size() - 1, newPoint);
+            if(createNewPath){
+                Vector<LatLng> temp1 = new Vector<>();
+                temp1.add(newPoint);
+                temp.add(temp1);
+                createNewPath = false;
             } else{
+                Vector<LatLng> temp1 = temp.get(temp.size() - 1);
                 temp1.add(newPoint);
             }
-            temp.add(temp1);
             pathHistory.postValue(temp);
         }
     }
@@ -223,20 +218,31 @@ public class LocationService extends LifecycleService {
         }
     }
 
+    private void killService(){
+        serviceKilled = true;
+        serviceRunning = true;
+        pauseService();
+        initializeVariables();
+        stopForeground(true);
+        stopSelf();
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         switch (Objects.requireNonNull(intent).getStringExtra("state")){
             case "start_or_resume_service":
-                if(!isRunning){
+                if(!serviceRunning){
                     startForegroundService();
-                    isRunning = true;
+                    serviceRunning = true;
                 } else {
                     startTimer();
                 }
                 break;
             case "pause_service":
                 pauseService();
+                break;
             case "stop_service":
+                killService();
                 break;
         }
 
@@ -251,7 +257,10 @@ public class LocationService extends LifecycleService {
         Notification notification = pushActivityTrackingNotification(this, null, "00:00:00");
         startForeground(ACTIVITY_TRACKING_ID, notification);
 
-        timeInSeconds.observe(this, aLong -> updateNotification());
+        timeInSeconds.observe(this, aLong -> {
+            if(!serviceKilled)
+                updateNotification();
+        });
     }
 
     private void pauseService(){
@@ -290,7 +299,8 @@ public class LocationService extends LifecycleService {
                 // TODO translate this, and handle restarting on locale change
                 .setContentTitle("FitnessAssistant Tracking")
                 .setContentText(contentText)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setShowWhen(false);
 
         // icons get displayed in Android versions < 7,... we can never see them
         if(action != null) {

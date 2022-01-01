@@ -67,6 +67,8 @@
     <string name="select_language">Select Language</string>
     <string name="ok">OK</string>
     <string name="change_profile_picture">Change Profile Picture</string>
+    <string name="stop_activity">Stop tracking</string>
+    <string name="stop_activity_save">Stop tracking without saving</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -158,6 +160,8 @@
     <string name="email_change_unsuccessful">Email Change Unsuccessful</string>
     <string name="email_change_successful">Email Change Successful</string>
     <string name="unable_to_refresh">Unable To Refresh</string>
+    <string name="cancel_tracking_warning">Stop tracking?</string>
+    <string name="cancel_tracking">Are you sure you want to stop activity tracking?</string>
     <string name="swipe_up_to_use_the_map">Swipe up for the Map</string>
     <string name="swipe_down_to_close_the_map">Swipe down to close the Map</string>
     <string name="swipe_down_to_hide">Swipe down to Hide</string>

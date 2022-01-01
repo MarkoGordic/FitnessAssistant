@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -72,6 +73,45 @@ public class RealtimeDB {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    // saving user preferences to database
+    public static void saveUserPreferences(String gender, String height, String weightUnit, String heightUnit, String fluidUnit, String energyUnit, String distanceUnit){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("preferences");
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.child("height").setValue(height);
+                    db.child("gender").setValue(gender);
+                    db.child("weightUnit").setValue(weightUnit);
+                    db.child("heightUnit").setValue(heightUnit);
+                    db.child("fluidUnit").setValue(fluidUnit);
+                    db.child("energyUnit").setValue(energyUnit);
+                    db.child("distanceUnit").setValue(distanceUnit);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    public static void restoreUserPreferences(){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID);
+
+            db.child("preferences").get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()){
+                    Log.e("Firebase", "Error getting data", task.getException());
+                } else {
+                    System.out.println(task.getResult());
+                }
             });
         }
     }
