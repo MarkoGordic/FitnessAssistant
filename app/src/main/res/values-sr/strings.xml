@@ -67,6 +67,8 @@
     <string name="select_language">Izaberi jezik</string>
     <string name="ok">OK</string>
     <string name="change_profile_picture">Promeni Profilnu Sliku</string>
+    <string name="stop_activity">Prekini aktivnost</string>
+    <string name="stop_activity_save">Prekini aktivnost bez čuvanja</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -160,6 +162,8 @@
     <string name="unable_to_refresh">Osvežavanje Neuspešno</string>
     <string name="swipe_up_to_use_the_map">Povucite nagore za Mapu</string>
     <string name="swipe_down_to_close_the_map">Povucite nadole da zatvorite Mapu</string>
+    <string name="cancel_tracking_warning">Prekini aktivnost?</string>
+    <string name="cancel_tracking">Da li ste sigurni da želite da prekinete vašu aktivnost?</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Izaberite Jezik: </string>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/settings_field"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="10dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <!-- Dialog Drawable -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dialog_drawable"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+
+        android:layout_gravity="center" />
+
+    <!-- Dialog Header -->
+    <TextView
+        android:id="@+id/dialog_header"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+
+        android:text="@string/cancel_tracking_warning"
+        android:textSize="22sp"
+        android:textColor="@color/SpaceCadet"
+        android:textStyle="bold" />
+
+    <!-- Dialog Message -->
+    <TextView
+        android:id="@+id/dialog_message"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="10dp"
+
+        android:gravity="center"
+
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/cancel_tracking"
+        android:textColor="@color/BlueYonder"
+        android:textSize="17sp"
+        tools:ignore="TextContrastCheck" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp">
+
+        <!-- Dialog Positive Button -->
+        <Button
+            android:id="@+id/dialog_exit_save_button"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+
+            android:layout_gravity="center"
+
+            android:text="@string/stop_activity"
+            android:textColor="@color/SpaceCadet"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/dialog_exit_button"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+
+            android:layout_gravity="center"
+
+            android:text="@string/stop_activity_save"
+            android:textColor="@color/SpaceCadet"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <!-- Dialog Negative Button -->
+        <Button
+            android:id="@+id/dialog_cancel_button"
+
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/Flame"
+
+            android:textSize="16sp"
+            tools:ignore="TextContrastCheck" />
+    </TableLayout>
+
+</LinearLayout>
