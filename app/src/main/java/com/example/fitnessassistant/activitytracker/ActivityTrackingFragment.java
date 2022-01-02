@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +23,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.MyDatabaseHelper;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,7 +40,7 @@ import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 // TODO add stop tracking functionality and stop tracking to notification
-// todo dont let app restarting kill the functionality of LocationService (switching color mode and locale)
+// todo don't let app restarting kill the functionality of LocationService (switching color mode and locale)
 
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
@@ -95,7 +96,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private final DecimalFormat speedFormat = new DecimalFormat("#.#");
 
     private boolean isTracking = false;
-    private Vector<Vector<LatLng>> pathHistory = new Vector<>();
+    public static Vector<Vector<LatLng>> pathHistory = new Vector<>();
 
     private final int polylineColor = Color.BLUE;
     private final float polylineWidth = 7f;
@@ -109,7 +110,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         // For map updates
         LocationService.pathHistory.observe(getViewLifecycleOwner(), newPath -> {
-            if(newPath.get(newPath.size() - 1).get(newPath.get(newPath.size() - 1).size() - 1) != null){
+            if(!LocationService.serviceKilled){
                 pathHistory = newPath;
                 addLatestPathToMap();
                 focusUserOnMap();
@@ -127,29 +128,34 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         LocationService.totalDistanceInKm.observe(getViewLifecycleOwner(), newDistance -> {
 
             // Can i use requireContext here ?
-            if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("distanceUnit", "km").equals("km")){
-                ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(String.valueOf(distanceFormat.format(newDistance)));
+            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals("mile")){
+                String output = distanceFormat.format(newDistance * 0.621371) + " " + requireContext().getText(R.string.mi);
+                ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(output);
             }else{
-                // In case user wants miles, we need to convert distance value
-                ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(distanceFormat.format(newDistance * 0.621371));
+                String output = distanceFormat.format(newDistance) + " " + requireContext().getText(R.string.km);
+                ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(output);
             }
         });
 
         // For speed updates
         LocationService.currentSpeed.observe(getViewLifecycleOwner(), newSpeed -> {
-            if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("speedUnit", "km").equals("km")){
-                ((TextView)requireView().findViewById(R.id.currentSpeed)).setText(String.valueOf(speedFormat.format(newSpeed)));
+            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals("mile")){
+                String output = speedFormat.format(newSpeed * 0.621371) + " " + requireContext().getText(R.string.mi_h);
+                ((TextView)requireView().findViewById(R.id.currentSpeed)).setText(output);
             }else{
-                ((TextView)requireView().findViewById(R.id.currentSpeed)).setText(speedFormat.format(newSpeed * 0.621371));
+                String output = speedFormat.format(newSpeed) + " " + requireContext().getText(R.string.km_h);
+                ((TextView)requireView().findViewById(R.id.currentSpeed)).setText(output);
             }
         });
 
         // For average speed updates
         LocationService.averageSpeed.observe(getViewLifecycleOwner(), newAverageSpeed -> {
-            if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("speedUnit", "km").equals("km")){
-                ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(String.valueOf(speedFormat.format(newAverageSpeed)));
+            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals("mile")){
+                String output = speedFormat.format(newAverageSpeed * 0.621371) + " " + requireContext().getText(R.string.mi_h);
+                ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(output);
             }else{
-                ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(speedFormat.format(newAverageSpeed * 0.621371));
+                String output = speedFormat.format(newAverageSpeed) + " " + requireContext().getText(R.string.km_h);
+                ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(output);
             }
         });
     }
@@ -171,19 +177,15 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.map_marker_cross);
 
-        dialog.findViewById(R.id.dialog_exit_save_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        dialog.findViewById(R.id.dialog_exit_save_button).setOnClickListener(v -> {
+            dialog.dismiss();
+            forceFocusPathOnMap();
+            exitAndSaveActivity();
         });
 
-        dialog.findViewById(R.id.dialog_exit_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                stopActivity();
-            }
+        dialog.findViewById(R.id.dialog_exit_button).setOnClickListener(v -> {
+            dialog.dismiss();
+            stopActivity();
         });
 
         dialog.findViewById(R.id.dialog_cancel_button).setOnClickListener(v -> dialog.dismiss());
@@ -220,7 +222,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
-    private void focusPathOnMap(){
+    private void forceFocusPathOnMap(){
         LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
         for(int i = 0; i < pathHistory.size(); i++) {
             for (int j = 0; j < pathHistory.get(i).size(); j++) {
@@ -238,9 +240,42 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         );
     }
 
+    // TODO: Link with button to show path + disable focus on user while watching path
+    private void focusPathOnMap(){
+        LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
+        for(int i = 0; i < pathHistory.size(); i++) {
+            for (int j = 0; j < pathHistory.get(i).size(); j++) {
+                pathBounds.include(pathHistory.get(i).get(j));
+            }
+        }
+
+        googleMap.animateCamera(
+                CameraUpdateFactory.newLatLngBounds(
+                        pathBounds.build(),
+                        mapView.getWidth(),
+                        mapView.getHeight(),
+                        (int)(mapView.getHeight() * 0.05f)
+                )
+        );
+    }
+
     private void exitAndSaveActivity(){
         googleMap.snapshot(bitmap->{
-            long dateRecorded = Calendar.getInstance().getTimeInMillis();
+            if(bitmap != null){
+                long dateRecorded = Calendar.getInstance().getTimeInMillis();
+                float averageSpeed = 0f;
+                double distance = 0f;
+                int calories = 0;
+
+                if(LocationService.averageSpeed.getValue() != null)
+                    averageSpeed = LocationService.averageSpeed.getValue();
+
+                if(LocationService.totalDistanceInKm.getValue() != null)
+                    distance = LocationService.totalDistanceInKm.getValue();
+
+                MyDatabaseHelper myDB = new MyDatabaseHelper(requireContext());
+                myDB.addNewActivity(dateRecorded, averageSpeed, distance, calories, bitmap);
+            }
 
             stopActivity();
         });
@@ -393,8 +428,10 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
-        addWholePathToMap();
-        focusUserOnMap();
+        if(!LocationService.serviceKilled){
+            addWholePathToMap();
+            focusUserOnMap();
+        }
     }
 
     private void updateLocationService(String state){

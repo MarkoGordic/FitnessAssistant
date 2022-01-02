@@ -285,5 +285,11 @@
     <string name="litres">Litre</string>
     <string name="gallons">Galoni</string>
 
+    <!-- Units For Activity Tracking -->
+    <string name="km_h">KM/H</string>
+    <string name="mi_h">MI/H</string>
+    <string name="km">KM</string>
+    <string name="mi">MI</string>
+
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

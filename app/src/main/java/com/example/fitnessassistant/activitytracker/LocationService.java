@@ -57,7 +57,7 @@ public class LocationService extends LifecycleService {
     final Handler handler = new Handler();
 
     private boolean serviceRunning = false;
-    private boolean serviceKilled = false;
+    public static boolean serviceKilled = false;
     private boolean createNewPath = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -68,6 +68,20 @@ public class LocationService extends LifecycleService {
         totalDistanceInKm.postValue(0D);
         currentSpeed.postValue(0F);
         averageSpeed.postValue(0F);
+    }
+
+    private void resetVariables(){
+        initializeVariables();
+        pathHistory.postValue(new Vector<>());
+        ActivityTrackingFragment.pathHistory = new Vector<>();
+        lastSecondTimestamp = 0L;
+        startTime = 0L;
+        totalTime = 0L;
+        segmentTime = 0L;
+        isTimerEnabled = false;
+        speedSum = 0f;
+        speedUpdateCount = 0;
+        lastLatLng = null;
     }
 
     private void calculateNewDistanceInKm(LatLng newLocation){
@@ -221,8 +235,8 @@ public class LocationService extends LifecycleService {
     private void killService(){
         serviceKilled = true;
         serviceRunning = true;
+        resetVariables();
         pauseService();
-        initializeVariables();
         stopForeground(true);
         stopSelf();
     }
@@ -250,10 +264,9 @@ public class LocationService extends LifecycleService {
     }
 
     private void startForegroundService(){
+        serviceKilled = false;
         startTimer();
         isTracking.postValue(true);
-
-        // TODO serviceKilled = true ?
 
         // Pushing base notification
         Notification notification = pushActivityTrackingNotification(this, null, "00:00:00");
@@ -273,7 +286,7 @@ public class LocationService extends LifecycleService {
     private void updateNotification(){
         PendingIntent pendingIntent;
 
-        if(isTracking.getValue() != null && timeInMilliseconds.getValue() != null)
+        if(isTracking.getValue() != null && timeInMilliseconds.getValue() != null && !serviceKilled)
             if(isTracking.getValue()) {
                 Intent pauseIntent = new Intent(this, LocationService.class);
                 pauseIntent.putExtra("state", "pause_service");
@@ -315,7 +328,9 @@ public class LocationService extends LifecycleService {
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(ACTIVITY_TRACKING_ID, notificationBuilder.build());
+
+        if(!serviceKilled)
+            notificationManager.notify(ACTIVITY_TRACKING_ID, notificationBuilder.build());
 
         return notificationBuilder.build();
     }

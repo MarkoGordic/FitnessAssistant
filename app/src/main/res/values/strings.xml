@@ -285,5 +285,11 @@
     <string name="litres">Litres</string>
     <string name="gallons">Gallons</string>
 
+    <!-- Units For Activity Tracking -->
+    <string name="km_h">KM/H</string>
+    <string name="mi_h">MI/H</string>
+    <string name="km">KM</string>
+    <string name="mi">MI</string>
+
     <string name="coming_soon">This will be added soon</string>
 </resources>
