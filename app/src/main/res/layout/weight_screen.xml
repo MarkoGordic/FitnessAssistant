@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <!-- EnterYourBirthdate TextView-->
+    <TextView
+        android:id="@+id/enterYourBirthdateTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/how_much_do_you_weigh"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="24sp"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="12dp"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="24dp"
+        android:gravity="center">
+
+        <TableRow
+            android:id="@+id/kilogramsRow"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignStart="@id/poundsRow"
+            android:layout_alignEnd="@id/poundsRow"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/weightInKilograms"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/ralewayb"
+                android:importantForAutofill="no"
+                android:includeFontPadding="false"
+
+                android:inputType="numberDecimal"
+                android:maxLength="6"
+                android:padding="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="28sp"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:paddingStart="12dp"
+                android:paddingEnd="24dp"
+                android:text="@string/kg"
+                android:textAlignment="textStart"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="28sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/poundsRow"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/weightInPounds"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:padding="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="28sp"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:paddingStart="12dp"
+                android:paddingEnd="24dp"
+                android:text="@string/lbs"
+                android:textAlignment="textStart"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="28sp"/>
+        </TableRow>
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/unitSwitch"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="8dp"
+        app:thumbTint="@color/DarkBlueYonder"
+        app:trackTint="@color/BlueYonder"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/kilograms"
+        app:switchPadding="12dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="16dp"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:gravity="center" >
+        <!-- Skip Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/skipButton"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/skip"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/Flame"
+            android:textFontWeight="600"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <!-- Proceed Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/proceedButton"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/proceed"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            style="?android:attr/buttonBarButtonStyle" />
+    </TableRow>
+
+</LinearLayout>

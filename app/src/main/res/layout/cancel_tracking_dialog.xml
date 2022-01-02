@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
 
         android:gravity="center"
 
@@ -54,66 +54,53 @@
         android:textSize="17sp"
         tools:ignore="TextContrastCheck" />
 
-    <TableLayout
+    <!-- Dialog Positive Button -->
+    <Button
+        android:id="@+id/dialog_exit_save_button"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:weightSum="2"
+
         android:layout_gravity="center"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="20dp"
 
-        <!-- Dialog Positive Button -->
-        <Button
-            android:id="@+id/dialog_exit_save_button"
+        android:text="@string/stop_activity"
+        android:textColor="@color/SpaceCadet"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        style="?android:attr/buttonBarButtonStyle" />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/dialog_exit_button"
 
-            android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-            android:layout_gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
 
-            android:text="@string/stop_activity"
-            android:textColor="@color/SpaceCadet"
-            android:textAllCaps="false"
-            android:textSize="16sp"
+        android:text="@string/stop_activity_save"
+        android:textColor="@color/SpaceCadet"
+        android:textAllCaps="false"
+        android:textSize="14sp"
 
-            style="?android:attr/buttonBarButtonStyle" />
+        style="?android:attr/buttonBarButtonStyle" />
 
-        <Button
-            android:id="@+id/dialog_exit_button"
+    <!-- Dialog Negative Button -->
+    <Button
+        android:id="@+id/dialog_cancel_button"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
 
-            android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
 
-            android:layout_gravity="center"
-
-            android:text="@string/stop_activity_save"
-            android:textColor="@color/SpaceCadet"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-
-            style="?android:attr/buttonBarButtonStyle" />
-
-        <!-- Dialog Negative Button -->
-        <Button
-            android:id="@+id/dialog_cancel_button"
-
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center"
-
-            android:layout_weight="1"
-            android:text="@string/cancel"
-            android:textAllCaps="false"
-            android:textColor="@color/Flame"
-
-            android:textSize="16sp"
-            tools:ignore="TextContrastCheck" />
-    </TableLayout>
+        android:layout_marginTop="2dp"
+        android:text="@string/cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/Flame"
+        android:textSize="14sp"
+        tools:ignore="TextContrastCheck" />
 
 </LinearLayout>

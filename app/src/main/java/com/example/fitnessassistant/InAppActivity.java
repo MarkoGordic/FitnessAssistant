@@ -32,6 +32,12 @@ import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.profile.LinkAccountsFragment;
 import com.example.fitnessassistant.profile.ProfilePageFragment;
 import com.example.fitnessassistant.profile.SettingsFragment;
+import com.example.fitnessassistant.questions.BirthdayFragment;
+import com.example.fitnessassistant.questions.GenderFragment;
+import com.example.fitnessassistant.questions.HeightFragment;
+import com.example.fitnessassistant.questions.OpeningQuestionFragment;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
+import com.example.fitnessassistant.questions.WeightFragment;
 import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.AuthFunctional;
@@ -39,6 +45,8 @@ import com.example.fitnessassistant.util.ServiceFunctional;
 import com.example.fitnessassistant.workout.WorkoutPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 public class InAppActivity extends AppCompatActivity {
     // network manager for network connectivity checking
@@ -98,9 +106,27 @@ public class InAppActivity extends AppCompatActivity {
                 active.onResume();
     }
 
-    private void setNavigationListener(){
+    public void setInAppUI(){
+        mapFragment = new MapPageFragment();
+        diaryFragment = new DiaryPageFragment();
+        homeFragment = new HomePageFragment();
+        workoutFragment = new WorkoutPageFragment();
+        profileFragment = new ProfilePageFragment();
+        settingsFragment = new SettingsFragment();
+        linkAccountsFragment = new LinkAccountsFragment();
+        activityTrackingFragment = new ActivityTrackingFragment();
+
+        active = homeFragment;
+
+        fm.beginTransaction().add(R.id.in_app_container, mapFragment).hide(mapFragment).commit();
+        fm.beginTransaction().add(R.id.in_app_container, diaryFragment).hide(diaryFragment).commit();
+        fm.beginTransaction().add(R.id.in_app_container, active).commit();
+        fm.beginTransaction().add(R.id.in_app_container, workoutFragment).hide(workoutFragment).commit();
+        fm.beginTransaction().add(R.id.in_app_container, profileFragment).hide(profileFragment).commit();
+
         // navigation listener hides the active fragment, shows the selected one and sets the selected as the new active
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             // popping all previous fragments pushed to the stack
@@ -133,6 +159,11 @@ public class InAppActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        if(ServiceFunctional.getPedometerShouldRun(this))
+            ServiceFunctional.startPedometerService(this);
+
+        goToDesiredFragment(getIntent());
     }
 
     // providing one and only context available, throughout contextWrapper
@@ -148,7 +179,8 @@ public class InAppActivity extends AppCompatActivity {
     }
 
     public void setUpMapPageFragmentUI(boolean pedometerRuns){
-        mapFragment.setUpUI(pedometerRuns);
+        if(mapFragment != null)
+            mapFragment.setUpUI(pedometerRuns);
     }
 
     public synchronized void putDesiredFragment(String desiredFragment){
@@ -179,10 +211,7 @@ public class InAppActivity extends AppCompatActivity {
         goToDesiredFragment(intent);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    private void setUpRebootKeys(){
         // determining whether device rebooted or not
         SharedPreferences savedKeys = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = savedKeys.edit();
@@ -191,6 +220,38 @@ public class InAppActivity extends AppCompatActivity {
 
         editor.putLong("key_oldDelta", (System.currentTimeMillis() - SystemClock.elapsedRealtime()));
         editor.apply();
+    }
+
+    public void proceedQuestions(int order){
+        if(GenderFragment.getGender(this).equals("unknown") && order < 1)
+            fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new GenderFragment(), null).commit();
+        else if(BirthdayFragment.getBirthday(this) == -1 && order < 2)
+            fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new BirthdayFragment(), null).commit();
+        else if(HeightFragment.getHeight(this) == -1f && order < 3)
+            fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new HeightFragment(), null).commit();
+        else if(WeightFragment.getWeight(this) == -1f && order < 4)
+            fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new WeightFragment(), null).commit();
+        else if(UnitPreferenceFragment.isUnknown(this) && order < 5)
+            fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new UnitPreferenceFragment(), null).commit();
+        else {
+            for(Fragment fragment : fm.getFragments()){
+                fm.beginTransaction().remove(fragment).commit();
+            }
+            setInAppUI();
+        }
+    }
+
+    private void setUpQuestionsUI(){
+        if(OpeningQuestionFragment.getShouldSkipQuestions(this))
+            setInAppUI();
+        else
+            fm.beginTransaction().add(R.id.in_app_container, new OpeningQuestionFragment(), null).commit();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setUpRebootKeys();
 
         // applying the color mode needed
         ColorMode.applyColorMode(this, null);
@@ -199,15 +260,6 @@ public class InAppActivity extends AppCompatActivity {
 
         // setting up network manager
         networkManager = new NetworkManager(getApplication());
-
-        mapFragment = new MapPageFragment();
-        diaryFragment = new DiaryPageFragment();
-        homeFragment = new HomePageFragment();
-        workoutFragment = new WorkoutPageFragment();
-        profileFragment = new ProfilePageFragment();
-        settingsFragment = new SettingsFragment();
-        linkAccountsFragment = new LinkAccountsFragment();
-        activityTrackingFragment = new ActivityTrackingFragment();
 
         // setting up listener for firebase
         authListener = firebaseAuth -> AuthFunctional.refreshUser(this);
@@ -220,19 +272,10 @@ public class InAppActivity extends AppCompatActivity {
         flash.setRepeatCount(Animation.INFINITE);
         findViewById(R.id.no_network_notification).startAnimation(flash);
 
-        active = homeFragment;
-
-        fm.beginTransaction().add(R.id.in_app_container, mapFragment).hide(mapFragment).commit();
-        fm.beginTransaction().add(R.id.in_app_container, diaryFragment).hide(diaryFragment).commit();
-        fm.beginTransaction().add(R.id.in_app_container, active).commit();
-        fm.beginTransaction().add(R.id.in_app_container, workoutFragment).hide(workoutFragment).commit();
-        fm.beginTransaction().add(R.id.in_app_container, profileFragment).hide(profileFragment).commit();
-        setNavigationListener();
-
         if(ServiceFunctional.getPedometerShouldRun(this))
             ServiceFunctional.startPedometerService(this);
 
-        goToDesiredFragment(getIntent());
+        setUpQuestionsUI();
     }
 
     @Override

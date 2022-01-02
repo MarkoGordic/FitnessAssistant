@@ -38,6 +38,9 @@ import java.util.Calendar;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
+// TODO add stop tracking functionality and stop tracking to notification
+// todo dont let app restarting kill the functionality of LocationService (switching color mode and locale)
+
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
     // launcher for the Activity Recognition Permission
@@ -166,6 +169,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         dialog.show();
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.map_marker_cross);
 
         dialog.findViewById(R.id.dialog_exit_save_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,8 +181,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         dialog.findViewById(R.id.dialog_exit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopActivity();
                 dialog.dismiss();
+                stopActivity();
             }
         });
 

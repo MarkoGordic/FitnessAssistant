@@ -106,7 +106,7 @@
     <string name="forgot_your_password">Forgot Your Password?</string>
     <string name="large_password_reset_text">That\'s OK, it happens…\n\n
         Just enter the email address you used to register and we\'ll send you a reset link.</string>
-    <string name="link_will_be_sent"><i>The link in the email will expire in 1 hour. Firebase doesn\'t check the strength of the password, so make sure you set a strong one.</i></string>
+    <string name="link_will_be_sent"><i>The link in the email will expire in 1 hour. Firebase does not check the strength of the password, so make sure you set a strong one.</i></string>
     <string name="link_has_been_sent">Email has been sent</string>
     <string name="register_agreement">By registering for a new FitnessAssistant\naccount you must agree to our <u>Privacy Policy</u></string>
     <string name="register_for_free">Start your fitness journey for free</string>
@@ -237,6 +237,52 @@
     <!-- Activity Tracking Strings -->
     <string name="pause_activity_tracking">Pause</string>
     <string name="resume_activity_tracking">Resume</string>
+
+    <!-- QUESTIONS Strings -->
+    <string name="skip">Skip</string>
+    <string name="proceed">Proceed</string>
+    <string name="questions_description">To give you the most accurate statistics possible, we will ask you a few questions about you and your preferences.</string>
+    <string name="you_will_be_asked_again">If you skip the questions, you will be asked again each time you use the app. You can avoid this by selecting the option below.</string>
+    <string name="do_not_ask_again">Don\'t ask again</string>
+    <!-- GenderQ Strings -->
+    <string name="what_is_your_gender">What Is Your Gender?</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="select_a_gender">Select A Gender</string>
+    <!-- BirthdateQ Strings -->
+    <string name="when_were_you_born">When Were You Born?</string>
+    <string name="date_entered_not_valid">Date you entered has not yet come.</string>
+    <string name="too_young">You\'re too young to use this app. Please make sure you\'re over 14 to legally use this app on your own.</string>
+    <string name="happy_birthday">Happy birthday!</string>
+    <!-- HeightQ Strings -->
+    <string name="how_tall_are_you">How Tall Are You?</string>
+    <string name="ft">ft</string>
+    <string name="in">in</string>
+    <string name="cm">cm</string>
+    <string name="centimeters">Centimeters</string>
+    <string name="inches">Inches</string>
+    <string name="height_not_valid">Height entered is not valid.</string>
+    <!-- WeightQ Strings -->
+    <string name="how_much_do_you_weigh">How Much Do You Weigh?</string>
+    <string name="kg">kg</string>
+    <string name="lbs">lbs</string>
+    <string name="kilograms">Kilograms</string>
+    <string name="pounds">Pounds</string>
+    <string name="weight_not_valid">Weight entered is not valid.</string>
+    <!-- UnitQ Strings -->
+    <string name="what_are_your_unit_preferences">What Are Your\nUnit Preferences?</string>
+    <string name="distance_colon">Distance:</string>
+    <string name="height_colon">Height:</string>
+    <string name="weight_colon">Weight:</string>
+    <string name="energy_colon">Energy:</string>
+    <string name="liquid_colon">Liquid:</string>
+    <string name="kilometres">Kilometres</string>
+    <string name="miles">Miles</string>
+    <string name="calories">Calories</string>
+    <string name="kilojoules">Kilojoules</string>
+    <string name="litres">Litres</string>
+    <string name="gallons">Gallons</string>
 
     <string name="coming_soon">COMING SOON</string>
 </resources>

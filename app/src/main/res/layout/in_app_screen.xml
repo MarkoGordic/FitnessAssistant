@@ -73,6 +73,9 @@
         app:itemTextColor="@color/bottom_navigation_colors"
 
         app:elevation="0dp"
-        app:menu="@menu/bottom_navigation"/>
+        app:menu="@menu/bottom_navigation"
+
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

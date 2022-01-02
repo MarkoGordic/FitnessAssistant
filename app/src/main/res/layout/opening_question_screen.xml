@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/backgroundColor"
+android:orientation="vertical"
+android:gravity="center">
+
+    <!-- Welcome TextView-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/welcome_text"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="24sp"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="12dp"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <!-- QuestionsDescription TextView-->
+    <TextView
+        android:id="@+id/questionsDescriptionTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="12dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="26dp"
+        android:paddingEnd="26dp"
+        android:text="@string/questions_description"
+        android:textAlignment="center"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        android:textSize="22sp"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="12dp"
+
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp" />
+
+    <!-- AskedAgain TextView-->
+    <TextView
+        android:id="@+id/askedAgainTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/you_will_be_asked_again"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        android:textSize="15sp"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="8dp"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp" />
+
+    <!-- DontAskAgain CheckBox-->
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/dontAskAgainCheckBox"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+
+        android:layoutDirection="rtl"
+        android:paddingStart="8dp"
+
+        android:paddingEnd="4dp"
+        android:text="@string/do_not_ask_again"
+        android:textAlignment="center"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        android:textSize="13sp" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="4dp"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:gravity="center" >
+        <!-- Skip Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/skipButton"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/skip"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/Flame"
+            android:textFontWeight="600"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <!-- Proceed Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/proceedButton"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/proceed"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            style="?android:attr/buttonBarButtonStyle" />
+    </TableRow>
+</LinearLayout>

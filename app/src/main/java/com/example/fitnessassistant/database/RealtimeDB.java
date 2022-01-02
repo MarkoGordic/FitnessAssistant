@@ -5,6 +5,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.fitnessassistant.questions.GenderFragment;
+import com.example.fitnessassistant.questions.HeightFragment;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
+import com.example.fitnessassistant.questions.WeightFragment;
 import com.example.fitnessassistant.util.ServiceFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -78,7 +82,7 @@ public class RealtimeDB {
     }
 
     // saving user preferences to database
-    public static void saveUserPreferences(String gender, String height, String weightUnit, String heightUnit, String fluidUnit, String energyUnit, String distanceUnit){
+    public static void saveUserPreferences(Context context){
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("preferences");
@@ -86,13 +90,14 @@ public class RealtimeDB {
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    db.child("height").setValue(height);
-                    db.child("gender").setValue(gender);
-                    db.child("weightUnit").setValue(weightUnit);
-                    db.child("heightUnit").setValue(heightUnit);
-                    db.child("fluidUnit").setValue(fluidUnit);
-                    db.child("energyUnit").setValue(energyUnit);
-                    db.child("distanceUnit").setValue(distanceUnit);
+                    db.child("height").setValue(HeightFragment.getHeight(context));
+                    db.child("gender").setValue(GenderFragment.getGender(context));
+                    db.child("weight").setValue(WeightFragment.getWeight(context));
+                    db.child("weightUnit").setValue(UnitPreferenceFragment.getWeightUnit(context));
+                    db.child("heightUnit").setValue(UnitPreferenceFragment.getHeightUnit(context));
+                    db.child("fluidUnit").setValue(UnitPreferenceFragment.getFluidUnit(context));
+                    db.child("energyUnit").setValue(UnitPreferenceFragment.getEnergyUnit(context));
+                    db.child("distanceUnit").setValue(UnitPreferenceFragment.getDistanceUnit(context));
                 }
 
                 @Override

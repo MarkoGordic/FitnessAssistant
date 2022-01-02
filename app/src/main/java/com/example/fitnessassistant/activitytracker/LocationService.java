@@ -253,6 +253,8 @@ public class LocationService extends LifecycleService {
         startTimer();
         isTracking.postValue(true);
 
+        // TODO serviceKilled = true ?
+
         // Pushing base notification
         Notification notification = pushActivityTrackingNotification(this, null, "00:00:00");
         startForeground(ACTIVITY_TRACKING_ID, notification);

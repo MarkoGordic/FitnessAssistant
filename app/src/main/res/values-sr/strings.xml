@@ -239,5 +239,51 @@
     <string name="pause_activity_tracking">Pauziraj</string>
     <string name="resume_activity_tracking">Nastavi</string>
 
+    <!-- QUESTIONS Strings -->
+    <string name="skip">Preskoči</string>
+    <string name="proceed">Nastavi</string>
+    <string name="questions_description">Radi preciznosti statistike, postavićemo Vam par pitanja o Vama i Vašim opredeljenjima.</string>
+    <string name="you_will_be_asked_again">Ukoliko preskočite pitanja, biće Vam postavljena pri narednom korišćenju aplikacije. Možete izbeći ovo opcijom ispod.</string>
+    <string name="do_not_ask_again">Ne pitaj ponovo</string>
+    <!-- GenderQ Strings -->
+    <string name="what_is_your_gender">Kog ste pola?</string>
+    <string name="male">Muški</string>
+    <string name="female">Ženski</string>
+    <string name="other">Drugo</string>
+    <string name="select_a_gender">Izaberite pol</string>
+    <!-- BirthdateQ Strings -->
+    <string name="when_were_you_born">Kada ste rođeni?</string>
+    <string name="date_entered_not_valid">Uneti datum još uvek nije prošao.</string>
+    <string name="too_young">Premladi ste za korišćenje aplikacije. Korišćenjem ove aplikacije samostalno saglasni ste da ste stariji od 14 godina.</string>
+    <string name="happy_birthday">Srećan Rođendan!</string>
+    <!-- HeightQ Strings -->
+    <string name="how_tall_are_you">Koliko ste visoki?</string>
+    <string name="ft">ft</string>
+    <string name="in">in</string>
+    <string name="cm">cm</string>
+    <string name="centimeters">Centimetri</string>
+    <string name="inches">Inči</string>
+    <string name="height_not_valid">Uneta visina nije validna.</string>
+    <!-- WeightQ Strings -->
+    <string name="how_much_do_you_weigh">Koja je Vaša težina?</string>
+    <string name="kg">kg</string>
+    <string name="lbs">lbs</string>
+    <string name="kilograms">Kilogrami</string>
+    <string name="pounds">Funte</string>
+    <string name="weight_not_valid">Uneta težina nije validna.</string>
+    <!-- UnitQ Strings -->
+    <string name="what_are_your_unit_preferences">Koje jedinice mere koristite?</string>
+    <string name="distance_colon">Pređeni put:</string>
+    <string name="height_colon">Visina:</string>
+    <string name="weight_colon">Težina:</string>
+    <string name="energy_colon">Energija:</string>
+    <string name="liquid_colon">Tečnost:</string>
+    <string name="kilometres">Kilometri</string>
+    <string name="miles">Milje</string>
+    <string name="calories">Kalorije</string>
+    <string name="kilojoules">Kilodžuli</string>
+    <string name="litres">Litre</string>
+    <string name="gallons">Galoni</string>
+
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

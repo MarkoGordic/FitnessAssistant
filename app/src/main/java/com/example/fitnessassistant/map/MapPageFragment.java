@@ -72,7 +72,7 @@ public class MapPageFragment extends Fragment {
         setUpStepCountingButton(view, null);
 
         // settingUpStepGoal
-        ((TextView) view.findViewById(R.id.stepCountTextView)).setText(String.valueOf((int) requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 10000)));
+        ((TextView) view.findViewById(R.id.stepCountTextView)).setText(String.valueOf((int) requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)));
         ((TextView) view.findViewById(R.id.stepGoalTextView)).setText(String.valueOf(requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000)));
         ((EditText) view.findViewById(R.id.edtStepGoal)).setText(String.valueOf(requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000)));
 
