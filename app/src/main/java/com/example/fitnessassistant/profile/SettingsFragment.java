@@ -58,7 +58,7 @@ public class SettingsFragment extends Fragment {
     });
 
     // used to get emoji for given locale
-    private String localeToEmoji(Locale locale) {
+    public static String localeToEmoji(Locale locale) {
         String countryCode = locale.getCountry();
         int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
         int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;

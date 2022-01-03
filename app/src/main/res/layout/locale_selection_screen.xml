@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <!-- Main Drawable -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/drawableView"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/when_were_you_born"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="24sp"/>
+
+    <!-- Header TextView -->
+    <TextView
+        android:id="@+id/headerView"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+
+        android:textSize="22sp"
+        android:textColor="@color/SpaceCadet"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:layout_marginTop="12dp"
+        android:background="@color/SpaceCadet"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp" />
+
+    <!-- Languages ListView -->
+    <ListView
+        android:id="@+id/languagesList"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="20dp"
+        android:gravity="center" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp" />
+
+    <!-- Proceed Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/proceedButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/proceed"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        style="?android:attr/buttonBarButtonStyle" />
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,31 +36,53 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp" />
 
-    <TextView
-        android:id="@+id/dateGiven"
-
+    <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="48dp"
-        android:layout_marginBottom="48dp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:drawablePadding="16dp"
+            android:src="@drawable/caret_right"
+            app:tint="@color/SpaceCadet"
+            android:contentDescription="@null" />
 
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        <TextView
+            android:id="@+id/dateGiven"
 
-        android:fontFamily="@font/ralewayb"
-        android:includeFontPadding="false"
-        android:paddingStart="32dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="32dp"
-        android:paddingBottom="8dp"
-        android:textAlignment="center"
-        android:textColor="@color/SpaceCadet"
-        android:textFontWeight="600"
-        android:textSize="28sp"
-        tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="48dp"
+
+            android:drawablePadding="16dp"
+
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="28sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/caret_left"
+            app:tint="@color/SpaceCadet"
+            android:contentDescription="@null" />
+    </TableRow>
 
     <View
         android:layout_width="wrap_content"

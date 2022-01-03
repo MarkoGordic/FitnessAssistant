@@ -96,6 +96,9 @@
             app:drawableStartCompat="@drawable/moon"
             android:drawablePadding="12dp"
 
+            app:thumbTint="@color/DarkBlueYonder"
+            app:trackTint="@color/BlueYonder"
+
             android:text="@string/dark_mode"
             android:textColor="@color/SpaceCadet"
             android:paddingStart="16dp"

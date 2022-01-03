@@ -15,6 +15,7 @@ import com.example.fitnessassistant.authentication.SignInActivity;
 import com.example.fitnessassistant.notifications.NotificationController;
 import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
+import com.example.fitnessassistant.uiprefs.LocaleSelectionActivity;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
@@ -32,7 +33,10 @@ public class LaunchActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
-                startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                if(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("langPref", "sys").equals("sys"))
+                    startActivity(new Intent(getApplicationContext(), LocaleSelectionActivity.class));
+                else
+                    startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                 finish();
             }
         });

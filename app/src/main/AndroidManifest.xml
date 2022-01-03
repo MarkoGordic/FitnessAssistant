@@ -87,6 +87,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".uiprefs.LocaleSelectionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
         <activity
             android:name=".InAppActivity"
             android:launchMode="singleTop"

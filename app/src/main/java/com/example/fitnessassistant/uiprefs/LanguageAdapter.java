@@ -1,14 +1,17 @@
 package com.example.fitnessassistant.uiprefs;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.fitnessassistant.R;
 
@@ -30,6 +33,15 @@ public class LanguageAdapter extends ArrayAdapter<String> {
         View view = convertView;
         if (view == null)
             view = LayoutInflater.from(ctx).inflate(R.layout.language_item, parent, false);
+
+        // used for LocaleSelectionActivity
+        if(position == LocaleSelectionActivity.selectedPosition) {
+            Drawable d = AppCompatResources.getDrawable(ctx, R.drawable.caret_left);
+            if(d != null)
+                d.setTint(ctx.getColor(R.color.SpaceCadet));
+            ((ImageView) view.findViewById(R.id.drawableItem)).setImageDrawable(d);
+        } else
+            ((ImageView) view.findViewById(R.id.drawableItem)).setImageDrawable(null);
 
         String lang = languages.get(position);
 
