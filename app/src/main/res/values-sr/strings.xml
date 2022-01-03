@@ -206,9 +206,6 @@
     <string name="stop_counting">Zaustavi brojanje</string>
     <string name="start_counting">Započni brojanje</string>
     <string name="step_goal">Cilj koraka</string>
-    <string name="distance">Pređeni put</string>
-    <string name="speed">Brzina</string>
-    <string name="average_speed">Prosečna brzina</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometar</string>
@@ -238,6 +235,10 @@
     <!-- Activity Tracking Strings -->
     <string name="pause_activity_tracking">Pauziraj</string>
     <string name="resume_activity_tracking">Nastavi</string>
+    <string name="distance">Pređeni put</string>
+    <string name="speed">Brzina</string>
+    <string name="average_speed">Prosečna brzina</string>
+    <string name="center">Centriraj</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Preskoči</string>

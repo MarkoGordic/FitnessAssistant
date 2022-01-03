@@ -58,8 +58,7 @@ public class ActivityDetector extends Service {
         ActivityRecognition.getClient(context).removeActivityTransitionUpdates(pendingIntent)
                 .addOnSuccessListener(unused -> {
                     // Transitions unregistered
-                })
-                .addOnFailureListener(Throwable::printStackTrace);
+                });
     }
 
     private synchronized void updateLang(){

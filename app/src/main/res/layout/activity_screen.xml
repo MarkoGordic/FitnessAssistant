@@ -48,6 +48,79 @@
         tools:ignore="SpeakableTextPresentCheck"
         tools:layout_editor_absoluteX="188dp" />
 
+    <!-- MapType Button -->
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/mapTypeButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+
+        android:background="@drawable/authentication_button"
+        android:backgroundTint="@color/backgroundColor"
+
+        android:padding="10dp"
+        android:src="@drawable/layers"
+
+        android:tint="@color/SpaceCadet"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+
+    <!-- CenterButton -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/centerButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toTopOf="@id/topLayoutBar"
+        app:layout_constraintStart_toStartOf="parent"
+
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="24dp"
+
+        android:background="@drawable/authentication_button"
+        android:backgroundTint="@color/backgroundColor"
+
+        android:drawableStart="@drawable/navigation"
+        android:drawableTint="@color/SpaceCadet"
+        android:drawablePadding="8dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:text="@string/center"
+        android:textAllCaps="false"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="18sp"/>
+
+    <!-- WholePath Button -->
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wholePathButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+
+        android:background="@drawable/authentication_button"
+        android:backgroundTint="@color/backgroundColor"
+
+        android:padding="10dp"
+        android:src="@drawable/road"
+
+        android:tint="@color/SpaceCadet"
+        app:layout_constraintBottom_toTopOf="@id/topLayoutBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
     <View
         android:id="@+id/topLayoutBar"
 

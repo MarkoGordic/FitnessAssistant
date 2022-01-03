@@ -26,7 +26,6 @@ import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
-//     todo add questions...
 
 public class MapPageFragment extends Fragment {
 

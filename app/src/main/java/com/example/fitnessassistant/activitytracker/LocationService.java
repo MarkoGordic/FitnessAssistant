@@ -311,7 +311,6 @@ public class LocationService extends LifecycleService {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setAutoCancel(false)
                 .setOngoing(true)
-                // TODO translate this, and handle restarting on locale change
                 .setContentTitle("FitnessAssistant Tracking")
                 .setContentText(contentText)
                 .setContentIntent(pendingIntent)

@@ -205,9 +205,6 @@
     <string name="stop_counting">Stop Counting</string>
     <string name="start_counting">Start Counting</string>
     <string name="step_goal">Step Goal</string>
-    <string name="distance">Distance</string>
-    <string name="speed">Speed</string>
-    <string name="average_speed">Avg. speed</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometer</string>
@@ -237,6 +234,10 @@
     <!-- Activity Tracking Strings -->
     <string name="pause_activity_tracking">Pause</string>
     <string name="resume_activity_tracking">Resume</string>
+    <string name="distance">Distance</string>
+    <string name="speed">Speed</string>
+    <string name="average_speed">Avg. speed</string>
+    <string name="center">Center</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Skip</string>

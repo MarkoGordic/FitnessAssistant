@@ -52,7 +52,6 @@ import java.util.Objects;
 
 public class SettingsFragment extends Fragment {
     private GoogleSignInClient googleLinkingClient;
-    // TODO let user crop the image selected
     ActivityResultLauncher<String> imageGetter = registerForActivityResult(new ActivityResultContracts.GetContent(), URI -> {
         if(FirebaseAuth.getInstance().getCurrentUser() != null)
             FirebaseAuth.getInstance().getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(URI).build()).addOnCompleteListener(task -> onResume());

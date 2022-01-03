@@ -40,7 +40,6 @@ import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 // TODO add stop tracking functionality and stop tracking to notification
-// todo don't let app restarting kill the functionality of LocationService (switching color mode and locale)
 
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
@@ -391,12 +390,10 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     // if layout is not closed and user swipes down
                     if (!closedLayout && yCord < -len * 3) {
                         closedLayout = true;
-                        requireView().findViewById(R.id.timerLayout).setVisibility(View.GONE);
                         requireView().findViewById(R.id.statsLayout).setVisibility(View.GONE);
                         ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.up));
                     } else if (closedLayout){
                         closedLayout = false;
-                        requireView().findViewById(R.id.timerLayout).setVisibility(View.VISIBLE);
                         requireView().findViewById(R.id.statsLayout).setVisibility(View.VISIBLE);
                         ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.down));
                     } else {
@@ -406,6 +403,18 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 }
                 return false;
             }
+        });
+
+        view.findViewById(R.id.centerButton).setOnClickListener(v -> {
+            // TODO focus user
+        });
+
+        view.findViewById(R.id.wholePathButton).setOnClickListener(v -> {
+            // TODO show whole path
+        });
+
+        view.findViewById(R.id.mapTypeButton).setOnClickListener(v -> {
+            // TODO switch map type or should I create a dialog for switching map type?
         });
     }
 
