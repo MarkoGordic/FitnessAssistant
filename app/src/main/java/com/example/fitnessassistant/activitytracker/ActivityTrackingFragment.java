@@ -23,7 +23,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.database.MyDatabaseHelper;
+import com.example.fitnessassistant.database.MDBHActivityTracker;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -90,6 +90,9 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     private GoogleMap googleMap = null;
     private MapView mapView;
+
+    private boolean satelliteOn = false;
+    private boolean followUser = true;
 
     private final DecimalFormat distanceFormat = new DecimalFormat("#.##");
     private final DecimalFormat speedFormat = new DecimalFormat("#.#");
@@ -210,7 +213,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void focusUserOnMap(){
-        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty()){
+        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser){
             float mapZoom = 18f;
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
@@ -272,7 +275,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 if(LocationService.totalDistanceInKm.getValue() != null)
                     distance = LocationService.totalDistanceInKm.getValue();
 
-                MyDatabaseHelper myDB = new MyDatabaseHelper(requireContext());
+                MDBHActivityTracker myDB = new MDBHActivityTracker(requireContext());
                 myDB.addNewActivity(dateRecorded, averageSpeed, distance, calories, bitmap);
             }
 
@@ -406,15 +409,23 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         });
 
         view.findViewById(R.id.centerButton).setOnClickListener(v -> {
-            // TODO focus user
+            followUser = true;
+            focusUserOnMap();
         });
 
         view.findViewById(R.id.wholePathButton).setOnClickListener(v -> {
-            // TODO show whole path
+            followUser = false;
+            focusPathOnMap();
         });
 
         view.findViewById(R.id.mapTypeButton).setOnClickListener(v -> {
-            // TODO switch map type or should I create a dialog for switching map type?
+            if(!satelliteOn) {
+                satelliteOn = true;
+                googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            } else {
+                satelliteOn = false;
+                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            }
         });
     }
 
@@ -440,6 +451,12 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         if(!LocationService.serviceKilled){
             addWholePathToMap();
             focusUserOnMap();
+
+            // Setting up map listeners
+            googleMap.setOnCameraMoveStartedListener(reason -> {
+                if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE || reason == GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION)
+                    followUser = false;
+            });
         }
     }
 

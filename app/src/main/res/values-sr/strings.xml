@@ -214,6 +214,8 @@
     <string name="activity_detection_desc">Automatska detekcija ažuriranja aktivnosti</string>
     <string name="activity_tracking">Praćenje Aktivnosti</string>
     <string name="activity_tracking_desc">Obaveštenja o praćenju vaših fizičkih aktivnosti u realnom vremenu.</string>
+    <string name="sleep_tracking">Praćenje spavanja</string>
+    <string name="sleep_tracking_desc">Automatsko praćenje i detekcija spavanja.</string>
 
     <!-- Activity Detection Strings -->
     <string name="background_activity_detection">Pozadinska Detekcija Aktivnosti</string>

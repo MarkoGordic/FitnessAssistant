@@ -28,7 +28,10 @@ import com.example.fitnessassistant.notifications.NotificationController;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Pedometer extends Service implements SensorEventListener {
     private static final int PEDOMETER_ID = 25;
@@ -57,6 +60,26 @@ public class Pedometer extends Service implements SensorEventListener {
         updatedContext = LocaleExt.toLangIfDiff(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(this).getString("langPref", "sys"), true, true);
     }
 
+    // method witch triggers restart of notification at midnight
+    private void scheduleNotificationUpdates(Context context){
+        Timer timer;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date time = calendar.getTime();
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // TODO: Add check if pedometer should be running before calling this
+                startService(new Intent(context, Pedometer.class));
+            }
+        }, time, 24*3600*1000);
+    }
+
     private static int calculateWeeklyAverage(Context context){
         int currentHistorySum = 0;
 
@@ -83,6 +106,7 @@ public class Pedometer extends Service implements SensorEventListener {
     @Override
     public void onCreate(){
         updateLang();
+        scheduleNotificationUpdates(this);
         Notification notification = pushPedometerNotification(this, updatedContext.getString(R.string.starting_pedometer_service), updatedContext.getString(R.string.registering_steps));
 
         ServiceFunctional.setPedometerShouldRun(updatedContext, true);

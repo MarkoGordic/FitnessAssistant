@@ -52,6 +52,17 @@
             android:exported="false"
             android:enabled="true"/>
 
+        <service
+            android:name=".sleeptracker.SleepTracker"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".sleeptracker.SleepDataReceiver"
+            android:exported="true"
+            android:enabled="true"
+            android:permission="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
+
         <receiver
             android:name=".pedometer.Restarter"
             android:enabled="true"

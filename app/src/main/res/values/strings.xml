@@ -214,6 +214,8 @@
     <string name="activity_detection_desc">Automatic workout/activity detection updates.</string>
     <string name="activity_tracking">Activity Tracking</string>
     <string name="activity_tracking_desc">Realtime tracking of your workout/activity.</string>
+    <string name="sleep_tracking">Sleep Tracking</string>
+    <string name="sleep_tracking_desc">Automatic sleep tracking/detection updates.</string>
 
     <!-- Activity Detection Strings -->
     <string name="background_activity_detection">Background Activity Detection</string>

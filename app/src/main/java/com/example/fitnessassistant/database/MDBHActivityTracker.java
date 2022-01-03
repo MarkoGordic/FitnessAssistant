@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
 
-public class MyDatabaseHelper extends SQLiteOpenHelper {
+public class MDBHActivityTracker extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SavedActivities.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -23,7 +23,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DISTANCE = "activity_distance";
     private static final String COLUMN_IMAGE = "activity_image";
 
-    public MyDatabaseHelper(@Nullable Context context){
+    public MDBHActivityTracker(@Nullable Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
