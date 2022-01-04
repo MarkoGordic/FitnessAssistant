@@ -57,7 +57,7 @@ public class LocationService extends LifecycleService {
     final Handler handler = new Handler();
 
     private boolean serviceRunning = false;
-    public static boolean serviceKilled = false;
+    public static boolean serviceKilled = true;
     private boolean createNewPath = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
 

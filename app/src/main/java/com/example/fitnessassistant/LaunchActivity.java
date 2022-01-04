@@ -61,7 +61,6 @@ public class LaunchActivity extends AppCompatActivity {
 
         // initializing notification channels
         NotificationController.createNotificationChannel(this, "Pedometer", getString(R.string.pedometer), getString(R.string.pedometer_desc), false, 2);
-        NotificationController.createNotificationChannel(this,  "ActivityDetection", getString(R.string.activity_detection), getString(R.string.activity_detection_desc), true, 3);
         NotificationController.createNotificationChannel(this,  "ActivityTracking", getString(R.string.activity_tracking), getString(R.string.activity_tracking_desc), false, 2);
         NotificationController.createNotificationChannel(this, "SleepTracker", getString(R.string.sleep_tracking), getString(R.string.sleep_tracking_desc), false, 3);
 

@@ -42,11 +42,6 @@
             android:exported="false" />
 
         <service
-            android:name=".activitydetector.ActivityDetector"
-            android:exported="false"
-            android:enabled="true"/>
-
-        <service
             android:name=".activitytracker.LocationService"
             android:foregroundServiceType="location"
             android:exported="false"
@@ -72,15 +67,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <receiver
-            android:name=".activitydetector.ActivityDetectorReceiver"
-            android:exported="false"
-            android:permission="com.google.android.gms.permission.ACTIVITY_RECOGNITION">
-            <intent-filter>
-                <action android:name="action.TRANSITIONS_DATA" />
-            </intent-filter>
-    </receiver>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
