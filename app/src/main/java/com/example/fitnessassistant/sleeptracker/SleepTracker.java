@@ -12,6 +12,7 @@ import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.SleepSegmentRequest;
 
 public class SleepTracker extends Service {
+    public static final int SLEEP_TRACKER_ID = 28;
     PendingIntent sleepReceiver;
 
     public void subscribeToSleepEvents(Context context){

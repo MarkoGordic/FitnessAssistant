@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/backgroundColor"
+    android:padding="32dp">
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/backButton"
+
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+
+        android:layout_marginStart="-32dp"
+        android:layout_marginTop="-32dp"
+
+        android:background="@color/backgroundColor"
+        android:contentDescription="@null"
+
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="4dp"
+
+        android:src="@drawable/back"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <!-- Account Data Header -->
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:text="@string/account_data"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
+
+    <!-- separator -->
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="20dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <!-- Account Authentication Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+
+        android:text="@string/account_authentication"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:textColor="@color/BlueYonder"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- LinkAccounts TextView -->
+    <TextView
+        android:id="@+id/linkAccountsTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="10dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableStartCompat="@drawable/link"
+        app:drawableEndCompat="@drawable/forward"
+        android:drawablePadding="12dp"
+
+        android:text="@string/link_accounts"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- ChangeEmail TextView -->
+    <TextView
+        android:id="@+id/changeEmailTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="5dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableStartCompat="@drawable/mail_focused"
+        app:drawableEndCompat="@drawable/forward"
+        android:drawablePadding="12dp"
+
+        android:text="@string/change_email"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- ChangePassword TextView -->
+    <TextView
+        android:id="@+id/changePasswordTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="5dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableStartCompat="@drawable/lock_focused"
+        app:drawableEndCompat="@drawable/forward"
+        android:drawablePadding="12dp"
+
+        android:text="@string/change_password"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- separator -->
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="20dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <!-- Activity Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+
+        android:text="@string/account_appearance"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:textColor="@color/BlueYonder"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- ChangeUsername TextView -->
+    <TextView
+        android:id="@+id/changeUserNameTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="10dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableStartCompat="@drawable/user_focused"
+        app:drawableEndCompat="@drawable/forward"
+        android:drawablePadding="12dp"
+
+        android:text="@string/change_username"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- ChangeProfilePicture TextView -->
+    <TextView
+        android:id="@+id/changeProfilePicture"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="5dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableStartCompat="@drawable/portrait"
+        app:drawableEndCompat="@drawable/forward"
+        android:drawablePadding="12dp"
+
+        android:text="@string/change_profile_picture"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+</LinearLayout>

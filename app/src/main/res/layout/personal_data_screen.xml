@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/backgroundColor"
+    android:padding="32dp">
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/backButton"
+
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+
+        android:layout_marginStart="-32dp"
+        android:layout_marginTop="-32dp"
+
+        android:background="@color/backgroundColor"
+        android:contentDescription="@null"
+
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="4dp"
+
+        android:src="@drawable/back"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <!-- Personal Data Header -->
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:text="@string/personal_data"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
+
+    <!-- separator -->
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="20dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <!-- Basic Data Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+
+        android:text="@string/basic_data"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:textColor="@color/BlueYonder"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- BirthDate TextView -->
+    <TextView
+        android:id="@+id/birthdateTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="10dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableEndCompat="@drawable/edit"
+        app:drawableTint="@color/SpaceCadet"
+        android:drawablePadding="12dp"
+
+        android:text="@string/birthdate"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Height TextView -->
+    <TextView
+        android:id="@+id/heightTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="5dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableEndCompat="@drawable/edit"
+        app:drawableTint="@color/SpaceCadet"
+        android:drawablePadding="12dp"
+
+        android:text="@string/current_height"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Weight TextView -->
+    <TextView
+        android:id="@+id/weightTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="5dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableEndCompat="@drawable/edit"
+        app:drawableTint="@color/SpaceCadet"
+        android:drawablePadding="12dp"
+
+        android:text="@string/current_weight"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Gender TextView -->
+    <TextView
+        android:id="@+id/genderTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="5dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableEndCompat="@drawable/edit"
+        app:drawableTint="@color/SpaceCadet"
+        android:drawablePadding="12dp"
+
+        android:text="@string/gender"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!--  TextView -->
+    <TextView
+        android:id="@+id/unitsPreferenceTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="5dp"
+
+        android:background="@drawable/settings_field"
+
+        app:drawableEndCompat="@drawable/edit"
+        app:drawableTint="@color/SpaceCadet"
+        android:drawablePadding="12dp"
+
+        android:text="@string/units_preference"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+</LinearLayout>

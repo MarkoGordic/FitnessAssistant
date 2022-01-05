@@ -92,7 +92,8 @@ public class RealtimeDB {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     db.child("height").setValue(HeightFragment.getHeight(context));
                     db.child("gender").setValue(GenderFragment.getGender(context));
-                    db.child("weight").setValue(WeightFragment.getWeight(context));
+// TODO add weight
+//                    db.child("weight").setValue(WeightFragment.getCurrentWeight(context));
                     db.child("weightUnit").setValue(UnitPreferenceFragment.getWeightUnit(context));
                     db.child("heightUnit").setValue(UnitPreferenceFragment.getHeightUnit(context));
                     db.child("fluidUnit").setValue(UnitPreferenceFragment.getFluidUnit(context));

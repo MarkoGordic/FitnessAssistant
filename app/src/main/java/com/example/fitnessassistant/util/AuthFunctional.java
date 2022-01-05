@@ -488,7 +488,7 @@ public class AuthFunctional {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.mail_focused);
 
-            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.change_your_email);
+            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.change_email);
             ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.change_email_message);
 
             EditText emailInput = dialog.findViewById(R.id.dialog_input);
@@ -723,7 +723,7 @@ public class AuthFunctional {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.user_focused);
 
-            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.change_your_username);
+            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.change_username);
             ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.change_username_message);
 
             EditText usernameInput = dialog.findViewById(R.id.dialog_input);

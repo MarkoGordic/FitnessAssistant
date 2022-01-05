@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
@@ -104,26 +105,50 @@ public class BirthdayFragment extends Fragment {
     }
 
     private void setUpOnClickListeners(View view){
-        year = Calendar.getInstance().get(Calendar.YEAR);
-        month = Calendar.getInstance().get(Calendar.MONTH);
-        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int birthday = getBirthday(requireActivity());
+        if(birthday != -1){
+            day = birthday % 100;
+            birthday /= 100;
+            month = birthday % 100;
+            birthday /= 100;
+            year = birthday;
+        } else {
+            day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            month = Calendar.getInstance().get(Calendar.MONTH);
+            year = Calendar.getInstance().get(Calendar.YEAR);
+        }
+
         updateDate(view);
 
-        view.findViewById(R.id.dateGiven).setOnClickListener(v ->  new DatePickerDialog(requireActivity(), (view1, y, m, d) -> {
+        view.findViewById(R.id.dateGiven).setOnClickListener(v -> new DatePickerDialog(requireActivity(), (view1, y, m, d) -> {
             year = y;
             month = m;
             day = d;
             updateDate(view);
         }, year, month, day).show());
-        
-        view.findViewById(R.id.skipButton).setOnClickListener(v -> ((InAppActivity) requireActivity()).proceedQuestions(2));
 
-        view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
-            if(validDate(view) && yearValid(view)) {
-                putBirthday(requireActivity(), year * 10000 + month * 100 + day);
-                ((InAppActivity) requireActivity()).proceedQuestions(2);
-            }
-        });
+        if(!InAppActivity.useNewPersonalDataFragments.get()) {
+            view.findViewById(R.id.skipButton).setOnClickListener(v -> ((InAppActivity) requireActivity()).proceedQuestions(2));
+
+            view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
+                if (validDate(view) && yearValid(view)) {
+                    putBirthday(requireActivity(), year * 10000 + month * 100 + day);
+                    ((InAppActivity) requireActivity()).proceedQuestions(2);
+                }
+            });
+        } else{
+            InAppActivity.useNewPersonalDataFragments.set(false);
+            ((AppCompatButton) view.findViewById(R.id.skipButton)).setText(R.string.cancel);
+            ((AppCompatButton) view.findViewById(R.id.proceedButton)).setText(R.string.set);
+
+            view.findViewById(R.id.skipButton).setOnClickListener(v -> requireActivity().onBackPressed());
+            view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
+                if (validDate(view) && yearValid(view)) {
+                    putBirthday(requireActivity(), year * 10000 + month * 100 + day);
+                    requireActivity().onBackPressed();
+                }
+            });
+        }
     }
 
     @Nullable

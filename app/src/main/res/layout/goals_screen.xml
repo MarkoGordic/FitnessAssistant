@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/backgroundColor"
+    android:padding="32dp">
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/backButton"
+
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+
+        android:layout_marginStart="-32dp"
+        android:layout_marginTop="-32dp"
+
+        android:background="@color/backgroundColor"
+        android:contentDescription="@null"
+
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="4dp"
+
+        android:src="@drawable/back"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <!-- Goals Header -->
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:text="@string/goals"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
+
+    <!-- separator -->
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="20dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <!-- Weight Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+
+        android:text="@string/weight"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:textColor="@color/BlueYonder"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="10dp"
+
+        android:gravity="center"
+        android:weightSum="1">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.45"
+
+            android:gravity="start"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
+
+            android:background="@drawable/settings_field"
+
+            android:orientation="vertical">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+
+                android:fontFamily="@font/ralewaym"
+                android:text="@string/starting_weight"
+                android:textColor="@color/SpaceCadet"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/startingWeightDateTextView"
+
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+
+                android:fontFamily="@font/ralewayb"
+                android:textAllCaps="true"
+                android:textColor="@color/SpaceCadet"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/startingWeightTextView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/ralewaym"
+                android:textColor="@color/MangoTango"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
+        </LinearLayout>
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+
+            android:src="@drawable/caret_right"
+            app:tint="@color/SpaceCadet"
+            android:contentDescription="@null" />
+        <LinearLayout
+            android:id="@+id/goalWeightLayout"
+
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.45"
+
+            android:gravity="end"
+            android:paddingEnd="12dp"
+            android:paddingStart="0dp"
+
+            android:background="@drawable/settings_field"
+
+            android:orientation="vertical">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+
+                app:drawableStartCompat="@drawable/edit"
+                app:drawableTint="@color/SpaceCadet"
+                android:drawablePadding="8dp"
+
+                android:fontFamily="@font/ralewaym"
+                android:text="@string/goal_weight"
+                android:textColor="@color/SpaceCadet"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/goalWeightDateTextView"
+
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+
+                android:fontFamily="@font/ralewayb"
+                android:textAllCaps="true"
+                android:textColor="@color/SpaceCadet"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/goalWeightTextView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/ralewaym"
+                android:textColor="@color/MangoTango"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
+        </LinearLayout>
+    </TableRow>
+
+    <LinearLayout
+        android:id="@+id/currentWeightLayout"
+
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+
+        android:layout_marginTop="5dp"
+
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+
+        android:background="@drawable/settings_field"
+
+        android:orientation="vertical">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+
+            app:drawableStartCompat="@drawable/edit"
+            app:drawableTint="@color/SpaceCadet"
+            android:drawablePadding="8dp"
+
+            android:fontFamily="@font/ralewaym"
+            android:text="@string/last_updated"
+            android:textColor="@color/SpaceCadet"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/currentWeightDateTextView"
+
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+
+            android:fontFamily="@font/ralewayb"
+            android:textAllCaps="true"
+            android:textColor="@color/SpaceCadet"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/currentWeightTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/ralewaym"
+            android:textColor="@color/MangoTango"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+
+    <!-- separator -->
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="20dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <!-- Activity Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+
+        android:text="@string/activity"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:textColor="@color/BlueYonder"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Step Goal TextView -->
+    <TextView
+        android:id="@+id/stepGoalTextView"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="10dp"
+        android:background="@drawable/settings_field"
+
+        app:drawableEndCompat="@drawable/forward"
+        android:drawablePadding="12dp"
+
+        android:text="@string/step_goal"
+        android:textColor="@color/SpaceCadet"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+</LinearLayout>

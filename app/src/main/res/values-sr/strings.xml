@@ -34,8 +34,6 @@
     <string name="password">Lozinka</string>
     <string name="sign_in">Prijava</string>
     <string name="reset_password">Reset Lozinke</string>
-    <string name="back_button_description">Vraća se na prethodnu aktivnost</string>
-    <string name="settings_description">Odlazi na SettingsFragment</string>
     <string name="create_account">Napravi Nalog</string>
     <string name="register">Registruj se</string>
     <string name="confirm_password">Ponovi Lozinku</string>
@@ -55,6 +53,8 @@
     <string name="delete">Obriši</string>
     <string name="privacy_policy">Politika o privatnosti</string>
     <string name="change">Izmeni</string>
+    <string name="do_not_change">Ne menjaj</string>
+    <string name="set">Podesi</string>
     <string name="continue_ad">Nastavi</string>
     <string name="change_password">Menjaj lozinku</string>
     <string name="your_profile">Vaš Profil</string>
@@ -66,9 +66,24 @@
     <string name="light_mode">Svetla Tema</string>
     <string name="select_language">Izaberi jezik</string>
     <string name="ok">OK</string>
-    <string name="change_profile_picture">Promeni Profilnu Sliku</string>
+    <string name="change_profile_picture">Promenite Profilnu Sliku</string>
     <string name="stop_activity">Prekini aktivnost</string>
     <string name="stop_activity_save">Prekini aktivnost bez čuvanja</string>
+    <string name="goals">Ciljevi</string>
+    <string name="weight">Težina</string>
+    <string name="starting_weight">Početna Težina</string>
+    <string name="current_weight">Trenutna Težina</string>
+    <string name="goal_weight">Ciljana Težina</string>
+    <string name="personal_data">Lični podaci</string>
+    <string name="account_data">Podaci o nalogu</string>
+    <string name="account_authentication">Autentikacija Naloga</string>
+    <string name="account_appearance">Prikaz Naloga</string>
+    <string name="basic_data">Osnovni Podaci</string>
+    <string name="current_height">Trenutna Visina</string>
+    <string name="gender">Pol</string>
+    <string name="units_preference">Jedinice Mere</string>
+    <string name="birthdate">Datum rođenja</string>
+    <string name="last_updated">Poslednje Ažurirano</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -142,8 +157,8 @@
     <string name="re_authentication_message">Da bi nastavili, potvrdite Vaš nalog lozinkom vašeg naloga</string>
     <string name="re_enter_your_password">Unesite vašu lozinku</string>
     <string name="re_authentication_unsuccessful">Potvrda Naloga Neuspešna</string>
-    <string name="change_your_username">Promenite Korisničko Ime</string>
-    <string name="change_your_email">Promenite Email</string>
+    <string name="change_username">Promenite Korisničko Ime</string>
+    <string name="change_email">Promenite Email</string>
     <string name="change_your_password">Promenite Lozinku</string>
     <string name="change_username_message"><b>Molimo da: </b>Unesete ispravno korisničko ime.\nNepravilna korisnička imena <b>neće</b> izmeniti staro.</string>
     <string name="change_email_message"><b>Molimo da: </b>Unesete ispravan email.\n<b>Moraćete</b> ga verifikovati po sledećoj prijavi.</string>
@@ -161,10 +176,8 @@
     <string name="email_change_successful">Izmena Mejla Uspešna</string>
     <string name="unable_to_refresh">Osvežavanje Neuspešno</string>
     <string name="swipe_up_to_use_the_map">Povucite nagore za Mapu</string>
-    <string name="swipe_down_to_close_the_map">Povucite nadole da zatvorite Mapu</string>
     <string name="cancel_tracking_warning">Prekini aktivnost?</string>
     <string name="cancel_tracking">Da li ste sigurni da želite da prekinete vašu aktivnost?</string>
-    <string name="swipe_down_to_hide">Povucite nadole da prikrijete</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Izaberite Jezik: </string>
@@ -202,7 +215,6 @@
     <string name="starting_pedometer_service">Otpočinjanje brojenja koraka…</string>
     <string name="registering_steps">Registrovanje koraka…</string>
     <string name="step_counter_not_active">Brojač koraka nije aktivan</string>
-    <string name="widget_background_description">Podešava pozadinu vidžeta.</string>
     <string name="stop_counting">Zaustavi brojanje</string>
     <string name="start_counting">Započni brojanje</string>
     <string name="step_goal">Cilj koraka</string>
@@ -212,8 +224,8 @@
     <string name="pedometer_desc">Prikazivanje podataka o praćenju koraka.</string>
     <string name="activity_tracking">Praćenje Aktivnosti</string>
     <string name="activity_tracking_desc">Obaveštenja o praćenju vaših fizičkih aktivnosti u realnom vremenu.</string>
-    <string name="sleep_tracking">Praćenje spavanja</string>
-    <string name="sleep_tracking_desc">Automatsko praćenje i detekcija spavanja.</string>
+    <string name="sleep_tracking">Praćenje sna</string>
+    <string name="sleep_tracking_desc">Automatska detekcija i praćenje sna.</string>
 
     <!-- Map Strings -->
     <string name="map_view">Prikaz Mape</string>
@@ -226,10 +238,13 @@
     <string name="speed">Brzina</string>
     <string name="average_speed">Prosečna brzina</string>
     <string name="center">Centriraj</string>
+    <string name="activity_tracking_active">Praćenje Aktivnosti Uključeno</string>
+    <string name="activity_tracking_active_message">Ovo nije dostupno dok je praćenje aktivnosti uključeno. Zaustavite praćenje aktivnosti i pokušajte ponovo.</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Preskoči</string>
     <string name="proceed">Nastavi</string>
+    <string name="go_back">Idi Nazad</string>
     <string name="questions_description">Radi preciznosti statistike, postavićemo Vam par pitanja o Vama i Vašim opredeljenjima.</string>
     <string name="you_will_be_asked_again">Ukoliko preskočite pitanja, biće Vam postavljena pri narednom korišćenju aplikacije. Možete izbeći ovo opcijom ispod.</string>
     <string name="do_not_ask_again">Ne pitaj ponovo</string>
@@ -259,6 +274,10 @@
     <string name="kilograms">Kilogrami</string>
     <string name="pounds">Funte</string>
     <string name="weight_not_valid">Uneta težina nije validna.</string>
+    <string name="change_your_goal_weight">Promenite Ciljanu Težinu</string>
+    <string name="updating_weight_message">Prosečna težina se čuva za svaki dan. U slučaju greške, možete jednostavno obrisati unete težine za taj dan.</string>
+    <string name="delete_entered_weights">Obriši Unete Težine</string>
+    <string name="delete_weights_message">Da li želite da obrišete sve težine koje ste danas uneli?</string>
     <!-- UnitQ Strings -->
     <string name="what_are_your_unit_preferences">Koje jedinice mere koristite?</string>
     <string name="distance_colon">Pređeni put:</string>

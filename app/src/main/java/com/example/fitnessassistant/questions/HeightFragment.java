@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
@@ -151,6 +152,9 @@ public class HeightFragment extends Fragment {
 
         setUpCentimetersUI(view, view.findViewById(R.id.unitSwitch), heightInCMs, heightInFeet, heightInInches, CMWatcher, INWatcher, FTWatcher);
 
+        if(getHeight(requireActivity()) != -1f)
+            heightInCMs.setText(String.valueOf(getHeight(requireActivity())));
+
         ((SwitchCompat) view.findViewById(R.id.unitSwitch)).setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(!isChecked)
                 setUpCentimetersUI(view, buttonView, heightInCMs, heightInFeet, heightInInches, CMWatcher, INWatcher, FTWatcher);
@@ -158,21 +162,42 @@ public class HeightFragment extends Fragment {
                 setUpFeetInchesUI(view, buttonView, heightInCMs, heightInFeet, heightInInches, CMWatcher, INWatcher, FTWatcher);
         });
 
-        view.findViewById(R.id.skipButton).setOnClickListener(v -> ((InAppActivity) requireActivity()).proceedQuestions(3));
+        if(!InAppActivity.useNewPersonalDataFragments.get()) {
+            view.findViewById(R.id.skipButton).setOnClickListener(v -> ((InAppActivity) requireActivity()).proceedQuestions(3));
 
-        view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
-            if(heightInCMs.getText().length() != 0 && validHeight(Float.parseFloat(heightInCMs.getText().toString()))) {
-                putHeight(requireActivity(), Float.parseFloat(heightInCMs.getText().toString()));
+            view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
+                if (heightInCMs.getText().length() != 0 && validHeight(Float.parseFloat(heightInCMs.getText().toString()))) {
+                    putHeight(requireActivity(), Float.parseFloat(heightInCMs.getText().toString()));
 
-                // put unit preference given too
-                if(((SwitchCompat) view.findViewById(R.id.unitSwitch)).isChecked())
-                    UnitPreferenceFragment.putHeightUnit(requireActivity(), UnitPreferenceFragment.HEIGHT_UNIT_FT_IN);
-                else
-                    UnitPreferenceFragment.putHeightUnit(requireActivity(), UnitPreferenceFragment.HEIGHT_UNIT_CM);
+                    // put unit preference given too
+                    if (((SwitchCompat) view.findViewById(R.id.unitSwitch)).isChecked())
+                        UnitPreferenceFragment.putHeightUnit(requireActivity(), UnitPreferenceFragment.HEIGHT_UNIT_FT_IN);
+                    else
+                        UnitPreferenceFragment.putHeightUnit(requireActivity(), UnitPreferenceFragment.HEIGHT_UNIT_CM);
 
-                ((InAppActivity) requireActivity()).proceedQuestions(3);
-            }
-        });
+                    ((InAppActivity) requireActivity()).proceedQuestions(3);
+                }
+            });
+        } else {
+            InAppActivity.useNewPersonalDataFragments.set(false);
+            ((AppCompatButton) view.findViewById(R.id.skipButton)).setText(R.string.do_not_change);
+            ((AppCompatButton) view.findViewById(R.id.proceedButton)).setText(R.string.change);
+
+            view.findViewById(R.id.skipButton).setOnClickListener(v -> requireActivity().onBackPressed());
+            view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
+                if (heightInCMs.getText().length() != 0 && validHeight(Float.parseFloat(heightInCMs.getText().toString()))) {
+                    putHeight(requireActivity(), Float.parseFloat(heightInCMs.getText().toString()));
+
+                    // put unit preference given too
+                    if (((SwitchCompat) view.findViewById(R.id.unitSwitch)).isChecked())
+                        UnitPreferenceFragment.putHeightUnit(requireActivity(), UnitPreferenceFragment.HEIGHT_UNIT_FT_IN);
+                    else
+                        UnitPreferenceFragment.putHeightUnit(requireActivity(), UnitPreferenceFragment.HEIGHT_UNIT_CM);
+
+                    requireActivity().onBackPressed();
+                }
+            });
+        }
     }
 
     @Nullable

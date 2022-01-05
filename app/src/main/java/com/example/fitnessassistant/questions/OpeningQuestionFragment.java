@@ -29,7 +29,7 @@ public class OpeningQuestionFragment extends Fragment {
     public static boolean everythingIsKnown(Context context){
         return !GenderFragment.getGender(context).equals("unknown")
                 && BirthdayFragment.getBirthday(context) != -1
-                && WeightFragment.getWeight(context) != -1f
+                && WeightFragment.getLastDailyAverage(context) != -1f
                 && HeightFragment.getHeight(context) != -1f
                 && !UnitPreferenceFragment.isUnknown(context);
     }

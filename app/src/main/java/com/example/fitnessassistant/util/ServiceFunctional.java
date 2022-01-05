@@ -29,7 +29,8 @@ public class ServiceFunctional {
         // stopping services
         context.stopService(new Intent(context, Pedometer.class));
 
-        ((InAppActivity) context).setUpMapPageFragmentUI(false);
+        if(context instanceof InAppActivity)
+            ((InAppActivity) context).setUpMapPageFragmentUI(false);
     }
 
     public synchronized static void startPedometerService(Context context){

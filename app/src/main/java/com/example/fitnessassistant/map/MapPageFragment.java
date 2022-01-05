@@ -161,7 +161,7 @@ public class MapPageFragment extends Fragment {
                 } else {
                     closeKeyboard();
                     ((EditText) v).setText(lastSaved);
-                    ((ImageView) view.findViewById(R.id.changeStepGoal)).setImageDrawable(ContextCompat.getDrawable(MapPageFragment.this.requireActivity(), R.drawable.pencil));
+                    ((ImageView) view.findViewById(R.id.changeStepGoal)).setImageDrawable(ContextCompat.getDrawable(MapPageFragment.this.requireActivity(), R.drawable.edit));
                     view.findViewById(R.id.changeStepGoal).setOnClickListener(v1 -> v.requestFocus());
                 }
             }

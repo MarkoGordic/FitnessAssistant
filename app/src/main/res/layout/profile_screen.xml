@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -47,12 +48,13 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
 
-                android:layout_weight="1"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
 
                 android:background="@color/backgroundColor"
-                android:contentDescription="@string/settings_description"
-                app:srcCompat="@drawable/gear" />
+                android:contentDescription="@null"
+                app:srcCompat="@drawable/gear"
+                tools:ignore="SpeakableTextPresentCheck" />
         </TableRow>
 
         <!-- User Profile -->
@@ -102,6 +104,28 @@
             android:layout_height="1dp"
 
             android:background="@color/NonBackgroundColor"/>
+
+        <TextView
+            android:id="@+id/goalsField"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            android:layout_marginTop="24dp"
+
+            android:background="@drawable/settings_field"
+
+            app:drawableStartCompat="@drawable/target"
+            app:drawableTint="@color/SpaceCadet"
+            app:drawableEndCompat="@drawable/forward"
+            android:drawablePadding="12dp"
+
+            android:text="@string/goals"
+            android:textColor="@color/SpaceCadet"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

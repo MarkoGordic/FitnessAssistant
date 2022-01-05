@@ -48,17 +48,18 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/backgroundColor"
+        android:contentDescription="@null"
 
         android:paddingStart="20dp"
-        android:paddingEnd="4dp"
         android:paddingTop="20dp"
+        android:paddingEnd="4dp"
         android:paddingBottom="4dp"
 
         android:src="@drawable/back"
-        android:background="@color/backgroundColor"
-        android:contentDescription="@string/back_button_description"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 
     <!-- TODO add in a drawable logo in link button -->

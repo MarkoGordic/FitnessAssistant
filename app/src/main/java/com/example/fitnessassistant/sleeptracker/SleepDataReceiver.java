@@ -33,6 +33,6 @@ public class SleepDataReceiver extends BroadcastReceiver {
     public static PendingIntent createPendingIntent(Context context){
         Intent intent = new Intent(context, SleepDataReceiver.class);
 
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        return PendingIntent.getBroadcast(context, SleepTracker.SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 }

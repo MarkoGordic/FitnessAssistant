@@ -66,7 +66,10 @@ public class ProfilePageFragment extends Fragment {
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> displayCurrentUser(view));
         // settingsButton listener - adds a settings fragment, hides current
         view.findViewById(R.id.settingsButton).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.settingsFragment).addToBackStack(null).commit());
-}
+
+        // goalsField listener - adds a goals fragment, hides current
+        view.findViewById(R.id.goalsField).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.goalsFragment).addToBackStack(null).commit());
+    }
 
     @Nullable
     @Override

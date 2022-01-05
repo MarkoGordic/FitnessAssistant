@@ -8,9 +8,9 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <!-- EnterYourBirthdate TextView-->
+    <!-- EnterYourWeight TextView-->
     <TextView
-        android:id="@+id/enterYourBirthdateTextView"
+        android:id="@+id/enterYourWeightTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +36,25 @@
 
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp" />
+
+    <TextView
+        android:id="@+id/updatingWeightTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/updating_weight_message"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -200,5 +219,24 @@
             android:textFontWeight="600"
             style="?android:attr/buttonBarButtonStyle" />
     </TableRow>
+
+    <!-- DeleteWeights Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deleteWeightsButton"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/delete_entered_weights"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:textColor="@color/BlueYonder"
+        android:textFontWeight="600"
+        style="?android:attr/buttonBarButtonStyle"
+        android:visibility="gone" />
 
 </LinearLayout>

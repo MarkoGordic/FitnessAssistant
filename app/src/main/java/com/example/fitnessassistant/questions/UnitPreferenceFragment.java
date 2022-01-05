@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
@@ -76,6 +77,63 @@ public class UnitPreferenceFragment extends Fragment {
         context.getSharedPreferences("questions", MODE_PRIVATE).edit().putString("heightUnit", heightUnit).apply();
     }
 
+    private void loadGivenUnits(View view){
+        if(getHeightUnit(requireActivity()).equals(HEIGHT_UNIT_CM))
+            ((SwitchCompat) view.findViewById(R.id.heightSwitch)).setChecked(false);
+        else if(getHeightUnit(requireActivity()).equals(HEIGHT_UNIT_FT_IN))
+            ((SwitchCompat) view.findViewById(R.id.heightSwitch)).setChecked(true);
+
+        if(getWeightUnit(requireActivity()).equals(WEIGHT_UNIT_KG))
+            ((SwitchCompat) view.findViewById(R.id.weightSwitch)).setChecked(false);
+        else if(getWeightUnit(requireActivity()).equals(WEIGHT_UNIT_LBS))
+            ((SwitchCompat) view.findViewById(R.id.weightSwitch)).setChecked(true);
+
+        if(getDistanceUnit(requireActivity()).equals(DISTANCE_UNIT_KM))
+            ((SwitchCompat) view.findViewById(R.id.distanceSwitch)).setChecked(false);
+        else if(getDistanceUnit(requireActivity()).equals(DISTANCE_UNIT_MILE))
+            ((SwitchCompat) view.findViewById(R.id.distanceSwitch)).setChecked(true);
+
+        if(getEnergyUnit(requireActivity()).equals(ENERGY_UNIT_CAL))
+            ((SwitchCompat) view.findViewById(R.id.energySwitch)).setChecked(false);
+        else if(getEnergyUnit(requireActivity()).equals(ENERGY_UNIT_KJ))
+            ((SwitchCompat) view.findViewById(R.id.energySwitch)).setChecked(true);
+
+        if(getFluidUnit(requireActivity()).equals(FLUID_UNIT_LITRE))
+            ((SwitchCompat) view.findViewById(R.id.fluidSwitch)).setChecked(false);
+        else if(getFluidUnit(requireActivity()).equals(FLUID_UNIT_GALLON))
+            ((SwitchCompat) view.findViewById(R.id.fluidSwitch)).setChecked(true);
+    }
+
+    private void saveGivenUnits(View view){
+        if (!((SwitchCompat) view.findViewById(R.id.heightSwitch)).isChecked())
+            putHeightUnit(requireActivity(), HEIGHT_UNIT_CM);
+        else
+            putHeightUnit(requireActivity(), HEIGHT_UNIT_FT_IN);
+
+        if (!((SwitchCompat) view.findViewById(R.id.weightSwitch)).isChecked())
+            putWeightUnit(requireActivity(), WEIGHT_UNIT_KG);
+        else
+            putWeightUnit(requireActivity(), WEIGHT_UNIT_LBS);
+
+        if (!((SwitchCompat) view.findViewById(R.id.distanceSwitch)).isChecked())
+            putDistanceUnit(requireActivity(), DISTANCE_UNIT_KM);
+        else
+            putDistanceUnit(requireActivity(), DISTANCE_UNIT_MILE);
+
+        if (!((SwitchCompat) view.findViewById(R.id.energySwitch)).isChecked())
+            putEnergyUnit(requireActivity(), ENERGY_UNIT_CAL);
+        else
+            putEnergyUnit(requireActivity(), ENERGY_UNIT_KJ);
+
+        if (!((SwitchCompat) view.findViewById(R.id.fluidSwitch)).isChecked())
+            putFluidUnit(requireActivity(), FLUID_UNIT_LITRE);
+        else
+            putFluidUnit(requireActivity(), FLUID_UNIT_GALLON);
+
+        if (OpeningQuestionFragment.everythingIsKnown(requireActivity()))
+            OpeningQuestionFragment.putShouldSkipQuestions(requireActivity(), true);
+    }
+
     private void setUpOnClickListeners(View view){
         ((SwitchCompat) view.findViewById(R.id.heightSwitch)).setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked)
@@ -112,49 +170,26 @@ public class UnitPreferenceFragment extends Fragment {
                 buttonView.setText(R.string.litres);
         });
 
-        if(getHeightUnit(requireActivity()).equals(HEIGHT_UNIT_CM))
-            ((SwitchCompat) view.findViewById(R.id.heightSwitch)).setChecked(false);
-        else if(getHeightUnit(requireActivity()).equals(HEIGHT_UNIT_FT_IN))
-            ((SwitchCompat) view.findViewById(R.id.heightSwitch)).setChecked(true);
+        loadGivenUnits(view);
 
-        if(getWeightUnit(requireActivity()).equals(WEIGHT_UNIT_KG))
-            ((SwitchCompat) view.findViewById(R.id.weightSwitch)).setChecked(false);
-        else if(getWeightUnit(requireActivity()).equals(WEIGHT_UNIT_LBS))
-            ((SwitchCompat) view.findViewById(R.id.weightSwitch)).setChecked(true);
+        if(!InAppActivity.useNewPersonalDataFragments.get()) {
+            view.findViewById(R.id.skipButton).setOnClickListener(v -> ((InAppActivity) requireActivity()).proceedQuestions(5));
 
-        view.findViewById(R.id.skipButton).setOnClickListener(v -> ((InAppActivity) requireActivity()).proceedQuestions(5));
+            view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
+                saveGivenUnits(view);
+                ((InAppActivity) requireActivity()).proceedQuestions(5);
+            });
+        } else{
+            InAppActivity.useNewPersonalDataFragments.set(false);
+            ((AppCompatButton) view.findViewById(R.id.skipButton)).setText(R.string.do_not_change);
+            ((AppCompatButton) view.findViewById(R.id.proceedButton)).setText(R.string.change);
 
-        view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
-            if(!((SwitchCompat) view.findViewById(R.id.heightSwitch)).isChecked())
-                putHeightUnit(requireActivity(), HEIGHT_UNIT_CM);
-            else
-                putHeightUnit(requireActivity(), HEIGHT_UNIT_FT_IN);
-
-            if(!((SwitchCompat) view.findViewById(R.id.weightSwitch)).isChecked())
-                putWeightUnit(requireActivity(), WEIGHT_UNIT_KG);
-            else
-                putWeightUnit(requireActivity(), WEIGHT_UNIT_LBS);
-
-            if(!((SwitchCompat) view.findViewById(R.id.distanceSwitch)).isChecked())
-                putDistanceUnit(requireActivity(), DISTANCE_UNIT_KM);
-            else
-                putDistanceUnit(requireActivity(), DISTANCE_UNIT_MILE);
-
-            if(!((SwitchCompat) view.findViewById(R.id.energySwitch)).isChecked())
-                putEnergyUnit(requireActivity(), ENERGY_UNIT_CAL);
-            else
-                putEnergyUnit(requireActivity(), ENERGY_UNIT_KJ);
-
-            if(!((SwitchCompat) view.findViewById(R.id.fluidSwitch)).isChecked())
-                putFluidUnit(requireActivity(), FLUID_UNIT_LITRE);
-            else
-                putFluidUnit(requireActivity(), FLUID_UNIT_GALLON);
-
-            if(OpeningQuestionFragment.everythingIsKnown(requireActivity()))
-                OpeningQuestionFragment.putShouldSkipQuestions(requireActivity(), true);
-
-            ((InAppActivity) requireActivity()).proceedQuestions(5);
-        });
+            view.findViewById(R.id.skipButton).setOnClickListener(v -> requireActivity().onBackPressed());
+            view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
+                saveGivenUnits(view);
+                requireActivity().onBackPressed();
+            });
+        }
     }
 
     @Nullable

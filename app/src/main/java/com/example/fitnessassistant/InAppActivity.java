@@ -29,7 +29,10 @@ import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.profile.AccountDataFragment;
+import com.example.fitnessassistant.profile.GoalsFragment;
 import com.example.fitnessassistant.profile.LinkAccountsFragment;
+import com.example.fitnessassistant.profile.PersonalDataFragment;
 import com.example.fitnessassistant.profile.ProfilePageFragment;
 import com.example.fitnessassistant.profile.SettingsFragment;
 import com.example.fitnessassistant.questions.BirthdayFragment;
@@ -47,6 +50,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InAppActivity extends AppCompatActivity {
     // network manager for network connectivity checking
@@ -62,6 +66,11 @@ public class InAppActivity extends AppCompatActivity {
     public static ActivityTrackingFragment activityTrackingFragment;
     public static SettingsFragment settingsFragment;
     public static LinkAccountsFragment linkAccountsFragment;
+    public static GoalsFragment goalsFragment;
+    public static AccountDataFragment accountDataFragment;
+    public static PersonalDataFragment personalDataFragment;
+    // this atomic boolean is used for Personal Data Fragments (Height, Weight, Gender, UnitPreference)
+    public static AtomicBoolean useNewPersonalDataFragments = new AtomicBoolean(false);
     // and fragment manager
     private final FragmentManager fm = getSupportFragmentManager();
     // and setting the currently active fragment as home
@@ -115,6 +124,9 @@ public class InAppActivity extends AppCompatActivity {
         settingsFragment = new SettingsFragment();
         linkAccountsFragment = new LinkAccountsFragment();
         activityTrackingFragment = new ActivityTrackingFragment();
+        goalsFragment = new GoalsFragment();
+        accountDataFragment = new AccountDataFragment();
+        personalDataFragment = new PersonalDataFragment();
 
         active = homeFragment;
 
@@ -229,7 +241,7 @@ public class InAppActivity extends AppCompatActivity {
             fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new BirthdayFragment(), null).commit();
         else if(HeightFragment.getHeight(this) == -1f && order < 3)
             fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new HeightFragment(), null).commit();
-        else if(WeightFragment.getWeight(this) == -1f && order < 4)
+        else if(WeightFragment.getLastDailyAverage(this) == -1f && order < 4)
             fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new WeightFragment(), null).commit();
         else if(UnitPreferenceFragment.isUnknown(this) && order < 5)
             fm.beginTransaction().hide(Objects.requireNonNull(fm.findFragmentById(R.id.in_app_container))).add(R.id.in_app_container, new UnitPreferenceFragment(), null).commit();

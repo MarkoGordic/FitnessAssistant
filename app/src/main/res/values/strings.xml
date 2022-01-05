@@ -35,8 +35,6 @@
     <string name="password">Password</string>
     <string name="sign_in">Sign In</string>
     <string name="reset_password">Reset Password</string>
-    <string name="back_button_description">Return to previous activity</string>
-    <string name="settings_description">Goes to SettingsFragment</string>
     <string name="create_account">Create an Account</string>
     <string name="register">Register</string>
     <string name="confirm_password">Confirm Password</string>
@@ -56,6 +54,8 @@
     <string name="delete">Delete</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="change">Change</string>
+    <string name="do_not_change">Don\'t Change</string>
+    <string name="set">Set</string>
     <string name="continue_ad">Continue</string>
     <string name="change_password">Change Password</string>
     <string name="your_profile">Your Profile</string>
@@ -70,6 +70,21 @@
     <string name="change_profile_picture">Change Profile Picture</string>
     <string name="stop_activity">Stop tracking </string>
     <string name="stop_activity_save">Stop tracking without saving</string>
+    <string name="goals">Goals</string>
+    <string name="weight">Weight</string>
+    <string name="starting_weight">Starting Weight</string>
+    <string name="current_weight">Current Weight</string>
+    <string name="goal_weight">Goal Weight</string>
+    <string name="personal_data">Personal Data</string>
+    <string name="account_data">Account Data</string>
+    <string name="account_authentication">Account Authentication</string>
+    <string name="account_appearance">Account Appearance</string>
+    <string name="basic_data">Basic Data</string>
+    <string name="current_height">Current Height</string>
+    <string name="gender">Gender</string>
+    <string name="units_preference">Units Preference</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="last_updated">Last Updated</string>
 
     <!-- errors -->
     <!-- general errors -->
@@ -143,8 +158,8 @@
     <string name="re_authentication_message">In order to continue, authenticate your account once again by entering your password</string>
     <string name="re_enter_your_password">Enter your password</string>
     <string name="re_authentication_unsuccessful">Authentication Unsuccessful</string>
-    <string name="change_your_username">Change Username</string>
-    <string name="change_your_email">Change Email</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_email">Change Email</string>
     <string name="change_your_password">Change Password</string>
     <string name="change_username_message"><b>Please note: </b>Provide a valid username.\nInvalid usernames will NOT change your old one.</string>
     <string name="change_email_message"><b>Please note: </b>Provide a valid email.\nYou\'ll have to verify it on your next sign in.</string>
@@ -162,8 +177,6 @@
     <string name="email_change_successful">Email Change Successful</string>
     <string name="unable_to_refresh">Unable To Refresh</string>
     <string name="swipe_up_to_use_the_map">Swipe up for the Map</string>
-    <string name="swipe_down_to_close_the_map">Swipe down to close the Map</string>
-    <string name="swipe_down_to_hide">Swipe down to Hide</string>
     <string name="cancel_tracking_warning">Stop tracking?</string>
     <string name="cancel_tracking">Are you sure you want to stop activity tracking?</string>
 
@@ -202,7 +215,6 @@
     <string name="starting_pedometer_service">Starting Pedometer Service…</string>
     <string name="registering_steps">Registering steps…</string>
     <string name="step_counter_not_active">StepCounter Not Active</string>
-    <string name="widget_background_description">Sets background of the widget.</string>
     <string name="stop_counting">Stop Counting</string>
     <string name="start_counting">Start Counting</string>
     <string name="step_goal">Step Goal</string>
@@ -213,7 +225,7 @@
     <string name="activity_tracking">Activity Tracking</string>
     <string name="activity_tracking_desc">Realtime tracking of your workout/activity.</string>
     <string name="sleep_tracking">Sleep Tracking</string>
-    <string name="sleep_tracking_desc">Automatic sleep tracking/detection updates.</string>
+    <string name="sleep_tracking_desc">Automatic sleep detection/tracking updates.</string>
 
     <!-- Map Strings -->
     <string name="map_view">Map View</string>
@@ -226,10 +238,13 @@
     <string name="speed">Speed</string>
     <string name="average_speed">Avg. speed</string>
     <string name="center">Center</string>
+    <string name="activity_tracking_active">Activity Tracking Active</string>
+    <string name="activity_tracking_active_message">This feature is not available while Activity Tracking is active. Stop your activity tracking session and try again.</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Skip</string>
     <string name="proceed">Proceed</string>
+    <string name="go_back">Go Back</string>
     <string name="questions_description">To give you the most accurate statistics possible, we will ask you a few questions about you and your preferences.</string>
     <string name="you_will_be_asked_again">If you skip the questions, you will be asked again each time you use the app. You can avoid this by selecting the option below.</string>
     <string name="do_not_ask_again">Don\'t ask again</string>
@@ -259,6 +274,10 @@
     <string name="kilograms">Kilograms</string>
     <string name="pounds">Pounds</string>
     <string name="weight_not_valid">Weight entered is not valid.</string>
+    <string name="change_your_goal_weight">Change Your Goal Weight</string>
+    <string name="updating_weight_message">Average weight will be used for each day. In case of a mistake, you can simply delete all weights for that day.</string>
+    <string name="delete_entered_weights">Delete Entered Weights</string>
+    <string name="delete_weights_message">Do you want to delete all weights you entered today?</string>
     <!-- UnitQ Strings -->
     <string name="what_are_your_unit_preferences">What Are Your\nUnit Preferences?</string>
     <string name="distance_colon">Distance:</string>

@@ -23,8 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -35,6 +33,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.activitytracker.LocationService;
 import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LanguageAdapter;
 import com.example.fitnessassistant.util.AuthFunctional;
@@ -44,7 +43,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -52,10 +50,6 @@ import java.util.Objects;
 
 public class SettingsFragment extends Fragment {
     private GoogleSignInClient googleLinkingClient;
-    ActivityResultLauncher<String> imageGetter = registerForActivityResult(new ActivityResultContracts.GetContent(), URI -> {
-        if(FirebaseAuth.getInstance().getCurrentUser() != null)
-            FirebaseAuth.getInstance().getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(URI).build()).addOnCompleteListener(task -> onResume());
-    });
 
     // used to get emoji for given locale
     public static String localeToEmoji(Locale locale) {
@@ -81,34 +75,162 @@ public class SettingsFragment extends Fragment {
         // backButton listener - calls activity's onBackPressed()
         view.findViewById(R.id.backButton).setOnClickListener(view1 -> requireActivity().onBackPressed());
 
-        // linkAccountsTextView listener - shows LinkAccountsFragment, hides current fragment
-        view.findViewById(R.id.linkAccountsTextView).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.linkAccountsFragment).addToBackStack(null).commit());
+        SwitchCompat darkModeSwitch = view.findViewById(R.id.darkModeSwitch);
 
-        view.findViewById(R.id.changeProfilePicture).setOnClickListener(view1 -> imageGetter.launch("image/*"));
+        // setChecked of darkModeSwitch dependant of what mode is active
+        if(ColorMode.ACTIVE_MODE.equals(ColorMode.DARK_MODE)){
+            darkModeSwitch.setChecked(true);
+            darkModeSwitch.setText(R.string.dark_mode);
+            darkModeSwitch.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.moon),null,null,null);
+        } else{
+            darkModeSwitch.setChecked(false);
+            darkModeSwitch.setText(R.string.light_mode);
+            darkModeSwitch.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.sun),null,null,null);
+        }
 
-        // changeUserNameTextView listener - calling the alert dialog
-        view.findViewById(R.id.changeUserNameTextView).setOnClickListener(view1 -> {
-            if (AuthFunctional.currentlyOnline)
-                AuthFunctional.setUpUserNameChange(getActivity());
-            else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+        // set onCheckedListener for darkModeSwitch
+        ((SwitchCompat) view.findViewById(R.id.darkModeSwitch)).setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if(LocationService.serviceKilled) {
+                if (ServiceFunctional.getPedometerShouldRun(requireActivity()))
+                    ServiceFunctional.stopPedometerService(requireActivity());
+                if (isChecked) {
+                    compoundButton.setText(R.string.dark_mode);
+                    compoundButton.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.moon), null, null, null);
+                    ColorMode.applyColorMode(requireActivity(), ColorMode.DARK_MODE);
+                } else {
+                    compoundButton.setText(R.string.light_mode);
+                    compoundButton.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.sun), null, null, null);
+                    ColorMode.applyColorMode(requireActivity(), ColorMode.LIGHT_MODE);
+                }
+                // putting it into prefs, so that it can be used if user enters the app again
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
+                editor.putBoolean("theme_changed", true);
+                editor.apply();
+            } else{
+                // TODO check this
+                compoundButton.setChecked(!isChecked);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setView(R.layout.custom_ok_alert_dialog);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Drawable walk = AppCompatResources.getDrawable(requireActivity(), R.drawable.walk);
+                if(walk != null)
+                    walk.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(walk);
+
+                ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_tracking_active);
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_tracking_active_message);
+                dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+            }
         });
 
-        // changeEmailTextView listener - calling the alert dialog
-        view.findViewById(R.id.changeEmailTextView).setOnClickListener(view1 -> {
-            if (AuthFunctional.currentlyOnline)
-                AuthFunctional.setUpEmailChange(getActivity());
-            else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+        // selectLanguageTextView listener - gives alert dialogs for choosing the language
+        view.findViewById(R.id.selectLanguageTextView).setOnClickListener(view1 -> {
+            if(LocationService.serviceKilled) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(requireContext());
+                builder1.setView(R.layout.custom_select_choice_dialog);
+                Dialog dialog = builder1.create();
+                dialog.show();
+                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.world);
+                ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.select_a_language);
+
+                ((Button) dialog.findViewById(R.id.dialog_negative_button)).setText(R.string.cancel);
+                dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view22 -> dialog.dismiss());
+
+                // sets text with emojis
+                String serbian = String.format("%s  %s", localeToEmoji(new Locale("sr", "RS")), getString(R.string.serbian));
+                String english = String.format("%s  %s", localeToEmoji(new Locale("en", "GB")), getString(R.string.english));
+
+                ListView listView = dialog.findViewById(R.id.languagesList);
+                ArrayList<String> languageList = new ArrayList<>();
+
+                languageList.add(serbian);
+                languageList.add(english);
+
+                LanguageAdapter languageAdapter = new LanguageAdapter(requireContext(), languageList);
+
+                listView.setAdapter(languageAdapter);
+
+                listView.setOnItemClickListener((parent, view23, position, id) -> {
+                    dialog.dismiss();
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(requireContext());
+                    builder2.setView(R.layout.custom_two_button_alert_dialog);
+                    Dialog dialog1 = builder2.create();
+                    dialog1.show();
+
+                    dialog1.findViewById(R.id.dialog_drawable).setVisibility(View.GONE);
+                    dialog1.findViewById(R.id.dialog_input).setVisibility(View.GONE);
+
+                    ((TextView) dialog1.findViewById(R.id.dialog_header)).setText(R.string.your_selected_language_is);
+
+                    ((Button) dialog1.findViewById(R.id.dialog_negative_button)).setText(R.string.cancel);
+                    dialog1.findViewById(R.id.dialog_negative_button).setOnClickListener(view24 -> {
+                        dialog1.dismiss();
+                        dialog.show();
+                    });
+
+                    ((Button) dialog1.findViewById(R.id.dialog_positive_button)).setText(R.string.continue_ad);
+
+                    // get language selected
+                    String languageSelected = languageAdapter.getItem(position);
+
+                    // prepares dialogs based on country/language chosen
+                    if (languageSelected != null) {
+                        if (languageSelected.equals(serbian)) {
+                            // setting up language UI
+                            ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(serbian);
+                            ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                            dialog1.findViewById(R.id.dialog_message).setPadding(0, 30, 0, 10);
+                            ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextColor(requireContext().getColor(R.color.SpaceCadet));
+
+                            dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
+                                dialog1.dismiss();
+                                PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "sr").apply();
+                                if (ServiceFunctional.getPedometerShouldRun(requireActivity()))
+                                    ServiceFunctional.stopPedometerService(requireActivity());
+                                restartApp(requireContext(), 500);
+                            });
+                        } else if (languageSelected.equals(english)) {
+                            // setting up language UI
+                            ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(english);
+                            ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                            dialog1.findViewById(R.id.dialog_message).setPadding(0, 30, 0, 10);
+                            ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextColor(requireContext().getColor(R.color.SpaceCadet));
+
+                            dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
+                                dialog1.dismiss();
+                                PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "en").apply();
+                                if (ServiceFunctional.getPedometerShouldRun(requireActivity()))
+                                    ServiceFunctional.stopPedometerService(requireActivity());
+                                restartApp(requireContext(), 500);
+                            });
+                        }
+                    }
+                });
+            } else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setView(R.layout.custom_ok_alert_dialog);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Drawable walk = AppCompatResources.getDrawable(requireActivity(), R.drawable.walk);
+                if(walk != null)
+                    walk.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(walk);
+
+                ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_tracking_active);
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_tracking_active_message);
+                dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+            }
         });
 
-        // changePasswordButton listener - calling the alert dialog
-        view.findViewById(R.id.changePasswordTextView).setOnClickListener(view1 -> {
-            if(AuthFunctional.currentlyOnline)
-                AuthFunctional.setUpPasswordChange(getActivity());
-            else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
-        });
+        view.findViewById(R.id.personalDataTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.personalDataFragment).addToBackStack(null).commit());
+
+        view.findViewById(R.id.accountDataTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.accountDataFragment).addToBackStack(null).commit());
 
         // privacyPolicy listener - opens up privacy policy in web browser
         view.findViewById(R.id.ppTextView).setOnClickListener(view1 -> startActivity(new Intent("android.intent.action.VIEW", Uri.parse(getString(R.string.privacy_policy_link)))));
@@ -130,7 +252,7 @@ public class SettingsFragment extends Fragment {
                 // stopping Pedometer service
                 ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
                 ServiceFunctional.stopPedometerService(requireActivity());
-            }else // if there is no internet, the animated notification quickly flashes
+            } else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
             return true; // returns true -> onClick doesn't get triggered
         });
@@ -167,124 +289,6 @@ public class SettingsFragment extends Fragment {
             }
             else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
-        });
-
-
-        SwitchCompat darkModeSwitch = view.findViewById(R.id.darkModeSwitch);
-
-        // setChecked of darkModeSwitch dependant of what mode is active
-        if(ColorMode.ACTIVE_MODE.equals(ColorMode.DARK_MODE)){
-            darkModeSwitch.setChecked(true);
-            darkModeSwitch.setText(R.string.dark_mode);
-            darkModeSwitch.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.moon),null,null,null);
-        } else{
-            darkModeSwitch.setChecked(false);
-            darkModeSwitch.setText(R.string.light_mode);
-            darkModeSwitch.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.sun),null,null,null);
-        }
-
-        // set onCheckedListener for darkModeSwitch
-        ((SwitchCompat) view.findViewById(R.id.darkModeSwitch)).setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if(ServiceFunctional.getPedometerShouldRun(requireActivity()))
-                ServiceFunctional.stopPedometerService(requireActivity());
-            if(isChecked){
-                compoundButton.setText(R.string.dark_mode);
-                compoundButton.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.moon),null,null,null);
-                ColorMode.applyColorMode(requireActivity(), ColorMode.DARK_MODE);
-            } else{
-                compoundButton.setText(R.string.light_mode);
-                compoundButton.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.sun),null,null,null);
-                ColorMode.applyColorMode(requireActivity(), ColorMode.LIGHT_MODE);
-            }
-            // putting it into prefs, so that it can be used if user enters the app again
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
-            editor.putBoolean("theme_changed", true);
-            editor.apply();
-        });
-
-        // selectLanguageTextView listener - gives alert dialogs for choosing the language
-        view.findViewById(R.id.selectLanguageTextView).setOnClickListener(view1 -> {
-
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(requireContext());
-            builder1.setView(R.layout.custom_select_choice_dialog);
-            Dialog dialog = builder1.create();
-            dialog.show();
-            ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.world);
-            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.select_a_language);
-
-            ((Button) dialog.findViewById(R.id.dialog_negative_button)).setText(R.string.cancel);
-            dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view22 -> dialog.dismiss());
-
-            // sets text with emojis
-            String serbian = String.format("%s  %s", localeToEmoji(new Locale("sr", "RS")), getString(R.string.serbian));
-            String english = String.format("%s  %s", localeToEmoji(new Locale("en", "GB")), getString(R.string.english));
-
-            ListView listView = dialog.findViewById(R.id.languagesList);
-            ArrayList<String> languageList = new ArrayList<>();
-
-            languageList.add(serbian);
-            languageList.add(english);
-
-            LanguageAdapter languageAdapter = new LanguageAdapter(requireContext(), languageList);
-
-            listView.setAdapter(languageAdapter);
-
-            listView.setOnItemClickListener((parent, view23, position, id) -> {
-                dialog.dismiss();
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(requireContext());
-                builder2.setView(R.layout.custom_two_button_alert_dialog);
-                Dialog dialog1 = builder2.create();
-                dialog1.show();
-
-                dialog1.findViewById(R.id.dialog_drawable).setVisibility(View.GONE);
-                dialog1.findViewById(R.id.dialog_input).setVisibility(View.GONE);
-
-                ((TextView) dialog1.findViewById(R.id.dialog_header)).setText(R.string.your_selected_language_is);
-
-                ((Button) dialog1.findViewById(R.id.dialog_negative_button)).setText(R.string.cancel);
-                dialog1.findViewById(R.id.dialog_negative_button).setOnClickListener(view24 -> {
-                    dialog1.dismiss();
-                    dialog.show();
-                });
-
-                ((Button) dialog1.findViewById(R.id.dialog_positive_button)).setText(R.string.continue_ad);
-
-                // get language selected
-                String languageSelected = languageAdapter.getItem(position);
-
-                // prepares dialogs based on country/language chosen
-                if(languageSelected != null) {
-                    if (languageSelected.equals(serbian)) {
-                        // setting up language UI
-                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(serbian);
-                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-                        dialog1.findViewById(R.id.dialog_message).setPadding(0,30,0,10);
-                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextColor(requireContext().getColor(R.color.SpaceCadet));
-
-                        dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
-                            dialog1.dismiss();
-                            PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "sr").apply();
-                            if(ServiceFunctional.getPedometerShouldRun(requireActivity()))
-                                ServiceFunctional.stopPedometerService(requireActivity());
-                            restartApp(requireContext(), 500);
-                        });
-                    } else if (languageSelected.equals(english)) {
-                        // setting up language UI
-                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setText(english);
-                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-                        dialog1.findViewById(R.id.dialog_message).setPadding(0,30,0,10);
-                        ((TextView) dialog1.findViewById(R.id.dialog_message)).setTextColor(requireContext().getColor(R.color.SpaceCadet));
-
-                        dialog1.findViewById(R.id.dialog_positive_button).setOnClickListener(view24 -> {
-                            dialog1.dismiss();
-                            PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "en").apply();
-                            if(ServiceFunctional.getPedometerShouldRun(requireActivity()))
-                                ServiceFunctional.stopPedometerService(requireActivity());
-                            restartApp(requireContext(), 500);
-                        });
-                    }
-                }
-            });
         });
     }
 

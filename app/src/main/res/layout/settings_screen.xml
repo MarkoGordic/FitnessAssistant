@@ -36,7 +36,7 @@
             android:layout_marginTop="-32dp"
 
             android:background="@color/backgroundColor"
-            android:contentDescription="@string/back_button_description"
+            android:contentDescription="@null"
 
             android:paddingStart="20dp"
             android:paddingTop="20dp"
@@ -44,9 +44,7 @@
             android:paddingBottom="4dp"
 
             android:src="@drawable/back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <!-- Settings Header -->
         <TextView
@@ -112,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
 
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
 
             android:background="@drawable/settings_field"
 
@@ -150,9 +148,9 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <!-- LinkAccounts TextView -->
+        <!-- PersonalData TextView -->
         <TextView
-            android:id="@+id/linkAccountsTextView"
+            android:id="@+id/personalDataTextView"
 
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -161,20 +159,20 @@
 
             android:background="@drawable/settings_field"
 
-            app:drawableStartCompat="@drawable/link"
+            app:drawableStartCompat="@drawable/user_focused"
             app:drawableEndCompat="@drawable/forward"
             android:drawablePadding="12dp"
 
-            android:text="@string/link_accounts"
+            android:text="@string/personal_data"
             android:textColor="@color/SpaceCadet"
             android:paddingStart="16dp"
             android:paddingEnd="12dp"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <!-- ChangeProfilePicture TextView -->
+        <!-- AccountData TextView -->
         <TextView
-            android:id="@+id/changeProfilePicture"
+            android:id="@+id/accountDataTextView"
 
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -187,73 +185,7 @@
             app:drawableEndCompat="@drawable/forward"
             android:drawablePadding="12dp"
 
-            android:text="@string/change_profile_picture"
-            android:textColor="@color/SpaceCadet"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <!-- ChangeUsername TextView -->
-        <TextView
-            android:id="@+id/changeUserNameTextView"
-
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-
-            android:layout_marginTop="5dp"
-
-            android:background="@drawable/settings_field"
-
-            app:drawableStartCompat="@drawable/user_focused"
-            app:drawableEndCompat="@drawable/forward"
-            android:drawablePadding="12dp"
-
-            android:text="@string/change_your_username"
-            android:textColor="@color/SpaceCadet"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <!-- ChangeEmail TextView -->
-        <TextView
-            android:id="@+id/changeEmailTextView"
-
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-
-            android:layout_marginTop="5dp"
-
-            android:background="@drawable/settings_field"
-
-            app:drawableStartCompat="@drawable/mail_focused"
-            app:drawableEndCompat="@drawable/forward"
-            android:drawablePadding="12dp"
-
-            android:text="@string/change_your_email"
-            android:textColor="@color/SpaceCadet"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <!-- ChangePassword TextView -->
-        <TextView
-            android:id="@+id/changePasswordTextView"
-
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-
-            android:layout_marginTop="5dp"
-
-            android:background="@drawable/settings_field"
-
-            app:drawableStartCompat="@drawable/lock_focused"
-            app:drawableEndCompat="@drawable/forward"
-            android:drawablePadding="12dp"
-
-            android:text="@string/change_password"
+            android:text="@string/account_data"
             android:textColor="@color/SpaceCadet"
             android:paddingStart="16dp"
             android:paddingEnd="12dp"

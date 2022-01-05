@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -177,7 +177,10 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         dialog.show();
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.map_marker_cross);
+        Drawable walk = AppCompatResources.getDrawable(requireActivity(), R.drawable.walk);
+        if(walk != null)
+            walk.setTint(requireActivity().getColor(R.color.SpaceCadet));
+        ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(walk);
 
         dialog.findViewById(R.id.dialog_exit_save_button).setOnClickListener(v -> {
             dialog.dismiss();
@@ -243,6 +246,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     // TODO: Link with button to show path + disable focus on user while watching path
+    // TODO: focusing crashes if activity was not active
     private void focusPathOnMap(){
         LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
         for(int i = 0; i < pathHistory.size(); i++) {
@@ -333,35 +337,13 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         view.findViewById(R.id.startButton).setOnClickListener(v -> PermissionFunctional.checkFineLocationPermission(this, fineLocationPermissionLauncher));
 
         // set up downClose on click listener
-        view.findViewById(R.id.downClose).setOnClickListener(view1 -> Toast.makeText(requireContext(), R.string.swipe_down_to_close_the_map, Toast.LENGTH_SHORT).show());
+        view.findViewById(R.id.downClose).setOnClickListener(view1 -> requireActivity().onBackPressed());
 
         // set up downClose on touch listener (for swiping)
-        view.findViewById(R.id.downClose).setOnTouchListener(new View.OnTouchListener() {
-            // xCord and yCord of event registered
-            float xCord;
-            float yCord;
-            // len, used to determine what the event actually was
-            final float len = getResources().getDisplayMetrics().densityDpi / 6f;
-
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    // when button gets pressed, get cords of the click
-                    xCord = event.getX();
-                    yCord = event.getY();
-                } else if(event.getAction() == MotionEvent.ACTION_UP){
-                    // when button gets released, set cords to amount moved from ACTION_DOWN's click cords
-                    xCord -= event.getX();
-                    yCord -= event.getY();
-
-                    // if it's a swipe DOWN (<)
-                    if(yCord < -len * 2)
-                        requireActivity().onBackPressed();
-                    else
-                        view.performClick(); // call onClickListener
-                }
-                return false;
-            }
+        view.findViewById(R.id.downClose).setOnTouchListener((view1, event) -> {
+            if(event.getAction() == MotionEvent.ACTION_UP)
+                view1.performClick(); // call onClickListener
+            return false;
         });
 
         view.findViewById(R.id.stopTracking).setOnClickListener(v -> {
@@ -390,19 +372,17 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     xCord -= event.getX();
                     yCord -= event.getY();
 
-                    // if layout is not closed and user swipes down
-                    if (!closedLayout && yCord < -len * 3) {
+                    // if layout is not closed and user clicks/swipes down
+                    if (!closedLayout && yCord < len) {
                         closedLayout = true;
                         requireView().findViewById(R.id.statsLayout).setVisibility(View.GONE);
                         ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.up));
-                    } else if (closedLayout){
+                    } else if (closedLayout && yCord > -len){
                         closedLayout = false;
                         requireView().findViewById(R.id.statsLayout).setVisibility(View.VISIBLE);
                         ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.down));
-                    } else {
-                        view.performClick();
-                        Toast.makeText(requireContext(), R.string.swipe_down_to_hide, Toast.LENGTH_SHORT).show();
                     }
+                    view.performClick();
                 }
                 return false;
             }

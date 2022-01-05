@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/widget_background"
-        android:contentDescription="@string/widget_background_description" />
+        android:contentDescription="@null" />
 
     <RelativeLayout
         android:layout_width="match_parent"

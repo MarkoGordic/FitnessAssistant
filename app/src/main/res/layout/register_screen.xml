@@ -52,17 +52,18 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_network_notification"
+        android:background="@color/backgroundColor"
+        android:contentDescription="@null"
 
         android:paddingStart="20dp"
-        android:paddingEnd="4dp"
         android:paddingTop="20dp"
+        android:paddingEnd="4dp"
         android:paddingBottom="4dp"
 
         android:src="@drawable/back"
-        android:background="@color/backgroundColor"
-        android:contentDescription="@string/back_button_description"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_network_notification"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <!-- User Drawable -->
     <androidx.appcompat.widget.AppCompatImageView
