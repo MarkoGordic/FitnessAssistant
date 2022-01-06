@@ -21,6 +21,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.questions.HeightFragment;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
+import com.example.fitnessassistant.questions.WeightFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -31,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 public class LocationService extends LifecycleService {
     private static final int ACTIVITY_TRACKING_ID = 27;
@@ -47,6 +51,9 @@ public class LocationService extends LifecycleService {
     public static MutableLiveData<Float> averageSpeed = new MutableLiveData<>();
     private int speedUpdateCount = 0;
     private float speedSum = 0f;
+
+    public static MutableLiveData<Float> caloriesBurnt = new MutableLiveData<>();
+    private static long lastKnownTimeInMilliseconds = 0L;
 
     private boolean isTimerEnabled = false;
     private long segmentTime = 0L;
@@ -68,6 +75,7 @@ public class LocationService extends LifecycleService {
         totalDistanceInKm.postValue(0D);
         currentSpeed.postValue(0F);
         averageSpeed.postValue(0F);
+        caloriesBurnt.postValue(0F);
     }
 
     private void resetVariables(){
@@ -82,6 +90,43 @@ public class LocationService extends LifecycleService {
         speedSum = 0f;
         speedUpdateCount = 0;
         lastLatLng = null;
+    }
+
+    private void updateBurntCalories(){
+        // First, we need to calculate time for formula
+        long timeSinceLastUpdate = 0L;
+
+        if(timeInMilliseconds.getValue() != null) {
+            timeSinceLastUpdate = lastKnownTimeInMilliseconds - timeInMilliseconds.getValue();
+            lastKnownTimeInMilliseconds = timeInMilliseconds.getValue();
+        }
+
+        long timeInMinutes = TimeUnit.MILLISECONDS.toMinutes(timeSinceLastUpdate);
+
+        // In case it's available, we need to get weight
+        float weight = WeightFragment.getLastDailyAverage(this); // will be 0 in case unavailable
+
+        // Converting weight if needed
+        if(UnitPreferenceFragment.getWeightUnit(this).equals("lbs") && weight != 0f)
+            weight = (float) weight / 2.205f;
+
+        // In case it's available, we need to get height
+        float height = HeightFragment.getHeight(this); // will be -1 in case unavailable
+
+        // Converting height if needed
+        if(UnitPreferenceFragment.getHeightUnit(this).equals("ft_in") && height != -1f)
+            height = height * 2.54f;
+
+        // We need to get user's speed
+        float speed = 0F;
+        if(currentSpeed.getValue() != null)
+            speed = currentSpeed.getValue();
+
+        // TODO: Cover other cases
+        if(weight != 0f && height != -1f && caloriesBurnt.getValue() != null) {
+            caloriesBurnt.postValue(caloriesBurnt.getValue() + ((weight * 0.035f + ((speed * speed) / height)) * 0.029f) * weight * timeInMinutes);
+        }
+
     }
 
     private void calculateNewDistanceInKm(LatLng newLocation){
@@ -188,6 +233,9 @@ public class LocationService extends LifecycleService {
         speedSum += location.getSpeed() * 3.6f;
         currentSpeed.postValue(location.getSpeed() * 3.6f);
         averageSpeed.postValue(speedSum / speedUpdateCount);
+
+        // updating calories
+        updateBurntCalories();
 
         // saving new point as last
         lastLatLng = newPoint;

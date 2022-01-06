@@ -2,6 +2,7 @@ package com.example.fitnessassistant.activitytracker;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -101,7 +102,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     public static Vector<Vector<LatLng>> pathHistory = new Vector<>();
 
     private final int polylineColor = Color.BLUE;
-    private final float polylineWidth = 7f;
+    private final float polylineWidth = 8f;
 
     private long currentTimeInMilliseconds = 0L;
 
@@ -216,7 +217,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void focusUserOnMap(){
-        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser){
+        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser && !LocationService.serviceKilled){
             float mapZoom = 18f;
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
@@ -228,41 +229,43 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void forceFocusPathOnMap(){
-        LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
-        for(int i = 0; i < pathHistory.size(); i++) {
-            for (int j = 0; j < pathHistory.get(i).size(); j++) {
-                pathBounds.include(pathHistory.get(i).get(j));
+        if(!LocationService.serviceKilled) {
+            LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
+            for (int i = 0; i < pathHistory.size(); i++) {
+                for (int j = 0; j < pathHistory.get(i).size(); j++) {
+                    pathBounds.include(pathHistory.get(i).get(j));
+                }
             }
-        }
 
-        googleMap.moveCamera(
-                CameraUpdateFactory.newLatLngBounds(
-                        pathBounds.build(),
-                        mapView.getWidth(),
-                        mapView.getHeight(),
-                        (int)(mapView.getHeight() * 0.05f)
-                )
-        );
+            googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngBounds(
+                            pathBounds.build(),
+                            mapView.getWidth(),
+                            mapView.getHeight(),
+                            (int) (mapView.getHeight() * 0.05f)
+                    )
+            );
+        }
     }
 
-    // TODO: Link with button to show path + disable focus on user while watching path
-    // TODO: focusing crashes if activity was not active
     private void focusPathOnMap(){
-        LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
-        for(int i = 0; i < pathHistory.size(); i++) {
-            for (int j = 0; j < pathHistory.get(i).size(); j++) {
-                pathBounds.include(pathHistory.get(i).get(j));
+        if(!LocationService.serviceKilled) {
+            LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
+            for (int i = 0; i < pathHistory.size(); i++) {
+                for (int j = 0; j < pathHistory.get(i).size(); j++) {
+                    pathBounds.include(pathHistory.get(i).get(j));
+                }
             }
-        }
 
-        googleMap.animateCamera(
-                CameraUpdateFactory.newLatLngBounds(
-                        pathBounds.build(),
-                        mapView.getWidth(),
-                        mapView.getHeight(),
-                        (int)(mapView.getHeight() * 0.05f)
-                )
-        );
+            googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngBounds(
+                            pathBounds.build(),
+                            mapView.getWidth(),
+                            mapView.getHeight(),
+                            (int) (mapView.getHeight() * 0.05f)
+                    )
+            );
+        }
     }
 
     private void exitAndSaveActivity(){
@@ -428,15 +431,16 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
+
+        // Setting up map listeners
+        googleMap.setOnCameraMoveStartedListener(reason -> {
+            if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE || reason == GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION)
+                followUser = false;
+        });
+
         if(!LocationService.serviceKilled){
             addWholePathToMap();
             focusUserOnMap();
-
-            // Setting up map listeners
-            googleMap.setOnCameraMoveStartedListener(reason -> {
-                if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE || reason == GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION)
-                    followUser = false;
-            });
         }
     }
 
@@ -444,6 +448,12 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         Intent serviceIntent = new Intent(getContext(), LocationService.class);
         serviceIntent.putExtra("state", state);
         requireContext().startService(serviceIntent);
+    }
+
+    private void openSpotifyApp(){
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setComponent(new ComponentName("com.spotify.music","com.spotify.music.MainActivity"));
+        startActivity(intent);
     }
 
     @Override

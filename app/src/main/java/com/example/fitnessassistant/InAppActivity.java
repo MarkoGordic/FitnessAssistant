@@ -160,7 +160,7 @@ public class InAppActivity extends AppCompatActivity {
                 active = homeFragment;
                 active.onResume();
                 return true;
-            } else if(item.getItemId() == R.id.workout){
+            } else if(item.getItemId() == R.id.health){
                 fm.beginTransaction().hide(active).show(workoutFragment).commit();
                 active = workoutFragment;
                 active.onResume();
