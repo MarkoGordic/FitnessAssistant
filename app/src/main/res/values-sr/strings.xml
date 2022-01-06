@@ -20,6 +20,8 @@
     <string name="location_access_message_denied_forever">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
     <string name="location_access_message_denied">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju Aktivnost</b> ponovo.</string>
     <string name="approximate_location_not_enough">Praćenje fizičke aktivnosti <b>nije moguće koristiti</b> bez pristupa preciznoj lokaciji. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="background_location_access">FitnessAssistant želi da dobije dozvolu za stalan pristup lokaciji Vašeg uređaja</string>
+    <string name="background_location_access_message">Bez ovoga ili ukoliko je Vaša Android verzija niža od 10, praćenje fizičke aktivnosti neće raditi dok je aplikacija u pozadini.</string>
 
     <!-- Sign In / Register strings -->
     <!-- web client ID for Google Sign In - default - tools:ignore was used because of the warning -->

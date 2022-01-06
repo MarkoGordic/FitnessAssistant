@@ -22,7 +22,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.questions.HeightFragment;
-import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -104,18 +103,10 @@ public class LocationService extends LifecycleService {
         long timeInMinutes = TimeUnit.MILLISECONDS.toMinutes(timeSinceLastUpdate);
 
         // In case it's available, we need to get weight
-        float weight = WeightFragment.getLastDailyAverage(this); // will be 0 in case unavailable
-
-        // Converting weight if needed
-        if(UnitPreferenceFragment.getWeightUnit(this).equals("lbs") && weight != 0f)
-            weight = (float) weight / 2.205f;
+        float weight = WeightFragment.getLastDailyAverage(this); // will be -1 in case unavailable
 
         // In case it's available, we need to get height
         float height = HeightFragment.getHeight(this); // will be -1 in case unavailable
-
-        // Converting height if needed
-        if(UnitPreferenceFragment.getHeightUnit(this).equals("ft_in") && height != -1f)
-            height = height * 2.54f;
 
         // We need to get user's speed
         float speed = 0F;
@@ -123,10 +114,9 @@ public class LocationService extends LifecycleService {
             speed = currentSpeed.getValue();
 
         // TODO: Cover other cases
-        if(weight != 0f && height != -1f && caloriesBurnt.getValue() != null) {
+        if(weight != -1f && height != -1f && caloriesBurnt.getValue() != null) {
             caloriesBurnt.postValue(caloriesBurnt.getValue() + ((weight * 0.035f + ((speed * speed) / height)) * 0.029f) * weight * timeInMinutes);
         }
-
     }
 
     private void calculateNewDistanceInKm(LatLng newLocation){

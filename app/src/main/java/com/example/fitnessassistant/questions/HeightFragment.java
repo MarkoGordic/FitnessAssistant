@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 
-
+// height is saved in CMs
 public class HeightFragment extends Fragment {
 
     public static synchronized float getHeight(Context context){
@@ -33,13 +33,13 @@ public class HeightFragment extends Fragment {
     }
 
     private void setHeightInInches(float CMs, EditText feet, EditText inches){
-        float INs = (float) (CMs / 2.54f);
+        float INs = CMs / 2.54f;
         feet.setText(String.valueOf((int) (INs / 12f)));
         inches.setText(String.valueOf(Float.valueOf(INs - (int)(INs / 12) * 12)));
     }
 
     private void setHeightInCentimeters(float INs, EditText centimeters){
-        float CMs = (float) (INs * 2.54f);
+        float CMs = INs * 2.54f;
         centimeters.setText(String.valueOf(CMs));
     }
 

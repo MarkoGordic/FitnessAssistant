@@ -20,6 +20,8 @@
     <string name="location_access_message_denied_forever">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
     <string name="location_access_message_denied">Activity Tracking services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>Activity section</b> once again.</string>
     <string name="approximate_location_not_enough">Activity Tracking services <b>can\'t work properly</b> without precise location permission. If you want to grant this permission, head over to the <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="background_location_access">FitnessAssistant would like to access your location all the time</string>
+    <string name="background_location_access_message">Without this or if your Android version is lower than 10, Activity Tracking services won\'t work when our app is in background.</string>
 
     <!-- Sign In / Register strings -->
     <!-- web client ID for Google Sign In - default - tools:ignore was used because of the warning -->

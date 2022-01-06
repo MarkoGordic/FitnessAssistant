@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
-    // launcher for the Activity Recognition Permission
+    // launcher for the Location Permission
     public final ActivityResultLauncher<String[]> fineLocationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
         Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
         Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
@@ -88,6 +88,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         }
     });
+    // launcher for Background Location Permission
+    ActivityResultLauncher<String> backgroundLocationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> onActivityTrackingStart());
 
     private GoogleMap googleMap = null;
     private MapView mapView;
@@ -337,7 +339,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         view.findViewById(R.id.pauseButton).setOnClickListener(v -> onActivityTrackingPause());
 
         // startButton onClickListener
-        view.findViewById(R.id.startButton).setOnClickListener(v -> PermissionFunctional.checkFineLocationPermission(this, fineLocationPermissionLauncher));
+        view.findViewById(R.id.startButton).setOnClickListener(v -> PermissionFunctional.checkFineLocationPermission(this, fineLocationPermissionLauncher, backgroundLocationPermissionLauncher));
 
         // set up downClose on click listener
         view.findViewById(R.id.downClose).setOnClickListener(view1 -> requireActivity().onBackPressed());

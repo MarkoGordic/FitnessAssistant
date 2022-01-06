@@ -67,7 +67,7 @@ public class PermissionFunctional {
             ServiceFunctional.startPedometerService(context);
     }
 
-    public static void checkFineLocationPermission(ActivityTrackingFragment fragment, ActivityResultLauncher<String[]> permissionLauncher){
+    public static void checkFineLocationPermission(ActivityTrackingFragment fragment, ActivityResultLauncher<String[]> permissionLauncher, ActivityResultLauncher<String> bPermissionLauncher){
         if (ContextCompat.checkSelfPermission(fragment.requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // alert dialog to let user know we're requesting location permission
             AlertDialog.Builder builder = new AlertDialog.Builder(fragment.requireActivity());
@@ -106,7 +106,29 @@ public class PermissionFunctional {
             ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.location_access_denied);
             ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.approximate_location_not_enough);
             dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+        } else if(ContextCompat.checkSelfPermission(fragment.requireActivity(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                // alert dialog to let user know we're requesting location permission
+                AlertDialog.Builder builder = new AlertDialog.Builder(fragment.requireActivity());
+                builder.setView(R.layout.custom_ok_alert_dialog);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                // disables the user to cancel the given dialog
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.marker);
+
+                ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.background_location_access);
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.background_location_access_message);
+                dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> {
+                    dialog.dismiss();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        bPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+                    } else
+                        fragment.onActivityTrackingStart();
+                });
         } else
-            fragment.onActivityTrackingStart();
+                fragment.onActivityTrackingStart();
     }
 }

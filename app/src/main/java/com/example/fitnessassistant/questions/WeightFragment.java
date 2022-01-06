@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// weight is saved in KGs
 public class WeightFragment extends Fragment {
     public static AtomicBoolean isGoalWeight = new AtomicBoolean(false);
 
