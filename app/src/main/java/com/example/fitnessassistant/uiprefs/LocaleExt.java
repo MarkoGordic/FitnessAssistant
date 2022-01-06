@@ -10,6 +10,7 @@ import android.os.LocaleList;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.PedometerWidget;
+import com.example.fitnessassistant.pedometer.StepGoalFragment;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
 import java.util.Locale;
@@ -56,16 +57,17 @@ public class LocaleExt {
 
         Context newContext = context.createConfigurationContext(config);
 
-        if(updateWidgets)
+        if(updateWidgets) {
             for (int id : AppWidgetManager.getInstance(newContext).getAppWidgetIds(new ComponentName(newContext, PedometerWidget.class))) {
                 PedometerWidget.updateAppWidget(newContext, AppWidgetManager.getInstance(newContext), id, AppWidgetManager.getInstance(context).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
             }
+            Pedometer.updatePedometerWidgetData(newContext ,((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)), null);
+        }
 
         if(updateNotifications)
-            if(ServiceFunctional.getPedometerShouldRun(newContext)) {
-                Pedometer.pushPedometerNotification(newContext, ((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + newContext.getString(R.string.steps_small),newContext.getString(R.string.your_today_goal) + " " + newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("dailyStepGoal", 10000) + ".");
-                Pedometer.updatePedometerWidgetData(newContext ,((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)), null);
-            }
+            if(ServiceFunctional.getPedometerShouldRun(newContext))
+                Pedometer.pushPedometerNotification(newContext, ((int) newContext.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + newContext.getString(R.string.steps_small),newContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(newContext) + ".");
+
         return newContext;
     }
 

@@ -109,10 +109,12 @@ public class InAppActivity extends AppCompatActivity {
 
         if(fm.getBackStackEntryCount() == 0)
             super.onBackPressed();
-        else
+        else {
             fm.popBackStack();
-            if(fm.getBackStackEntryCount() == 1)
-                active.onResume();
+            for(Fragment f : fm.getFragments()){
+                f.onResume();
+            }
+        }
     }
 
     public void setInAppUI(){

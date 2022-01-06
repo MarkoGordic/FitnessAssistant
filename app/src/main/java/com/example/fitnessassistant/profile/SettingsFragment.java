@@ -107,7 +107,6 @@ public class SettingsFragment extends Fragment {
                 editor.putBoolean("theme_changed", true);
                 editor.apply();
             } else{
-                // TODO check this
                 compoundButton.setChecked(!isChecked);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());

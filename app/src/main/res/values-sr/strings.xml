@@ -71,9 +71,9 @@
     <string name="stop_activity_save">Prekini aktivnost bez čuvanja</string>
     <string name="goals">Ciljevi</string>
     <string name="weight">Težina</string>
-    <string name="starting_weight">Početna Težina</string>
+    <string name="start">Početak</string>
     <string name="current_weight">Trenutna Težina</string>
-    <string name="goal_weight">Ciljana Težina</string>
+    <string name="goal">Cilj</string>
     <string name="personal_data">Lični podaci</string>
     <string name="account_data">Podaci o nalogu</string>
     <string name="account_authentication">Autentikacija Naloga</string>
@@ -278,6 +278,8 @@
     <string name="updating_weight_message">Prosečna težina se čuva za svaki dan. U slučaju greške, možete jednostavno obrisati unete težine za taj dan.</string>
     <string name="delete_entered_weights">Obriši Unete Težine</string>
     <string name="delete_weights_message">Da li želite da obrišete sve težine koje ste danas uneli?</string>
+    <string name="set_first_weight">Podesite Početnu Težinu Ispod</string>
+    <string name="first_weight_immutable">Ne Možete Promeniti Početnu Težinu</string>
     <!-- UnitQ Strings -->
     <string name="what_are_your_unit_preferences">Koje jedinice mere koristite?</string>
     <string name="distance_colon">Pređeni put:</string>
@@ -297,6 +299,18 @@
     <string name="mi_h">MI/H</string>
     <string name="km">KM</string>
     <string name="mi">MI</string>
+
+    <!-- StepGoalFragment -->
+    <string name="set_your_step_goal">Podesite Vaš Cilj Koraka</string>
+    <string name="mon">PON</string>
+    <string name="tue">UTO</string>
+    <string name="wed">SRE</string>
+    <string name="thu">ČET</string>
+    <string name="fri">PET</string>
+    <string name="sat">SUB</string>
+    <string name="sun">NED</string>
+    <string name="set_all">Podesi Sve</string>
+    <string name="fill_up_all_fields">Popunite Sva Polja</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

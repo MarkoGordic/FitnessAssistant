@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.pedometer.StepGoalFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
 
@@ -48,12 +50,7 @@ public class GoalsFragment extends Fragment {
         }
     }
 
-    // TODO add immediate weight reload upon changing
-
-    private void setUpOnClickListeners(View view){
-        // backButton listener - calls activity's onBackPressed()
-        view.findViewById(R.id.backButton).setOnClickListener(view1 -> requireActivity().onBackPressed());
-
+    private void setUpWeights(View view){
         // setting up FirstWeight view
         if(WeightFragment.getFirstWeight(requireActivity()) == -1f){
             if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS))
@@ -117,6 +114,18 @@ public class GoalsFragment extends Fragment {
 
             ((TextView) view.findViewById(R.id.currentWeightDateTextView)).setText(String.format("%s %s %s", day, getMonthShort(month), year));
         }
+    }
+
+    private void setUpOnClickListeners(View view){
+        // backButton listener - calls activity's onBackPressed()
+        view.findViewById(R.id.backButton).setOnClickListener(view1 -> requireActivity().onBackPressed());
+
+        view.findViewById(R.id.startWeightLayout).setOnClickListener(v -> {
+            if(WeightFragment.getFirstWeight(requireActivity()) == -1f)
+                Toast.makeText(requireActivity(), R.string.set_first_weight, Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(requireActivity(), R.string.first_weight_immutable, Toast.LENGTH_SHORT).show();
+        });
 
         // using weight fragment for CurrentWeight
         view.findViewById(R.id.currentWeightLayout).setOnClickListener(v -> {
@@ -133,9 +142,7 @@ public class GoalsFragment extends Fragment {
         });
 
         // used for setting your step goals
-        view.findViewById(R.id.stepGoalTextView).setOnClickListener(v -> {
-            // TODO create StepGoalFragment
-        });
+        view.findViewById(R.id.stepGoalTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new StepGoalFragment()).addToBackStack(null).commit());
     }
 
     @Nullable
@@ -145,5 +152,12 @@ public class GoalsFragment extends Fragment {
         // setting up the view
         setUpOnClickListeners(view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getView() != null)
+            setUpWeights(getView());
     }
 }

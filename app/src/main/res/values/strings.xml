@@ -72,9 +72,9 @@
     <string name="stop_activity_save">Stop tracking without saving</string>
     <string name="goals">Goals</string>
     <string name="weight">Weight</string>
-    <string name="starting_weight">Starting Weight</string>
+    <string name="start">Start</string>
     <string name="current_weight">Current Weight</string>
-    <string name="goal_weight">Goal Weight</string>
+    <string name="goal">Goal</string>
     <string name="personal_data">Personal Data</string>
     <string name="account_data">Account Data</string>
     <string name="account_authentication">Account Authentication</string>
@@ -278,6 +278,8 @@
     <string name="updating_weight_message">Average weight will be used for each day. In case of a mistake, you can simply delete all weights for that day.</string>
     <string name="delete_entered_weights">Delete Entered Weights</string>
     <string name="delete_weights_message">Do you want to delete all weights you entered today?</string>
+    <string name="set_first_weight">Set Your First Weight Below</string>
+    <string name="first_weight_immutable">You Can\'t Change Your First Weight</string>
     <!-- UnitQ Strings -->
     <string name="what_are_your_unit_preferences">What Are Your\nUnit Preferences?</string>
     <string name="distance_colon">Distance:</string>
@@ -297,6 +299,18 @@
     <string name="mi_h">MI/H</string>
     <string name="km">KM</string>
     <string name="mi">MI</string>
+
+    <!-- StepGoalFragment -->
+    <string name="set_your_step_goal">Set Your Step Goal</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thu">THU</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="sun">SUN</string>
+    <string name="set_all">Set All</string>
+    <string name="fill_up_all_fields">Fill Up All Fields</string>
 
     <string name="coming_soon">This will be added soon</string>
 </resources>

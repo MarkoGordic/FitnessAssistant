@@ -67,17 +67,20 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
 
-        android:layout_marginTop="10dp"
-
-        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp"
+        android:gravity="top"
         android:weightSum="1">
         <LinearLayout
+            android:id="@+id/startWeightLayout"
+
             android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:layout_weight="0.45"
+            android:layout_weight="0.3"
 
             android:gravity="start"
-            android:paddingStart="16dp"
+            android:paddingStart="12dp"
             android:paddingEnd="0dp"
 
             android:background="@drawable/settings_field"
@@ -87,10 +90,14 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
 
-                android:fontFamily="@font/ralewaym"
-                android:text="@string/starting_weight"
+                android:layout_marginTop="-2dp"
+
+                android:fontFamily="@font/ralewayb"
+                android:text="@string/start"
+                android:lines="1"
+                android:textAllCaps="true"
                 android:textColor="@color/SpaceCadet"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/startingWeightDateTextView"
@@ -98,9 +105,10 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
 
-                android:fontFamily="@font/ralewayb"
+                android:fontFamily="@font/ralewaym"
+                android:lines="1"
                 android:textAllCaps="true"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/BlueYonder"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -110,18 +118,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/ralewaym"
-                android:textColor="@color/MangoTango"
-                android:textSize="22sp"
+                android:lines="1"
+                android:fontFamily="@font/raleway"
+                android:textColor="@color/DarkBlueYonder"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 tools:ignore="TextContrastCheck" />
         </LinearLayout>
         <ImageView
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="0.1"
+            android:layout_weight="0.4"
 
-            android:src="@drawable/caret_right"
+            android:layout_gravity="center"
+
+            android:src="@drawable/arrow_right"
+            android:paddingTop="25dp"
+            android:paddingBottom="25dp"
             app:tint="@color/SpaceCadet"
             android:contentDescription="@null" />
         <LinearLayout
@@ -129,11 +142,11 @@
 
             android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:layout_weight="0.45"
+            android:layout_weight="0.3"
 
-            android:gravity="end"
-            android:paddingEnd="12dp"
-            android:paddingStart="0dp"
+            android:gravity="start"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp"
 
             android:background="@drawable/settings_field"
 
@@ -142,14 +155,14 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
 
-                app:drawableStartCompat="@drawable/edit"
-                app:drawableTint="@color/SpaceCadet"
-                android:drawablePadding="8dp"
+                android:layout_marginTop="-2dp"
 
-                android:fontFamily="@font/ralewaym"
-                android:text="@string/goal_weight"
+                android:fontFamily="@font/ralewayb"
+                android:text="@string/goal"
+                android:lines="1"
+                android:textAllCaps="true"
                 android:textColor="@color/SpaceCadet"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/goalWeightDateTextView"
@@ -157,9 +170,10 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
 
-                android:fontFamily="@font/ralewayb"
+                android:fontFamily="@font/ralewaym"
+                android:lines="1"
                 android:textAllCaps="true"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/BlueYonder"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -169,9 +183,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/ralewaym"
-                android:textColor="@color/MangoTango"
-                android:textSize="22sp"
+                android:lines="1"
+                android:fontFamily="@font/raleway"
+                android:textColor="@color/DarkBlueYonder"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 tools:ignore="TextContrastCheck" />
         </LinearLayout>
@@ -183,12 +198,12 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
 
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="25dp"
 
         android:layout_gravity="center"
         android:gravity="center"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
 
         android:background="@drawable/settings_field"
 
@@ -197,14 +212,14 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
 
-            app:drawableStartCompat="@drawable/edit"
-            app:drawableTint="@color/SpaceCadet"
-            android:drawablePadding="8dp"
+            android:layout_marginTop="-2dp"
 
-            android:fontFamily="@font/ralewaym"
+            android:fontFamily="@font/ralewayb"
             android:text="@string/last_updated"
+            android:lines="1"
+            android:textAllCaps="true"
             android:textColor="@color/SpaceCadet"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/currentWeightDateTextView"
@@ -212,9 +227,10 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
 
-            android:fontFamily="@font/ralewayb"
+            android:fontFamily="@font/ralewaym"
+            android:lines="1"
             android:textAllCaps="true"
-            android:textColor="@color/SpaceCadet"
+            android:textColor="@color/BlueYonder"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -224,9 +240,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:fontFamily="@font/ralewaym"
-            android:textColor="@color/MangoTango"
-            android:textSize="22sp"
+            android:fontFamily="@font/raleway"
+            android:textColor="@color/DarkBlueYonder"
+            android:lines="1"
+            android:textSize="18sp"
             android:textStyle="bold"
             tools:ignore="TextContrastCheck" />
     </LinearLayout>
