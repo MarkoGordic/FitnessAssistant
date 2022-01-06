@@ -30,14 +30,14 @@ public class ServiceFunctional {
         context.stopService(new Intent(context, Pedometer.class));
 
         if(context instanceof InAppActivity)
-            ((InAppActivity) context).setUpMapPageFragmentUI(false);
+            ((InAppActivity) context).setUpHomePageFragmentUI(false);
     }
 
     public synchronized static void startPedometerService(Context context){
         // starting services
         context.startService(new Intent(context, Pedometer.class));
 
-        ((InAppActivity) context).setUpMapPageFragmentUI(true);
+        ((InAppActivity) context).setUpHomePageFragmentUI(true);
 
         // update widgets
         for (int id : AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, PedometerWidget.class))) {

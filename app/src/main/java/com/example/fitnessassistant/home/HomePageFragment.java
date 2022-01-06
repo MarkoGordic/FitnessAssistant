@@ -1,5 +1,6 @@
 package com.example.fitnessassistant.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.pedometer.Pedometer;
+import com.example.fitnessassistant.pedometer.StepGoalFragment;
+import com.example.fitnessassistant.util.PermissionFunctional;
+import com.example.fitnessassistant.util.ServiceFunctional;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
@@ -20,9 +27,35 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class HomePageFragment extends Fragment {
+
+    public void setUpUI(boolean pedometerRuns){
+        if(getView() != null)
+            setUpStepCountingButton(getView(), pedometerRuns);
+    }
+
+    private void setUpStepCountingButton(View view, Boolean pedometerRuns){
+        if(pedometerRuns == null)
+            pedometerRuns = ServiceFunctional.getPedometerShouldRun(requireActivity());
+
+        if(pedometerRuns){
+            ((AppCompatButton) view.findViewById(R.id.stepCountingButton)).setText(R.string.stop_counting);
+            view.findViewById(R.id.stepCountingButton).setOnClickListener(view1 -> {
+                ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
+                ServiceFunctional.stopPedometerService(requireActivity());
+            });
+        } else{
+            ((AppCompatButton) view.findViewById(R.id.stepCountingButton)).setText(R.string.start_counting);
+            view.findViewById(R.id.stepCountingButton).setOnClickListener(view1 -> PermissionFunctional.checkActivityRecognitionPermission(requireActivity(), ((InAppActivity) requireActivity()).activityRecognitionPermissionLauncher));
+        }
+    }
+
     // gives welcome message based on time
-    private void greetUser(View view){
+    private void greetUserAndShowSteps(View view){
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setRefreshing(true);
+        ((TextView) view.findViewById(R.id.stepCountTextView)).setText(String.valueOf((int) requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)));
+        ((TextView) view.findViewById(R.id.stepGoalTextView)).setText(String.valueOf(StepGoalFragment.getStepGoalForToday(requireActivity())));
+
+
         TextView welcomeTextView = view.findViewById(R.id.welcomeMessageTextView); // TextView in top right corner for welcome message
 
         Calendar calendar = GregorianCalendar.getInstance();
@@ -46,8 +79,13 @@ public class HomePageFragment extends Fragment {
     }
 
     private void setUpOnClickListeners(View view){
+        setUpStepCountingButton(view, null);
+
         // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
-        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> greetUser(view));
+        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> greetUserAndShowSteps(view));
+
+        // used for setting your step goals
+        view.findViewById(R.id.stepGoalFragmentTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new StepGoalFragment()).addToBackStack(null).commit());
     }
 
     @Nullable
@@ -62,6 +100,6 @@ public class HomePageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(getView() != null)
-            greetUser(getView());
+            greetUserAndShowSteps(getView());
     }
 }

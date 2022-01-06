@@ -192,9 +192,9 @@ public class InAppActivity extends AppCompatActivity {
         super.applyOverrideConfiguration(getBaseContext().getResources().getConfiguration());
     }
 
-    public void setUpMapPageFragmentUI(boolean pedometerRuns){
-        if(mapFragment != null)
-            mapFragment.setUpUI(pedometerRuns);
+    public void setUpHomePageFragmentUI(boolean pedometerRuns){
+        if(homeFragment != null)
+            homeFragment.setUpUI(pedometerRuns);
     }
 
     public synchronized void putDesiredFragment(String desiredFragment){
