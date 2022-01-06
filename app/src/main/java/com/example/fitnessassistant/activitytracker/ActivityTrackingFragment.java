@@ -102,7 +102,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     public static Vector<Vector<LatLng>> pathHistory = new Vector<>();
 
     private final int polylineColor = Color.BLUE;
-    private final float polylineWidth = 7f;
+    private final float polylineWidth = 8f;
 
     private long currentTimeInMilliseconds = 0L;
 
@@ -229,39 +229,43 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void forceFocusPathOnMap(){
-        LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
-        for(int i = 0; i < pathHistory.size(); i++) {
-            for (int j = 0; j < pathHistory.get(i).size(); j++) {
-                pathBounds.include(pathHistory.get(i).get(j));
+        if(!LocationService.serviceKilled) {
+            LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
+            for (int i = 0; i < pathHistory.size(); i++) {
+                for (int j = 0; j < pathHistory.get(i).size(); j++) {
+                    pathBounds.include(pathHistory.get(i).get(j));
+                }
             }
-        }
 
-        googleMap.moveCamera(
-                CameraUpdateFactory.newLatLngBounds(
-                        pathBounds.build(),
-                        mapView.getWidth(),
-                        mapView.getHeight(),
-                        (int)(mapView.getHeight() * 0.05f)
-                )
-        );
+            googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngBounds(
+                            pathBounds.build(),
+                            mapView.getWidth(),
+                            mapView.getHeight(),
+                            (int) (mapView.getHeight() * 0.05f)
+                    )
+            );
+        }
     }
 
     private void focusPathOnMap(){
-        LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
-        for(int i = 0; i < pathHistory.size(); i++) {
-            for (int j = 0; j < pathHistory.get(i).size(); j++) {
-                pathBounds.include(pathHistory.get(i).get(j));
+        if(!LocationService.serviceKilled) {
+            LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
+            for (int i = 0; i < pathHistory.size(); i++) {
+                for (int j = 0; j < pathHistory.get(i).size(); j++) {
+                    pathBounds.include(pathHistory.get(i).get(j));
+                }
             }
-        }
 
-        googleMap.animateCamera(
-                CameraUpdateFactory.newLatLngBounds(
-                        pathBounds.build(),
-                        mapView.getWidth(),
-                        mapView.getHeight(),
-                        (int)(mapView.getHeight() * 0.05f)
-                )
-        );
+            googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngBounds(
+                            pathBounds.build(),
+                            mapView.getWidth(),
+                            mapView.getHeight(),
+                            (int) (mapView.getHeight() * 0.05f)
+                    )
+            );
+        }
     }
 
     private void exitAndSaveActivity(){

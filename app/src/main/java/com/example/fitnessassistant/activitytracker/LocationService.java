@@ -150,8 +150,6 @@ public class LocationService extends LifecycleService {
             // Updating total distance
             if (totalDistanceInKm.getValue() != null)
                 totalDistanceInKm.postValue(totalDistanceInKm.getValue() + distance);
-
-            updateBurntCalories();
         }
     }
 
@@ -235,6 +233,9 @@ public class LocationService extends LifecycleService {
         speedSum += location.getSpeed() * 3.6f;
         currentSpeed.postValue(location.getSpeed() * 3.6f);
         averageSpeed.postValue(speedSum / speedUpdateCount);
+
+        // updating calories
+        updateBurntCalories();
 
         // saving new point as last
         lastLatLng = newPoint;

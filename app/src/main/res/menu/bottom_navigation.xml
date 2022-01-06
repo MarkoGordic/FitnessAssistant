@@ -21,9 +21,9 @@
         android:title="@string/home" />
 
     <item
-        android:id="@+id/workout"
-        android:icon="@drawable/workout"
-        android:title="@string/workout" />
+        android:id="@+id/health"
+        android:icon="@drawable/health"
+        android:title="@string/health" />
 
     <item
         android:id="@+id/profile"
