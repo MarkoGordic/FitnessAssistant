@@ -288,22 +288,6 @@
             android:textColor="@color/Flame"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-        <!-- App Version TextView -->
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-
-            android:layout_marginTop="20dp"
-
-            android:text="@string/app_version"
-            android:textAlignment="center"
-            android:textColor="#5D5C5C"
-            android:textSize="15sp"
-            android:textStyle="bold"/>
-
 </LinearLayout>
-
 </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,68 +51,55 @@ public class GoalsFragment extends Fragment {
     }
 
     private void setUpWeights(View view){
-        // setting up FirstWeight view
+        // setting up Units
+        if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS)) {
+            ((TextView) view.findViewById(R.id.startingWeightUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_LBS);
+            ((TextView) view.findViewById(R.id.goalWeightUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_LBS);
+            ((TextView) view.findViewById(R.id.lastUpdatedUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_LBS);
+        } else {
+            ((TextView) view.findViewById(R.id.startingWeightUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_KG);
+            ((TextView) view.findViewById(R.id.goalWeightUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_KG);
+            ((TextView) view.findViewById(R.id.lastUpdatedUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_KG);
+        }
+
+        // setting up FirstWeight
         if(WeightFragment.getFirstWeight(requireActivity()) == -1f){
-            if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS))
-                ((TextView) view.findViewById(R.id.startingWeightTextView)).setText(String.format("?%s", UnitPreferenceFragment.WEIGHT_UNIT_LBS));
-            else
-                ((TextView) view.findViewById(R.id.startingWeightTextView)).setText(String.format("?%s", UnitPreferenceFragment.WEIGHT_UNIT_KG));
+            ((TextView) view.findViewById(R.id.startingWeightNumber)).setText("?");
 
             ((TextView) view.findViewById(R.id.startingWeightDateTextView)).setText("?");
         } else{
-            if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS))
-                ((TextView) view.findViewById(R.id.startingWeightTextView)).setText(String.format("%s%s", WeightFragment.getFirstWeight(requireActivity()), UnitPreferenceFragment.WEIGHT_UNIT_LBS));
-            else
-                ((TextView) view.findViewById(R.id.startingWeightTextView)).setText(String.format("%s%s", WeightFragment.getFirstWeight(requireActivity()), UnitPreferenceFragment.WEIGHT_UNIT_KG));
+            ((TextView) view.findViewById(R.id.startingWeightNumber)).setText(String.valueOf(WeightFragment.getFirstWeight(requireActivity())));
 
             int firstWeightDate = Integer.parseInt(WeightFragment.getFirstWeightDate(requireActivity()));
-
             int day = firstWeightDate % 100;
             firstWeightDate /= 100;
             int month = firstWeightDate % 100;
             firstWeightDate /= 100;
             int year = firstWeightDate;
-
             ((TextView) view.findViewById(R.id.startingWeightDateTextView)).setText(String.format("%s %s %s", day, getMonthShort(month), year));
         }
 
-        // setting up GoalWeight view
+        // setting up GoalWeight
         ((TextView) view.findViewById(R.id.goalWeightDateTextView)).setText("?");
-        if(WeightFragment.getGoalWeight(requireActivity()) == -1f){
-            if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS))
-                ((TextView) view.findViewById(R.id.goalWeightTextView)).setText(String.format("?%s", UnitPreferenceFragment.WEIGHT_UNIT_LBS));
-            else
-                ((TextView) view.findViewById(R.id.goalWeightTextView)).setText(String.format("?%s", UnitPreferenceFragment.WEIGHT_UNIT_KG));
-        } else{
-            if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS))
-                ((TextView) view.findViewById(R.id.goalWeightTextView)).setText(String.format("%s%s", WeightFragment.getGoalWeight(requireActivity()), UnitPreferenceFragment.WEIGHT_UNIT_LBS));
-            else
-                ((TextView) view.findViewById(R.id.goalWeightTextView)).setText(String.format("%s%s", WeightFragment.getGoalWeight(requireActivity()), UnitPreferenceFragment.WEIGHT_UNIT_KG));
-        }
+        if(WeightFragment.getGoalWeight(requireActivity()) == -1f)
+            ((TextView) view.findViewById(R.id.goalWeightNumber)).setText("?");
+        else
+            ((TextView) view.findViewById(R.id.goalWeightNumber)).setText(String.valueOf(WeightFragment.getGoalWeight(requireActivity())));
 
-        // setting up LastUpdatedWeight view
+        // setting up LastUpdatedWeight
         if(WeightFragment.getLastDailyAverage(requireActivity()) == -1f){
-            if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS))
-                ((TextView) view.findViewById(R.id.currentWeightTextView)).setText(String.format("?%s", UnitPreferenceFragment.WEIGHT_UNIT_LBS));
-            else
-                ((TextView) view.findViewById(R.id.currentWeightTextView)).setText(String.format("?%s", UnitPreferenceFragment.WEIGHT_UNIT_KG));
-
-            ((TextView) view.findViewById(R.id.currentWeightDateTextView)).setText("?");
+            ((TextView) view.findViewById(R.id.lastUpdatedNumber)).setText("?");
+            ((TextView) view.findViewById(R.id.lastUpdatedWeightDateTextView)).setText("?");
         } else{
-            if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS))
-                ((TextView) view.findViewById(R.id.currentWeightTextView)).setText(String.format("%s%s", WeightFragment.getLastDailyAverage(requireActivity()), UnitPreferenceFragment.WEIGHT_UNIT_LBS));
-            else
-                ((TextView) view.findViewById(R.id.currentWeightTextView)).setText(String.format("%s%s", WeightFragment.getLastDailyAverage(requireActivity()), UnitPreferenceFragment.WEIGHT_UNIT_KG));
+            ((TextView) view.findViewById(R.id.lastUpdatedNumber)).setText(String.valueOf(WeightFragment.getLastDailyAverage(requireActivity())));
 
-            int lastUpdatedWeightDate = Integer.parseInt(WeightFragment.getFirstWeightDate(requireActivity()));
-
+            int lastUpdatedWeightDate = Integer.parseInt(WeightFragment.getLastDailyAverageDate(requireActivity()));
             int day = lastUpdatedWeightDate % 100;
             lastUpdatedWeightDate /= 100;
             int month = lastUpdatedWeightDate % 100;
             lastUpdatedWeightDate /= 100;
             int year = lastUpdatedWeightDate;
-
-            ((TextView) view.findViewById(R.id.currentWeightDateTextView)).setText(String.format("%s %s %s", day, getMonthShort(month), year));
+            ((TextView) view.findViewById(R.id.lastUpdatedWeightDateTextView)).setText(String.format("%s %s %s", day, getMonthShort(month), year));
         }
     }
 

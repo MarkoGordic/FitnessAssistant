@@ -79,9 +79,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.3"
 
-            android:gravity="start"
-            android:paddingStart="12dp"
-            android:paddingEnd="0dp"
+            android:gravity="center"
 
             android:background="@drawable/settings_field"
 
@@ -95,9 +93,8 @@
                 android:fontFamily="@font/ralewayb"
                 android:text="@string/start"
                 android:lines="1"
-                android:textAllCaps="true"
                 android:textColor="@color/SpaceCadet"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/startingWeightDateTextView"
@@ -109,21 +106,42 @@
                 android:lines="1"
                 android:textAllCaps="true"
                 android:textColor="@color/BlueYonder"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/startingWeightTextView"
-
-                android:layout_width="wrap_content"
+            <TableRow
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
 
-                android:lines="1"
-                android:fontFamily="@font/raleway"
-                android:textColor="@color/DarkBlueYonder"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:ignore="TextContrastCheck" />
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/startingWeightNumber"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:lines="1"
+                    android:fontFamily="@font/raleway"
+                    android:textColor="@color/NonBackgroundColor"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="TextContrastCheck" />
+                <TextView
+                    android:id="@+id/startingWeightUnit"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="2dp"
+
+                    android:lines="1"
+                    android:fontFamily="@font/raleway"
+                    android:textColor="@color/NonBackgroundColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="TextContrastCheck" />
+            </TableRow>
         </LinearLayout>
         <ImageView
             android:layout_height="match_parent"
@@ -144,9 +162,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.3"
 
-            android:gravity="start"
-            android:paddingStart="12dp"
-            android:paddingEnd="0dp"
+            android:gravity="center"
 
             android:background="@drawable/settings_field"
 
@@ -160,9 +176,8 @@
                 android:fontFamily="@font/ralewayb"
                 android:text="@string/goal"
                 android:lines="1"
-                android:textAllCaps="true"
                 android:textColor="@color/SpaceCadet"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/goalWeightDateTextView"
@@ -174,21 +189,41 @@
                 android:lines="1"
                 android:textAllCaps="true"
                 android:textColor="@color/BlueYonder"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/goalWeightTextView"
-
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/goalWeightNumber"
 
-                android:lines="1"
-                android:fontFamily="@font/raleway"
-                android:textColor="@color/DarkBlueYonder"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:ignore="TextContrastCheck" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:lines="1"
+                    android:fontFamily="@font/raleway"
+                    android:textColor="@color/NonBackgroundColor"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="TextContrastCheck" />
+                <TextView
+                    android:id="@+id/goalWeightUnit"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="2dp"
+
+                    android:lines="1"
+                    android:fontFamily="@font/raleway"
+                    android:textColor="@color/NonBackgroundColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="TextContrastCheck" />
+            </TableRow>
         </LinearLayout>
     </TableRow>
 
@@ -217,12 +252,11 @@
             android:fontFamily="@font/ralewayb"
             android:text="@string/last_updated"
             android:lines="1"
-            android:textAllCaps="true"
             android:textColor="@color/SpaceCadet"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
         <TextView
-            android:id="@+id/currentWeightDateTextView"
+            android:id="@+id/lastUpdatedWeightDateTextView"
 
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -231,21 +265,40 @@
             android:lines="1"
             android:textAllCaps="true"
             android:textColor="@color/BlueYonder"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/currentWeightTextView"
-
+        <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/lastUpdatedNumber"
 
-            android:fontFamily="@font/raleway"
-            android:textColor="@color/DarkBlueYonder"
-            android:lines="1"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:ignore="TextContrastCheck" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/raleway"
+                android:textColor="@color/NonBackgroundColor"
+                android:lines="1"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
+            <TextView
+                android:id="@+id/lastUpdatedUnit"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="2dp"
+
+                android:fontFamily="@font/raleway"
+                android:textColor="@color/NonBackgroundColor"
+                android:lines="1"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
+        </TableRow>
     </LinearLayout>
 
     <!-- separator -->

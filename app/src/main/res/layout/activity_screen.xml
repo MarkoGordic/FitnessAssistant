@@ -158,20 +158,13 @@
         app:layout_constraintBottom_toTopOf="@id/statsLayout"
         android:background="@color/SpaceCadet" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-
-        app:layout_constraintBottom_toTopOf="@id/statsLayout"
-        android:background="@color/SpaceCadet" />
-
     <TableRow
         android:id="@+id/statsLayout"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toTopOf="@id/timerLayout"
+        app:layout_constraintBottom_toTopOf="@id/timerSeparator"
         android:gravity="center"
 
         android:background="@color/backgroundColor">
@@ -220,6 +213,12 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -264,6 +263,11 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -310,6 +314,15 @@
         </LinearLayout>
     </TableRow>
 
+    <View
+        android:id="@+id/timerSeparator"
+
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+
+        app:layout_constraintBottom_toTopOf="@id/timerLayout"
+        android:background="@color/SpaceCadet" />
+
     <TableRow
         android:id="@+id/timerLayout"
         android:layout_width="match_parent"
@@ -321,7 +334,7 @@
 
         android:weightSum="28">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/tvTimer"
 
             android:layout_width="0dp"
@@ -330,12 +343,9 @@
             android:layout_weight="18"
             android:gravity="center_horizontal"
 
-            android:fontFamily="@font/raleway"
-            android:includeFontPadding="false"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="@string/starting_time"
             android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
             android:textSize="40sp" />
 
         <View

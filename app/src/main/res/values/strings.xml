@@ -3,8 +3,6 @@
     <string name="app_name">FitnessAssistant</string>
     <string name="fitness">Fitness</string>
     <string name="assistant">Assistant</string>
-    <!-- App Version -->
-    <string name="app_version">App ver 1.0.0</string>
     <!-- Privacy Policy Link -->
     <string name="privacy_policy_link" tools:ignore="TypographyDashes">https://www.termsfeed.com/live/cb6a31f0-6c44-406f-b3c0-1dbc3b41dddf</string>
 

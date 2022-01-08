@@ -93,7 +93,7 @@ public class ProfilePageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) { // loads user's profile pic
-            Glide.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into((ImageView) requireView().findViewById(R.id.profilePicture));
+            Glide.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).placeholder(R.drawable.default_user).into((ImageView) requireView().findViewById(R.id.profilePicture));
             displayCurrentUser(requireView());
         }
     }

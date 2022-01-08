@@ -44,26 +44,27 @@
         android:layout_marginTop="24dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">
+
         <EditText
             android:id="@+id/allEdt"
 
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+
+            android:layout_marginEnd="40dp"
             android:layout_weight="15"
 
+            android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+            android:includeFontPadding="false"
             android:inputType="number"
             android:maxLength="6"
-
-            android:fontFamily="@font/ralewaym"
-            android:includeFontPadding="false"
             android:textAlignment="center"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
             android:textSize="14sp"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor"/>
+            tools:ignore="LabelFor,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/setAllButton"
 
@@ -92,18 +93,27 @@
         android:layout_height="1dp"
 
         android:background="@color/SpaceCadet"
+        android:layout_marginTop="24dp"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
         android:layout_marginTop="32dp"
 
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp" />
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp" />
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="7"
 
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp">
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -111,8 +121,11 @@
             android:background="@color/SpaceCadet" />
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+
+            android:gravity="center"
+            android:background="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"
@@ -120,9 +133,66 @@
             android:paddingBottom="4dp"
             android:text="@string/mon"
             android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+
+        <EditText
+            android:id="@+id/mondayEdt"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+
+            android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textAlignment="center"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
-            android:textSize="13sp"/>
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/backgroundColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.7"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -130,8 +200,11 @@
             android:background="@color/SpaceCadet" />
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+
+            android:gravity="center"
+            android:background="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"
@@ -139,9 +212,66 @@
             android:paddingBottom="4dp"
             android:text="@string/tue"
             android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+
+        <EditText
+            android:id="@+id/tuesdayEdt"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+
+            android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textAlignment="center"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
-            android:textSize="13sp"/>
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/backgroundColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.7"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -149,8 +279,11 @@
             android:background="@color/SpaceCadet" />
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+
+            android:gravity="center"
+            android:background="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"
@@ -158,9 +291,66 @@
             android:paddingBottom="4dp"
             android:text="@string/wed"
             android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+
+        <EditText
+            android:id="@+id/wednesdayEdt"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+
+            android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textAlignment="center"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
-            android:textSize="13sp"/>
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/backgroundColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.7"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -168,8 +358,11 @@
             android:background="@color/SpaceCadet" />
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+
+            android:gravity="center"
+            android:background="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"
@@ -177,9 +370,66 @@
             android:paddingBottom="4dp"
             android:text="@string/thu"
             android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+
+        <EditText
+            android:id="@+id/thursdayEdt"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+
+            android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textAlignment="center"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
-            android:textSize="13sp"/>
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/backgroundColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.7"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -187,8 +437,11 @@
             android:background="@color/SpaceCadet" />
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+
+            android:gravity="center"
+            android:background="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"
@@ -196,9 +449,66 @@
             android:paddingBottom="4dp"
             android:text="@string/fri"
             android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+
+        <EditText
+            android:id="@+id/fridayEdt"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+
+            android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textAlignment="center"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
-            android:textSize="13sp"/>
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/backgroundColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.7"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -206,8 +516,11 @@
             android:background="@color/SpaceCadet" />
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+
+            android:gravity="center"
+            android:background="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"
@@ -215,9 +528,66 @@
             android:paddingBottom="4dp"
             android:text="@string/sat"
             android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+
+        <EditText
+            android:id="@+id/saturdayEdt"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+
+            android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textAlignment="center"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
-            android:textSize="13sp"/>
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/backgroundColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.7"
+
+            android:background="@color/SpaceCadet" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -225,8 +595,11 @@
             android:background="@color/SpaceCadet" />
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+
+            android:gravity="center"
+            android:background="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"
             android:includeFontPadding="false"
@@ -234,193 +607,33 @@
             android:paddingBottom="4dp"
             android:text="@string/sun"
             android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
+            android:textColor="@color/backgroundColor"
             android:textFontWeight="600"
-            android:textSize="13sp"/>
+            android:textSize="14sp"/>
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
 
             android:background="@color/SpaceCadet" />
-    </TableRow>
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-
-        android:background="@color/SpaceCadet"
-
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp" />
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="7"
-
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp">
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-
-            android:background="@color/SpaceCadet" />
-        <EditText
-            android:id="@+id/mondayEdt"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:inputType="number"
-            android:maxLength="6"
-
-            android:fontFamily="@font/ralewaym"
-            android:includeFontPadding="false"
-            android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="14sp"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-
-            android:background="@color/SpaceCadet" />
-        <EditText
-            android:id="@+id/tuesdayEdt"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:inputType="number"
-            android:maxLength="6"
-
-            android:fontFamily="@font/ralewaym"
-            android:includeFontPadding="false"
-            android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="14sp"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-
-            android:background="@color/SpaceCadet" />
-        <EditText
-            android:id="@+id/wednesdayEdt"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:inputType="number"
-            android:maxLength="6"
-
-            android:fontFamily="@font/ralewaym"
-            android:includeFontPadding="false"
-            android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="14sp"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-
-            android:background="@color/SpaceCadet" />
-        <EditText
-            android:id="@+id/thursdayEdt"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:inputType="number"
-            android:maxLength="6"
-
-            android:fontFamily="@font/ralewaym"
-            android:includeFontPadding="false"
-            android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="14sp"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-
-            android:background="@color/SpaceCadet" />
-        <EditText
-            android:id="@+id/fridayEdt"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:inputType="number"
-            android:maxLength="6"
-
-            android:fontFamily="@font/ralewaym"
-            android:includeFontPadding="false"
-            android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="14sp"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-
-            android:background="@color/SpaceCadet" />
-        <EditText
-            android:id="@+id/saturdayEdt"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:inputType="number"
-            android:maxLength="6"
-
-            android:fontFamily="@font/ralewaym"
-            android:includeFontPadding="false"
-            android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="14sp"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-
-            android:background="@color/SpaceCadet" />
         <EditText
             android:id="@+id/sundayEdt"
 
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:inputType="number"
-            android:maxLength="6"
+            android:layout_weight="0.7"
 
             android:fontFamily="@font/ralewaym"
+            android:importantForAutofill="no"
+
             android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="6"
             android:textAlignment="center"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
-            android:textSize="14sp"
-            android:importantForAutofill="no"
-            tools:ignore="LabelFor"/>
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -429,20 +642,20 @@
     </TableRow>
 
     <View
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
 
         android:background="@color/SpaceCadet"
 
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp" />
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp" />
 
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
 
         android:background="@color/SpaceCadet"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
 
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp" />

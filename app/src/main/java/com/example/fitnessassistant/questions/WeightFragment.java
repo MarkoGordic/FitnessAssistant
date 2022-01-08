@@ -46,8 +46,9 @@ public class WeightFragment extends Fragment {
         return context.getSharedPreferences("weightTotal", MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0f);
     }
 
-    private synchronized static void putLastDailyAverage(Context context, float dailyAverage){
+    private synchronized static void putLastDailyAverage(Context context, float dailyAverage, String date){
         context.getSharedPreferences("questions", MODE_PRIVATE).edit().putFloat("lastDailyAverage", dailyAverage).apply();
+        putLastDailyAverageDate(context, date);
     }
 
     private synchronized static void putFirstWeightDate(Context context, String date){
@@ -76,7 +77,7 @@ public class WeightFragment extends Fragment {
         // adding the weight to total weight
         context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit().putFloat(Pedometer.getCurrentDateFormatted(), newTotal).apply();
 
-        putLastDailyAverage(context, newTotal / newNum);
+        putLastDailyAverage(context, newTotal / newNum, Pedometer.getCurrentDateFormatted());
     }
 
     public synchronized static void deleteWeightForToday(Context context){
@@ -98,11 +99,19 @@ public class WeightFragment extends Fragment {
         }
 
         // put last saved weight or -1f
-        putLastDailyAverage(context, lastAverageWeightSaved);
+        putLastDailyAverage(context, lastAverageWeightSaved, String.valueOf(maxDate));
     }
 
     public synchronized static float getLastDailyAverage(Context context){
         return context.getSharedPreferences("questions", MODE_PRIVATE).getFloat("lastDailyAverage", -1f);
+    }
+
+    public synchronized static void putLastDailyAverageDate(Context context, String date){
+        context.getSharedPreferences("questions", MODE_PRIVATE).edit().putString("lastDailyAverageDate", date).apply();
+    }
+
+    public synchronized static String getLastDailyAverageDate(Context context){
+        return context.getSharedPreferences("questions", MODE_PRIVATE).getString("lastDailyAverageDate", "unknown");
     }
 
     public static synchronized float getAverageWeightToday(Context context){
