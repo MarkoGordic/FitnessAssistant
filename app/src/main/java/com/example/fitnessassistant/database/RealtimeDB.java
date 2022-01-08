@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.database;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class RealtimeDB {
 
@@ -81,24 +87,30 @@ public class RealtimeDB {
         }
     }
 
-    // saving user preferences to database
-    public static void saveUserPreferences(Context context){
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+    public static void savePedometerData(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("preferences");
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data");
+
+            PedometerData data = new PedometerData();
+
+            ArrayList<String> dates = new ArrayList<>();
+            ArrayList<Float> steps = new ArrayList<>();
+
+            SharedPreferences prefs = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+            Map<String, ?> allPedometerData = prefs.getAll();
+
+            for (Map.Entry<String, ?> pairs : allPedometerData.entrySet()) {
+                dates.add(pairs.getKey());
+                steps.add((float) allPedometerData.get(pairs.getKey()));
+            }
+
+            data.setData(dates, steps);
 
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    db.child("height").setValue(HeightFragment.getHeight(context));
-                    db.child("gender").setValue(GenderFragment.getGender(context));
-// TODO add weight
-//                    db.child("weight").setValue(WeightFragment.getCurrentWeight(context));
-                    db.child("weightUnit").setValue(UnitPreferenceFragment.getWeightUnit(context));
-                    db.child("heightUnit").setValue(UnitPreferenceFragment.getHeightUnit(context));
-                    db.child("fluidUnit").setValue(UnitPreferenceFragment.getFluidUnit(context));
-                    db.child("energyUnit").setValue(UnitPreferenceFragment.getEnergyUnit(context));
-                    db.child("distanceUnit").setValue(UnitPreferenceFragment.getDistanceUnit(context));
+                    db.child("pedometer").setValue(data);
                 }
 
                 @Override
@@ -107,18 +119,91 @@ public class RealtimeDB {
         }
     }
 
-    public static void restoreUserPreferences(){
+    public static void restorePedometerData(Context context){
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID);
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("pedometer");
 
-            db.child("preferences").get().addOnCompleteListener(task -> {
+            db.get().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()){
                     Log.e("Firebase", "Error getting data", task.getException());
                 } else {
-                    System.out.println(task.getResult());
+                    DataSnapshot dataSnapshot = task.getResult();
+                    PedometerData data = dataSnapshot.getValue(PedometerData.class);
+                    List<String> pedometer;
+
+                    SharedPreferences prefs = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+
+                    // Clearing old data
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.clear().apply();
+
+                    // Saving new data
+                    if(data != null) {
+                        pedometer = data.getData();
+                        for(String day : pedometer){
+                            StringTokenizer tokenizer = new StringTokenizer(day, "#");
+                            String date = tokenizer.nextToken();
+                            float steps = Float.parseFloat(tokenizer.nextToken());
+                            editor.putFloat(date, steps);
+                        }
+                    }
+
+                    editor.apply();
                 }
             });
         }
     }
+
+    // saving user preferences to database
+    public static void saveUserPreferences(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("preferences");
+
+            PreferencesData preferencesData = new PreferencesData();
+            preferencesData.setData(context);
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.setValue(preferencesData);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    public static void restoreUserPreferences(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("preferences");
+
+            db.get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()){
+                    Log.e("Firebase", "Error getting data", task.getException());
+                } else {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    PreferencesData data = dataSnapshot.getValue(PreferencesData.class);
+
+                    if(data != null) {
+                        GenderFragment.putGender(context, data.getGender());
+                        HeightFragment.putHeight(context, data.getHeight());
+
+                        List<String> units = data.getUnits();
+                        UnitPreferenceFragment.putHeightUnit(context, units.get(0));
+                        UnitPreferenceFragment.putWeightUnit(context, units.get(1));
+                        UnitPreferenceFragment.putDistanceUnit(context, units.get(2));
+                        UnitPreferenceFragment.putFluidUnit(context, units.get(3));
+                        UnitPreferenceFragment.putEnergyUnit(context, units.get(4));
+
+                        WeightFragment.putPreviousWeights(context, data.getWeights());
+                    }
+                }
+            });
+        }
+    }
+
 }

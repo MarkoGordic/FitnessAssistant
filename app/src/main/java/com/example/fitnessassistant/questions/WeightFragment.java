@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -31,7 +32,9 @@ import com.example.fitnessassistant.pedometer.Pedometer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 // weight is saved in KGs
@@ -142,6 +145,40 @@ public class WeightFragment extends Fragment {
             averageWeights.add(new Pair<>(pairs.getKey(), weightTotal / numUpdated));
         }
         return averageWeights;
+    }
+
+    public static synchronized List<String> getWeightsForDB(Context context){
+        Map<String, ?> allNumUpdated = context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).getAll();
+        Map<String, ?> allWeightTotal = context.getSharedPreferences("weightTotal", MODE_PRIVATE).getAll();
+
+        Iterator<? extends Map.Entry<String, ?>> it = allNumUpdated.entrySet().iterator();
+        ArrayList<String> weightsDB = new ArrayList<>();
+        while(it.hasNext()){
+            Map.Entry<String, ?> pairs = it.next();
+            int numUpdated = (int) allNumUpdated.get(pairs.getKey());
+            float weightTotal = (float) allWeightTotal.get(pairs.getKey());
+            weightsDB.add(pairs.getKey() + "#" + numUpdated + "#" + weightTotal);
+        }
+        return weightsDB;
+    }
+
+    public static synchronized void putPreviousWeights(Context context, List<String> weightsDB){
+        SharedPreferences.Editor numUpdated = context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).edit();
+        SharedPreferences.Editor weightTotal = context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit();
+        numUpdated.clear();
+        weightTotal.clear();
+
+        for(String s : weightsDB) {
+            StringTokenizer tokenizer = new StringTokenizer(s, "#");
+            String date = tokenizer.nextToken();
+            int num = Integer.parseInt(tokenizer.nextToken());
+            float total = Float.parseFloat(tokenizer.nextToken());
+            numUpdated.putInt(date, num);
+            weightTotal.putFloat(date, total);
+        }
+
+        numUpdated.apply();
+        weightTotal.apply();
     }
 
     private boolean validWeight(float weightInKGs){
