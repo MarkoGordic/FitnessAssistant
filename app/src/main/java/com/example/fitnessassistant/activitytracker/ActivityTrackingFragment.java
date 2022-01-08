@@ -1,6 +1,8 @@
 package com.example.fitnessassistant.activitytracker;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -20,12 +22,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.MDBHActivityTracker;
-import com.example.fitnessassistant.database.RealtimeDB;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -95,7 +97,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private GoogleMap googleMap = null;
     private MapView mapView;
 
-    private boolean satelliteOn = false;
     private boolean followUser = true;
 
     private final DecimalFormat distanceFormat = new DecimalFormat("#.##");
@@ -335,6 +336,28 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         requireView().findViewById(R.id.pauseButton).setVisibility(View.VISIBLE);
     }
 
+    private void slideDown(View view){
+        view.setVisibility(View.VISIBLE);
+        view.setAlpha(0.0f);
+        view.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setListener(null);
+    }
+
+    private void slideUp(View view){
+        view.animate()
+                .alpha(0.0f)
+                .translationY(-view.getHeight())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        view.setVisibility(View.GONE);
+                    }
+                });
+    }
+
     private void setUpOnClickListeners(View view){
         // stopButton onClickListener
         view.findViewById(R.id.pauseButton).setOnClickListener(v -> onActivityTrackingPause());
@@ -382,6 +405,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     if (!closedLayout && yCord < len) {
                         closedLayout = true;
                         requireView().findViewById(R.id.statsLayout).setVisibility(View.GONE);
+                        requireView().findViewById(R.id.timerSeparator).setVisibility(View.GONE);
                         ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.up));
                     } else if (closedLayout && yCord > -len){
                         closedLayout = false;
@@ -404,15 +428,83 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             focusPathOnMap();
         });
 
-        view.findViewById(R.id.mapTypeButton).setOnClickListener(v -> {
-            if(!satelliteOn) {
-                satelliteOn = true;
-                googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-            } else {
-                satelliteOn = false;
-                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        view.findViewById(R.id.mapTypeButton).setOnClickListener(new View.OnClickListener() {
+            boolean choosingMapType = false;
+            @Override
+            public void onClick(View v) {
+                if(!choosingMapType){
+                    choosingMapType = true;
+                    slideDown(view.findViewById(R.id.mapTypeLayout));
+                } else{
+                    choosingMapType = false;
+                    slideUp(view.findViewById(R.id.mapTypeLayout));
+                }
             }
         });
+
+        Drawable roadmap = AppCompatResources.getDrawable(requireActivity(), R.drawable.default_map);
+        Drawable satellite = AppCompatResources.getDrawable(requireActivity(), R.drawable.globe);
+        Drawable terrain = AppCompatResources.getDrawable(requireActivity(), R.drawable.mountains);
+        if(roadmap != null)
+            roadmap.setTint(requireActivity().getColor(R.color.MangoTango));
+        if(satellite != null)
+            satellite.setTint(requireActivity().getColor(R.color.SpaceCadet));
+        if(terrain != null)
+            terrain.setTint(requireActivity().getColor(R.color.SpaceCadet));
+
+        ((AppCompatImageButton) view.findViewById(R.id.roadmapButton)).setImageDrawable(roadmap);
+        ((AppCompatImageButton) view.findViewById(R.id.satelliteButton)).setImageDrawable(satellite);
+        ((AppCompatImageButton) view.findViewById(R.id.terrainButton)).setImageDrawable(terrain);
+
+        view.findViewById(R.id.roadmapButton).setOnClickListener(v -> {
+            if(googleMap.getMapType() != GoogleMap.MAP_TYPE_NORMAL) {
+                if (roadmap != null)
+                    roadmap.setTint(requireActivity().getColor(R.color.MangoTango));
+                if (satellite != null)
+                    satellite.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                if (terrain != null)
+                    terrain.setTint(requireActivity().getColor(R.color.SpaceCadet));
+
+                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                ((AppCompatImageButton) view.findViewById(R.id.roadmapButton)).setImageDrawable(roadmap);
+                ((AppCompatImageButton) view.findViewById(R.id.satelliteButton)).setImageDrawable(satellite);
+                ((AppCompatImageButton) view.findViewById(R.id.terrainButton)).setImageDrawable(terrain);
+            }
+        });
+
+        view.findViewById(R.id.satelliteButton).setOnClickListener(v -> {
+            if(googleMap.getMapType() != GoogleMap.MAP_TYPE_SATELLITE) {
+                if (roadmap != null)
+                    roadmap.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                if (satellite != null)
+                    satellite.setTint(requireActivity().getColor(R.color.MangoTango));
+                if (terrain != null)
+                    terrain.setTint(requireActivity().getColor(R.color.SpaceCadet));
+
+                googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                ((AppCompatImageButton) view.findViewById(R.id.roadmapButton)).setImageDrawable(roadmap);
+                ((AppCompatImageButton) view.findViewById(R.id.satelliteButton)).setImageDrawable(satellite);
+                ((AppCompatImageButton) view.findViewById(R.id.terrainButton)).setImageDrawable(terrain);
+            }
+        });
+
+        view.findViewById(R.id.terrainButton).setOnClickListener(v -> {
+            if(googleMap.getMapType() != GoogleMap.MAP_TYPE_TERRAIN) {
+                if (roadmap != null)
+                    roadmap.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                if (satellite != null)
+                    satellite.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                if (terrain != null)
+                    terrain.setTint(requireActivity().getColor(R.color.MangoTango));
+
+                googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                ((AppCompatImageButton) view.findViewById(R.id.roadmapButton)).setImageDrawable(roadmap);
+                ((AppCompatImageButton) view.findViewById(R.id.satelliteButton)).setImageDrawable(satellite);
+                ((AppCompatImageButton) view.findViewById(R.id.terrainButton)).setImageDrawable(terrain);
+            }
+        });
+
+        view.findViewById(R.id.spotifyButton).setOnClickListener(v -> openSpotifyApp());
     }
 
     @Nullable

@@ -163,22 +163,38 @@ public class WeightFragment extends Fragment {
     }
 
     public static synchronized void putPreviousWeights(Context context, List<String> weightsDB){
-        SharedPreferences.Editor numUpdated = context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).edit();
-        SharedPreferences.Editor weightTotal = context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit();
-        numUpdated.clear();
-        weightTotal.clear();
+        SharedPreferences numUpdated = context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE);
+        SharedPreferences weightTotal = context.getSharedPreferences("weightTotal", MODE_PRIVATE);
+        SharedPreferences.Editor numUpdatedEditor = numUpdated.edit();
+        SharedPreferences.Editor weightTotalEditor = weightTotal.edit();
+
+        numUpdatedEditor.clear();
+        weightTotalEditor.clear();
+
+        int firstDate = Integer.MAX_VALUE;
+        int lastDate = -1;
 
         for(String s : weightsDB) {
             StringTokenizer tokenizer = new StringTokenizer(s, "#");
             String date = tokenizer.nextToken();
+            int dateInt = Integer.parseInt(date);
+            if(dateInt < firstDate){
+                firstDate = dateInt;
+            }
+            if(dateInt > lastDate){
+                lastDate = dateInt;
+            }
             int num = Integer.parseInt(tokenizer.nextToken());
             float total = Float.parseFloat(tokenizer.nextToken());
-            numUpdated.putInt(date, num);
-            weightTotal.putFloat(date, total);
+            numUpdatedEditor.putInt(date, num);
+            weightTotalEditor.putFloat(date, total);
         }
 
-        numUpdated.apply();
-        weightTotal.apply();
+        putLastDailyAverageDate(context, String.valueOf(lastDate));
+        putLastDailyAverage(context, weightTotal.getFloat(String.valueOf(lastDate), -1f) / numUpdated.getInt(String.valueOf(lastDate), -1) , String.valueOf(lastDate));
+
+        numUpdatedEditor.apply();
+        weightTotalEditor.apply();
     }
 
     private boolean validWeight(float weightInKGs){
