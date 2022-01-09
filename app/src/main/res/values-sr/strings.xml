@@ -236,7 +236,9 @@
     <string name="resume_activity_tracking">Nastavi</string>
     <string name="distance">Pređeni put</string>
     <string name="speed">Brzina</string>
-    <string name="average_speed">Prosečna brzina</string>
+    <string name="average_speed">Prosečna Brzina</string>
+    <string name="pace">Tempo</string>
+    <string name="average_pace">Prosečan Tempo</string>
     <string name="center">Centriraj</string>
     <string name="activity_tracking_active">Praćenje Aktivnosti Uključeno</string>
     <string name="activity_tracking_active_message">Ovo nije dostupno dok je praćenje aktivnosti uključeno. Zaustavite praćenje aktivnosti i pokušajte ponovo.</string>

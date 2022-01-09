@@ -165,6 +165,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(output);
             }
         });
+
+        // TODO add updating calories and pace and avg. pace
     }
 
     private void toggleActivityTracking(){
@@ -336,7 +338,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         requireView().findViewById(R.id.pauseButton).setVisibility(View.VISIBLE);
     }
 
-    private void slideDown(View view){
+    private void revealDown(View view){
         view.setVisibility(View.VISIBLE);
         view.setAlpha(0.0f);
         view.animate()
@@ -345,10 +347,32 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 .setListener(null);
     }
 
-    private void slideUp(View view){
+    private void hideUp(View view){
         view.animate()
                 .alpha(0.0f)
                 .translationY(-view.getHeight())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        view.setVisibility(View.GONE);
+                    }
+                });
+    }
+
+    private void revealUp(View view){
+        view.setVisibility(View.VISIBLE);
+        view.setAlpha(0.0f);
+        view.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setListener(null);
+    }
+
+    private void hideDown(View view){
+        view.animate()
+                .alpha(0.0f)
+                .translationY(view.getHeight())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -404,12 +428,11 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     // if layout is not closed and user clicks/swipes down
                     if (!closedLayout && yCord < len) {
                         closedLayout = true;
-                        requireView().findViewById(R.id.statsLayout).setVisibility(View.GONE);
-                        requireView().findViewById(R.id.timerSeparator).setVisibility(View.GONE);
+                        hideDown(requireView().findViewById(R.id.allStats));
                         ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.up));
                     } else if (closedLayout && yCord > -len){
                         closedLayout = false;
-                        requireView().findViewById(R.id.statsLayout).setVisibility(View.VISIBLE);
+                        revealUp(requireView().findViewById(R.id.allStats));
                         ((ImageView) view).setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.down));
                     }
                     view.performClick();
@@ -434,10 +457,10 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             public void onClick(View v) {
                 if(!choosingMapType){
                     choosingMapType = true;
-                    slideDown(view.findViewById(R.id.mapTypeLayout));
+                    revealDown(view.findViewById(R.id.mapTypeLayout));
                 } else{
                     choosingMapType = false;
-                    slideUp(view.findViewById(R.id.mapTypeLayout));
+                    hideUp(view.findViewById(R.id.mapTypeLayout));
                 }
             }
         });
