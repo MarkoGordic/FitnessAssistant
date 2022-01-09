@@ -151,6 +151,31 @@ public class BirthdayFragment extends Fragment {
         }
     }
 
+    public static synchronized int getYears(Context context){
+        int birthday = getBirthday(context);
+        if(birthday != -1) {
+            int day = birthday % 100;
+            birthday /= 100;
+            int month = birthday % 100;
+            birthday /= 100;
+            int year = birthday;
+            int yearsPassed = Calendar.getInstance().get(Calendar.YEAR) - year;
+            int monthDifference = Calendar.getInstance().get(Calendar.MONTH) - month;
+            int dayDifference = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - day;
+
+            if (monthDifference > 0) {
+                return yearsPassed;
+            } else if (monthDifference == 0) {
+                if (dayDifference >= 0)
+                    return yearsPassed;
+                else
+                    return yearsPassed - 1;
+            } else
+                return yearsPassed - 1;
+        } else
+            return -1;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

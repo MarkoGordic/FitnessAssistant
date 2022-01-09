@@ -304,6 +304,8 @@
     <string name="mi_h">MI/H</string>
     <string name="km">KM</string>
     <string name="mi">MI</string>
+    <string name="mi_min">MIN/MI</string>
+    <string name="km_min">MIN/KM</string>
 
     <!-- StepGoalFragment -->
     <string name="set_your_step_goal">Set Your Step Goal</string>

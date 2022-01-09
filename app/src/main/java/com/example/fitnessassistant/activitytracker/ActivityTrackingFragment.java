@@ -101,6 +101,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     private final DecimalFormat distanceFormat = new DecimalFormat("#.##");
     private final DecimalFormat speedFormat = new DecimalFormat("#.#");
+    private final DecimalFormat caloriesFormat = new DecimalFormat("#.#");
+    private final DecimalFormat paceFormat = new DecimalFormat("#.##");
 
     private boolean isTracking = false;
     public static Vector<Vector<LatLng>> pathHistory = new Vector<>();
@@ -134,7 +136,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         // For distance updates
         LocationService.totalDistanceInKm.observe(getViewLifecycleOwner(), newDistance -> {
 
-            // Can i use requireContext here ?
             if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals("mile")){
                 String output = distanceFormat.format(newDistance * 0.621371) + " " + requireContext().getText(R.string.mi);
                 ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(output);
@@ -166,7 +167,39 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             }
         });
 
-        // TODO add updating calories and pace and avg. pace
+        // For calories updates
+        LocationService.caloriesBurnt.observe(getViewLifecycleOwner(), newCalories -> {
+            if(UnitPreferenceFragment.getEnergyUnit(requireContext()).equals(UnitPreferenceFragment.ENERGY_UNIT_CAL)){
+                String output = Math.round(newCalories) + " " + requireContext().getText(R.string.calories);
+                ((TextView)requireView().findViewById(R.id.caloriesBurned)).setText(output);
+            }else{
+                String output = caloriesFormat.format(newCalories * 4.2) + " " + requireContext().getText(R.string.kilojoules);
+                ((TextView)requireView().findViewById(R.id.caloriesBurned)).setText(output);
+            }
+        });
+
+        // For pace updates
+        LocationService.pace.observe(getViewLifecycleOwner(), newPace -> {
+            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
+                String output = paceFormat.format(newPace * 0.621371) + " " + requireContext().getText(R.string.mi_min);
+                ((TextView)requireView().findViewById(R.id.currentPace)).setText(output);
+            }else{
+                String output = paceFormat.format(newPace) + " " + requireContext().getText(R.string.km_min);
+                ((TextView)requireView().findViewById(R.id.currentPace)).setText(output);
+            }
+        });
+
+        // For average pace updates
+        LocationService.averagePace.observe(getViewLifecycleOwner(), newAveragePace -> {
+            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
+                String output = paceFormat.format(newAveragePace * 0.621371) + " " + requireContext().getText(R.string.mi_min);
+                ((TextView)requireView().findViewById(R.id.averagePace)).setText(output);
+            }else{
+                String output = paceFormat.format(newAveragePace) + " " + requireContext().getText(R.string.km_min);
+                ((TextView)requireView().findViewById(R.id.averagePace)).setText(output);
+            }
+        });
+
     }
 
     private void toggleActivityTracking(){

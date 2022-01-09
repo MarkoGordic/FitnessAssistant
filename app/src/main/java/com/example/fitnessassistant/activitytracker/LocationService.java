@@ -21,6 +21,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.questions.BirthdayFragment;
+import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -33,10 +35,9 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
-import java.util.concurrent.TimeUnit;
 
 public class LocationService extends LifecycleService {
-    private static final int ACTIVITY_TRACKING_ID = 27;
+    public static final int ACTIVITY_TRACKING_ID = 27;
     public static MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
     public static MutableLiveData<Vector<Vector<LatLng>>> pathHistory = new MutableLiveData<>();
 
@@ -54,6 +55,9 @@ public class LocationService extends LifecycleService {
     public static MutableLiveData<Float> caloriesBurnt = new MutableLiveData<>();
     private static long lastKnownTimeInMilliseconds = 0L;
 
+    public static MutableLiveData<Float> pace = new MutableLiveData<>();
+    public static MutableLiveData<Float> averagePace = new MutableLiveData<>();
+
     private boolean isTimerEnabled = false;
     private long segmentTime = 0L;
     private long totalTime = 0L;
@@ -64,6 +68,8 @@ public class LocationService extends LifecycleService {
 
     private boolean serviceRunning = false;
     public static boolean serviceKilled = true;
+    public static MutableLiveData<Boolean> shouldStart = new MutableLiveData<>();
+
     private boolean createNewPath = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -75,12 +81,16 @@ public class LocationService extends LifecycleService {
         currentSpeed.postValue(0F);
         averageSpeed.postValue(0F);
         caloriesBurnt.postValue(0F);
+        pace.postValue(0F);
+        averagePace.postValue(0F);
+        shouldStart.postValue(false);
     }
 
     private void resetVariables(){
         initializeVariables();
         pathHistory.postValue(new Vector<>());
         ActivityTrackingFragment.pathHistory = new Vector<>();
+        shouldStart.postValue(false);
         lastSecondTimestamp = 0L;
         startTime = 0L;
         totalTime = 0L;
@@ -89,6 +99,21 @@ public class LocationService extends LifecycleService {
         speedSum = 0f;
         speedUpdateCount = 0;
         lastLatLng = null;
+        lastKnownTimeInMilliseconds = 0;
+    }
+
+    private void updatePace(){
+        if(currentSpeed.getValue() != null && averageSpeed.getValue() != null) {
+            if(currentSpeed.getValue() == 0)
+                pace.postValue(0f);
+            else
+                pace.postValue(60 / currentSpeed.getValue());
+
+            if(averageSpeed.getValue() == 0)
+                averagePace.postValue(0f);
+            else
+                averagePace.postValue(60 / averageSpeed.getValue());
+        }
     }
 
     private void updateBurntCalories(){
@@ -96,11 +121,11 @@ public class LocationService extends LifecycleService {
         long timeSinceLastUpdate = 0L;
 
         if(timeInMilliseconds.getValue() != null) {
-            timeSinceLastUpdate = lastKnownTimeInMilliseconds - timeInMilliseconds.getValue();
+            timeSinceLastUpdate = timeInMilliseconds.getValue() - lastKnownTimeInMilliseconds;
             lastKnownTimeInMilliseconds = timeInMilliseconds.getValue();
         }
 
-        long timeInMinutes = TimeUnit.MILLISECONDS.toMinutes(timeSinceLastUpdate);
+        float timeInMinutes = (float)timeSinceLastUpdate / 60000;
 
         // In case it's available, we need to get weight
         float weight = WeightFragment.getLastDailyAverage(this); // will be -1 in case unavailable
@@ -113,9 +138,34 @@ public class LocationService extends LifecycleService {
         if(currentSpeed.getValue() != null)
             speed = currentSpeed.getValue();
 
-        // TODO: Cover other cases
-        if(weight != -1f && height != -1f && caloriesBurnt.getValue() != null) {
-            caloriesBurnt.postValue(caloriesBurnt.getValue() + ((weight * 0.035f + ((speed * speed) / height)) * 0.029f) * weight * timeInMinutes);
+        if(caloriesBurnt.getValue() != null)
+            caloriesBurnt.postValue(caloriesBurnt.getValue() + getBMR(weight, height, BirthdayFragment.getYears(this)) / 24 / 60 * timeInMinutes * speed * 1.35f);
+    }
+
+    private float getBMR(float weightInKGs, float heightInCMs, int ageInYears){
+        if(ageInYears == -1)
+            ageInYears = 30;
+        if(GenderFragment.getGender(this).equals(GenderFragment.MALE)) {
+            if(weightInKGs == -1f)
+                weightInKGs = 84f;
+            if(heightInCMs == -1f)
+                heightInCMs = 171f;
+
+            return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) + 5;
+        } else if(GenderFragment.getGender(this).equals(GenderFragment.FEMALE)) {
+            if(weightInKGs == -1f)
+                weightInKGs = 70f;
+            if(heightInCMs == -1f)
+                heightInCMs = 159f;
+
+            return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) - 161;
+        } else {
+            if(weightInKGs == -1f)
+                weightInKGs = 77f;
+            if(heightInCMs == -1f)
+                heightInCMs = 155f;
+
+            return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) - 83;
         }
     }
 
@@ -177,6 +227,7 @@ public class LocationService extends LifecycleService {
         });
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -190,6 +241,12 @@ public class LocationService extends LifecycleService {
                 updateNotification();
             }
         });
+
+        // shouldStart is protection for low accuracy on start
+        shouldStart.observe(this, aBoolean -> {
+            if(aBoolean)
+                startForegroundService();
+        });
     }
 
     LocationCallback locationCallback = new LocationCallback() {
@@ -199,16 +256,34 @@ public class LocationService extends LifecycleService {
             List<Location> locations = locationResult.getLocations();
 
             // We proceed if tracking is currently on
-            if(isTracking.getValue() != null) {
+            if(isTracking.getValue() != null && shouldStart.getValue() != null) {
                 if (isTracking.getValue()) {
                     // Adding every location since last call
                     for (int i = 0; i < locations.size(); i++) {
-                        addNewPathPoint(locations.get(i));
+                        if(!shouldStart.getValue())
+                            checkAccuracy(locations.get(i));
+                        else
+                            addNewPathPoint(locations.get(i));
                     }
                 }
             }
         }
     };
+
+    // method which check user's GPS accuracy when needed
+    private void checkAccuracy(Location location){
+        float accuracy = -1;
+
+        if(location.hasAccuracy())
+            accuracy = location.getAccuracy();
+
+        System.out.println(accuracy + " - current accuracy");
+
+        if(accuracy <= 10f) {
+            shouldStart.postValue(true);
+            serviceRunning = true;
+        }
+    }
 
     // method for adding new GPS point to path list
     private void addNewPathPoint(Location location){
@@ -226,6 +301,9 @@ public class LocationService extends LifecycleService {
 
         // updating calories
         updateBurntCalories();
+
+        // updating pace and average pace
+        updatePace();
 
         // saving new point as last
         lastLatLng = newPoint;
@@ -283,11 +361,19 @@ public class LocationService extends LifecycleService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         switch (Objects.requireNonNull(intent).getStringExtra("state")){
             case "start_or_resume_service":
-                if(!serviceRunning){
-                    startForegroundService();
-                    serviceRunning = true;
-                } else {
-                    startTimer();
+                if(shouldStart.getValue() != null) {
+                    if (!shouldStart.getValue()) {
+                        // TODO: Prompt accuracy alert
+                        startForegroundService();
+                        serviceRunning = true;
+                    } else {
+                        if (!serviceRunning) {
+                            startForegroundService();
+                            serviceRunning = true;
+                        } else {
+                            startTimer();
+                        }
+                    }
                 }
                 break;
             case "pause_service":
@@ -302,18 +388,29 @@ public class LocationService extends LifecycleService {
     }
 
     private void startForegroundService(){
-        serviceKilled = false;
-        startTimer();
-        isTracking.postValue(true);
+        if(shouldStart.getValue() != null){
+            if(!shouldStart.getValue()){
+                // Pushing base notification
+                Notification notification = pushActivityTrackingNotification(this, null, "00:00:00");
+                startForeground(ACTIVITY_TRACKING_ID, notification);
 
-        // Pushing base notification
-        Notification notification = pushActivityTrackingNotification(this, null, "00:00:00");
-        startForeground(ACTIVITY_TRACKING_ID, notification);
+                serviceKilled = false;
+                isTracking.postValue(true);
+            }else{
+                serviceKilled = false;
+                startTimer();
+                isTracking.postValue(true);
 
-        timeInSeconds.observe(this, aLong -> {
-            if(!serviceKilled)
-                updateNotification();
-        });
+                // Pushing base notification
+                Notification notification = pushActivityTrackingNotification(this, null, "00:00:00");
+                startForeground(ACTIVITY_TRACKING_ID, notification);
+
+                timeInSeconds.observe(this, aLong -> {
+                    if(!serviceKilled)
+                        updateNotification();
+                });
+            }
+        }
     }
 
     private void pauseService(){
