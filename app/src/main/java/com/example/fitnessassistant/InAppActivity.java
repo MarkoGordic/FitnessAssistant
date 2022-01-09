@@ -1,20 +1,27 @@
 package com.example.fitnessassistant;
 
+import static com.example.fitnessassistant.profile.AccountDataFragment.scaleBitmap;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -48,7 +55,12 @@ import com.example.fitnessassistant.util.ServiceFunctional;
 import com.example.fitnessassistant.workout.WorkoutPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -98,6 +110,33 @@ public class InAppActivity extends AppCompatActivity {
                 ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_recognition_access_message_denied_forever);
             else
                 ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_recognition_access_message_denied);
+        }
+    });
+
+    // used for getting the image from gallery
+    public final ActivityResultLauncher<Intent> imageGetter = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if(result.getData() != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
+            try {
+                Uri uri = result.getData().getData();
+                InputStream fileInputStream = getContentResolver().openInputStream(uri);
+                if(fileInputStream.available() != -1 && fileInputStream.available() < 4 * 1024 * 1024) { // 4MB
+                    Bitmap bmp = BitmapFactory.decodeStream(fileInputStream);
+                    Bitmap scaledBmp = scaleBitmap(bmp, 1024 * 1024); // 1MB (+ additional compressing to jpeg below)
+
+                    if(scaledBmp != bmp){
+                        bmp.recycle();
+                    }
+
+                    scaledBmp.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
+                    Uri newUri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), scaledBmp, "ProfilePic", null));
+
+                    StorageReference ref = FirebaseStorage.getInstance().getReference().child("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/profile.jpg");
+                    ref.putFile(newUri).addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(URI -> FirebaseAuth.getInstance().getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(URI).build()).addOnSuccessListener(unused -> Toast.makeText(this, getString(R.string.profile_picture_successfully_uploaded), Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(this, getString(R.string.profile_picture_not_successfully_uploaded), Toast.LENGTH_SHORT).show()))).addOnFailureListener(e -> Toast.makeText(this, getString(R.string.profile_picture_not_successfully_uploaded), Toast.LENGTH_SHORT).show());
+                } else
+                    Toast.makeText(this, getString(R.string.image_size_too_large), Toast.LENGTH_SHORT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     });
 

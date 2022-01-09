@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.authentication.SignInActivity;
@@ -23,6 +22,7 @@ import com.example.fitnessassistant.util.AuthFunctional;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 public class ProfilePageFragment extends Fragment {
     // called in onResume -> reloading user and displaying user info
@@ -63,7 +63,7 @@ public class ProfilePageFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     private void setUpOnClickListeners(View view) {
         // swipeRefreshLayout refresh listener - refreshes while updating UI
-        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> displayCurrentUser(view));
+        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(this::onResume);
         // settingsButton listener - adds a settings fragment, hides current
         view.findViewById(R.id.settingsButton).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.settingsFragment).addToBackStack(null).commit());
 
@@ -92,8 +92,8 @@ public class ProfilePageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) { // loads user's profile pic
-            Glide.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).placeholder(R.drawable.default_user).into((ImageView) requireView().findViewById(R.id.profilePicture));
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Picasso.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).placeholder(R.drawable.default_user).resize(60,60).centerCrop().into((ImageView) requireView().findViewById(R.id.profilePicture));
             displayCurrentUser(requireView());
         }
     }

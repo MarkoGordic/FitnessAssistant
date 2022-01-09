@@ -179,6 +179,10 @@
     <string name="swipe_up_to_use_the_map">Swipe up for the Map</string>
     <string name="cancel_tracking_warning">Stop tracking?</string>
     <string name="cancel_tracking">Are you sure you want to stop activity tracking?</string>
+    <string name="error_getting_profile_pic">Error Getting Profile Picture</string>
+    <string name="profile_picture_successfully_uploaded">Profile Picture Successfully Uploaded</string>
+    <string name="profile_picture_not_successfully_uploaded">Profile Picture Not Uploaded</string>
+    <string name="image_size_too_large">Image Size Too Large</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Select A Language: </string>

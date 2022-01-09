@@ -178,6 +178,10 @@
     <string name="swipe_up_to_use_the_map">Povucite nagore za Mapu</string>
     <string name="cancel_tracking_warning">Prekini aktivnost?</string>
     <string name="cancel_tracking">Da li ste sigurni da želite da prekinete vašu aktivnost?</string>
+    <string name="error_getting_profile_pic">Greška Pri Učitavanju Profilne</string>
+    <string name="profile_picture_successfully_uploaded">Profilna Uspešno Sačuvana</string>
+    <string name="profile_picture_not_successfully_uploaded">Profilna Nije Sačuvana</string>
+    <string name="image_size_too_large">Veličina Slike Je Prevelika</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Izaberite Jezik: </string>

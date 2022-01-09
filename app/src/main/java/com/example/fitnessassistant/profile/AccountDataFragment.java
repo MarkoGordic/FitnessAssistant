@@ -1,12 +1,14 @@
 package com.example.fitnessassistant.profile;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,14 +16,25 @@ import androidx.fragment.app.Fragment;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.util.AuthFunctional;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class AccountDataFragment extends Fragment {
-    private final ActivityResultLauncher<String> imageGetter = registerForActivityResult(new ActivityResultContracts.GetContent(), URI -> {
-        if(FirebaseAuth.getInstance().getCurrentUser() != null)
-            FirebaseAuth.getInstance().getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(URI).build()).addOnCompleteListener(task -> onResume());
-    });
+
+    public static Bitmap scaleBitmap(Bitmap bmp, int maxBytes){
+        Bitmap b = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(b);
+        canvas.drawBitmap(bmp, 0, 0, null);
+
+        int currentPixels = b.getWidth() * b.getHeight();
+        int maxPixels = maxBytes / 4;
+        if (currentPixels < maxPixels)
+            return b;
+
+        double scaleFactor = Math.sqrt(maxPixels / (double) currentPixels);
+        int newWidthPx = (int) Math.floor(b.getWidth() * scaleFactor);
+        int newHeightPx = (int) Math.floor(b.getHeight() * scaleFactor);
+
+        return Bitmap.createScaledBitmap(b, newWidthPx, newHeightPx, true);
+    }
 
     private void setUpOnClickListeners(View view){
         // backButton listener - calls activity's onBackPressed()
@@ -55,7 +68,7 @@ public class AccountDataFragment extends Fragment {
         });
 
         // changeProfilePictureTextView listener - gets the image from gallery
-        view.findViewById(R.id.changeProfilePicture).setOnClickListener(view1 -> imageGetter.launch("image/*"));
+        view.findViewById(R.id.changeProfilePicture).setOnClickListener(view1 -> ((InAppActivity) requireActivity()).imageGetter.launch(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)));
     }
 
     @Nullable
