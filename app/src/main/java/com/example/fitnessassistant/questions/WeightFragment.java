@@ -54,16 +54,16 @@ public class WeightFragment extends Fragment {
         putLastDailyAverageDate(context, date);
     }
 
-    private synchronized static void putFirstWeightDate(Context context, String date){
+    public synchronized static void putFirstWeightDate(Context context, String date){
         context.getSharedPreferences("questions", MODE_PRIVATE).edit().putString("initDate", date).apply();
     }
 
-    private synchronized static void putFirstWeight(Context context, float weight){
+    public synchronized static void putFirstWeight(Context context, float weight){
         context.getSharedPreferences("questions", MODE_PRIVATE).edit().putFloat("initWeight", weight).apply();
         putFirstWeightDate(context, Pedometer.getCurrentDateFormatted());
     }
 
-    private synchronized static void putGoalWeight(Context context, float weight){
+    public synchronized static void putGoalWeight(Context context, float weight){
         context.getSharedPreferences("questions", MODE_PRIVATE).edit().putFloat("goalWeight", weight).apply();
     }
 

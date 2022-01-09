@@ -19,59 +19,59 @@ import java.util.Calendar;
 
 public class StepGoalFragment extends Fragment {
 
-    private synchronized void putMondayStepGoal(int stepGoal){
-        requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("mondayStepGoal", stepGoal).apply();
+    public synchronized static void putMondayStepGoal(Context context, int stepGoal){
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("mondayStepGoal", stepGoal).apply();
     }
 
-    private synchronized void putTuesdayStepGoal(int stepGoal){
-        requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("tuesdayStepGoal", stepGoal).apply();
+    public synchronized static void putTuesdayStepGoal(Context context, int stepGoal){
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("tuesdayStepGoal", stepGoal).apply();
     }
 
-    private synchronized void putWednesdayStepGoal(int stepGoal){
-        requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("wednesdayStepGoal", stepGoal).apply();
+    public synchronized static void putWednesdayStepGoal(Context context, int stepGoal){
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("wednesdayStepGoal", stepGoal).apply();
     }
 
-    private synchronized void putThursdayStepGoal(int stepGoal){
-        requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("thursdayStepGoal", stepGoal).apply();
+    public synchronized static void putThursdayStepGoal(Context context, int stepGoal){
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("thursdayStepGoal", stepGoal).apply();
     }
 
-    private synchronized void putFridayStepGoal(int stepGoal){
-        requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("fridayStepGoal", stepGoal).apply();
+    public synchronized static void putFridayStepGoal(Context context, int stepGoal){
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("fridayStepGoal", stepGoal).apply();
     }
 
-    private synchronized void putSaturdayStepGoal(int stepGoal){
-        requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("saturdayStepGoal", stepGoal).apply();
+    public synchronized static void putSaturdayStepGoal(Context context, int stepGoal){
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("saturdayStepGoal", stepGoal).apply();
     }
 
-    private synchronized void putSundayStepGoal(int stepGoal){
-        requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("sundayStepGoal", stepGoal).apply();
+    public synchronized static void putSundayStepGoal(Context context, int stepGoal){
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("sundayStepGoal", stepGoal).apply();
     }
 
-    private synchronized static int getMondayStepGoal(Context context){
+    public synchronized static int getMondayStepGoal(Context context){
         return context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("mondayStepGoal", 10000);
     }
 
-    private synchronized static int getTuesdayStepGoal(Context context){
+    public synchronized static int getTuesdayStepGoal(Context context){
         return context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("tuesdayStepGoal", 10000);
     }
 
-    private synchronized static int getWednesdayStepGoal(Context context){
+    public synchronized static int getWednesdayStepGoal(Context context){
         return context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("wednesdayStepGoal", 10000);
     }
 
-    private synchronized static int getThursdayStepGoal(Context context){
+    public synchronized static int getThursdayStepGoal(Context context){
         return context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("thursdayStepGoal", 10000);
     }
 
-    private synchronized static int getFridayStepGoal(Context context){
+    public synchronized static int getFridayStepGoal(Context context){
         return context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("fridayStepGoal", 10000);
     }
 
-    private synchronized static int getSaturdayStepGoal(Context context){
+    public synchronized static int getSaturdayStepGoal(Context context){
         return context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("saturdayStepGoal", 10000);
     }
 
-    private synchronized static int getSundayStepGoal(Context context){
+    public synchronized static int getSundayStepGoal(Context context){
         return context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getInt("sundayStepGoal", 10000);
     }
 
@@ -149,13 +149,13 @@ public class StepGoalFragment extends Fragment {
         view.findViewById(R.id.cancelButton).setOnClickListener(v -> requireActivity().onBackPressed());
         view.findViewById(R.id.setButton).setOnClickListener(v -> {
             if(allFieldsFilled(view)){
-                putMondayStepGoal(Integer.parseInt(mondayEdt.getText().toString()));
-                putTuesdayStepGoal(Integer.parseInt(tuesdayEdt.getText().toString()));
-                putWednesdayStepGoal(Integer.parseInt(wednesdayEdt.getText().toString()));
-                putThursdayStepGoal(Integer.parseInt(thursdayEdt.getText().toString()));
-                putFridayStepGoal(Integer.parseInt(fridayEdt.getText().toString()));
-                putSaturdayStepGoal(Integer.parseInt(saturdayEdt.getText().toString()));
-                putSundayStepGoal(Integer.parseInt(sundayEdt.getText().toString()));
+                putMondayStepGoal(requireActivity(), Integer.parseInt(mondayEdt.getText().toString()));
+                putTuesdayStepGoal(requireActivity(), Integer.parseInt(tuesdayEdt.getText().toString()));
+                putWednesdayStepGoal(requireActivity(), Integer.parseInt(wednesdayEdt.getText().toString()));
+                putThursdayStepGoal(requireActivity(), Integer.parseInt(thursdayEdt.getText().toString()));
+                putFridayStepGoal(requireActivity(), Integer.parseInt(fridayEdt.getText().toString()));
+                putSaturdayStepGoal(requireActivity(), Integer.parseInt(saturdayEdt.getText().toString()));
+                putSundayStepGoal(requireActivity(), Integer.parseInt(sundayEdt.getText().toString()));
 
                 if (ServiceFunctional.getPedometerShouldRun(requireActivity())) {
                     Pedometer.updatePedometerWidgetData(requireActivity(), ((int) requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)), getStepGoalForToday(requireActivity()));

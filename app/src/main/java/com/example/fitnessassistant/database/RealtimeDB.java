@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.fitnessassistant.pedometer.StepGoalFragment;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
@@ -155,7 +156,6 @@ public class RealtimeDB {
         }
     }
 
-    // saving user preferences to database
     public static void saveUserPreferences(Context context){
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -200,6 +200,56 @@ public class RealtimeDB {
                         UnitPreferenceFragment.putEnergyUnit(context, units.get(4));
 
                         WeightFragment.putPreviousWeights(context, data.getWeights());
+                    }
+                }
+            });
+        }
+    }
+
+    public static void saveUserGoals(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("goals");
+
+            GoalsData goalsData = new GoalsData();
+            goalsData.setData(context);
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.setValue(goalsData);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    public static void restoreUserGoals(Context context) {
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("goals");
+
+            db.get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()){
+                    Log.e("Firebase", "Error getting data", task.getException());
+                } else {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    GoalsData data = dataSnapshot.getValue(GoalsData.class);
+
+                    if(data != null) {
+                        WeightFragment.putGoalWeight(context, data.getTargetWeight());
+                        WeightFragment.putFirstWeight(context, data.getFirstWeight());
+                        WeightFragment.putFirstWeightDate(context, String.valueOf(data.getFirstDate()));
+
+                        StepGoalFragment.putMondayStepGoal(context, data.getWeeklySteps().get(0));
+                        StepGoalFragment.putTuesdayStepGoal(context, data.getWeeklySteps().get(1));
+                        StepGoalFragment.putWednesdayStepGoal(context, data.getWeeklySteps().get(2));
+                        StepGoalFragment.putThursdayStepGoal(context, data.getWeeklySteps().get(3));
+                        StepGoalFragment.putFridayStepGoal(context, data.getWeeklySteps().get(4));
+                        StepGoalFragment.putSaturdayStepGoal(context, data.getWeeklySteps().get(5));
+                        StepGoalFragment.putSundayStepGoal(context, data.getWeeklySteps().get(6));
                     }
                 }
             });
