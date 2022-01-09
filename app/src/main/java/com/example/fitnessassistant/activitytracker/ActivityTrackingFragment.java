@@ -588,11 +588,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE || reason == GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION)
                 followUser = false;
         });
-
-        if(!LocationService.serviceKilled){
-            addWholePathToMap();
-            focusUserOnMap();
-        }
     }
 
     private void updateLocationService(String state){
@@ -618,6 +613,11 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         super.onResume();
         mapView.onResume();
         updateTracking(isTracking);
+
+        if(!LocationService.serviceKilled){
+            addWholePathToMap();
+            focusUserOnMap();
+        }
     }
 
     public void onPause() {

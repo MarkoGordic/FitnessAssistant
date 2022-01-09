@@ -327,6 +327,7 @@ public class LocationService extends LifecycleService {
                 temp1.add(newPoint);
             }
             pathHistory.postValue(temp);
+            System.out.println(pathHistory.getValue().lastElement());
         }
     }
 
