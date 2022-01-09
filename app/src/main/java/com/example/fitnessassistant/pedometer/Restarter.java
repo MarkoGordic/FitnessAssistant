@@ -15,7 +15,7 @@ public class Restarter extends BroadcastReceiver {
             context.startForegroundService(new Intent(context, Pedometer.class));
 
             // update widgets
-            Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(String.valueOf(Integer.parseInt(getCurrentDateFormatted())), 0), null);
+            Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(getCurrentDateFormatted(), 0), null);
         }
     }
 }

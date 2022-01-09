@@ -216,7 +216,7 @@ public class Pedometer extends Service implements SensorEventListener {
 
             // update widgets
             for (int id : AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(new ComponentName(getApplicationContext(), PedometerWidget.class))) {
-                PedometerWidget.updateAppWidget(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()), id, AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT) );
+                PedometerWidget.updateAppWidget(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()), id, AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
             }
         }
     }

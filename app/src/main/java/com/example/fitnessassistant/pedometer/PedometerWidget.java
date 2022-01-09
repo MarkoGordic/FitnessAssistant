@@ -26,7 +26,7 @@ public class PedometerWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(String.valueOf(Integer.parseInt(getCurrentDateFormatted())), 0), null);
+        Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(getCurrentDateFormatted(), 0), null);
     }
 
     // handling resize for samsung devices

@@ -157,10 +157,9 @@ public class StepGoalFragment extends Fragment {
                 putSaturdayStepGoal(Integer.parseInt(saturdayEdt.getText().toString()));
                 putSundayStepGoal(Integer.parseInt(sundayEdt.getText().toString()));
 
-                int newStepGoal = getStepGoalForToday(requireActivity());
                 if (ServiceFunctional.getPedometerShouldRun(requireActivity())) {
-                    Pedometer.updatePedometerWidgetData(requireActivity(), ((int) requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)), newStepGoal);
-                    Pedometer.pushPedometerNotification(requireActivity(), ((int) requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + requireActivity().getString(R.string.steps_small), requireActivity().getString(R.string.your_today_goal) + " " + newStepGoal + ".");
+                    Pedometer.updatePedometerWidgetData(requireActivity(), ((int) requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)), getStepGoalForToday(requireActivity()));
+                    Pedometer.pushPedometerNotification(requireActivity(), ((int) requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + requireActivity().getString(R.string.steps_small), requireActivity().getString(R.string.your_today_goal) + " " + getStepGoalForToday(requireActivity()) + ".");
                 }
                 requireActivity().onBackPressed();
             } else

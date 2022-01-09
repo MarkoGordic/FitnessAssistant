@@ -15,9 +15,7 @@ public class ServiceFunctional {
 
     // setting pedometer state in shared preferences
     public synchronized static void setPedometerShouldRun(Context context, boolean pedometerShouldRun){
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.putBoolean("pedometer_should_run", pedometerShouldRun);
-        editor.apply();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("pedometer_should_run", pedometerShouldRun).apply();
     }
 
     // get pedometer state from shared preferences
