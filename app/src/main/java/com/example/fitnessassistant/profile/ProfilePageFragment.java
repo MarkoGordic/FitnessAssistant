@@ -93,7 +93,7 @@ public class ProfilePageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            Picasso.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).placeholder(R.drawable.default_user).resize(60,60).centerCrop().into((ImageView) requireView().findViewById(R.id.profilePicture));
+            Picasso.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).placeholder(R.drawable.user_focused).resize(60,60).centerCrop().into((ImageView) requireView().findViewById(R.id.profilePicture));
             displayCurrentUser(requireView());
         }
     }

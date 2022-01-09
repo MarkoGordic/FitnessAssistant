@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -18,9 +19,8 @@ import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
-import com.example.fitnessassistant.util.PermissionFunctional;
-import com.example.fitnessassistant.util.ServiceFunctional;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -28,33 +28,21 @@ import java.util.GregorianCalendar;
 
 public class HomePageFragment extends Fragment {
 
-    public void setUpUI(boolean pedometerRuns){
-        if(getView() != null)
-            setUpStepCountingButton(getView(), pedometerRuns);
-    }
+    public void updateStepsData(View view){
+        if(view == null)
+            view = getView();
 
-    private void setUpStepCountingButton(View view, Boolean pedometerRuns){
-        if(pedometerRuns == null)
-            pedometerRuns = ServiceFunctional.getPedometerShouldRun(requireActivity());
-
-        if(pedometerRuns){
-            ((AppCompatButton) view.findViewById(R.id.stepCountingButton)).setText(R.string.stop_counting);
-            view.findViewById(R.id.stepCountingButton).setOnClickListener(view1 -> {
-                ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
-                ServiceFunctional.stopPedometerService(requireActivity());
-            });
-        } else{
-            ((AppCompatButton) view.findViewById(R.id.stepCountingButton)).setText(R.string.start_counting);
-            view.findViewById(R.id.stepCountingButton).setOnClickListener(view1 -> PermissionFunctional.checkActivityRecognitionPermission(requireActivity(), ((InAppActivity) requireActivity()).activityRecognitionPermissionLauncher));
+        if(view != null) {
+            ((TextView) view.findViewById(R.id.stepsActivityTV)).setText(String.valueOf((int) requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)));
+            ((ProgressBar) view.findViewById(R.id.dailyStepsProgressBar)).setProgress((int) (100 * requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0) / StepGoalFragment.getStepGoalForToday(requireActivity())));
         }
     }
 
     // gives welcome message based on time
-    private void greetUserAndShowSteps(View view){
+    private void setUpUI(View view){
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setRefreshing(true);
-        ((TextView) view.findViewById(R.id.stepCountTextView)).setText(String.valueOf((int) requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)));
-        ((TextView) view.findViewById(R.id.stepGoalTextView)).setText(String.valueOf(StepGoalFragment.getStepGoalForToday(requireActivity())));
 
+        updateStepsData(view);
 
         TextView welcomeTextView = view.findViewById(R.id.welcomeMessageTextView); // TextView in top right corner for welcome message
 
@@ -64,28 +52,28 @@ public class HomePageFragment extends Fragment {
         int systemHours = calendar.get(Calendar.HOUR_OF_DAY);
 
         if (systemHours >= 6 && systemHours < 12)
-            welcomeTextView.setText(getString(R.string.good_morning));
+            welcomeTextView.setText(String.format("%s,", getString(R.string.good_morning)));
         else if(systemHours >= 12 && systemHours < 18)
-            welcomeTextView.setText(getString(R.string.good_afternoon));
+            welcomeTextView.setText(String.format("%s,", getString(R.string.good_afternoon)));
         else if(systemHours >= 18 && systemHours < 22)
-            welcomeTextView.setText(getString(R.string.good_evening));
+            welcomeTextView.setText(String.format("%s,", getString(R.string.good_evening)));
         else
-            welcomeTextView.setText(getString(R.string.good_night));
+            welcomeTextView.setText(String.format("%s,", getString(R.string.good_night)));
+
         if(FirebaseAuth.getInstance().getCurrentUser() != null) // greet the user, don't just say welcome :)
-            welcomeTextView.setText(String.format("%s, %s", welcomeTextView.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+            ((TextView) view.findViewById(R.id.userTextView)).setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         else
             Toast.makeText(requireContext(), R.string.unable_to_refresh, Toast.LENGTH_SHORT).show();
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setRefreshing(false);
+
+        Picasso.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).placeholder(R.drawable.user_focused).resize(60,60).centerCrop().into((ImageView) requireView().findViewById(R.id.pfp));
     }
 
-    private void setUpOnClickListeners(View view){
-        setUpStepCountingButton(view, null);
-
+    private void setUpOnClickListeners(View view) {
         // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
-        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> greetUserAndShowSteps(view));
+        ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> setUpUI(view));
 
-        // used for setting your step goals
-        view.findViewById(R.id.stepGoalFragmentTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new StepGoalFragment()).addToBackStack(null).commit());
+        view.findViewById(R.id.stepsLayout).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.pedometerFragment).addToBackStack(null).commit());
     }
 
     @Nullable
@@ -100,6 +88,6 @@ public class HomePageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(getView() != null)
-            greetUserAndShowSteps(getView());
+            setUpUI(getView());
     }
 }

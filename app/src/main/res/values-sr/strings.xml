@@ -182,6 +182,7 @@
     <string name="profile_picture_successfully_uploaded">Profilna Uspešno Sačuvana</string>
     <string name="profile_picture_not_successfully_uploaded">Profilna Nije Sačuvana</string>
     <string name="image_size_too_large">Veličina Slike Je Prevelika</string>
+    <string name="daily_activity">Dnevna Aktivnost</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Izaberite Jezik: </string>

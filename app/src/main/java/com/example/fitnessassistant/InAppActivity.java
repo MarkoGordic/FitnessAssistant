@@ -36,6 +36,8 @@ import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.pedometer.Pedometer;
+import com.example.fitnessassistant.pedometer.PedometerFragment;
 import com.example.fitnessassistant.profile.AccountDataFragment;
 import com.example.fitnessassistant.profile.GoalsFragment;
 import com.example.fitnessassistant.profile.LinkAccountsFragment;
@@ -81,6 +83,7 @@ public class InAppActivity extends AppCompatActivity {
     public static GoalsFragment goalsFragment;
     public static AccountDataFragment accountDataFragment;
     public static PersonalDataFragment personalDataFragment;
+    public static PedometerFragment pedometerFragment;
     // this atomic boolean is used for Personal Data Fragments (Height, Weight, Gender, UnitPreference)
     public static AtomicBoolean useNewPersonalDataFragments = new AtomicBoolean(false);
     // and fragment manager
@@ -168,6 +171,7 @@ public class InAppActivity extends AppCompatActivity {
         goalsFragment = new GoalsFragment();
         accountDataFragment = new AccountDataFragment();
         personalDataFragment = new PersonalDataFragment();
+        pedometerFragment = new PedometerFragment();
 
         active = homeFragment;
 
@@ -231,9 +235,9 @@ public class InAppActivity extends AppCompatActivity {
         super.applyOverrideConfiguration(getBaseContext().getResources().getConfiguration());
     }
 
-    public void setUpHomePageFragmentUI(boolean pedometerRuns){
-        if(homeFragment != null)
-            homeFragment.setUpUI(pedometerRuns);
+    public void setUpPedometerFragmentUI(boolean pedometerRuns){
+        if(pedometerFragment != null)
+            pedometerFragment.setUpUI(pedometerRuns);
     }
 
     public synchronized void putDesiredFragment(String desiredFragment){
@@ -324,6 +328,13 @@ public class InAppActivity extends AppCompatActivity {
         flash.setRepeatMode(Animation.REVERSE);
         flash.setRepeatCount(Animation.INFINITE);
         findViewById(R.id.no_network_notification).startAnimation(flash);
+
+        getSharedPreferences("pedometer", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener((prefs, key) -> {
+            if (key.equals(Pedometer.getCurrentDateFormatted())){
+                homeFragment.updateStepsData(null);
+                pedometerFragment.updateStepsData(null);
+            }
+        });
 
         if(ServiceFunctional.getPedometerShouldRun(this))
             ServiceFunctional.startPedometerService(this);

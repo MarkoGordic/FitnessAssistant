@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.example.fitnessassistant.InAppActivity;
@@ -28,14 +27,14 @@ public class ServiceFunctional {
         context.stopService(new Intent(context, Pedometer.class));
 
         if(context instanceof InAppActivity)
-            ((InAppActivity) context).setUpHomePageFragmentUI(false);
+            ((InAppActivity) context).setUpPedometerFragmentUI(false);
     }
 
     public synchronized static void startPedometerService(Context context){
         // starting services
         context.startService(new Intent(context, Pedometer.class));
 
-        ((InAppActivity) context).setUpHomePageFragmentUI(true);
+        ((InAppActivity) context).setUpPedometerFragmentUI(true);
 
         // update widgets
         for (int id : AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, PedometerWidget.class))) {

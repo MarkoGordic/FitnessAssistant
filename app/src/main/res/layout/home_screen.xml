@@ -9,112 +9,38 @@
     android:id="@+id/homeScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    android:background="@color/backgroundColor"
+    android:padding="32dp">
 
-    <LinearLayout
-        android:id="@+id/stepCountingLinear"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/profileView"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:cardCornerRadius="100dp"
+        app:cardBackgroundColor="@color/BlueYonder"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        android:layout_marginTop="64dp"
+        <androidx.cardview.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="100dp"
+            app:cardBackgroundColor="@color/backgroundColor"
 
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            android:layout_gravity="center">
 
-        <!-- StepCount TextView -->
-        <TextView
-            android:id="@+id/stepCountTextView"
+            <ImageView
+                android:id="@+id/pfp"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
 
-            android:layout_marginEnd="12dp"
-
-            android:fontFamily="@font/ralewaym"
-            android:text="@string/zero"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/BlueYonder"
-            android:textFontWeight="600"
-            android:textSize="28sp" />
-
-        <!-- Step Goal TextView -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:fontFamily="@font/ralewaym"
-            android:text="@string/slash"
-            android:textColor="@color/BlueYonder"
-            android:textFontWeight="600"
-            android:textSize="28sp" />
-
-        <!-- Step Goal TextView -->
-        <TextView
-            android:id="@+id/stepGoalTextView"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginEnd="32dp"
-
-            android:fontFamily="@font/ralewaym"
-            android:text="@string/default_step_target"
-            android:textColor="@color/BlueYonder"
-            android:textFontWeight="600"
-            android:textSize="28sp" />
-
-        <!-- StepCounting Button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/stepCountingButton"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:background="@drawable/authentication_button"
-
-            android:fontFamily="@font/ralewayb"
-            android:includeFontPadding="false"
-            android:padding="10dp"
-            android:text="@string/stop_counting"
-            android:textAllCaps="false"
-            android:textColor="@color/backgroundColor"
-            android:textFontWeight="600"
-            android:textSize="16sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </LinearLayout>
-
-    <!-- Step Goal TextView -->
-    <TextView
-        android:id="@+id/stepGoalFragmentTextView"
-
-        app:layout_constraintTop_toBottomOf="@id/stepCountingLinear"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-
-        android:background="@drawable/settings_field"
-
-        app:drawableEndCompat="@drawable/forward"
-        android:drawablePadding="12dp"
-
-        android:text="@string/step_goal"
-        android:textColor="@color/SpaceCadet"
-        android:paddingStart="16dp"
-        android:paddingEnd="12dp"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+                android:scaleType="centerCrop"
+                tools:ignore="ContentDescription" />
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <!-- Welcome TextView -->
     <TextView
@@ -124,14 +50,144 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
 
-        android:text="@string/welcome_text"
         android:fontFamily="@font/ralewaym"
-        android:textSize="20sp"
-        android:textColor="@color/BlueYonder" />
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:textSize="18sp"
+        android:textColor="@color/SpaceCadet" />
 
+    <!-- User TextView -->
+    <TextView
+        android:id="@+id/userTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcomeMessageTextView"
+
+        android:fontFamily="@font/ralewaym"
+        android:textSize="26sp"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:textColor="@color/SpaceCadet" />
+
+    <View
+        android:id="@+id/userSeparator"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        app:layout_constraintTop_toBottomOf="@id/profileView"
+        android:layout_marginTop="15dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <TextView
+        android:id="@+id/dailyActivityTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/userSeparator"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+
+        android:fontFamily="@font/ralewayb"
+        android:text="@string/daily_activity"
+        android:textSize="16sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:textColor="@color/BlueYonder"/>
+
+    <LinearLayout
+        android:id="@+id/stepsLayout"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/dailyActivityTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+
+        android:background="@drawable/authentication_button"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/stepsTextView"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:drawableEndCompat="@drawable/walk"
+            app:drawableTint="@color/BlueYonder"
+
+            android:fontFamily="@font/ralewayb"
+            android:text="@string/steps"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:textColor="@color/backgroundColor"/>
+
+        <RelativeLayout
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+
+            android:layout_gravity="center">
+            <!-- DailySteps ProgressBar -->
+            <ProgressBar
+                android:id="@+id/dailyStepsProgressBar"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:indeterminateOnly="false"
+                android:progressDrawable="@drawable/steps_circle"
+                android:rotation="90" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/stepsActivityTV"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/ralewayb"
+                    android:textColor="@color/backgroundColor"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:text="@string/steps_small"
+                    android:textColor="@color/backgroundColor"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/dailyActivitySeparator"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        app:layout_constraintTop_toBottomOf="@id/stepsLayout"
+        android:layout_marginTop="15dp"
+
+        android:background="@color/BlueYonder"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
