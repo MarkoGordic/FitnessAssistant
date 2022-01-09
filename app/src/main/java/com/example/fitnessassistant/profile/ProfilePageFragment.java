@@ -42,7 +42,7 @@ public class ProfilePageFragment extends Fragment {
                             if(task.getException() != null)
                                 throw task.getException();
                         } catch (FirebaseNetworkException e1){ // if it fails and it's a network error, the animated notification quickly flashes
-                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                             // we're displaying the user's profile (last saved)
                             AuthFunctional.dispUser(view, currentUser);
                         } catch(Exception e2){ // if it fails and we're online(user deleted, disabled or credentials no longer valid) -> return to sign in
@@ -52,7 +52,7 @@ public class ProfilePageFragment extends Fragment {
                 });
             else{ // quick flash the notification
                 ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setRefreshing(false);
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                 // we're displaying the user's profile (last saved)
                 AuthFunctional.dispUser(view, currentUser);
             }

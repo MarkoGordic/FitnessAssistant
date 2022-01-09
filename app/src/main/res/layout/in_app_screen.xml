@@ -10,7 +10,7 @@
 
     <!-- Layout for the no network notification -->
     <LinearLayout
-        android:id="@+id/no_network_notification"
+        android:id="@+id/notification"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:gravity="center"
 
         android:background="@color/BlueYonder"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/no_network_text_view"
@@ -43,7 +43,34 @@
             android:textSize="12sp"
             android:paddingTop="7dp"
             android:paddingBottom="7dp" />
+        <ProgressBar
+            android:id="@+id/additional_progress_bar"
 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleSmall"
+            android:visibility="gone"
+            android:layout_marginEnd="10dp"
+            android:indeterminateTint="@color/MangoTango"
+            android:indeterminate="true"/>
+        <TextView
+            android:id="@+id/additional_text_view"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+
+            android:gravity="center_horizontal"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:text="@string/loading_image"
+            android:textColor="@color/default_white_color"
+            android:textFontWeight="600"
+            android:textSize="12sp"
+            tools:ignore="TextContrastCheck" />
     </LinearLayout>
 
     <!-- Here is the content the user will interact with -->
@@ -54,7 +81,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_network_notification"
+        app:layout_constraintTop_toBottomOf="@id/notification"
         android:outlineAmbientShadowColor="@android:color/transparent"
         android:outlineSpotShadowColor="@android:color/transparent"/>
 

@@ -184,6 +184,7 @@
     <string name="profile_picture_not_successfully_uploaded">Profile Picture Not Uploaded</string>
     <string name="image_size_too_large">Image Size Too Large</string>
     <string name="daily_activity">Daily Activity</string>
+    <string name="loading_image">Uploading Profile Picture…</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Select A Language: </string>

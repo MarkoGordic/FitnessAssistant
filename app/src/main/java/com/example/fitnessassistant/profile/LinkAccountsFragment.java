@@ -71,7 +71,7 @@ public class LinkAccountsFragment extends Fragment {
                                 if (task.getException() != null)
                                     throw task.getException();
                             } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                             } catch (Exception e2) { // if it's any other we notify the user the unlinking process was unsuccessful
                                 view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                 Toast.makeText(getContext(), getString(R.string.google_unlinking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -79,7 +79,7 @@ public class LinkAccountsFragment extends Fragment {
                         }
                     }));
                 } else
-                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
             });
         }
     }
@@ -110,7 +110,7 @@ public class LinkAccountsFragment extends Fragment {
                                                             if (task1.getException() != null)
                                                                 throw task1.getException();
                                                         } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                         } catch (Exception e2) { // else notify user
                                                             Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                                                         }
@@ -124,7 +124,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                     if (task2.getException() != null)
                                                                         throw task2.getException();
                                                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                                 } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
                                                                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                                                     Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -162,7 +162,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                     if (task12.getException() != null)
                                                                         throw task12.getException();
                                                                 } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                                 } catch (Exception e2) { // else notify user
                                                                     Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                                                                 }
@@ -175,7 +175,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                             if (task2.getException() != null)
                                                                                 throw task2.getException();
                                                                         } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                                         } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
                                                                             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                                                             Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -184,7 +184,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                 });
                                                         });
                                                     else  // if we're offline, the animated notification quickly flashes
-                                                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                 }
                                             });
                                         }
@@ -201,7 +201,7 @@ public class LinkAccountsFragment extends Fragment {
                                     if (task.getException() != null)
                                         throw task.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                 } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
                                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                     Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -211,7 +211,7 @@ public class LinkAccountsFragment extends Fragment {
                 } catch (ApiException e){ // if there is an error, check if we're currently offline
                     AuthFunctional.finishLoading(view, requireView().findViewById(R.id.googleLinkingProgressBar));
                     if(!AuthFunctional.currentlyOnline) // if so, quick flash the notification
-                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                     else{ // else quick flash the button and tell the user the linking was unsuccessful by toasting
                         view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                         Toast.makeText(getContext(), getString(R.string.google_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -235,7 +235,7 @@ public class LinkAccountsFragment extends Fragment {
                             if (task.getException() != null)
                                 throw task.getException();
                         } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                         } catch (Exception e2) { // else notify user
                             Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                         }
@@ -249,7 +249,7 @@ public class LinkAccountsFragment extends Fragment {
                                     if (task1.getException() != null)
                                         throw task1.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                 } catch (Exception e2) { // if it's any other we notify the user the unlinking process was unsuccessful
                                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                     Toast.makeText(getContext(), getString(R.string.facebook_unlinking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -294,7 +294,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                         if (task1.getException() != null)
                                                                             throw task1.getException();
                                                                     } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                                                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                                     } catch (Exception e2) { // else notify user
                                                                         Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                                                                     }
@@ -309,7 +309,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                                 if (task2.getException() != null)
                                                                                     throw task2.getException();
                                                                             } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                                             } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
                                                                                 view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                                                                 Toast.makeText(getContext(), getString(R.string.facebook_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -349,7 +349,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                             if (task12.getException() != null)
                                                                                 throw task12.getException();
                                                                         } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                                         } catch (Exception e2) { // else notify user
                                                                             Toast.makeText(getContext(), getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                                                                         }
@@ -363,7 +363,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                                     if (task2.getException() != null)
                                                                                         throw task2.getException();
                                                                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                                                 } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
                                                                                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                                                                     Toast.makeText(getContext(), getString(R.string.facebook_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -372,7 +372,7 @@ public class LinkAccountsFragment extends Fragment {
                                                                         });
                                                                 });
                                                             else // if we're offline, the animated notification quickly flashes
-                                                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                                                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                                         }
                                                     });
                                                 }
@@ -391,7 +391,7 @@ public class LinkAccountsFragment extends Fragment {
                                             if (task.getException() != null)
                                                 throw task.getException();
                                         } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                                         } catch (Exception e2) { // if it's any other we notify the user the sign in process was unsuccessful
                                             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.quick_flash));
                                             Toast.makeText(getContext(), getString(R.string.facebook_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -421,13 +421,13 @@ public class LinkAccountsFragment extends Fragment {
                 public void onCancel() {
                     Toast.makeText(getContext(), R.string.facebook_linking_unsuccessful , Toast.LENGTH_LONG).show();
                     if(!AuthFunctional.currentlyOnline)
-                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                 }
                 @Override
                 public void onError(@NonNull FacebookException e) {
                     Toast.makeText(getContext(), R.string.facebook_linking_unsuccessful , Toast.LENGTH_LONG).show();
                     if(!AuthFunctional.currentlyOnline)
-                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                 }
             });
             LoginManager.getInstance().logInWithReadPermissions(requireActivity(), facebookCallbackManager , Arrays.asList("email", "public_profile")); // asking for the use of email and public profile on sign in
@@ -493,7 +493,7 @@ public class LinkAccountsFragment extends Fragment {
                 if(AuthFunctional.currentlyOnline) // google tokens expire early (thus this is handled)
                     googleLinkingClient.silentSignIn().addOnCompleteListener(task -> activityLauncher.launch(new Intent(getActivity(), CreateAccountActivity.class), result -> setUpLinkingSystem(view)));
                 else // no network notification flashes
-                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                    AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
             });
         else
             ourLinkButton.setVisibility(View.GONE);

@@ -101,7 +101,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                                 throw task.getException();
                             }
                         } catch (FirebaseNetworkException e1){ // in case it's a network error - notification quickly flashes
-                            AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
+                            AuthFunctional.quickFlash(this, findViewById(R.id.notification));
                         } catch (Exception e2){ // in other cases, it's an invalid email input
                             AuthFunctional.myError(getApplicationContext(), emailEdit, getString(R.string.invalid_email));
                         }
@@ -125,7 +125,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         flash.setStartOffset(1600); // staying visible duration
         flash.setRepeatMode(Animation.REVERSE);
         flash.setRepeatCount(Animation.INFINITE);
-        findViewById(R.id.no_network_notification).startAnimation(flash);
+        findViewById(R.id.notification).startAnimation(flash);
     }
 
     @Override

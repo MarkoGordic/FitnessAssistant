@@ -9,7 +9,7 @@
 
     <!-- Layout for the no network notification -->
     <LinearLayout
-        android:id="@+id/no_network_notification"
+        android:id="@+id/notification"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
 
         android:src="@drawable/back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_network_notification"
+        app:layout_constraintTop_toBottomOf="@id/notification"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <!-- User Drawable -->

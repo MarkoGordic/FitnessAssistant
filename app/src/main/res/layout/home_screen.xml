@@ -113,6 +113,7 @@
         android:layout_marginTop="20dp"
 
         android:background="@drawable/authentication_button"
+        android:backgroundTint="@color/DarkBlueYonder"
         android:orientation="vertical">
         <TextView
             android:id="@+id/stepsTextView"

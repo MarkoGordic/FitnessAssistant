@@ -187,7 +187,17 @@ public class AuthFunctional {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     // continuing(starting) the previous animation
-                    notificationLayout.startAnimation(previous);
+                    if(previous != null)
+                        notificationLayout.startAnimation(previous);
+                    else {
+                        // setting up the flashing animation
+                        Animation flash = new AlphaAnimation(0.0f, 1.0f);
+                        flash.setDuration(800); // flash duration
+                        flash.setStartOffset(1600); // staying visible duration
+                        flash.setRepeatMode(Animation.REVERSE);
+                        flash.setRepeatCount(Animation.INFINITE);
+                        notificationLayout.startAnimation(flash);
+                    }
                 }
             });
 
@@ -403,7 +413,7 @@ public class AuthFunctional {
                         if (task.getException() != null)
                             throw task.getException();
                     } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                        AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                        AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                     } catch (Exception e2) { // else notify user
                         Toast.makeText(context, context.getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                     }
@@ -468,7 +478,7 @@ public class AuthFunctional {
                         if(currentlyOnline)
                             deleteUponReauthentication(context, EmailAuthProvider.getCredential(user.getEmail(), passwordInput.getText().toString()));
                         else // if we're offline, the animated notification quickly flashes
-                            AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                            AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                     }
                 });
             }
@@ -509,7 +519,7 @@ public class AuthFunctional {
                                     throw task.getException();
                             } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
                                 dialog.dismiss();
-                                AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                                AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                                 Toast.makeText(context, context.getString(R.string.email_change_unsuccessful), Toast.LENGTH_LONG).show();
                             } catch (Exception e2) { // else notify user
                                 AuthFunctional.emailAlreadyRegistered(context, emailInput, emailInput.getText().toString());
@@ -525,7 +535,7 @@ public class AuthFunctional {
                                             if (task1.getException() != null)
                                                 throw task1.getException();
                                         } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                            AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                                            AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                                         } catch (Exception e2) { // else notify user
                                             Toast.makeText(context, context.getString(R.string.email_change_unsuccessful), Toast.LENGTH_LONG).show();
                                         }
@@ -587,7 +597,7 @@ public class AuthFunctional {
                                     if (task.getException() != null)
                                         throw task.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                                 } catch (Exception e2) { // else notify user
                                     Toast.makeText(context, context.getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                                 }
@@ -632,7 +642,7 @@ public class AuthFunctional {
                                 if (task.getException() != null)
                                     throw task.getException();
                             } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                                AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                             } catch (Exception e2) { // else notify user
                                 Toast.makeText(context, context.getString(R.string.password_change_unsuccessful), Toast.LENGTH_LONG).show();
                             }
@@ -698,7 +708,7 @@ public class AuthFunctional {
                                     if (task.getException() != null)
                                         throw task.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                                 } catch (Exception e2) { // else notify user
                                     Toast.makeText(context, context.getString(R.string.re_authentication_unsuccessful), Toast.LENGTH_LONG).show();
                                 }
@@ -744,7 +754,7 @@ public class AuthFunctional {
                                 if (task.getException() != null)
                                     throw task.getException();
                             } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                                AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                             } catch (Exception e2) { // else notify user
                                 Toast.makeText(context, context.getString(R.string.username_change_unsuccessful), Toast.LENGTH_LONG).show();
                             }
@@ -758,7 +768,7 @@ public class AuthFunctional {
                                             if (task1.getException() != null)
                                                 throw task1.getException();
                                         } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                            AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                                            AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                                         } catch (Exception e2) { // else notify user
                                             Toast.makeText(context, context.getString(R.string.username_change_unsuccessful), Toast.LENGTH_LONG).show();
                                         }
@@ -794,7 +804,7 @@ public class AuthFunctional {
                 try{
                     throw e;
                 } catch (FirebaseNetworkException e1){ // if it fails and it's a network error, the animated notification quickly flashes
-                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.no_network_notification));
+                    AuthFunctional.quickFlash(context, ((Activity) context).findViewById(R.id.notification));
                 } catch(Exception e2){ // if it fails and we're online(user deleted, disabled or credentials no longer valid) -> return to sign in
                     Intent signInIntent = new Intent(context, SignInActivity.class);
                     signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

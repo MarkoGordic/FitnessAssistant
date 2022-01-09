@@ -38,7 +38,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                         if (task1.getException() != null)
                             throw task1.getException();
                     } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                        AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
+                        AuthFunctional.quickFlash(this, findViewById(R.id.notification));
                     } catch (Exception e2) { // else notify user
                         Toast.makeText(getApplicationContext(), getString(R.string.account_created_username_update_unsuccessful), Toast.LENGTH_LONG).show();
                     }
@@ -88,7 +88,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                     if (task.getException() != null)
                                         throw task.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's a network error, the animated notification quickly flashes
-                                    AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
+                                    AuthFunctional.quickFlash(this, findViewById(R.id.notification));
                                 } catch (Exception e2) { // else errors are checked
                                     AuthFunctional.emailAlreadyRegistered(getApplicationContext(), emailEdit, email);
                                     Toast.makeText(getApplicationContext(), getString(R.string.register_unsuccessful), Toast.LENGTH_LONG).show();
@@ -106,7 +106,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                     if (task.getException() != null)
                                         throw task.getException();
                                 } catch (FirebaseNetworkException e1) { // if it's this one, it's network problems, so we quick flash the notification of no connectivity
-                                    AuthFunctional.quickFlash(this, findViewById(R.id.no_network_notification));
+                                    AuthFunctional.quickFlash(this, findViewById(R.id.notification));
                                 } catch (Exception e2) { // if it's any other we notify the user the linking process was unsuccessful
                                     view.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.quick_flash));
                                     Toast.makeText(getApplicationContext(), getString(R.string.email_linking_unsuccessful), Toast.LENGTH_LONG).show();
@@ -144,7 +144,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         flash.setStartOffset(1600); // staying visible duration
         flash.setRepeatMode(Animation.REVERSE);
         flash.setRepeatCount(Animation.INFINITE);
-        findViewById(R.id.no_network_notification).startAnimation(flash);
+        findViewById(R.id.notification).startAnimation(flash);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class AccountDataFragment extends Fragment {
             if (AuthFunctional.currentlyOnline)
                 AuthFunctional.setUpEmailChange(getActivity());
             else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
         });
 
         // changePasswordButton listener - calling the alert dialog
@@ -56,7 +56,7 @@ public class AccountDataFragment extends Fragment {
             if(AuthFunctional.currentlyOnline)
                 AuthFunctional.setUpPasswordChange(getActivity());
             else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
         });
 
         // changeUserNameTextView listener - calling the alert dialog
@@ -64,7 +64,7 @@ public class AccountDataFragment extends Fragment {
             if (AuthFunctional.currentlyOnline)
                 AuthFunctional.setUpUserNameChange(getActivity());
             else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
         });
 
         // changeProfilePictureTextView listener - gets the image from gallery

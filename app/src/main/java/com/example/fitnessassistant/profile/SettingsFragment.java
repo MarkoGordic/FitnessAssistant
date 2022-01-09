@@ -239,7 +239,7 @@ public class SettingsFragment extends Fragment {
             if(AuthFunctional.currentlyOnline)
                 Toast.makeText(getContext(),getString(R.string.hold_for_signing_out), Toast.LENGTH_LONG).show(); // it's better to sign out on hold, user can click this on accident
             else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
         });
 
         // signOutButton listener - hold
@@ -252,7 +252,7 @@ public class SettingsFragment extends Fragment {
                 ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
                 ServiceFunctional.stopPedometerService(requireActivity());
             } else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
             return true; // returns true -> onClick doesn't get triggered
         });
 
@@ -283,11 +283,11 @@ public class SettingsFragment extends Fragment {
                     if(AuthFunctional.currentlyOnline) // signing in silently (because google id tokens expire really quick)
                         googleLinkingClient.silentSignIn().addOnCompleteListener(task -> AuthFunctional.setUpDeletion(requireActivity()));
                     else // no network notification flashes
-                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
                 });
             }
             else // if there is no internet, the animated notification quickly flashes
-                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.no_network_notification));
+                AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
         });
     }
 

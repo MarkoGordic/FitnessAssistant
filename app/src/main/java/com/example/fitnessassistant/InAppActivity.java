@@ -119,6 +119,10 @@ public class InAppActivity extends AppCompatActivity {
     // used for getting the image from gallery
     public final ActivityResultLauncher<Intent> imageGetter = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getData() != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
+            findViewById(R.id.additional_progress_bar).setVisibility(View.VISIBLE);
+            findViewById(R.id.additional_text_view).setVisibility(View.VISIBLE);
+            Animation oldAnim = findViewById(R.id.notification).getAnimation();
+            findViewById(R.id.notification).setAnimation(null);
             try {
                 Uri uri = result.getData().getData();
                 InputStream fileInputStream = getContentResolver().openInputStream(uri);
@@ -134,11 +138,39 @@ public class InAppActivity extends AppCompatActivity {
                     Uri newUri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), scaledBmp, "ProfilePic", null));
 
                     StorageReference ref = FirebaseStorage.getInstance().getReference().child("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/profile.jpg");
-                    ref.putFile(newUri).addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(URI -> FirebaseAuth.getInstance().getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(URI).build()).addOnSuccessListener(unused -> Toast.makeText(this, getString(R.string.profile_picture_successfully_uploaded), Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(this, getString(R.string.profile_picture_not_successfully_uploaded), Toast.LENGTH_SHORT).show()))).addOnFailureListener(e -> Toast.makeText(this, getString(R.string.profile_picture_not_successfully_uploaded), Toast.LENGTH_SHORT).show());
-                } else
+
+                    ref.putFile(newUri).addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(URI -> FirebaseAuth.getInstance().getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(URI).build()).addOnSuccessListener(unused -> {
+                        Toast.makeText(this, getString(R.string.profile_picture_successfully_uploaded), Toast.LENGTH_SHORT).show();
+                        findViewById(R.id.additional_progress_bar).setVisibility(View.GONE);
+                        findViewById(R.id.additional_text_view).setVisibility(View.GONE);
+                        findViewById(R.id.notification).startAnimation(oldAnim);
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(this, getString(R.string.profile_picture_not_successfully_uploaded), Toast.LENGTH_SHORT).show();
+                        findViewById(R.id.additional_progress_bar).setVisibility(View.GONE);
+                        findViewById(R.id.additional_text_view).setVisibility(View.GONE);
+                        findViewById(R.id.notification).startAnimation(oldAnim);
+                    })).addOnFailureListener(e -> {
+                        Toast.makeText(this, getString(R.string.profile_picture_not_successfully_uploaded), Toast.LENGTH_SHORT).show();
+                        findViewById(R.id.additional_progress_bar).setVisibility(View.GONE);
+                        findViewById(R.id.additional_text_view).setVisibility(View.GONE);
+                        findViewById(R.id.notification).startAnimation(oldAnim);
+                    })).addOnFailureListener(e -> {
+                        Toast.makeText(this, getString(R.string.profile_picture_not_successfully_uploaded), Toast.LENGTH_SHORT).show();
+                        findViewById(R.id.additional_progress_bar).setVisibility(View.GONE);
+                        findViewById(R.id.additional_text_view).setVisibility(View.GONE);
+                        findViewById(R.id.notification).startAnimation(oldAnim);
+                    });
+                } else {
                     Toast.makeText(this, getString(R.string.image_size_too_large), Toast.LENGTH_SHORT);
+                    findViewById(R.id.additional_progress_bar).setVisibility(View.GONE);
+                    findViewById(R.id.additional_text_view).setVisibility(View.GONE);
+                    findViewById(R.id.notification).startAnimation(oldAnim);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+                findViewById(R.id.additional_progress_bar).setVisibility(View.GONE);
+                findViewById(R.id.additional_text_view).setVisibility(View.GONE);
+                findViewById(R.id.notification).startAnimation(oldAnim);
             }
         }
     });
@@ -327,7 +359,7 @@ public class InAppActivity extends AppCompatActivity {
         flash.setStartOffset(1600); // staying visible duration
         flash.setRepeatMode(Animation.REVERSE);
         flash.setRepeatCount(Animation.INFINITE);
-        findViewById(R.id.no_network_notification).startAnimation(flash);
+        findViewById(R.id.notification).startAnimation(flash);
 
         getSharedPreferences("pedometer", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener((prefs, key) -> {
             if (key.equals(Pedometer.getCurrentDateFormatted())){
