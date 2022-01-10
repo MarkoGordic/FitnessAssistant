@@ -59,6 +59,10 @@ public class BirthdayFragment extends Fragment {
             return -1;
     }
 
+    public static synchronized int getWorldwideAverageYears(){
+        return 30;
+    }
+
     private boolean validDate(View view){
         if(year > Calendar.getInstance().get(Calendar.YEAR)) {
             view.findViewById(R.id.dateGiven).requestFocus();

@@ -41,6 +41,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class WeightFragment extends Fragment {
     public static AtomicBoolean isGoalWeight = new AtomicBoolean(false);
 
+    public synchronized static float getWorldwideAverageWeight(Context context){
+        if(GenderFragment.getGender(context).equals(GenderFragment.MALE))
+            return 84f;
+        else if(GenderFragment.getGender(context).equals(GenderFragment.FEMALE))
+            return 70f;
+        else
+            return 77f;
+    }
+
     private synchronized static int getNumOfWeightUpdatedToday(Context context){
         return context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).getInt(Pedometer.getCurrentDateFormatted(), 0);
     }

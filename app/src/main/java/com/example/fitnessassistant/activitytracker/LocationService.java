@@ -71,6 +71,8 @@ public class LocationService extends LifecycleService {
     public static MutableLiveData<Boolean> shouldStart = new MutableLiveData<>();
     public static MutableLiveData<Boolean> shouldShowAccuracyAlert = new MutableLiveData<>();
 
+    public static MutableLiveData<Float> accuracy = new MutableLiveData<>();
+
     private boolean createNewPath = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -145,29 +147,19 @@ public class LocationService extends LifecycleService {
 
     private float getBMR(float weightInKGs, float heightInCMs, int ageInYears){
         if(ageInYears == -1)
-            ageInYears = 30;
-        if(GenderFragment.getGender(this).equals(GenderFragment.MALE)) {
-            if(weightInKGs == -1f)
-                weightInKGs = 84f;
-            if(heightInCMs == -1f)
-                heightInCMs = 171f;
+            ageInYears = BirthdayFragment.getWorldwideAverageYears();
+        if(weightInKGs == -1)
+            weightInKGs = WeightFragment.getWorldwideAverageWeight(this);
+        if(heightInCMs == -1)
+            heightInCMs = HeightFragment.getWorldwideAverageHeight(this);
 
+
+        if(GenderFragment.getGender(this).equals(GenderFragment.MALE))
             return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) + 5;
-        } else if(GenderFragment.getGender(this).equals(GenderFragment.FEMALE)) {
-            if(weightInKGs == -1f)
-                weightInKGs = 70f;
-            if(heightInCMs == -1f)
-                heightInCMs = 159f;
-
+        else if(GenderFragment.getGender(this).equals(GenderFragment.FEMALE))
             return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) - 161;
-        } else {
-            if(weightInKGs == -1f)
-                weightInKGs = 77f;
-            if(heightInCMs == -1f)
-                heightInCMs = 155f;
-
+        else
             return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) - 83;
-        }
     }
 
     private void calculateNewDistanceInKm(LatLng newLocation){
@@ -292,6 +284,9 @@ public class LocationService extends LifecycleService {
 
     // method for adding new GPS point to path list
     private void addNewPathPoint(Location location){
+        if(location.getAccuracy() != 0)
+            accuracy.postValue(location.getAccuracy());
+
         // converting location to LatLng variable
         LatLng newPoint = new LatLng(location.getLatitude(), location.getLongitude());
 

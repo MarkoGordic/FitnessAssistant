@@ -11,10 +11,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -141,6 +144,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     alertDialog.dismiss();
             }
         });
+
+        LocationService.accuracy.observe(getViewLifecycleOwner(), this::changeAccuracy);
 
         // For service updates
         LocationService.isTracking.observe(getViewLifecycleOwner(), this::updateTracking);
@@ -285,7 +290,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private void focusUserOnMap(){
         if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser && !LocationService.serviceKilled && googleMap != null){
             float mapZoom = 18f;
-            System.out.println(pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1));
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                             pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1),
@@ -442,9 +446,68 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 });
     }
 
+    private void changeAccuracy(float accuracy){
+        if(getView() != null) {
+            if (accuracy <= 10) {
+                ((AppCompatImageButton) getView().findViewById(R.id.accuracyButton)).setColorFilter(requireContext().getColor(R.color.Green));
+                getView().findViewById(R.id.accuracyExplanation).getBackground().setTint(requireContext().getColor(R.color.Green));
+            } else if (accuracy <= 30) {
+                ((AppCompatImageButton) getView().findViewById(R.id.accuracyButton)).setColorFilter(requireContext().getColor(R.color.Yellow));
+                getView().findViewById(R.id.accuracyExplanation).getBackground().setTint(requireContext().getColor(R.color.Yellow));
+            } else {
+                ((AppCompatImageButton) getView().findViewById(R.id.accuracyButton)).setColorFilter(requireContext().getColor(R.color.Red));
+                getView().findViewById(R.id.accuracyExplanation).getBackground().setTint(requireContext().getColor(R.color.Red));
+            }
+        }
+    }
+
     private void setUpOnClickListeners(View view){
         // stopButton onClickListener
         view.findViewById(R.id.pauseButton).setOnClickListener(v -> onActivityTrackingPause());
+
+        view.findViewById(R.id.accuracyButton).setOnClickListener(v -> {
+            view.findViewById(R.id.accuracyButton).setClickable(false);
+            Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+            fadeOut.setDuration(500);
+            fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    if(view.findViewById(R.id.accuracyExplanation) != null) {
+                        view.findViewById(R.id.accuracyExplanation).setVisibility(View.GONE);
+                        view.findViewById(R.id.accuracyButton).setClickable(true);
+                    }
+                }
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
+            Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+            fadeIn.setDuration(500);
+            fadeIn.setFillAfter(true);
+            fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    if(view.findViewById(R.id.accuracyExplanation) != null) {
+                        new Handler().postDelayed(() -> {
+                            if (view.findViewById(R.id.accuracyExplanation) != null) {
+                                view.findViewById(R.id.accuracyExplanation).startAnimation(fadeOut);
+                            }
+                        }, 1500);
+                    }
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            view.findViewById(R.id.accuracyExplanation).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.accuracyExplanation).startAnimation(fadeIn);
+        });
 
         // startButton onClickListener
         view.findViewById(R.id.startButton).setOnClickListener(v -> PermissionFunctional.checkFineLocationPermission(this, fineLocationPermissionLauncher, backgroundLocationPermissionLauncher));

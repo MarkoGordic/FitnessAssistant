@@ -24,6 +24,15 @@ import com.example.fitnessassistant.R;
 // height is saved in CMs
 public class HeightFragment extends Fragment {
 
+    public static synchronized float getWorldwideAverageHeight(Context context){
+        if(GenderFragment.getGender(context).equals(GenderFragment.MALE))
+            return 171f;
+        else if(GenderFragment.getGender(context).equals(GenderFragment.FEMALE))
+            return 159f;
+        else
+            return 165f;
+    }
+
     public static synchronized float getHeight(Context context){
         return context.getSharedPreferences("questions", MODE_PRIVATE).getFloat("height", -1f);
     }

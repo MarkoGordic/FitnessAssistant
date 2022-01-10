@@ -20,4 +20,8 @@
     <!-- main orange colors -->
     <color name="MangoTango">#cc7047</color>
     <color name="Flame">#cc7450</color>
+    <!-- Red,Green,Yellow - used for states -->
+    <color name="Red">#ff4757</color>
+    <color name="Green">#0fd0b0</color>
+    <color name="Yellow">#ffba66</color>
 </resources>

@@ -81,6 +81,52 @@
         tools:ignore="SpeakableTextPresentCheck"
         tools:layout_editor_absoluteX="188dp" />
 
+    <!-- Accuracy Button -->
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/accuracyButton"
+
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+
+        app:layout_constraintBottom_toBottomOf="@id/mapTypeButton"
+        app:layout_constraintTop_toTopOf="@id/mapView"
+        app:layout_constraintStart_toStartOf="@id/mapView"
+
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="56dp"
+
+        android:background="@drawable/border_circle"
+
+        android:src="@drawable/filled_marker"
+        android:scaleType="fitCenter"
+        android:padding="7dp"
+
+        android:tint="@color/SpaceCadet"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/accuracyExplanation"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/accuracyButton"
+        app:layout_constraintBottom_toBottomOf="@id/accuracyButton"
+        app:layout_constraintStart_toEndOf="@id/accuracyButton"
+        android:layout_marginStart="8dp"
+
+        android:background="@drawable/authentication_button"
+        android:visibility="gone"
+
+        android:fontFamily="@font/raleway"
+        android:includeFontPadding="false"
+        android:text="@string/location_accuracy"
+        android:padding="8dp"
+        android:textAllCaps="false"
+        android:textColor="@color/backgroundColor"
+        android:textFontWeight="600"
+        android:textSize="13sp" />
+
     <!-- Spotify Button -->
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/spotifyButton"
@@ -328,7 +374,7 @@
 
                         android:gravity="center"
 
-                        android:fontFamily="@font/ralewayb"
+                        android:fontFamily="@font/roboto_light"
                         android:includeFontPadding="false"
                         android:padding="1dp"
                         android:maxLength="6"
@@ -396,7 +442,7 @@
 
                         android:gravity="center"
 
-                        android:fontFamily="@font/ralewayb"
+                        android:fontFamily="@font/roboto_light"
                         android:includeFontPadding="false"
                         android:maxLength="10"
                         android:padding="1dp"
@@ -464,7 +510,7 @@
 
                         android:gravity="center"
 
-                        android:fontFamily="@font/ralewayb"
+                        android:fontFamily="@font/roboto_light"
                         android:includeFontPadding="false"
                         android:maxLength="10"
                         android:padding="1dp"
@@ -547,7 +593,7 @@
 
                         android:gravity="center"
 
-                        android:fontFamily="@font/ralewayb"
+                        android:fontFamily="@font/roboto_light"
                         android:includeFontPadding="false"
                         android:padding="1dp"
                         android:maxLength="7"
@@ -615,7 +661,7 @@
 
                         android:gravity="center"
 
-                        android:fontFamily="@font/ralewayb"
+                        android:fontFamily="@font/roboto_light"
                         android:includeFontPadding="false"
                         android:padding="2dp"
                         android:maxLength="5"
@@ -683,7 +729,7 @@
 
                         android:gravity="center"
 
-                        android:fontFamily="@font/ralewayb"
+                        android:fontFamily="@font/roboto_light"
                         android:includeFontPadding="false"
                         android:padding="2dp"
                         android:maxLength="5"
@@ -739,6 +785,7 @@
             android:layout_weight="18"
             android:gravity="center_horizontal"
 
+            android:fontFamily="@font/roboto_light"
             android:padding="5dp"
             android:text="@string/starting_time"
             android:textColor="@color/SpaceCadet"
