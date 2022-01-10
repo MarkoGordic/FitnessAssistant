@@ -44,12 +44,6 @@ import java.util.Calendar;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
-// TODO CRASH ako upalim activity, (nebitno da li ga pauziram ili ne) izadjem iz app i opet udjem i otvorim fragment
-// TODO CRASH ukoliko neposredno odmah posle paljenja activity-ja fokusiram path
-// TODO CRASH ukoliko neposredno odmah posle paljenja activity-ja stopiram activity
-
-// TODO add stop tracking functionality and stop tracking to notification
-
 public class ActivityTrackingFragment extends Fragment implements OnMapReadyCallback {
 
     // launcher for the Location Permission
@@ -134,7 +128,10 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     ((Button) alertDialog.findViewById(R.id.dialog_button)).setText(R.string.force_start);
                     alertDialog.findViewById(R.id.dialog_button).setOnClickListener(view2 -> {
                         alertDialog.dismiss();
-                        // TODO add FORCE START (post shouldShowAccuracyAlert to false, stop checking accuracy and force start)
+                        LocationService.shouldStart.postValue(true);
+                        LocationService.serviceRunning = true;
+
+                        LocationService.shouldShowAccuracyAlert.postValue(false);
                     });
                 } else if(!alertDialog.isShowing()){
                     alertDialog.show();
@@ -286,8 +283,9 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void focusUserOnMap(){
-        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser && !LocationService.serviceKilled){
+        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser && !LocationService.serviceKilled && googleMap != null){
             float mapZoom = 18f;
+            System.out.println(pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1));
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                             pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1),
@@ -298,7 +296,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void forceFocusPathOnMap(){
-        if(!LocationService.serviceKilled) {
+        if(!LocationService.serviceKilled && pathHistory.size() >= 1) {
             LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
             for (int i = 0; i < pathHistory.size(); i++) {
                 for (int j = 0; j < pathHistory.get(i).size(); j++) {
@@ -318,7 +316,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void focusPathOnMap(){
-        if(!LocationService.serviceKilled) {
+        if(!LocationService.serviceKilled && pathHistory.size() >= 1) {
             LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
             for (int i = 0; i < pathHistory.size(); i++) {
                 for (int j = 0; j < pathHistory.get(i).size(); j++) {
@@ -371,7 +369,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void addLatestPathToMap(){
-        if(!pathHistory.isEmpty() && pathHistory.get(pathHistory.size() - 1).size() > 1){
+        if(!pathHistory.isEmpty() && pathHistory.get(pathHistory.size() - 1).size() > 1 && googleMap != null){
             LatLng preLastLatLng = pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 2);
             LatLng lastLatLng = pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 1);
 
@@ -617,6 +615,9 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             if(reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE || reason == GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION)
                 followUser = false;
         });
+
+        addWholePathToMap();
+        focusUserOnMap();
     }
 
     private void updateLocationService(String state){
@@ -643,7 +644,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         mapView.onResume();
         updateTracking(isTracking);
 
-        if(!LocationService.serviceKilled){
+        if(!LocationService.serviceKilled && googleMap != null){
             addWholePathToMap();
             focusUserOnMap();
         }

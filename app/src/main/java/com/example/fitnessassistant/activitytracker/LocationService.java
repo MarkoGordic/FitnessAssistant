@@ -66,7 +66,7 @@ public class LocationService extends LifecycleService {
     private final int timerDelayMs = 100;
     final Handler handler = new Handler();
 
-    private boolean serviceRunning = false;
+    public static boolean serviceRunning = false;
     public static boolean serviceKilled = true;
     public static MutableLiveData<Boolean> shouldStart = new MutableLiveData<>();
     public static MutableLiveData<Boolean> shouldShowAccuracyAlert = new MutableLiveData<>();
