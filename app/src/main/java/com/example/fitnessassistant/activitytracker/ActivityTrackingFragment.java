@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +43,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.Calendar;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
+
+// TODO CRASH ako upalim activity, (nebitno da li ga pauziram ili ne) izadjem iz app i opet udjem i otvorim fragment
+// TODO CRASH ukoliko neposredno odmah posle paljenja activity-ja fokusiram path
+// TODO CRASH ukoliko neposredno odmah posle paljenja activity-ja stopiram activity
 
 // TODO add stop tracking functionality and stop tracking to notification
 
@@ -107,9 +112,39 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     private long currentTimeInMilliseconds = 0L;
 
+    private AlertDialog alertDialog = null;
+
     // method which is used to set up observers
     @SuppressLint("DefaultLocale")
     private void subscribeToObservers(){
+        LocationService.shouldShowAccuracyAlert.observe(getViewLifecycleOwner(), show -> {
+            if(show){
+                if(alertDialog == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setView(R.layout.loading_dialog);
+                    alertDialog = builder.create();
+                    alertDialog.show();
+
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    ((AppCompatImageView) alertDialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.marker);
+
+                    ((TextView) alertDialog.findViewById(R.id.dialog_header)).setText(R.string.location_accuracy);
+                    ((TextView) alertDialog.findViewById(R.id.dialog_message)).setText(R.string.location_accuracy_message);
+
+                    ((Button) alertDialog.findViewById(R.id.dialog_button)).setText(R.string.force_start);
+                    alertDialog.findViewById(R.id.dialog_button).setOnClickListener(view2 -> {
+                        alertDialog.dismiss();
+                        // TODO add FORCE START (post shouldShowAccuracyAlert to false, stop checking accuracy and force start)
+                    });
+                } else if(!alertDialog.isShowing()){
+                    alertDialog.show();
+                }
+            } else {
+                if (alertDialog != null)
+                    alertDialog.dismiss();
+            }
+        });
+
         // For service updates
         LocationService.isTracking.observe(getViewLifecycleOwner(), this::updateTracking);
 
@@ -345,7 +380,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     .width(polylineWidth)
                     .add(preLastLatLng)
                     .add(lastLatLng);
-
             googleMap.addPolyline(polylineOptions);
         }
     }

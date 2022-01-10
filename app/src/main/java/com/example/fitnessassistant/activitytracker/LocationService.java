@@ -69,6 +69,7 @@ public class LocationService extends LifecycleService {
     private boolean serviceRunning = false;
     public static boolean serviceKilled = true;
     public static MutableLiveData<Boolean> shouldStart = new MutableLiveData<>();
+    public static MutableLiveData<Boolean> shouldShowAccuracyAlert = new MutableLiveData<>();
 
     private boolean createNewPath = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -282,6 +283,10 @@ public class LocationService extends LifecycleService {
         if(accuracy <= 10f) {
             shouldStart.postValue(true);
             serviceRunning = true;
+
+            shouldShowAccuracyAlert.postValue(false);
+        } else{
+            shouldShowAccuracyAlert.postValue(true);
         }
     }
 
@@ -363,7 +368,6 @@ public class LocationService extends LifecycleService {
             case "start_or_resume_service":
                 if(shouldStart.getValue() != null) {
                     if (!shouldStart.getValue()) {
-                        // TODO: Prompt accuracy alert
                         startForegroundService();
                         serviceRunning = true;
                     } else {

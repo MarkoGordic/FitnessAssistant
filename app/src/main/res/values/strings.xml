@@ -248,6 +248,9 @@
     <string name="center">Center</string>
     <string name="activity_tracking_active">Activity Tracking Active</string>
     <string name="activity_tracking_active_message">This feature is not available while Activity Tracking is active. Stop your activity tracking session and try again.</string>
+    <string name="location_accuracy">Location Accuracy</string>
+    <string name="location_accuracy_message">For best results location accuracy needs to fall down to a range of 10m(33ft). Please wait…</string>
+    <string name="force_start">Force Start</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Skip</string>

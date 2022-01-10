@@ -248,6 +248,9 @@
     <string name="center">Centriraj</string>
     <string name="activity_tracking_active">Praćenje Aktivnosti Uključeno</string>
     <string name="activity_tracking_active_message">Ovo nije dostupno dok je praćenje aktivnosti uključeno. Zaustavite praćenje aktivnosti i pokušajte ponovo.</string>
+    <string name="location_accuracy">Preciznost Lokacije</string>
+    <string name="location_accuracy_message">Za najbolje rezultate preciznost lokacije treba da opadne na krug od 10m. Molimo Vas sačekajte…</string>
+    <string name="force_start">Odmah Započni</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Preskoči</string>

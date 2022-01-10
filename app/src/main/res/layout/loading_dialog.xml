@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/settings_field"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <!-- Dialog Drawable -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dialog_drawable"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+
+        android:layout_gravity="center" />
+
+    <!-- Dialog Header -->
+    <TextView
+        android:id="@+id/dialog_header"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+
+        android:textSize="22sp"
+        android:textColor="@color/SpaceCadet"
+        android:textStyle="bold" />
+
+    <!-- Dialog Loader -->
+    <ProgressBar
+        android:id="@+id/dialog_loader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+
+        android:gravity="center"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/MangoTango"/>
+
+
+    <!-- Dialog Message -->
+    <TextView
+        android:id="@+id/dialog_message"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+
+        android:textSize="17sp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/BlueYonder"/>
+
+    <!-- Dialog OK Button -->
+    <Button
+        android:id="@+id/dialog_button"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
+
+        android:layout_marginTop="20dp"
+
+        android:background="@drawable/transparent_button"
+
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="@color/SpaceCadet"
+        tools:ignore="SpeakableTextPresentCheck" />
+</LinearLayout>
