@@ -295,44 +295,62 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:weightSum="2"
 
                 android:gravity="center"
 
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
 
                     android:gravity="center"
 
                     android:fontFamily="@font/ralewayb"
                     android:includeFontPadding="false"
                     android:text="@string/calories"
-                    android:padding="1dp"
                     android:textAllCaps="false"
                     android:textColor="@color/SpaceCadet"
                     android:textFontWeight="600"
                     android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/caloriesBurned"
+                <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2">
+                    <TextView
+                        android:id="@+id/caloriesBurned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    android:gravity="center"
+                        android:gravity="center"
 
-                    android:fontFamily="@font/ralewayb"
-                    android:includeFontPadding="false"
-                    android:padding="1dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/SpaceCadet"
-                    android:textFontWeight="600"
-                    android:textSize="13sp" />
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:maxLength="6"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/energyUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
+                        android:gravity="center"
+
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </TableRow>
             </LinearLayout>
 
             <View
@@ -345,44 +363,62 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:weightSum="2"
 
                 android:gravity="center"
 
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
 
                     android:gravity="center"
 
                     android:fontFamily="@font/ralewayb"
                     android:includeFontPadding="false"
                     android:text="@string/pace"
-                    android:padding="1dp"
                     android:textAllCaps="false"
                     android:textColor="@color/SpaceCadet"
                     android:textFontWeight="600"
                     android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/currentPace"
+                <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2">
+                    <TextView
+                        android:id="@+id/currentPace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    android:gravity="center"
+                        android:gravity="center"
 
-                    android:fontFamily="@font/ralewayb"
-                    android:includeFontPadding="false"
-                    android:padding="1dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/SpaceCadet"
-                    android:textFontWeight="600"
-                    android:textSize="13sp" />
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:maxLength="10"
+                        android:padding="1dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/paceUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
+                        android:gravity="center"
+
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </TableRow>
             </LinearLayout>
 
             <View
@@ -395,44 +431,62 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:weightSum="2"
 
                 android:gravity="center"
 
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
 
                     android:gravity="center"
 
                     android:fontFamily="@font/ralewayb"
                     android:includeFontPadding="false"
                     android:text="@string/average_pace"
-                    android:padding="1dp"
                     android:textAllCaps="false"
                     android:textColor="@color/SpaceCadet"
                     android:textFontWeight="600"
                     android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/averagePace"
+                <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2">
+                    <TextView
+                        android:id="@+id/averagePace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    android:gravity="center"
+                        android:gravity="center"
 
-                    android:fontFamily="@font/ralewayb"
-                    android:includeFontPadding="false"
-                    android:padding="1dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/SpaceCadet"
-                    android:textFontWeight="600"
-                    android:textSize="13sp" />
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:maxLength="10"
+                        android:padding="1dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/averagePaceUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
+                        android:gravity="center"
+
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </TableRow>
             </LinearLayout>
         </TableRow>
 
@@ -460,6 +514,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:weightSum="2"
 
                 android:gravity="center"
 
@@ -469,35 +524,52 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
 
                     android:gravity="center"
 
                     android:fontFamily="@font/ralewayb"
                     android:includeFontPadding="false"
                     android:text="@string/distance"
-                    android:padding="1dp"
                     android:textAllCaps="false"
                     android:textColor="@color/SpaceCadet"
                     android:textFontWeight="600"
                     android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/distanceTraveled"
+                <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2">
+                    <TextView
+                        android:id="@+id/distanceTraveled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    android:gravity="center"
+                        android:gravity="center"
 
-                    android:fontFamily="@font/ralewayb"
-                    android:includeFontPadding="false"
-                    android:padding="1dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/SpaceCadet"
-                    android:textFontWeight="600"
-                    android:textSize="13sp" />
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:maxLength="7"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/distanceUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
+                        android:gravity="center"
+
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </TableRow>
             </LinearLayout>
 
             <View
@@ -510,44 +582,62 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:weightSum="2"
 
                 android:gravity="center"
 
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
 
                     android:gravity="center"
 
                     android:fontFamily="@font/ralewayb"
                     android:includeFontPadding="false"
                     android:text="@string/speed"
-                    android:padding="1dp"
                     android:textAllCaps="false"
                     android:textColor="@color/SpaceCadet"
                     android:textFontWeight="600"
                     android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/currentSpeed"
+                <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2">
+                    <TextView
+                        android:id="@+id/currentSpeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    android:gravity="center"
+                        android:gravity="center"
 
-                    android:fontFamily="@font/ralewayb"
-                    android:includeFontPadding="false"
-                    android:padding="1dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/SpaceCadet"
-                    android:textFontWeight="600"
-                    android:textSize="13sp" />
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="2dp"
+                        android:maxLength="5"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/currentSpeedUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
+                        android:gravity="center"
+
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="2dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </TableRow>
             </LinearLayout>
 
             <View
@@ -560,44 +650,62 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:weightSum="2"
 
                 android:gravity="center"
 
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
 
                     android:gravity="center"
 
                     android:fontFamily="@font/ralewayb"
                     android:includeFontPadding="false"
                     android:text="@string/average_speed"
-                    android:padding="1dp"
                     android:textAllCaps="false"
                     android:textColor="@color/SpaceCadet"
                     android:textFontWeight="600"
                     android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/averageSpeed"
+                <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2">
+                    <TextView
+                        android:id="@+id/averageSpeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                    android:gravity="center"
+                        android:gravity="center"
 
-                    android:fontFamily="@font/ralewayb"
-                    android:includeFontPadding="false"
-                    android:padding="1dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/SpaceCadet"
-                    android:textFontWeight="600"
-                    android:textSize="13sp" />
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="2dp"
+                        android:maxLength="5"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/averageSpeedUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
+                        android:gravity="center"
+
+                        android:fontFamily="@font/ralewayb"
+                        android:includeFontPadding="false"
+                        android:padding="2dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </TableRow>
             </LinearLayout>
         </TableRow>
 

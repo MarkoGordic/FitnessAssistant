@@ -303,12 +303,14 @@
     <string name="gallons">Gallons</string>
 
     <!-- Units For Activity Tracking -->
-    <string name="km_h">KM/H</string>
-    <string name="mi_h">MI/H</string>
-    <string name="km">KM</string>
-    <string name="mi">MI</string>
-    <string name="mi_min">MIN/MI</string>
-    <string name="km_min">MIN/KM</string>
+    <string name="km_h">km/h</string>
+    <string name="mi_h">mi/h</string>
+    <string name="km">km</string>
+    <string name="mi">mi</string>
+    <string name="mi_min">min/mi</string>
+    <string name="km_min">min/km</string>
+    <string name="cal">cal</string>
+    <string name="kj">kJ</string>
 
     <!-- StepGoalFragment -->
     <string name="set_your_step_goal">Set Your Step Goal</string>

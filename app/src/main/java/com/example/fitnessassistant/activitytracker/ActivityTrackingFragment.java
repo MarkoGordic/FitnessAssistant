@@ -3,6 +3,7 @@ package com.example.fitnessassistant.activitytracker;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -38,7 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
@@ -99,11 +99,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     private boolean followUser = true;
 
-    private final DecimalFormat distanceFormat = new DecimalFormat("#.##");
-    private final DecimalFormat speedFormat = new DecimalFormat("#.#");
-    private final DecimalFormat caloriesFormat = new DecimalFormat("#.#");
-    private final DecimalFormat paceFormat = new DecimalFormat("#.##");
-
     private boolean isTracking = false;
     public static Vector<Vector<LatLng>> pathHistory = new Vector<>();
 
@@ -113,6 +108,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private long currentTimeInMilliseconds = 0L;
 
     // method which is used to set up observers
+    @SuppressLint("DefaultLocale")
     private void subscribeToObservers(){
         // For service updates
         LocationService.isTracking.observe(getViewLifecycleOwner(), this::updateTracking);
@@ -135,68 +131,67 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         // For distance updates
         LocationService.totalDistanceInKm.observe(getViewLifecycleOwner(), newDistance -> {
-
-            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals("mile")){
-                String output = distanceFormat.format(newDistance * 0.621371) + " " + requireContext().getText(R.string.mi);
-                ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(output);
+            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
+                ((TextView) requireView().findViewById(R.id.distanceUnit)).setText(requireContext().getString(R.string.mi));
+                ((TextView) requireView().findViewById(R.id.distanceTraveled)).setText(String.format("%.2f", newDistance * 0.621371f));
             }else{
-                String output = distanceFormat.format(newDistance) + " " + requireContext().getText(R.string.km);
-                ((TextView)requireView().findViewById(R.id.distanceTraveled)).setText(output);
+                ((TextView) requireView().findViewById(R.id.distanceUnit)).setText(requireContext().getString(R.string.km));
+                ((TextView) requireView().findViewById(R.id.distanceTraveled)).setText(String.format("%.2f", newDistance));
             }
         });
 
         // For speed updates
         LocationService.currentSpeed.observe(getViewLifecycleOwner(), newSpeed -> {
-            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals("mile")){
-                String output = speedFormat.format(newSpeed * 0.621371) + " " + requireContext().getText(R.string.mi_h);
-                ((TextView)requireView().findViewById(R.id.currentSpeed)).setText(output);
+            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
+                ((TextView) requireView().findViewById(R.id.currentSpeedUnit)).setText(requireContext().getString(R.string.mi_h));
+                ((TextView) requireView().findViewById(R.id.currentSpeed)).setText(String.format("%.1f", newSpeed * 0.621371f));
             }else{
-                String output = speedFormat.format(newSpeed) + " " + requireContext().getText(R.string.km_h);
-                ((TextView)requireView().findViewById(R.id.currentSpeed)).setText(output);
+                ((TextView) requireView().findViewById(R.id.currentSpeedUnit)).setText(requireContext().getString(R.string.km_h));
+                ((TextView) requireView().findViewById(R.id.currentSpeed)).setText(String.format("%.1f", newSpeed));
             }
         });
 
         // For average speed updates
         LocationService.averageSpeed.observe(getViewLifecycleOwner(), newAverageSpeed -> {
-            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals("mile")){
-                String output = speedFormat.format(newAverageSpeed * 0.621371) + " " + requireContext().getText(R.string.mi_h);
-                ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(output);
+            if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
+                ((TextView) requireView().findViewById(R.id.averageSpeedUnit)).setText(requireContext().getString(R.string.mi_h));
+                ((TextView) requireView().findViewById(R.id.averageSpeed)).setText(String.format("%.1f", newAverageSpeed * 0.621371f));
             }else{
-                String output = speedFormat.format(newAverageSpeed) + " " + requireContext().getText(R.string.km_h);
-                ((TextView)requireView().findViewById(R.id.averageSpeed)).setText(output);
+                ((TextView) requireView().findViewById(R.id.averageSpeedUnit)).setText(requireContext().getString(R.string.km_h));
+                ((TextView) requireView().findViewById(R.id.averageSpeed)).setText(String.format("%.1f", newAverageSpeed));
             }
         });
 
         // For calories updates
         LocationService.caloriesBurnt.observe(getViewLifecycleOwner(), newCalories -> {
-            if(UnitPreferenceFragment.getEnergyUnit(requireContext()).equals(UnitPreferenceFragment.ENERGY_UNIT_CAL)){
-                String output = Math.round(newCalories) + " " + requireContext().getText(R.string.calories);
-                ((TextView)requireView().findViewById(R.id.caloriesBurned)).setText(output);
+            if(UnitPreferenceFragment.getEnergyUnit(requireContext()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
+                ((TextView) requireView().findViewById(R.id.energyUnit)).setText(requireContext().getString(R.string.kj));
+                ((TextView) requireView().findViewById(R.id.caloriesBurned)).setText(String.format("%.1f" , newCalories * 4.2f));
             }else{
-                String output = caloriesFormat.format(newCalories * 4.2) + " " + requireContext().getText(R.string.kilojoules);
-                ((TextView)requireView().findViewById(R.id.caloriesBurned)).setText(output);
+                ((TextView) requireView().findViewById(R.id.energyUnit)).setText(requireContext().getString(R.string.cal));
+                ((TextView) requireView().findViewById(R.id.caloriesBurned)).setText(String.valueOf(Math.round(newCalories)));
             }
         });
 
         // For pace updates
         LocationService.pace.observe(getViewLifecycleOwner(), newPace -> {
             if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
-                String output = paceFormat.format(newPace * 0.621371) + " " + requireContext().getText(R.string.mi_min);
-                ((TextView)requireView().findViewById(R.id.currentPace)).setText(output);
+                ((TextView) requireView().findViewById(R.id.paceUnit)).setText(requireContext().getString(R.string.mi_min));
+                ((TextView) requireView().findViewById(R.id.currentPace)).setText(String.format("%.2f", newPace * 0.621371f));
             }else{
-                String output = paceFormat.format(newPace) + " " + requireContext().getText(R.string.km_min);
-                ((TextView)requireView().findViewById(R.id.currentPace)).setText(output);
+                ((TextView) requireView().findViewById(R.id.paceUnit)).setText(requireContext().getString(R.string.km_min));
+                ((TextView) requireView().findViewById(R.id.currentPace)).setText(String.format("%.2f", newPace));
             }
         });
 
         // For average pace updates
         LocationService.averagePace.observe(getViewLifecycleOwner(), newAveragePace -> {
             if(UnitPreferenceFragment.getDistanceUnit(requireContext()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
-                String output = paceFormat.format(newAveragePace * 0.621371) + " " + requireContext().getText(R.string.mi_min);
-                ((TextView)requireView().findViewById(R.id.averagePace)).setText(output);
+                ((TextView) requireView().findViewById(R.id.averagePaceUnit)).setText(requireContext().getString(R.string.mi_min));
+                ((TextView) requireView().findViewById(R.id.averagePace)).setText(String.format("%.2f", newAveragePace * 0.621371f));
             }else{
-                String output = paceFormat.format(newAveragePace) + " " + requireContext().getText(R.string.km_min);
-                ((TextView)requireView().findViewById(R.id.averagePace)).setText(output);
+                ((TextView) requireView().findViewById(R.id.averagePaceUnit)).setText(requireContext().getString(R.string.km_min));
+                ((TextView) requireView().findViewById(R.id.averagePace)).setText(String.format("%.2f", newAveragePace));
             }
         });
 

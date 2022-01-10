@@ -425,12 +425,12 @@ public class LocationService extends LifecycleService {
             if(isTracking.getValue()) {
                 Intent pauseIntent = new Intent(this, LocationService.class);
                 pauseIntent.putExtra("state", "pause_service");
-                pendingIntent = PendingIntent.getService(this, 1, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                pendingIntent = PendingIntent.getService(this, ACTIVITY_TRACKING_ID, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                 pushActivityTrackingNotification(this, pendingIntent, ActivityTrackingFragment.getFormattedTimer(false, timeInMilliseconds.getValue()));
             }else{
                 Intent resumeIntent = new Intent(this, LocationService.class);
                 resumeIntent.putExtra("state", "start_or_resume_service");
-                pendingIntent = PendingIntent.getService(this, 2, resumeIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                pendingIntent = PendingIntent.getService(this, ACTIVITY_TRACKING_ID, resumeIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                 pushActivityTrackingNotification(this, pendingIntent, ActivityTrackingFragment.getFormattedTimer(false, timeInMilliseconds.getValue()));
             }
     }
