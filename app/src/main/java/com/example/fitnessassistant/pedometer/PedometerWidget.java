@@ -15,6 +15,7 @@ import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.MDBHPedometer;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
 // TODO test resizing widget once again on more phones
@@ -26,7 +27,7 @@ public class PedometerWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(getCurrentDateFormatted(), 0), null);
+        Pedometer.updatePedometerWidgetData(context, (int) MDBHPedometer.getInstance(context).readPedometerSteps(getCurrentDateFormatted()), null);
     }
 
     // handling resize for samsung devices

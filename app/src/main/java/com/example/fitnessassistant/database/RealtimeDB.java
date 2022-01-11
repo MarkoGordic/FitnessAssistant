@@ -1,7 +1,6 @@
 package com.example.fitnessassistant.database;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,9 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class RealtimeDB {
@@ -95,18 +92,7 @@ public class RealtimeDB {
 
             PedometerData data = new PedometerData();
 
-            ArrayList<String> dates = new ArrayList<>();
-            ArrayList<Float> steps = new ArrayList<>();
-
-            SharedPreferences prefs = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
-            Map<String, ?> allPedometerData = prefs.getAll();
-
-            for (Map.Entry<String, ?> pairs : allPedometerData.entrySet()) {
-                dates.add(pairs.getKey());
-                steps.add((float) allPedometerData.get(pairs.getKey()));
-            }
-
-            data.setData(dates, steps);
+            data.setData(MDBHPedometer.getInstance(context).readPedometerDB());
 
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -133,12 +119,6 @@ public class RealtimeDB {
                     PedometerData data = dataSnapshot.getValue(PedometerData.class);
                     List<String> pedometer;
 
-                    SharedPreferences prefs = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
-
-                    // Clearing old data
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.clear().apply();
-
                     // Saving new data
                     if(data != null) {
                         pedometer = data.getData();
@@ -146,11 +126,10 @@ public class RealtimeDB {
                             StringTokenizer tokenizer = new StringTokenizer(day, "#");
                             String date = tokenizer.nextToken();
                             float steps = Float.parseFloat(tokenizer.nextToken());
-                            editor.putFloat(date, steps);
+                            int stepGoal = Integer.parseInt(tokenizer.nextToken());
+                            MDBHPedometer.getInstance(context).putPedometerData(context, date, steps, stepGoal);
                         }
                     }
-
-                    editor.apply();
                 }
             });
         }

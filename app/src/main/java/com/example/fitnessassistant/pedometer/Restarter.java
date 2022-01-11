@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.fitnessassistant.database.MDBHPedometer;
+
 public class Restarter extends BroadcastReceiver {
 
     // this handles the case when user restarts their phone (Service will be called again when phone boots)
@@ -15,7 +17,7 @@ public class Restarter extends BroadcastReceiver {
             context.startForegroundService(new Intent(context, Pedometer.class));
 
             // update widgets
-            Pedometer.updatePedometerWidgetData(context, (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(getCurrentDateFormatted(), 0), null);
+            Pedometer.updatePedometerWidgetData(context, (int) MDBHPedometer.getInstance(context).readPedometerSteps(getCurrentDateFormatted()), null);
         }
     }
 }

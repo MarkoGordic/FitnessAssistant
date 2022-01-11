@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -690,9 +691,17 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void openSpotifyApp(){
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.spotify.music","com.spotify.music.MainActivity"));
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setComponent(new ComponentName("com.spotify.music","com.spotify.music.MainActivity"));
+            startActivity(intent);
+        } catch (Exception e) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=")));
+            }catch (android.content.ActivityNotFoundException anfe){
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.spotify.music")));
+            }
+        }
     }
 
     @Override

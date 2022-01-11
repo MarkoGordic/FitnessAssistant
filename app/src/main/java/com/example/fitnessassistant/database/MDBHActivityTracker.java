@@ -62,6 +62,8 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         cv.put(COLUMN_IMAGE, activityImage);
 
         long result = db.insert(TABLE_NAME, null, cv);
+        db.close();
+
         if(result == -1)
             System.out.println("Fail! DATABASE");
         else

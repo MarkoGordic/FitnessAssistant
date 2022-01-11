@@ -60,6 +60,8 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         cv.put(COLUMN_TIME, time);
 
         long result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
+        db.close();
+
         if(result == -1)
             System.out.println("Fail! DATABASE");
         else
@@ -74,6 +76,8 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         cv.put(EVENT_END_TIME, endTime);
 
         long result = db.insert(EVENTS_TABLE_NAME, null, cv);
+        db.close();
+
         if(result == -1)
             System.out.println("Fail! DATABASE");
         else

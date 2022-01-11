@@ -1,6 +1,5 @@
 package com.example.fitnessassistant.home;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.MDBHPedometer;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,8 +33,8 @@ public class HomePageFragment extends Fragment {
             view = getView();
 
         if(view != null) {
-            ((TextView) view.findViewById(R.id.stepsActivityTV)).setText(String.valueOf((int) requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)));
-            ((ProgressBar) view.findViewById(R.id.dailyStepsProgressBar)).setProgress((int) (100 * requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0) / StepGoalFragment.getStepGoalForToday(requireActivity())));
+            ((TextView) view.findViewById(R.id.stepsActivityTV)).setText(String.valueOf((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted())));
+            ((ProgressBar) view.findViewById(R.id.dailyStepsProgressBar)).setProgress((int) (100 * MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted()) / StepGoalFragment.getStepGoalForToday(requireActivity())));
         }
     }
 

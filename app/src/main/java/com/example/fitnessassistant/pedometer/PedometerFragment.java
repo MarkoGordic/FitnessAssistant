@@ -1,6 +1,5 @@
 package com.example.fitnessassistant.pedometer;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.MDBHPedometer;
 import com.example.fitnessassistant.profile.GoalsFragment;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
@@ -85,7 +85,7 @@ public class PedometerFragment extends Fragment {
             view = getView();
 
         if(view != null) {
-            int currentSteps = (int) requireContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0);
+            int currentSteps = (int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted());
             ((TextView) view.findViewById(R.id.stepCountTextView)).setText(String.valueOf(currentSteps));
             int goalSteps = StepGoalFragment.getStepGoalForToday(requireActivity());
 

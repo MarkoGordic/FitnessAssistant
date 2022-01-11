@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.MDBHPedometer;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
 import java.util.Calendar;
@@ -158,8 +159,8 @@ public class StepGoalFragment extends Fragment {
                 putSundayStepGoal(requireActivity(), Integer.parseInt(sundayEdt.getText().toString()));
 
                 if (ServiceFunctional.getPedometerShouldRun(requireActivity())) {
-                    Pedometer.updatePedometerWidgetData(requireActivity(), ((int) requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)), getStepGoalForToday(requireActivity()));
-                    Pedometer.pushPedometerNotification(requireActivity(), ((int) requireActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0)) + " " + requireActivity().getString(R.string.steps_small), requireActivity().getString(R.string.your_today_goal) + " " + getStepGoalForToday(requireActivity()) + ".");
+                    Pedometer.updatePedometerWidgetData(requireActivity(), ((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted())), getStepGoalForToday(requireActivity()));
+                    Pedometer.pushPedometerNotification(requireActivity(), ((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted())) + " " + requireActivity().getString(R.string.steps_small), requireActivity().getString(R.string.your_today_goal) + " " + getStepGoalForToday(requireActivity()) + ".");
                 }
                 requireActivity().onBackPressed();
             } else

@@ -36,7 +36,6 @@ import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.network.NetworkManager;
-import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.PedometerFragment;
 import com.example.fitnessassistant.profile.AccountDataFragment;
 import com.example.fitnessassistant.profile.GoalsFragment;
@@ -361,8 +360,8 @@ public class InAppActivity extends AppCompatActivity {
         flash.setRepeatCount(Animation.INFINITE);
         findViewById(R.id.notification).startAnimation(flash);
 
-        getSharedPreferences("pedometer", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener((prefs, key) -> {
-            if (key.equals(Pedometer.getCurrentDateFormatted())){
+        getSharedPreferences("pedometer", MODE_PRIVATE).registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
+            if(key.equals("pedometerDataChanged")){
                 homeFragment.updateStepsData(null);
                 pedometerFragment.updateStepsData(null);
             }

@@ -10,7 +10,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -25,6 +24,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.MDBHPedometer;
 import com.example.fitnessassistant.notifications.NotificationController;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;
@@ -45,13 +45,6 @@ public class Pedometer extends Service implements SensorEventListener {
 
     // Required difference in steps before app pushes another notification to user
     int requiredDifferenceInSteps = 1;
-
-    private SharedPreferences sharedPreferences;
-
-    // method for wiping all pedometer data on device
-    public static void wipeData(Context context){
-        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().clear().apply();
-    }
 
     public Pedometer(){ }
 
@@ -79,7 +72,7 @@ public class Pedometer extends Service implements SensorEventListener {
         int currentHistorySum = 0;
 
         for(int i = 0; i < 7; i++)
-            currentHistorySum += (int) context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getFloat(String.valueOf(Integer.parseInt(getCurrentDateFormatted()) - i), 0);
+            currentHistorySum += MDBHPedometer.getInstance(context).readPedometerSteps(String.valueOf(Integer.parseInt(getCurrentDateFormatted()) - i));
 
         return currentHistorySum / 7;
     }
@@ -106,7 +99,6 @@ public class Pedometer extends Service implements SensorEventListener {
 
         ServiceFunctional.setPedometerShouldRun(updatedContext, true);
 
-        sharedPreferences = getApplicationContext().getSharedPreferences("pedometer", Context.MODE_PRIVATE);
         currentDate = getCurrentDateFormatted();
 
         startForeground(PEDOMETER_ID, notification);
@@ -123,8 +115,8 @@ public class Pedometer extends Service implements SensorEventListener {
         lastKnownDate = getCurrentDateFormatted();
 
         // in case we already have current date saved, pull saved data
-        if(sharedPreferences.contains(currentDate)){
-            lastKnownSteps = sharedPreferences.getFloat(currentDate, 0);
+        if(MDBHPedometer.getInstance(this).checkIfRecordExists(currentDate)){
+            lastKnownSteps = MDBHPedometer.getInstance(this).readPedometerSteps(currentDate);
             currentSteps = -2;
 
             lastNotificationSteps = lastKnownSteps;
@@ -148,7 +140,7 @@ public class Pedometer extends Service implements SensorEventListener {
         currentDate = getCurrentDateFormatted();
 
         if(currentSteps == -2){
-            lastKnownSteps = sensorEvent.values[0] - sharedPreferences.getFloat(currentDate, 0);
+            lastKnownSteps = sensorEvent.values[0] - MDBHPedometer.getInstance(this).readPedometerSteps(currentDate);
             currentSteps = sensorEvent.values[0];
         }
         else if(currentSteps == -1){
@@ -169,9 +161,7 @@ public class Pedometer extends Service implements SensorEventListener {
         }
 
         // saving newest data from pedometer for later usage
-        SharedPreferences.Editor editor =  sharedPreferences.edit();
-        editor.putFloat(currentDate, newSteps);
-        editor.apply();
+        MDBHPedometer.getInstance(this).putPedometerData(this, currentDate, (float)newSteps, -1);
 
         // pushing new notification for current steps
         if(abs(newSteps - lastNotificationSteps) >= requiredDifferenceInSteps) {
