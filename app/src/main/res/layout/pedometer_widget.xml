@@ -101,7 +101,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/MangoTango"
                     android:textFontWeight="600"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     tools:ignore="TextContrastCheck" />
 
                 <!-- steps TextView -->
@@ -201,6 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/roboto_light"
                     android:includeFontPadding="false"
 
@@ -208,7 +209,7 @@
                     android:text="@string/zero"
                     android:textColor="@color/MangoTango"
                     android:textFontWeight="600"
-                    android:textSize="17sp"
+                    android:textSize="14sp"
                     tools:ignore="TextContrastCheck" />
 
                 <!-- steps TextView -->
@@ -219,6 +220,7 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginTop="2dp"
+                    android:layout_gravity="center_horizontal"
 
                     android:fontFamily="@font/raleway"
                     android:includeFontPadding="false"

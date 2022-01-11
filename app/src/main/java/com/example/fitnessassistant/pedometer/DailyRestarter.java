@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 
+import com.example.fitnessassistant.database.MDBHPedometer;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 
 public class DailyRestarter extends BroadcastReceiver {
@@ -13,5 +14,6 @@ public class DailyRestarter extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         LocaleExt.toLangIfDiff(context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"), true, true);
+        MDBHPedometer.getInstance(context).putPedometerData(context, Pedometer.getCurrentDateFormatted(), null, StepGoalFragment.getStepGoalForToday(context));
     }
 }

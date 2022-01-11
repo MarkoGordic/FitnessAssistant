@@ -1,5 +1,6 @@
 package com.example.fitnessassistant.pedometer;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,9 +22,12 @@ import com.example.fitnessassistant.database.MDBHPedometer;
 import com.example.fitnessassistant.profile.GoalsFragment;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.util.ServiceFunctional;
+
+import java.util.Calendar;
 
 public class PedometerFragment extends Fragment {
 
@@ -47,13 +51,13 @@ public class PedometerFragment extends Fragment {
         if(height == -1)
             height = HeightFragment.getWorldwideAverageHeight(requireActivity());
 
-        caloriesBurnedInAMinute = (float) (((0.035f * weight) + ((1.4 * 1.4) / height / 100)) * 0.029f * weight);
+        caloriesBurnedInAMinute = (float) ((0.035f * weight) + ((1.4 * 1.4) / (height / 100) * 0.029f * weight));
 
         return 0.01f * caloriesBurnedInAMinute;
     }
 
     private float getCaloriesBurnedFromSteps(int stepCount){
-        return stepCount * getCaloriesBurnedPerStep();
+            return stepCount * getCaloriesBurnedPerStep();
     }
 
     // returns distance walked in KMs
@@ -80,6 +84,7 @@ public class PedometerFragment extends Fragment {
         ((TextView) view.findViewById(R.id.currentDate)).setText(String.format("%s %s %s", day, GoalsFragment.getMonthShort(month), year));
     }
 
+    @SuppressLint("DefaultLocale")
     public void updateStepsData(View view){
         if(view == null)
             view = getView();
@@ -97,6 +102,124 @@ public class PedometerFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.remainingStepsTextView)).setText(String.valueOf(remainingSteps));
             } else
                 view.findViewById(R.id.remainingStepsLayout).setVisibility(View.GONE);
+
+            if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
+                ((TextView) view.findViewById(R.id.caloriesUnit)).setText(UnitPreferenceFragment.ENERGY_UNIT_KJ);
+                float kilojoulesBurned = getCaloriesBurnedFromSteps(currentSteps) * 4.184f;
+                if(kilojoulesBurned > 10000) {
+                    ((TextView) view.findViewById(R.id.caloriesNumber)).setText(String.format("%d", (int) kilojoulesBurned));
+                } else
+                    ((TextView) view.findViewById(R.id.caloriesNumber)).setText(String.format("%.1f", kilojoulesBurned));
+            } else{
+                ((TextView) view.findViewById(R.id.caloriesUnit)).setText(UnitPreferenceFragment.ENERGY_UNIT_CAL);
+                if(getCaloriesBurnedFromSteps(currentSteps) > 10000) {
+                    ((TextView) view.findViewById(R.id.caloriesNumber)).setText(String.format("%d", (int) getCaloriesBurnedFromSteps(currentSteps)));
+                } else
+                    ((TextView) view.findViewById(R.id.caloriesNumber)).setText(String.format("%.1f", getCaloriesBurnedFromSteps(currentSteps)));
+            }
+
+            if(UnitPreferenceFragment.getDistanceUnit(requireActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
+                ((TextView) view.findViewById(R.id.distanceUnit)).setText(UnitPreferenceFragment.DISTANCE_UNIT_MILE);
+                ((TextView) view.findViewById(R.id.distanceNumber)).setText(String.format("%.1f", getDistanceWalked(currentSteps) / 1.609f));
+            } else{
+                ((TextView) view.findViewById(R.id.distanceUnit)).setText(UnitPreferenceFragment.DISTANCE_UNIT_KM);
+                ((TextView) view.findViewById(R.id.distanceNumber)).setText(String.format("%.1f", getDistanceWalked(currentSteps)));
+            }
+
+            int[] steps = new int[7];
+            int[] stepGoals = new int[7];
+
+            for(int i = 0; i < 7; i++){
+                steps[i] = (int) MDBHPedometer.getInstance(requireActivity()).readPedometerSteps(String.valueOf(Integer.parseInt(Pedometer.getCurrentDateFormatted()) - i));
+                stepGoals[i] = MDBHPedometer.getInstance(requireActivity()).readPedometerStepGoal(String.valueOf(Integer.parseInt(Pedometer.getCurrentDateFormatted()) - i));
+            }
+
+            ((TextView) view.findViewById(R.id.firstStep)).setText(String.format("%d/%d", steps[0], stepGoals[0]));
+            ((ProgressBar) view.findViewById(R.id.firstProgress)).setProgress((int) (100.0f * steps[0] / stepGoals[0]));
+
+            ((TextView) view.findViewById(R.id.secondStep)).setText(String.format("%d/%d", steps[1], stepGoals[1]));
+            ((ProgressBar) view.findViewById(R.id.secondProgress)).setProgress((int) (100.0f * steps[1] / stepGoals[1]));
+
+            ((TextView) view.findViewById(R.id.thirdStep)).setText(String.format("%d/%d", steps[2], stepGoals[2]));
+            ((ProgressBar) view.findViewById(R.id.thirdProgress)).setProgress((int) (100.0f * steps[2] / stepGoals[2]));
+
+            ((TextView) view.findViewById(R.id.fourthStep)).setText(String.format("%d/%d", steps[3], stepGoals[3]));
+            ((ProgressBar) view.findViewById(R.id.fourthProgress)).setProgress((int) (100.0f * steps[3] / stepGoals[3]));
+
+            ((TextView) view.findViewById(R.id.fifthStep)).setText(String.format("%d/%d", steps[4], stepGoals[4]));
+            ((ProgressBar) view.findViewById(R.id.fifthProgress)).setProgress((int) (100.0f * steps[4] / stepGoals[4]));
+
+            ((TextView) view.findViewById(R.id.sixthStep)).setText(String.format("%d/%d", steps[5], stepGoals[5]));
+            ((ProgressBar) view.findViewById(R.id.sixthProgress)).setProgress((int) (100.0f * steps[5] / stepGoals[5]));
+
+            ((TextView) view.findViewById(R.id.seventhStep)).setText(String.format("%d/%d", steps[6], stepGoals[6]));
+            ((ProgressBar) view.findViewById(R.id.seventhProgress)).setProgress((int) (100.0f * steps[6] / stepGoals[6]));
+
+            switch (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
+                case Calendar.MONDAY:
+                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.mo);
+                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.su);
+                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.sa);
+                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.fr);
+                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.th);
+                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.we);
+                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.tu);
+                    break;
+                case Calendar.TUESDAY:
+                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.tu);
+                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.mo);
+                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.su);
+                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.sa);
+                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.fr);
+                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.th);
+                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.we);
+                    break;
+                case Calendar.WEDNESDAY:
+                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.we);
+                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.tu);
+                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.mo);
+                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.su);
+                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.sa);
+                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.fr);
+                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.th);
+                    break;
+                case Calendar.THURSDAY:
+                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.th);
+                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.we);
+                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.tu);
+                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.mo);
+                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.su);
+                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.sa);
+                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.fr);
+                    break;
+                case Calendar.FRIDAY:
+                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.fr);
+                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.th);
+                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.we);
+                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.tu);
+                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.mo);
+                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.su);
+                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.sa);
+                    break;
+                case Calendar.SATURDAY:
+                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.sa);
+                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.fr);
+                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.th);
+                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.we);
+                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.tu);
+                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.mo);
+                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.su);
+                    break;
+                case Calendar.SUNDAY:
+                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.su);
+                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.sa);
+                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.fr);
+                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.th);
+                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.we);
+                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.tu);
+                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.mo);
+                    break;
+            }
         }
     }
 
@@ -105,8 +228,9 @@ public class PedometerFragment extends Fragment {
             pedometerRuns = ServiceFunctional.getPedometerShouldRun(requireActivity());
 
         if(pedometerRuns){
-            Animation flashyAnimation = new AlphaAnimation(0.4f, 1.0f);
+            Animation flashyAnimation = new AlphaAnimation(0.0f, 1.0f);
             flashyAnimation.setDuration(400);
+            flashyAnimation.setStartOffset(400);
             flashyAnimation.setRepeatMode(Animation.REVERSE);
             flashyAnimation.setRepeatCount(Animation.INFINITE);
             view.findViewById(R.id.pedometerLive).setVisibility(View.VISIBLE);
@@ -135,7 +259,7 @@ public class PedometerFragment extends Fragment {
         setUpStepCountingButton(view, null);
 
         // used for setting your step goals
-        view.findViewById(R.id.stepGoalFragmentTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new StepGoalFragment()).addToBackStack(null).commit());
+        view.findViewById(R.id.targetSteps).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new StepGoalFragment()).addToBackStack(null).commit());
     }
 
     @Nullable

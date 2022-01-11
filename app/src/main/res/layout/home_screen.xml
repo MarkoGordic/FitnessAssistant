@@ -113,8 +113,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
 
-        android:background="@drawable/authentication_button"
-        android:backgroundTint="@color/DarkBlueYonder"
+        android:background="@drawable/transparent_button"
         android:orientation="vertical">
         <TextView
             android:id="@+id/stepsTextView"
@@ -123,13 +122,13 @@
             android:layout_height="wrap_content"
 
             app:drawableEndCompat="@drawable/walk"
-            app:drawableTint="@color/BlueYonder"
+            app:drawableTint="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"
             android:text="@string/steps"
             android:textSize="18sp"
             android:padding="8dp"
-            android:textColor="@color/backgroundColor"/>
+            android:textColor="@color/SpaceCadet"/>
 
         <RelativeLayout
             android:layout_width="160dp"
@@ -145,7 +144,8 @@
 
                 android:indeterminateOnly="false"
                 android:progressDrawable="@drawable/steps_circle"
-                android:rotation="90" />
+                android:rotation="90"
+                android:progress="30"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
 
                     android:fontFamily="@font/roboto_light"
-                    android:textColor="@color/backgroundColor"
+                    android:textColor="@color/SpaceCadet"
                     android:textSize="18sp" />
 
                 <TextView
@@ -175,7 +175,7 @@
 
                     android:fontFamily="@font/ralewaym"
                     android:text="@string/steps_small"
-                    android:textColor="@color/backgroundColor"
+                    android:textColor="@color/SpaceCadet"
                     android:textSize="18sp" />
             </LinearLayout>
         </RelativeLayout>

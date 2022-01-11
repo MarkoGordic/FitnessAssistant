@@ -56,14 +56,12 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
+        cv.put(COLUMN_DATE, date);
         if(steps == null){
-            cv.put(COLUMN_DATE, date);
             cv.put(COLUMN_STEP_GOAL, stepGoal);
         }else if(stepGoal == null){
-            cv.put(COLUMN_DATE, date);
             cv.put(COLUMN_STEPS, steps);
         }else{
-            cv.put(COLUMN_DATE, date);
             cv.put(COLUMN_STEPS, steps);
             cv.put(COLUMN_STEP_GOAL, stepGoal);
         }

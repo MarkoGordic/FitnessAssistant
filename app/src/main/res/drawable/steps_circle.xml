@@ -2,22 +2,22 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="ring" android:thicknessRatio="20">
-            <solid android:color="@color/backgroundColor"/>
+            <solid android:color="@color/Flame"/>
         </shape>
     </item>
     <item>
         <shape android:shape="ring" android:thicknessRatio="-100">
-            <solid android:color="@color/backgroundColor"/>
+            <solid android:color="@color/Flame"/>
         </shape>
     </item>
     <item>
         <shape android:shape="ring" android:thicknessRatio="25" android:useLevel="false">
-            <solid android:color="@color/BlueYonder"/>
+            <solid android:color="@color/NonBackgroundColor"/>
         </shape>
     </item>
     <item>
         <shape android:shape="ring" android:thicknessRatio="25" android:useLevel="true">
-            <solid android:color="@color/backgroundColor" />
+            <solid android:color="@color/MangoTango" />
         </shape>
     </item>
 </layer-list>

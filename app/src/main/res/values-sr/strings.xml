@@ -209,7 +209,7 @@
     <string name="good_evening">Dobro veče </string>
     <string name="good_night">Laku noć </string>
 
-    <!-- Step Counter strings -->
+    <!-- Pedometer strings -->
     <string name="steps">Koraci</string>
     <string name="steps_small">koraka</string>
     <string name="weekly_average">nedeljni prosek</string>
@@ -221,9 +221,17 @@
     <string name="registering_steps">Registrovanje koraka…</string>
     <string name="step_counter_not_active">Brojač koraka nije aktivan</string>
     <string name="step_goal">Cilj koraka</string>
-    <string name="live">AKTIVNO</string>
+    <string name="live">UŽIVO</string>
     <string name="stop">Zaustavi</string>
     <string name="remaining_colon">Preostalo:</string>
+    <string name="steps_and_goals">Koraci &amp; Ciljevi</string>
+    <string name="mo">Po</string>
+    <string name="tu">Ut</string>
+    <string name="we">Sr</string>
+    <string name="th">Če</string>
+    <string name="fr">Pe</string>
+    <string name="sa">Su</string>
+    <string name="su">Ne</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometar</string>

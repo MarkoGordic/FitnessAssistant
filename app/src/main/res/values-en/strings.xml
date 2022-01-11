@@ -208,7 +208,7 @@
     <string name="good_evening">Good Evening </string>
     <string name="good_night">Good Night </string>
 
-    <!-- Step Counter strings -->
+    <!-- Pedometer strings -->
     <string name="steps">Steps</string>
     <string name="steps_small">steps</string>
     <string name="weekly_average">weekly average</string>
@@ -223,6 +223,14 @@
     <string name="live">LIVE</string>
     <string name="stop">Stop</string>
     <string name="remaining_colon">Remaining:</string>
+    <string name="steps_and_goals">Steps &amp; Goals</string>
+    <string name="mo">Mo</string>
+    <string name="tu">Tu</string>
+    <string name="we">We</string>
+    <string name="th">Th</string>
+    <string name="fr">Fr</string>
+    <string name="sa">Sa</string>
+    <string name="su">Su</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometer</string>

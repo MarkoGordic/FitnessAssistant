@@ -6,288 +6,286 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
-
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="parent">
-
-<LinearLayout
-    android:id="@+id/settingLayout"
-
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
-    android:orientation="vertical"
-
-    android:padding="32dp">
-
-        <!-- Back Button -->
-        <ImageButton
-            android:id="@+id/backButton"
-
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-
-            android:layout_marginStart="-32dp"
-            android:layout_marginTop="-32dp"
-
-            android:background="@color/backgroundColor"
-            android:contentDescription="@null"
-
-            android:paddingStart="20dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="4dp"
-            android:paddingBottom="4dp"
-
-            android:src="@drawable/back"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <!-- Settings Header -->
-        <TextView
-            android:layout_height="wrap_content"
+        <ScrollView
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="parent">
+                <LinearLayout
+                    android:id="@+id/settingLayout"
 
-            android:text="@string/settings"
-            android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
-            android:textSize="28sp"
-            android:textStyle="bold"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <!-- separator -->
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
+                    android:orientation="vertical"
 
-            android:layout_marginTop="20dp"
+                    android:padding="32dp">
 
-            android:background="@color/BlueYonder"/>
+                        <!-- Back Button -->
+                        <ImageButton
+                            android:id="@+id/backButton"
 
-        <!-- Settings.Profile Header -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
 
-            android:layout_marginTop="5dp"
+                            android:layout_marginStart="-32dp"
+                            android:layout_marginTop="-32dp"
 
-            android:text="@string/preferences"
-            android:paddingStart="8dp"
-            android:paddingEnd="0dp"
-            android:textColor="@color/BlueYonder"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+                            android:background="@color/backgroundColor"
+                            android:contentDescription="@null"
 
-        <!-- DarkMode Switch -->
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/darkModeSwitch"
+                            android:paddingStart="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingEnd="4dp"
+                            android:paddingBottom="4dp"
 
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+                            android:src="@drawable/back"
+                            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-            android:layout_marginTop="10dp"
+                        <!-- Settings Header -->
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
 
-            android:background="@drawable/settings_field"
+                            android:text="@string/settings"
+                            android:textAlignment="center"
+                            android:textColor="@color/SpaceCadet"
+                            android:textSize="28sp"
+                            android:textStyle="bold"/>
 
-            app:drawableStartCompat="@drawable/moon"
-            android:drawablePadding="12dp"
+                        <!-- separator -->
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="2dp"
 
-            app:thumbTint="@color/DarkBlueYonder"
-            app:trackTint="@color/BlueYonder"
+                            android:layout_marginTop="20dp"
 
-            android:text="@string/dark_mode"
-            android:textColor="@color/SpaceCadet"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                            android:background="@color/BlueYonder"/>
 
-        <TextView
-            android:id="@+id/selectLanguageTextView"
+                        <!-- Settings.Profile Header -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
 
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+                            android:layout_marginTop="5dp"
 
-            android:layout_marginTop="5dp"
+                            android:text="@string/preferences"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="0dp"
+                            android:textColor="@color/BlueYonder"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-            android:background="@drawable/settings_field"
+                        <!-- DarkMode Switch -->
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/darkModeSwitch"
 
-            app:drawableStartCompat="@drawable/world"
-            app:drawableEndCompat="@drawable/forward"
-            android:drawablePadding="12dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
 
-            android:text="@string/select_language"
-            android:textColor="@color/SpaceCadet"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                            android:layout_marginTop="10dp"
 
-        <!-- separator -->
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
+                            android:background="@drawable/settings_field"
 
-            android:layout_marginTop="20dp"
+                            app:drawableStartCompat="@drawable/moon"
+                            android:drawablePadding="12dp"
 
-            android:background="@color/BlueYonder"/>
+                            app:thumbTint="@color/DarkBlueYonder"
+                            app:trackTint="@color/BlueYonder"
 
-        <!-- Settings.Profile Header -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                            android:text="@string/dark_mode"
+                            android:textColor="@color/SpaceCadet"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="12dp"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
-            android:layout_marginTop="5dp"
+                        <TextView
+                            android:id="@+id/selectLanguageTextView"
 
-            android:text="@string/profile"
-            android:paddingStart="8dp"
-            android:paddingEnd="0dp"
-            android:textColor="@color/BlueYonder"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
 
-        <!-- PersonalData TextView -->
-        <TextView
-            android:id="@+id/personalDataTextView"
+                            android:layout_marginTop="5dp"
 
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+                            android:background="@drawable/settings_field"
 
-            android:layout_marginTop="10dp"
+                            app:drawableStartCompat="@drawable/world"
+                            app:drawableEndCompat="@drawable/forward"
+                            android:drawablePadding="12dp"
 
-            android:background="@drawable/settings_field"
+                            android:text="@string/select_language"
+                            android:textColor="@color/SpaceCadet"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="12dp"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
-            app:drawableStartCompat="@drawable/user_focused"
-            app:drawableEndCompat="@drawable/forward"
-            android:drawablePadding="12dp"
+                        <!-- separator -->
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="2dp"
 
-            android:text="@string/personal_data"
-            android:textColor="@color/SpaceCadet"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                            android:layout_marginTop="20dp"
 
-        <!-- AccountData TextView -->
-        <TextView
-            android:id="@+id/accountDataTextView"
+                            android:background="@color/BlueYonder"/>
 
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+                        <!-- Settings.Profile Header -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
 
-            android:layout_marginTop="5dp"
+                            android:layout_marginTop="5dp"
 
-            android:background="@drawable/settings_field"
+                            android:text="@string/profile"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="0dp"
+                            android:textColor="@color/BlueYonder"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-            app:drawableStartCompat="@drawable/portrait"
-            app:drawableEndCompat="@drawable/forward"
-            android:drawablePadding="12dp"
+                        <!-- PersonalData TextView -->
+                        <TextView
+                            android:id="@+id/personalDataTextView"
 
-            android:text="@string/account_data"
-            android:textColor="@color/SpaceCadet"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
 
-        <!-- separator -->
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
+                            android:layout_marginTop="10dp"
 
-            android:layout_marginTop="20dp"
+                            android:background="@drawable/settings_field"
 
-            android:background="@color/BlueYonder"/>
+                            app:drawableStartCompat="@drawable/user_focused"
+                            app:drawableEndCompat="@drawable/forward"
+                            android:drawablePadding="12dp"
 
-        <!-- Settings.Privacy Header -->
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+                            android:text="@string/personal_data"
+                            android:textColor="@color/SpaceCadet"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="12dp"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
-            android:layout_marginTop="5dp"
+                        <!-- AccountData TextView -->
+                        <TextView
+                            android:id="@+id/accountDataTextView"
 
-            android:text="@string/privacy"
-            android:paddingStart="8dp"
-            android:paddingEnd="0dp"
-            android:textColor="@color/BlueYonder"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
 
-        <!-- PrivacyPolicy TextView -->
-        <TextView
-            android:id="@+id/ppTextView"
+                            android:layout_marginTop="5dp"
 
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+                            android:background="@drawable/settings_field"
 
-            android:layout_marginTop="10dp"
+                            app:drawableStartCompat="@drawable/portrait"
+                            app:drawableEndCompat="@drawable/forward"
+                            android:drawablePadding="12dp"
 
-            android:background="@drawable/settings_field"
+                            android:text="@string/account_data"
+                            android:textColor="@color/SpaceCadet"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="12dp"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
-            app:drawableStartCompat="@drawable/document"
-            app:drawableEndCompat="@drawable/forward"
-            android:drawablePadding="12dp"
+                        <!-- separator -->
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="2dp"
 
-            android:text="@string/privacy_policy"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/SpaceCadet"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                            android:layout_marginTop="20dp"
 
-        <!-- separator -->
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
+                            android:background="@color/BlueYonder"/>
 
-            android:layout_marginTop="20dp"
+                        <!-- Settings.Privacy Header -->
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
 
-            android:background="@color/BlueYonder"/>
+                            android:layout_marginTop="5dp"
 
-        <!-- SignOut TextView -->
-        <TextView
-            android:id="@+id/signOutAccountTextView"
+                            android:text="@string/privacy"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="0dp"
+                            android:textColor="@color/BlueYonder"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
 
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+                        <!-- PrivacyPolicy TextView -->
+                        <TextView
+                            android:id="@+id/ppTextView"
 
-            android:layout_marginTop="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
 
+                            android:layout_marginTop="10dp"
 
-            android:background="@drawable/settings_field"
+                            android:background="@drawable/settings_field"
 
-            app:drawableStartCompat="@drawable/sign_out"
-            android:drawablePadding="12dp"
+                            app:drawableStartCompat="@drawable/document"
+                            app:drawableEndCompat="@drawable/forward"
+                            android:drawablePadding="12dp"
 
-            android:text="@string/sign_out"
-            android:paddingStart="16dp"
-            android:paddingEnd="0dp"
-            android:textColor="@color/Flame"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                            android:text="@string/privacy_policy"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="@color/SpaceCadet"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
-        <!-- DeleteAccount TextView -->
-        <TextView
-            android:id="@+id/deleteAccountTextView"
+                        <!-- separator -->
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="2dp"
 
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+                            android:layout_marginTop="20dp"
 
-            android:layout_marginTop="5dp"
+                            android:background="@color/BlueYonder"/>
 
-            android:background="@drawable/settings_field"
+                        <!-- SignOut TextView -->
+                        <TextView
+                            android:id="@+id/signOutAccountTextView"
 
-            app:drawableStartCompat="@drawable/trash"
-            android:drawablePadding="12dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
 
-            android:text="@string/delete_account"
-            android:paddingStart="16dp"
-            android:paddingEnd="0dp"
-            android:textColor="@color/Flame"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-</LinearLayout>
-</ScrollView>
+                            android:layout_marginTop="10dp"
+
+
+                            android:background="@drawable/settings_field"
+
+                            app:drawableStartCompat="@drawable/sign_out"
+                            android:drawablePadding="12dp"
+
+                            android:text="@string/sign_out"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="0dp"
+                            android:textColor="@color/Flame"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- DeleteAccount TextView -->
+                        <TextView
+                            android:id="@+id/deleteAccountTextView"
+
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+
+                            android:layout_marginTop="5dp"
+
+                            android:background="@drawable/settings_field"
+
+                            app:drawableStartCompat="@drawable/trash"
+                            android:drawablePadding="12dp"
+
+                            android:text="@string/delete_account"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="0dp"
+                            android:textColor="@color/Flame"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                </LinearLayout>
+        </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

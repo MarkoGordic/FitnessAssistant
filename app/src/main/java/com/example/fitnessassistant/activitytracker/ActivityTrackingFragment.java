@@ -690,6 +690,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         requireContext().startService(serviceIntent);
     }
 
+    // TODO check if more precise Exceptions could be caught
     private void openSpotifyApp(){
         try {
             Intent intent = new Intent(Intent.ACTION_MAIN);

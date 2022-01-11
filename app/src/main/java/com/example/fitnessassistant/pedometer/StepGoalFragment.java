@@ -158,6 +158,23 @@ public class StepGoalFragment extends Fragment {
                 putSaturdayStepGoal(requireActivity(), Integer.parseInt(saturdayEdt.getText().toString()));
                 putSundayStepGoal(requireActivity(), Integer.parseInt(sundayEdt.getText().toString()));
 
+                switch(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)){
+                    case Calendar.MONDAY:
+                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), Pedometer.getCurrentDateFormatted(), null, Integer.parseInt(mondayEdt.getText().toString()));
+                    case Calendar.TUESDAY:
+                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), Pedometer.getCurrentDateFormatted(), null, Integer.parseInt(tuesdayEdt.getText().toString()));
+                    case Calendar.WEDNESDAY:
+                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), Pedometer.getCurrentDateFormatted(), null, Integer.parseInt(wednesdayEdt.getText().toString()));
+                    case Calendar.THURSDAY:
+                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), Pedometer.getCurrentDateFormatted(), null, Integer.parseInt(thursdayEdt.getText().toString()));
+                    case Calendar.FRIDAY:
+                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), Pedometer.getCurrentDateFormatted(), null, Integer.parseInt(fridayEdt.getText().toString()));
+                    case Calendar.SATURDAY:
+                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), Pedometer.getCurrentDateFormatted(), null, Integer.parseInt(saturdayEdt.getText().toString()));
+                    case Calendar.SUNDAY:
+                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), Pedometer.getCurrentDateFormatted(), null, Integer.parseInt(sundayEdt.getText().toString()));
+                }
+
                 if (ServiceFunctional.getPedometerShouldRun(requireActivity())) {
                     Pedometer.updatePedometerWidgetData(requireActivity(), ((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted())), getStepGoalForToday(requireActivity()));
                     Pedometer.pushPedometerNotification(requireActivity(), ((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted())) + " " + requireActivity().getString(R.string.steps_small), requireActivity().getString(R.string.your_today_goal) + " " + getStepGoalForToday(requireActivity()) + ".");
