@@ -107,14 +107,14 @@ public class PedometerFragment extends Fragment {
                 view.findViewById(R.id.remainingStepsLayout).setVisibility(View.GONE);
 
             if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
-                ((TextView) view.findViewById(R.id.caloriesUnit)).setText(UnitPreferenceFragment.ENERGY_UNIT_KJ);
+                ((TextView) view.findViewById(R.id.caloriesUnit)).setText(R.string.kj);
                 float kilojoulesBurned = getCaloriesBurnedFromSteps(currentSteps) * 4.184f;
                 if(kilojoulesBurned > 10000) {
                     ((TextView) view.findViewById(R.id.caloriesNumber)).setText(String.format("%d", (int) kilojoulesBurned));
                 } else
                     ((TextView) view.findViewById(R.id.caloriesNumber)).setText(String.format("%.1f", kilojoulesBurned));
             } else{
-                ((TextView) view.findViewById(R.id.caloriesUnit)).setText(UnitPreferenceFragment.ENERGY_UNIT_CAL);
+                ((TextView) view.findViewById(R.id.caloriesUnit)).setText(R.string.cal);
                 if(getCaloriesBurnedFromSteps(currentSteps) > 10000) {
                     ((TextView) view.findViewById(R.id.caloriesNumber)).setText(String.format("%d", (int) getCaloriesBurnedFromSteps(currentSteps)));
                 } else
@@ -122,10 +122,10 @@ public class PedometerFragment extends Fragment {
             }
 
             if(UnitPreferenceFragment.getDistanceUnit(requireActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
-                ((TextView) view.findViewById(R.id.distanceUnit)).setText(UnitPreferenceFragment.DISTANCE_UNIT_MILE);
+                ((TextView) view.findViewById(R.id.distanceUnit)).setText(R.string.mi);
                 ((TextView) view.findViewById(R.id.distanceNumber)).setText(String.format("%.1f", getDistanceWalked(currentSteps) / 1.609f));
             } else{
-                ((TextView) view.findViewById(R.id.distanceUnit)).setText(UnitPreferenceFragment.DISTANCE_UNIT_KM);
+                ((TextView) view.findViewById(R.id.distanceUnit)).setText(R.string.km);
                 ((TextView) view.findViewById(R.id.distanceNumber)).setText(String.format("%.1f", getDistanceWalked(currentSteps)));
             }
 

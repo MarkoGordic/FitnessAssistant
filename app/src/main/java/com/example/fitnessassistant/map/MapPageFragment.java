@@ -2,33 +2,25 @@ package com.example.fitnessassistant.map;
 
 import static java.lang.Math.abs;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.pedometer.Pedometer;
-import com.example.fitnessassistant.pedometer.StepGoalFragment;
-import com.example.fitnessassistant.util.PermissionFunctional;
-import com.example.fitnessassistant.util.ServiceFunctional;
 
 
 public class MapPageFragment extends Fragment {
 
     public void goToActivityTrackingFragment(){
-        requireActivity().getSupportFragmentManager().beginTransaction().hide(MapPageFragment.this).setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down).add(R.id.in_app_container, InAppActivity.activityTrackingFragment).addToBackStack(null).commit();
-        requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
+        requireActivity().getSupportFragmentManager().beginTransaction().hide(this).setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down).add(R.id.in_app_container, InAppActivity.activityTrackingFragment).addToBackStack(null).commit();
     }
 
     private void setUpOnClickListeners(View view){

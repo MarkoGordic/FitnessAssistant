@@ -175,7 +175,7 @@ public class Pedometer extends Service implements SensorEventListener {
     // TODO Put logo
     public static Notification pushPedometerNotification(Context context, String textTitle, String textContent){
         Intent intent = new Intent(context, InAppActivity.class);
-        intent.putExtra("desiredFragment", "MapFragment");
+        intent.putExtra("desiredFragment", "PedometerFragment");
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, PEDOMETER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 

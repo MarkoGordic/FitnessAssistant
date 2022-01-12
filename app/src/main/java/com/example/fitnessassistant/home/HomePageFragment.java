@@ -19,7 +19,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.MDBHPedometer;
-import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -29,6 +28,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class HomePageFragment extends Fragment {
+
+    private void goToPedometerFragment(){
+        requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.pedometerFragment).addToBackStack(null).commit();
+    }
 
     public void updateStepsData(View view){
         if(view == null)
@@ -91,5 +94,14 @@ public class HomePageFragment extends Fragment {
         super.onResume();
         if(getView() != null)
             setUpUI(getView());
+        if(getActivity() != null) {
+            String desiredFragment = ((InAppActivity) getActivity()).getDesiredFragment();
+            if (desiredFragment != null) {
+                if (desiredFragment.equals("PedometerFragment")) {
+                    ((InAppActivity) getActivity()).putDesiredFragment(null);
+                    goToPedometerFragment();
+                }
+            }
+        }
     }
 }

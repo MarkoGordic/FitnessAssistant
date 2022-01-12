@@ -159,7 +159,10 @@ public class HeightFragment extends Fragment {
             public void afterTextChanged(Editable s) { }
         };
 
-        setUpCentimetersUI(view, view.findViewById(R.id.unitSwitch), heightInCMs, heightInFeet, heightInInches, CMWatcher, INWatcher, FTWatcher);
+        if(UnitPreferenceFragment.getHeightUnit(requireActivity()).equals(UnitPreferenceFragment.HEIGHT_UNIT_FT_IN))
+            setUpFeetInchesUI(view, view.findViewById(R.id.unitSwitch), heightInCMs, heightInFeet, heightInInches, CMWatcher, INWatcher, FTWatcher);
+        else
+            setUpCentimetersUI(view, view.findViewById(R.id.unitSwitch), heightInCMs, heightInFeet, heightInInches, CMWatcher, INWatcher, FTWatcher);
 
         if(getHeight(requireActivity()) != -1f)
             heightInCMs.setText(String.valueOf(getHeight(requireActivity())));

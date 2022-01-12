@@ -177,9 +177,6 @@ public class InAppActivity extends AppCompatActivity {
     // return to previous fragment (if it exists)
     @Override
     public void onBackPressed() {
-        if(findViewById(R.id.bottomNavigation).getVisibility() == View.GONE)
-            findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
-
         if(fm.getBackStackEntryCount() == 0)
             super.onBackPressed();
         else {
@@ -282,13 +279,14 @@ public class InAppActivity extends AppCompatActivity {
     // if intent given has it, go to desired fragment
     private void goToDesiredFragment(Intent intent){
         if(intent != null && intent.getStringExtra("desiredFragment") != null)
-            if(intent.getStringExtra("desiredFragment").equals("MapFragment")){
-                ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.map);
-                active = mapFragment;
-            } else if(intent.getStringExtra("desiredFragment").equals("ActivityTrackingFragment")){
+            if(intent.getStringExtra("desiredFragment").equals("ActivityTrackingFragment") && !activityTrackingFragment.isVisible()){
                 putDesiredFragment("ActivityTrackingFragment");
                 ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.map);
                 active = mapFragment;
+            } else if(intent.getStringExtra("desiredFragment").equals("PedometerFragment") && !pedometerFragment.isVisible()){
+                putDesiredFragment("PedometerFragment");
+                ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.home);
+                active = homeFragment;
             }
     }
 

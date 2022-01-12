@@ -2,6 +2,7 @@ package com.example.fitnessassistant.profile;
 
 import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +22,15 @@ import com.example.fitnessassistant.questions.WeightFragment;
 
 public class GoalsFragment extends Fragment {
 
+    @SuppressLint("DefaultLocale")
     private void setUpWeights(View view){
         // setting up Units
+        float weightUnit = 1f;
         if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS)) {
             ((TextView) view.findViewById(R.id.startingWeightUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_LBS);
             ((TextView) view.findViewById(R.id.goalWeightUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_LBS);
             ((TextView) view.findViewById(R.id.lastUpdatedUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_LBS);
+            weightUnit = 2.205f;
         } else {
             ((TextView) view.findViewById(R.id.startingWeightUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_KG);
             ((TextView) view.findViewById(R.id.goalWeightUnit)).setText(UnitPreferenceFragment.WEIGHT_UNIT_KG);
@@ -39,7 +43,7 @@ public class GoalsFragment extends Fragment {
 
             ((TextView) view.findViewById(R.id.startingWeightDateTextView)).setText("?");
         } else{
-            ((TextView) view.findViewById(R.id.startingWeightNumber)).setText(String.valueOf(WeightFragment.getFirstWeight(requireActivity())));
+            ((TextView) view.findViewById(R.id.startingWeightNumber)).setText(String.format("%.1f", weightUnit * WeightFragment.getFirstWeight(requireActivity())));
 
             int firstWeightDate = Integer.parseInt(WeightFragment.getFirstWeightDate(requireActivity()));
             int day = firstWeightDate % 100;
@@ -55,14 +59,14 @@ public class GoalsFragment extends Fragment {
         if(WeightFragment.getGoalWeight(requireActivity()) == -1f)
             ((TextView) view.findViewById(R.id.goalWeightNumber)).setText("?");
         else
-            ((TextView) view.findViewById(R.id.goalWeightNumber)).setText(String.valueOf(WeightFragment.getGoalWeight(requireActivity())));
+            ((TextView) view.findViewById(R.id.goalWeightNumber)).setText(String.format("%.1f", weightUnit * WeightFragment.getGoalWeight(requireActivity())));
 
         // setting up LastUpdatedWeight
         if(WeightFragment.getLastDailyAverage(requireActivity()) == -1f){
             ((TextView) view.findViewById(R.id.lastUpdatedNumber)).setText("?");
             ((TextView) view.findViewById(R.id.lastUpdatedWeightDateTextView)).setText("?");
         } else{
-            ((TextView) view.findViewById(R.id.lastUpdatedNumber)).setText(String.valueOf(WeightFragment.getLastDailyAverage(requireActivity())));
+            ((TextView) view.findViewById(R.id.lastUpdatedNumber)).setText(String.format("%.1f", weightUnit * WeightFragment.getLastDailyAverage(requireActivity())));
 
             int lastUpdatedWeightDate = Integer.parseInt(WeightFragment.getLastDailyAverageDate(requireActivity()));
             int day = lastUpdatedWeightDate % 100;

@@ -659,6 +659,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen, container, false);
 
+        requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
+
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -668,6 +670,13 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         subscribeToObservers();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -36,6 +36,9 @@ public class ServiceFunctional {
 
         ((InAppActivity) context).setUpPedometerFragmentUI(true);
 
+        // setting here too because we're updating widgets (they need to have sync information)
+        setPedometerShouldRun(context, true);
+
         // update widgets
         for (int id : AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, PedometerWidget.class))) {
             PedometerWidget.updateAppWidget(context, AppWidgetManager.getInstance(context), id, AppWidgetManager.getInstance(context).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));

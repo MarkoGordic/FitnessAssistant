@@ -106,7 +106,7 @@ public class PedometerWidget extends AppWidgetProvider {
 
         // adding pendingIntent to get us to MapFragment
         Intent intent = new Intent(context, InAppActivity.class);
-        intent.putExtra("desiredFragment", "MapFragment");
+        intent.putExtra("desiredFragment", "PedometerFragment");
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.widgetBackground, pendingIntent);

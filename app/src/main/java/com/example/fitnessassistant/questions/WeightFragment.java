@@ -211,12 +211,12 @@ public class WeightFragment extends Fragment {
     }
 
     private void setWeightInKilograms(float LBS, EditText weightInKGs){
-        float KG = (float) (LBS / 2.205);
+        float KG = (float) (LBS / 2.205f);
         weightInKGs.setText(String.valueOf(KG));
     }
 
     private void setWeightInPounds(float KG, EditText weightInPounds){
-        float LBS = (float) (KG * 2.205);
+        float LBS = (float) (KG * 2.205f);
         weightInPounds.setText(String.valueOf(LBS));
     }
 
@@ -284,7 +284,10 @@ public class WeightFragment extends Fragment {
             public void afterTextChanged(Editable s) { }
         };
 
-        setUpKilogramsUI(view, view.findViewById(R.id.unitSwitch), weightInKGs, weightInPounds, KGWatcher, LBSWatcher);
+        if(UnitPreferenceFragment.getWeightUnit(requireActivity()).equals(UnitPreferenceFragment.WEIGHT_UNIT_LBS))
+            setUpPoundsUI(view, view.findViewById(R.id.unitSwitch), weightInKGs, weightInPounds, KGWatcher, LBSWatcher);
+        else
+            setUpKilogramsUI(view, view.findViewById(R.id.unitSwitch), weightInKGs, weightInPounds, KGWatcher, LBSWatcher);
 
         ((SwitchCompat) view.findViewById(R.id.unitSwitch)).setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(!isChecked)
