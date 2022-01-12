@@ -1,5 +1,7 @@
 package com.example.fitnessassistant.profile;
 
+import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,37 +20,6 @@ import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
 
 public class GoalsFragment extends Fragment {
-
-    public static String getMonthShort(int numOfMonth){
-        switch(numOfMonth){
-            case 1:
-                return "Jan";
-            case 2:
-                return "Feb";
-            case 3:
-                return "Mar";
-            case 4:
-                return "Apr";
-            case 5:
-                return "May";
-            case 6:
-                return "Jun";
-            case 7:
-                return "Jul";
-            case 8:
-                return "Aug";
-            case 9:
-                return "Sep";
-            case 10:
-                return "Oct";
-            case 11:
-                return "Nov";
-            case 12:
-                return "Dec";
-            default:
-                return null;
-        }
-    }
 
     private void setUpWeights(View view){
         // setting up Units

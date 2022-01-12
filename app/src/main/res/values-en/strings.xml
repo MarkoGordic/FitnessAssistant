@@ -231,6 +231,7 @@
     <string name="fr">Fr</string>
     <string name="sa">Sa</string>
     <string name="su">Su</string>
+    <string name="changes_affect_only_future_goals">This affects only your future goals.</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometer</string>
@@ -264,7 +265,7 @@
     <string name="proceed">Proceed</string>
     <string name="go_back">Go Back</string>
     <string name="questions_description">To give you the most accurate statistics possible, we will ask you a few questions about you and your preferences.</string>
-    <string name="you_will_be_asked_again">If you skip the questions, you will be asked again each time you use the app. You can avoid this by selecting the option below.</string>
+    <string name="you_will_be_asked_again">If you skip the questions, you\'ll be asked again each time you use the app. Avoid this by selecting the option below.</string>
     <string name="do_not_ask_again">Don\'t ask again</string>
     <!-- GenderQ Strings -->
     <string name="what_is_your_gender">What Is Your Gender?</string>

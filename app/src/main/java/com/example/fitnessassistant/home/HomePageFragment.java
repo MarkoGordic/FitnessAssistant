@@ -1,5 +1,7 @@
 package com.example.fitnessassistant.home;
 
+import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +35,8 @@ public class HomePageFragment extends Fragment {
             view = getView();
 
         if(view != null) {
-            ((TextView) view.findViewById(R.id.stepsActivityTV)).setText(String.valueOf((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted())));
-            ((ProgressBar) view.findViewById(R.id.dailyStepsProgressBar)).setProgress((int) (100 * MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted()) / StepGoalFragment.getStepGoalForToday(requireActivity())));
+            ((TextView) view.findViewById(R.id.stepsActivityTV)).setText(String.valueOf((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(getCurrentDateFormatted())));
+            ((ProgressBar) view.findViewById(R.id.dailyStepsProgressBar)).setProgress((int) (100 * MDBHPedometer.getInstance(requireContext()).readPedometerSteps(getCurrentDateFormatted()) / StepGoalFragment.getStepGoalForToday(requireActivity())));
         }
     }
 

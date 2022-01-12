@@ -58,8 +58,8 @@ android:gravity="center">
         android:background="@color/SpaceCadet"
         android:layout_marginTop="12dp"
 
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="28dp" />
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp" />
 
     <!-- AskedAgain TextView-->
     <TextView
@@ -72,24 +72,15 @@ android:gravity="center">
 
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
-        android:paddingStart="36dp"
-        android:paddingEnd="36dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="@string/you_will_be_asked_again"
         android:textAlignment="center"
-        android:textStyle="italic"
         android:textColor="@color/BlueYonder"
         android:textFontWeight="600"
-        android:textSize="15sp"/>
+        android:textSize="13sp"
+        tools:ignore="TextContrastCheck" />
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-
-        android:background="@color/SpaceCadet"
-        android:layout_marginTop="8dp"
-
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp" />
 
     <!-- DontAskAgain CheckBox-->
     <androidx.appcompat.widget.AppCompatCheckBox
@@ -98,21 +89,21 @@ android:gravity="center">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
 
         android:buttonTint="@color/Flame"
         android:fontFamily="@font/ralewaym"
         android:includeFontPadding="false"
 
         android:layoutDirection="rtl"
-        android:paddingStart="8dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="0dp"
 
-        android:paddingEnd="4dp"
         android:text="@string/do_not_ask_again"
         android:textAlignment="center"
         android:textColor="@color/Flame"
         android:textFontWeight="600"
-        android:textSize="13sp"
+        android:textSize="12sp"
         tools:ignore="TextContrastCheck" />
 
     <View

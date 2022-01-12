@@ -127,7 +127,7 @@
     <string name="register_for_free">Započnite odmah potpuno besplatno</string>
     <string name="not_a_member_yet"><i>Niste korisnik </i><b>   -></b></string>
     <string name="register_u"><i><u>Registrujte se </u></i></string>
-    <string name="verify_your_email">Verifikujte vaš Email</string>
+    <string name="verify_your_email">Verifikujte Vaš Email</string>
     <string name="verification_will_be_sent"><i>Ukoliko niste primili mejl možemo Vam poslati novi.\nUkoliko ste napravili grešku samo se odjavite. (stelica za nazad)</i></string>
     <string name="email_verification_required">Poslali smo Vam verifikacioni link na mejl.\nIskoristite ga da završite kreiranje naloga.\n</string>
     <string name="hold_for_signing_out">Pritisnite duže za odjavu</string>
@@ -150,12 +150,12 @@
     <string name="error_last_auth_provider">Neuspešno odvezivanje jedinog preostalog provajdera za prijavu</string>
     <string name="account_already_linked">Taj email je već povezan ovim provajderom</string>
     <string name="delete_your_account">Obrišite Vaš Nalog</string>
-    <string name="account_deletion_message">Da li sigurno želite da obrišete vaš nalog?\n\n<b>Svesni ste da:</b>
+    <string name="account_deletion_message">Da li sigurno želite da obrišete Vaš nalog?\n\n<b>Svesni ste da:</b>
         Ukoliko obrišete nalog, nećete moći ponovo da ga aktivirate
         i svi podaci povezani sa ovim nalogom će biti obrisane.</string>
     <string name="re_authenticate_your_account">Potvrdite Vaš Nalog</string>
     <string name="re_authentication_message">Da bi nastavili, potvrdite Vaš nalog lozinkom vašeg naloga</string>
-    <string name="re_enter_your_password">Unesite vašu lozinku</string>
+    <string name="re_enter_your_password">Unesite Vašu lozinku</string>
     <string name="re_authentication_unsuccessful">Potvrda Naloga Neuspešna</string>
     <string name="change_username">Promenite Korisničko Ime</string>
     <string name="change_email">Promenite Email</string>
@@ -177,7 +177,7 @@
     <string name="unable_to_refresh">Osvežavanje Neuspešno</string>
     <string name="swipe_up_to_use_the_map">Povucite nagore za Mapu</string>
     <string name="cancel_tracking_warning">Prekini aktivnost?</string>
-    <string name="cancel_tracking">Da li ste sigurni da želite da prekinete vašu aktivnost?</string>
+    <string name="cancel_tracking">Da li ste sigurni da želite da prekinete Vašu aktivnost?</string>
     <string name="error_getting_profile_pic">Greška Pri Učitavanju Profilne</string>
     <string name="profile_picture_successfully_uploaded">Profilna Uspešno Sačuvana</string>
     <string name="profile_picture_not_successfully_uploaded">Profilna Nije Sačuvana</string>
@@ -232,12 +232,13 @@
     <string name="fr">Pe</string>
     <string name="sa">Su</string>
     <string name="su">Ne</string>
+    <string name="changes_affect_only_future_goals">Ovo utiče jedino na Vaše buduće ciljeve.</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometar</string>
     <string name="pedometer_desc">Prikazivanje podataka o praćenju koraka.</string>
     <string name="activity_tracking">Praćenje Aktivnosti</string>
-    <string name="activity_tracking_desc">Obaveštenja o praćenju vaših fizičkih aktivnosti u realnom vremenu.</string>
+    <string name="activity_tracking_desc">Obaveštenja o praćenju Vaših fizičkih aktivnosti u realnom vremenu.</string>
     <string name="sleep_tracking">Praćenje sna</string>
     <string name="sleep_tracking_desc">Automatska detekcija i praćenje sna.</string>
 

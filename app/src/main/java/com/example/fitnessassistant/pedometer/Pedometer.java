@@ -1,5 +1,7 @@
 package com.example.fitnessassistant.pedometer;
 
+import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
+import static com.example.fitnessassistant.util.TimeFunctional.getLast7DatesFromEnd;
 import static java.lang.Math.abs;
 
 import android.app.AlarmManager;
@@ -16,7 +18,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.text.format.DateFormat;
 import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
@@ -30,7 +31,6 @@ import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Pedometer extends Service implements SensorEventListener {
     public static final int PEDOMETER_ID = 25;
@@ -71,8 +71,9 @@ public class Pedometer extends Service implements SensorEventListener {
     private static int calculateWeeklyAverage(Context context){
         int currentHistorySum = 0;
 
-        for(int i = 0; i < 7; i++)
-            currentHistorySum += MDBHPedometer.getInstance(context).readPedometerSteps(String.valueOf(Integer.parseInt(getCurrentDateFormatted()) - i));
+        for(String date : getLast7DatesFromEnd()){
+            currentHistorySum += MDBHPedometer.getInstance(context).readPedometerSteps(date);
+        }
 
         return currentHistorySum / 7;
     }
@@ -184,10 +185,6 @@ public class Pedometer extends Service implements SensorEventListener {
         notificationManager.notify(PEDOMETER_ID, notification);
 
         return notification;
-    }
-
-    public static String getCurrentDateFormatted(){
-        return (String) DateFormat.format("yyyyMMdd", new Date());
     }
 
     @Override

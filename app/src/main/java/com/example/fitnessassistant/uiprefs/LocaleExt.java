@@ -1,6 +1,6 @@
 package com.example.fitnessassistant.uiprefs;
 
-import static com.example.fitnessassistant.pedometer.Pedometer.getCurrentDateFormatted;
+import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -64,12 +64,12 @@ public class LocaleExt {
             for (int id : AppWidgetManager.getInstance(newContext).getAppWidgetIds(new ComponentName(newContext, PedometerWidget.class))) {
                 PedometerWidget.updateAppWidget(newContext, AppWidgetManager.getInstance(newContext), id, AppWidgetManager.getInstance(context).getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT));
             }
-            Pedometer.updatePedometerWidgetData(newContext ,((int) MDBHPedometer.getInstance(newContext).readPedometerSteps(Pedometer.getCurrentDateFormatted())), null);
+            Pedometer.updatePedometerWidgetData(newContext ,((int) MDBHPedometer.getInstance(newContext).readPedometerSteps(getCurrentDateFormatted())), null);
         }
 
         if(updateNotifications)
             if(ServiceFunctional.getPedometerShouldRun(newContext))
-                Pedometer.pushPedometerNotification(newContext, ((int) MDBHPedometer.getInstance(newContext).readPedometerSteps(Pedometer.getCurrentDateFormatted())) + " " + newContext.getString(R.string.steps_small),newContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(newContext) + ".");
+                Pedometer.pushPedometerNotification(newContext, ((int) MDBHPedometer.getInstance(newContext).readPedometerSteps(getCurrentDateFormatted())) + " " + newContext.getString(R.string.steps_small),newContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(newContext) + ".");
 
         return newContext;
     }

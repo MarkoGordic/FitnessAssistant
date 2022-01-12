@@ -1,7 +1,7 @@
 package com.example.fitnessassistant.pedometer;
 
-import static com.example.fitnessassistant.pedometer.Pedometer.getCurrentDateFormatted;
 import static com.example.fitnessassistant.uiprefs.LocaleExt.toLangIfDiff;
+import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;

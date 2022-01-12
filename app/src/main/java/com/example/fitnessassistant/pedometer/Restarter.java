@@ -1,6 +1,6 @@
 package com.example.fitnessassistant.pedometer;
 
-import static com.example.fitnessassistant.pedometer.Pedometer.getCurrentDateFormatted;
+import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

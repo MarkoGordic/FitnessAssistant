@@ -1,5 +1,7 @@
 package com.example.fitnessassistant.pedometer;
 
+import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,6 @@ public class DailyRestarter extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         LocaleExt.toLangIfDiff(context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"), true, true);
-        MDBHPedometer.getInstance(context).putPedometerData(context, Pedometer.getCurrentDateFormatted(), null, StepGoalFragment.getStepGoalForToday(context));
+        MDBHPedometer.getInstance(context).putPedometerData(context, getCurrentDateFormatted(), null, StepGoalFragment.getStepGoalForToday(context));
     }
 }

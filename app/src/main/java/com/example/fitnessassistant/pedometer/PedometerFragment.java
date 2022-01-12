@@ -1,5 +1,9 @@
 package com.example.fitnessassistant.pedometer;
 
+import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
+import static com.example.fitnessassistant.util.TimeFunctional.getLast7DatesFromEnd;
+import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
+
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -19,7 +23,6 @@ import androidx.fragment.app.Fragment;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.MDBHPedometer;
-import com.example.fitnessassistant.profile.GoalsFragment;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
@@ -75,13 +78,13 @@ public class PedometerFragment extends Fragment {
     }
 
     private void setUpCurrentDate(View view){
-        int currentDate = Integer.parseInt(Pedometer.getCurrentDateFormatted());
+        int currentDate = Integer.parseInt(getCurrentDateFormatted());
         int day = currentDate % 100;
         currentDate /= 100;
         int month = currentDate % 100;
         currentDate /= 100;
         int year = currentDate;
-        ((TextView) view.findViewById(R.id.currentDate)).setText(String.format("%s %s %s", day, GoalsFragment.getMonthShort(month), year));
+        ((TextView) view.findViewById(R.id.currentDate)).setText(String.format("%s %s %s", day, getMonthShort(month), year));
     }
 
     @SuppressLint("DefaultLocale")
@@ -90,7 +93,7 @@ public class PedometerFragment extends Fragment {
             view = getView();
 
         if(view != null) {
-            int currentSteps = (int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(Pedometer.getCurrentDateFormatted());
+            int currentSteps = (int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(getCurrentDateFormatted());
             ((TextView) view.findViewById(R.id.stepCountTextView)).setText(String.valueOf(currentSteps));
             int goalSteps = StepGoalFragment.getStepGoalForToday(requireActivity());
 
@@ -129,9 +132,10 @@ public class PedometerFragment extends Fragment {
             int[] steps = new int[7];
             int[] stepGoals = new int[7];
 
-            for(int i = 0; i < 7; i++){
-                steps[i] = (int) MDBHPedometer.getInstance(requireActivity()).readPedometerSteps(String.valueOf(Integer.parseInt(Pedometer.getCurrentDateFormatted()) - i));
-                stepGoals[i] = MDBHPedometer.getInstance(requireActivity()).readPedometerStepGoal(String.valueOf(Integer.parseInt(Pedometer.getCurrentDateFormatted()) - i));
+            for(int i = 0; i < 7; i ++){
+                String[] dates = getLast7DatesFromEnd();
+                steps[i] = (int) MDBHPedometer.getInstance(requireActivity()).readPedometerSteps(dates[i]);
+                stepGoals[i] = MDBHPedometer.getInstance(requireActivity()).readPedometerStepGoal(dates[i]);
             }
 
             ((TextView) view.findViewById(R.id.firstStep)).setText(String.format("%d/%d", steps[0], stepGoals[0]));

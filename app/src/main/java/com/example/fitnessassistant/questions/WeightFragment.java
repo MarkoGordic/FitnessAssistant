@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.questions;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,7 +29,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.pedometer.Pedometer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,11 +51,11 @@ public class WeightFragment extends Fragment {
     }
 
     private synchronized static int getNumOfWeightUpdatedToday(Context context){
-        return context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).getInt(Pedometer.getCurrentDateFormatted(), 0);
+        return context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).getInt(getCurrentDateFormatted(), 0);
     }
 
     private synchronized static float getTotalWeightToday(Context context){
-        return context.getSharedPreferences("weightTotal", MODE_PRIVATE).getFloat(Pedometer.getCurrentDateFormatted(), 0f);
+        return context.getSharedPreferences("weightTotal", MODE_PRIVATE).getFloat(getCurrentDateFormatted(), 0f);
     }
 
     private synchronized static void putLastDailyAverage(Context context, float dailyAverage, String date){
@@ -69,7 +69,7 @@ public class WeightFragment extends Fragment {
 
     public synchronized static void putFirstWeight(Context context, float weight){
         context.getSharedPreferences("questions", MODE_PRIVATE).edit().putFloat("initWeight", weight).apply();
-        putFirstWeightDate(context, Pedometer.getCurrentDateFormatted());
+        putFirstWeightDate(context, getCurrentDateFormatted());
     }
 
     public synchronized static void putGoalWeight(Context context, float weight){
@@ -85,18 +85,18 @@ public class WeightFragment extends Fragment {
         float newTotal = getTotalWeightToday(context) + weight;
 
         // adding one more num weight updated
-        context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).edit().putInt(Pedometer.getCurrentDateFormatted(), newNum).apply();
+        context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).edit().putInt(getCurrentDateFormatted(), newNum).apply();
         // adding the weight to total weight
-        context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit().putFloat(Pedometer.getCurrentDateFormatted(), newTotal).apply();
+        context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit().putFloat(getCurrentDateFormatted(), newTotal).apply();
 
-        putLastDailyAverage(context, newTotal / newNum, Pedometer.getCurrentDateFormatted());
+        putLastDailyAverage(context, newTotal / newNum, getCurrentDateFormatted());
     }
 
     public synchronized static void deleteWeightForToday(Context context){
         // removing num of weight updated for today
-        context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).edit().remove(Pedometer.getCurrentDateFormatted()).apply();
+        context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).edit().remove(getCurrentDateFormatted()).apply();
         // removing weight total for today
-        context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit().remove(Pedometer.getCurrentDateFormatted()).apply();
+        context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit().remove(getCurrentDateFormatted()).apply();
 
         // find lastSavedWeight
         ArrayList<Pair<String,Float>> allPreviousWeights = getAllPreviousWeights(context);
@@ -302,7 +302,7 @@ public class WeightFragment extends Fragment {
             view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
                 if (weightInKGs.getText().length() != 0 && validWeight(Float.parseFloat(weightInKGs.getText().toString()))) {
                     putFirstWeight(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
-                    putFirstWeightDate(requireActivity(), Pedometer.getCurrentDateFormatted());
+                    putFirstWeightDate(requireActivity(), getCurrentDateFormatted());
                     updateWeightForToday(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
 
                     // put unit preference given too
@@ -357,7 +357,7 @@ public class WeightFragment extends Fragment {
                     if (weightInKGs.getText().length() != 0 && validWeight(Float.parseFloat(weightInKGs.getText().toString()))) {
                         if (getFirstWeight(requireActivity()) == -1f) {
                             putFirstWeight(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
-                            putFirstWeightDate(requireActivity(), Pedometer.getCurrentDateFormatted());
+                            putFirstWeightDate(requireActivity(), getCurrentDateFormatted());
                         }
                         updateWeightForToday(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
 

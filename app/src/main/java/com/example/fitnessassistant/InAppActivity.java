@@ -362,8 +362,10 @@ public class InAppActivity extends AppCompatActivity {
 
         getSharedPreferences("pedometer", MODE_PRIVATE).registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
             if(key.equals("pedometerDataChanged")){
-                homeFragment.updateStepsData(null);
-                pedometerFragment.updateStepsData(null);
+                if(homeFragment != null && pedometerFragment != null) {
+                    homeFragment.updateStepsData(null);
+                    pedometerFragment.updateStepsData(null);
+                }
             }
         });
 
