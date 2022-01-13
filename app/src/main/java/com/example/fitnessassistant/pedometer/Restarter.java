@@ -6,7 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.fitnessassistant.database.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 
 public class Restarter extends BroadcastReceiver {
 

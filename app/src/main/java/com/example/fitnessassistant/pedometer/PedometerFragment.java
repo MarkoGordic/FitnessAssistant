@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.database.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;

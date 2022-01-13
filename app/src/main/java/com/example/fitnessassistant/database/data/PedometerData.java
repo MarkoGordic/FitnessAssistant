@@ -1,4 +1,4 @@
-package com.example.fitnessassistant.database;
+package com.example.fitnessassistant.database.data;
 
 import java.util.ArrayList;
 import java.util.List;

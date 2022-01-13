@@ -15,7 +15,7 @@ import android.widget.RemoteViews;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.database.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
 // TODO test resizing widget once again on more phones

@@ -5,7 +5,6 @@ import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFor
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -29,11 +28,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.mdbh.MDBHWeight;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -51,11 +49,11 @@ public class WeightFragment extends Fragment {
     }
 
     private synchronized static int getNumOfWeightUpdatedToday(Context context){
-        return context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).getInt(getCurrentDateFormatted(), 0);
+        return MDBHWeight.getInstance(context).readWeightRecords(getCurrentDateFormatted());
     }
 
     private synchronized static float getTotalWeightToday(Context context){
-        return context.getSharedPreferences("weightTotal", MODE_PRIVATE).getFloat(getCurrentDateFormatted(), 0f);
+        return MDBHWeight.getInstance(context).readWeightTotalWeight(getCurrentDateFormatted());
     }
 
     private synchronized static void putLastDailyAverage(Context context, float dailyAverage, String date){
@@ -84,19 +82,13 @@ public class WeightFragment extends Fragment {
         int newNum = getNumOfWeightUpdatedToday(context) + 1;
         float newTotal = getTotalWeightToday(context) + weight;
 
-        // adding one more num weight updated
-        context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).edit().putInt(getCurrentDateFormatted(), newNum).apply();
-        // adding the weight to total weight
-        context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit().putFloat(getCurrentDateFormatted(), newTotal).apply();
+        MDBHWeight.getInstance(context).putWeightData(getCurrentDateFormatted(), newNum, newTotal);
 
         putLastDailyAverage(context, newTotal / newNum, getCurrentDateFormatted());
     }
 
     public synchronized static void deleteWeightForToday(Context context){
-        // removing num of weight updated for today
-        context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).edit().remove(getCurrentDateFormatted()).apply();
-        // removing weight total for today
-        context.getSharedPreferences("weightTotal", MODE_PRIVATE).edit().remove(getCurrentDateFormatted()).apply();
+        MDBHWeight.getInstance(context).deleteDayDB(getCurrentDateFormatted());
 
         // find lastSavedWeight
         ArrayList<Pair<String,Float>> allPreviousWeights = getAllPreviousWeights(context);
@@ -142,44 +134,21 @@ public class WeightFragment extends Fragment {
     }
 
     public static synchronized ArrayList<Pair<String,Float>> getAllPreviousWeights(Context context){
-        Map<String, ?> allNumUpdated = context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).getAll();
-        Map<String, ?> allWeightTotal = context.getSharedPreferences("weightTotal", MODE_PRIVATE).getAll();
-
-        Iterator<? extends Map.Entry<String, ?>> it = allNumUpdated.entrySet().iterator();
+        List<String> data = MDBHWeight.getInstance(context).readWeightDB();
         ArrayList<Pair<String,Float>> averageWeights = new ArrayList<>();
-        while(it.hasNext()){
-            Map.Entry<String, ?> pairs = it.next();
-            int numUpdated = (int) allNumUpdated.get(pairs.getKey());
-            float weightTotal = (float) allWeightTotal.get(pairs.getKey());
-            averageWeights.add(new Pair<>(pairs.getKey(), weightTotal / numUpdated));
+
+        for(String weight : data){
+            StringTokenizer tokenizer = new StringTokenizer(weight, "#");
+            String date = tokenizer.nextToken();
+            int num = Integer.parseInt(tokenizer.nextToken());
+            float total = Float.parseFloat(tokenizer.nextToken());
+            averageWeights.add(new Pair<>(date, total / num));
         }
+
         return averageWeights;
     }
 
-    public static synchronized List<String> getWeightsForDB(Context context){
-        Map<String, ?> allNumUpdated = context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE).getAll();
-        Map<String, ?> allWeightTotal = context.getSharedPreferences("weightTotal", MODE_PRIVATE).getAll();
-
-        Iterator<? extends Map.Entry<String, ?>> it = allNumUpdated.entrySet().iterator();
-        ArrayList<String> weightsDB = new ArrayList<>();
-        while(it.hasNext()){
-            Map.Entry<String, ?> pairs = it.next();
-            int numUpdated = (int) allNumUpdated.get(pairs.getKey());
-            float weightTotal = (float) allWeightTotal.get(pairs.getKey());
-            weightsDB.add(pairs.getKey() + "#" + numUpdated + "#" + weightTotal);
-        }
-        return weightsDB;
-    }
-
     public static synchronized void putPreviousWeights(Context context, List<String> weightsDB){
-        SharedPreferences numUpdated = context.getSharedPreferences("weightNumUpdated", MODE_PRIVATE);
-        SharedPreferences weightTotal = context.getSharedPreferences("weightTotal", MODE_PRIVATE);
-        SharedPreferences.Editor numUpdatedEditor = numUpdated.edit();
-        SharedPreferences.Editor weightTotalEditor = weightTotal.edit();
-
-        numUpdatedEditor.clear();
-        weightTotalEditor.clear();
-
         int firstDate = Integer.MAX_VALUE;
         int lastDate = -1;
 
@@ -195,15 +164,18 @@ public class WeightFragment extends Fragment {
             }
             int num = Integer.parseInt(tokenizer.nextToken());
             float total = Float.parseFloat(tokenizer.nextToken());
-            numUpdatedEditor.putInt(date, num);
-            weightTotalEditor.putFloat(date, total);
+            MDBHWeight.getInstance(context).putWeightData(date, num, total);
         }
 
-        putLastDailyAverageDate(context, String.valueOf(lastDate));
-        putLastDailyAverage(context, weightTotal.getFloat(String.valueOf(lastDate), -1f) / numUpdated.getInt(String.valueOf(lastDate), -1) , String.valueOf(lastDate));
+        if(lastDate != -1){
+            String data = MDBHWeight.getInstance(context).readWeightData(String.valueOf(lastDate));
+            StringTokenizer tokenizer = new StringTokenizer(data, "#");
+            int num = Integer.parseInt(tokenizer.nextToken());
+            float total = Float.parseFloat(tokenizer.nextToken());
 
-        numUpdatedEditor.apply();
-        weightTotalEditor.apply();
+            putLastDailyAverageDate(context, String.valueOf(lastDate));
+            putLastDailyAverage(context, total / num , String.valueOf(lastDate));
+        }
     }
 
     private boolean validWeight(float weightInKGs){
@@ -211,12 +183,12 @@ public class WeightFragment extends Fragment {
     }
 
     private void setWeightInKilograms(float LBS, EditText weightInKGs){
-        float KG = (float) (LBS / 2.205f);
+        float KG = LBS / 2.205f;
         weightInKGs.setText(String.valueOf(KG));
     }
 
     private void setWeightInPounds(float KG, EditText weightInPounds){
-        float LBS = (float) (KG * 2.205f);
+        float LBS = KG * 2.205f;
         weightInPounds.setText(String.valueOf(LBS));
     }
 

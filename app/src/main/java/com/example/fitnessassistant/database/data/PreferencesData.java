@@ -1,12 +1,11 @@
-package com.example.fitnessassistant.database;
+package com.example.fitnessassistant.database.data;
 
 import android.content.Context;
-import android.util.Pair;
 
+import com.example.fitnessassistant.database.mdbh.MDBHWeight;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
-import com.example.fitnessassistant.questions.WeightFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class PreferencesData {
         units.add(UnitPreferenceFragment.getFluidUnit(context));
         units.add(UnitPreferenceFragment.getEnergyUnit(context));
 
-        weights = WeightFragment.getWeightsForDB(context);
+        weights = MDBHWeight.getInstance(context).readWeightDB();
     }
 
     public float getHeight() {

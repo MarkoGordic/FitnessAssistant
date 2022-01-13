@@ -1,4 +1,4 @@
-package com.example.fitnessassistant.database;
+package com.example.fitnessassistant.database.mdbh;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -39,7 +39,7 @@ public class MDBHPedometer extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query =
                 "CREATE TABLE " + TABLE_NAME +
-                        " (" + COLUMN_DATE + " INTEGER PRIMARY KEY, " +
+                        " (" + COLUMN_DATE + " TEXT PRIMARY KEY, " +
                         COLUMN_STEPS + " REAL, " +
                         COLUMN_STEP_GOAL + " INTEGER);";
 
@@ -113,7 +113,6 @@ public class MDBHPedometer extends SQLiteOpenHelper {
             }
         }
 
-        //db.close();
         return data;
     }
 
@@ -167,6 +166,30 @@ public class MDBHPedometer extends SQLiteOpenHelper {
             }
 
         return false;
+    }
+
+    private String findLatestDayInDB(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String data = null;
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                do{
+                    data = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return data;
+    }
+
+    public void deleteDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
     }
 
 }

@@ -25,7 +25,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.database.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.notifications.NotificationController;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;

@@ -1,4 +1,4 @@
-package com.example.fitnessassistant.database;
+package com.example.fitnessassistant.database.mdbh;
 
 import android.content.ContentValues;
 import android.content.Context;

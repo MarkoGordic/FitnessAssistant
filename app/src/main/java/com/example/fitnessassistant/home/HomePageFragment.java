@@ -18,7 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.database.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;

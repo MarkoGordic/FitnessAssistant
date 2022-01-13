@@ -10,7 +10,7 @@ import android.content.res.Resources;
 import android.os.LocaleList;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.database.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.PedometerWidget;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;

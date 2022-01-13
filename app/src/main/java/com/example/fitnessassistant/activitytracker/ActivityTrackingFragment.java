@@ -33,7 +33,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.database.MDBHActivityTracker;
+import com.example.fitnessassistant.database.RealtimeDB;
+import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -571,8 +572,9 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         });
 
         view.findViewById(R.id.wholePathButton).setOnClickListener(v -> {
-            followUser = false;
-            focusPathOnMap();
+            //followUser = false;
+            //focusPathOnMap();
+            RealtimeDB.restoreUserActivities(requireContext());
         });
 
         view.findViewById(R.id.mapTypeButton).setOnClickListener(new View.OnClickListener() {

@@ -1,10 +1,21 @@
 package com.example.fitnessassistant.database;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.fitnessassistant.database.data.ActivityData;
+import com.example.fitnessassistant.database.data.GoalsData;
+import com.example.fitnessassistant.database.data.PedometerData;
+import com.example.fitnessassistant.database.data.PreferencesData;
+import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHWeight;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
@@ -18,7 +29,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -119,6 +135,8 @@ public class RealtimeDB {
                     PedometerData data = dataSnapshot.getValue(PedometerData.class);
                     List<String> pedometer;
 
+                    MDBHPedometer.getInstance(context).deleteDB();
+
                     // Saving new data
                     if(data != null) {
                         pedometer = data.getData();
@@ -178,6 +196,7 @@ public class RealtimeDB {
                         UnitPreferenceFragment.putFluidUnit(context, units.get(3));
                         UnitPreferenceFragment.putEnergyUnit(context, units.get(4));
 
+                        MDBHWeight.getInstance(context).deleteDB();
                         WeightFragment.putPreviousWeights(context, data.getWeights());
                     }
                 }
@@ -229,6 +248,84 @@ public class RealtimeDB {
                         StepGoalFragment.putFridayStepGoal(context, data.getWeeklySteps().get(4));
                         StepGoalFragment.putSaturdayStepGoal(context, data.getWeeklySteps().get(5));
                         StepGoalFragment.putSundayStepGoal(context, data.getWeeklySteps().get(6));
+                    }
+                }
+            });
+        }
+    }
+
+
+
+    public static void saveActivityImages(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            List<Bitmap> data = MDBHActivityTracker.getInstance(context).readActivitiesBitmapsDB();
+
+            for(int i = 0; i < data.size(); i++){
+                Bitmap bitmap = data.get(i);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                Uri newUri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "ProfilePic", null));
+
+                storage.getReference("users/" + userID + "/activities/" + i + ".jpg").putFile(newUri).addOnFailureListener(e -> {
+
+                });
+            }
+        }
+    }
+
+    public static void saveUserActivities(Context context) {
+        saveActivityImages(context);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("activities");
+
+            ActivityData activityData = new ActivityData(context);
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) { db.setValue(activityData); }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    public static void restoreUserActivities(Context context) {
+        MDBHActivityTracker.getInstance(context).deleteDB();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("activities");
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+
+            db.get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    Log.e("Firebase", "Error getting data", task.getException());
+                } else {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    ActivityData data = dataSnapshot.getValue(ActivityData.class);
+
+                    if(data != null){
+                        int[] array = new int[data.activities.size()];
+
+                        for(int i = 0; i < data.activities.size(); i++)
+                            array[i] = i;
+
+                        for(final int i : array){
+                            StorageReference storageRef = storage.getReference("users/" + userID + "/activities/" + i + ".jpg");
+                            try {
+                                File file = File.createTempFile("Images", "jpg");
+                                storageRef.getFile(file).addOnSuccessListener(taskSnapshot -> {
+                                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                                    MDBHActivityTracker.getInstance(context).addNewActivity(data.activities.get(i).getDate(), data.activities.get(i).getAverageSpeed(), data.activities.get(i).getDistance(), data.activities.get(i).getCaloriesBurnt(), bitmap);
+                                });
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
             });

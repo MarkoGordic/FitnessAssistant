@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 
-import com.example.fitnessassistant.database.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 
 public class DailyRestarter extends BroadcastReceiver {

@@ -1,4 +1,4 @@
-package com.example.fitnessassistant.database;
+package com.example.fitnessassistant.database.mdbh;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,10 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.Nullable;
 
+import com.example.fitnessassistant.database.data.Activity;
+
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MDBHActivityTracker extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SavedActivities.db";
@@ -22,6 +27,15 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
     private static final String COLUMN_CALORIES_BURNT = "activity_calories_burnt";
     private static final String COLUMN_DISTANCE = "activity_distance";
     private static final String COLUMN_IMAGE = "activity_image";
+
+    private static MDBHActivityTracker instance;
+
+    public static MDBHActivityTracker getInstance(Context context) {
+        if(instance == null)
+            instance = new MDBHActivityTracker(context);
+
+        return instance;
+    }
 
     public MDBHActivityTracker(@Nullable Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -69,15 +83,55 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
             System.out.println("Success! DATABASE");
     }
 
-    Cursor readAllData() {
+    public List<Activity> readActivitiesDataDB() {
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = null;
+        List<Activity> activities = new ArrayList<>();
+
         if(db != null){
-            cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                do{
+                    Activity activity = new Activity();
+                    activity.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_DATE)));
+                    activity.setAverageSpeed(cursor.getFloat(cursor.getColumnIndex(COLUMN_AVERAGE_SPEED)));
+                    activity.setDistance(cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE)));
+                    activity.setCaloriesBurnt(cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT)));
+                    activities.add(activity);
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
         }
 
-        return cursor;
+        return activities;
+    }
+
+    public List<Bitmap> readActivitiesBitmapsDB() {
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<Bitmap> images = new ArrayList<>();
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                do{
+                    byte[] bytes = cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE));
+                    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    images.add(image);
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return images;
+    }
+
+    public void deleteDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
     }
 }
