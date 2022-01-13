@@ -30,7 +30,9 @@ import com.example.fitnessassistant.questions.WeightFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class PedometerFragment extends Fragment {
 
@@ -70,6 +72,16 @@ public class PedometerFragment extends Fragment {
             height = HeightFragment.getWorldwideAverageHeight(requireActivity());
 
         return getStepLength(height) * stepCount / 100000;
+    }
+
+    private List<Float> getTotals(){
+        List<Float> totals = new ArrayList<>();
+
+        totals.add(MDBHPedometer.getInstance(requireContext()).getTotalSteps());
+        totals.add(getDistanceWalked((int)Math.round(totals.get(0))));
+        totals.add(getCaloriesBurnedFromSteps((int)Math.round(totals.get(0))));
+
+        return totals;
     }
 
     public void setUpUI(boolean pedometerRuns){

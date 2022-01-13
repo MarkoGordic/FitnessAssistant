@@ -168,7 +168,7 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         return false;
     }
 
-    private String findLatestDayInDB(){
+    public String findLatestDayInDB(){
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -179,6 +179,25 @@ public class MDBHPedometer extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 do{
                     data = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return data;
+    }
+
+    public float getTotalSteps(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        float data = 0f;
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                do{
+                    data += cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS));
                 }while(cursor.moveToNext());
                 cursor.close();
             }
