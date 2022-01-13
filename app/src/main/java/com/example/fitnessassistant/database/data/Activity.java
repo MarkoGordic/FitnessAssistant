@@ -5,6 +5,11 @@ public class Activity {
     float averageSpeed;
     int caloriesBurnt;
     long date;
+    int activityType;
+
+    public int getActivityType() {
+        return activityType;
+    }
 
     public float getAverageSpeed() {
         return averageSpeed;
@@ -36,5 +41,9 @@ public class Activity {
 
     public void setDistance(float distance) {
         this.distance = distance;
+    }
+
+    public void setActivityType(int activityType) {
+        this.activityType = activityType;
     }
 }

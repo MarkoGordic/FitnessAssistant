@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -33,7 +34,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.database.RealtimeDB;
 import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
@@ -112,6 +112,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     private long currentTimeInMilliseconds = 0L;
 
     private AlertDialog alertDialog = null;
+
+    int activityType = 0;
 
     // method which is used to set up observers
     @SuppressLint("DefaultLocale")
@@ -356,7 +358,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     distance = LocationService.totalDistanceInKm.getValue();
 
                 MDBHActivityTracker myDB = new MDBHActivityTracker(requireContext());
-                myDB.addNewActivity(dateRecorded, averageSpeed, distance, calories, bitmap);
+                myDB.addNewActivity(dateRecorded, averageSpeed, distance, calories, bitmap, activityType);
             }
 
             stopActivity();
@@ -525,8 +527,13 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         });
 
         view.findViewById(R.id.stopTracking).setOnClickListener(v -> {
-            // TODO stopTracking functionality
-            promptCancelTrackingDialog();
+            if(LocationService.timeInMilliseconds.getValue() != null) {
+                if (LocationService.timeInMilliseconds.getValue() != 0L) {
+                    promptCancelTrackingDialog();
+                } else
+                    Toast.makeText(getActivity(), R.string.start_needed, Toast.LENGTH_SHORT).show();
+            }else
+                Toast.makeText(getActivity(), R.string.start_needed, Toast.LENGTH_SHORT).show();
         });
 
         // set up layoutClose on touch listener (for swiping)
@@ -572,9 +579,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         });
 
         view.findViewById(R.id.wholePathButton).setOnClickListener(v -> {
-            //followUser = false;
-            //focusPathOnMap();
-            RealtimeDB.restoreUserActivities(requireContext());
+            followUser = false;
+            focusPathOnMap();
         });
 
         view.findViewById(R.id.mapTypeButton).setOnClickListener(new View.OnClickListener() {

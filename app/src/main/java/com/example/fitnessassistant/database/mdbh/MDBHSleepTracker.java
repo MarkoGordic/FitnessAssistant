@@ -11,8 +11,8 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SleepData.db";
     private static final int DATABASE_VERSION = 1;
 
-    // sleepSegments table
-    private static final String SEGMENTS_TABLE_NAME = "sleepSegments";
+    // sleepEvents table
+    private static final String EVENTS_TABLE_NAME = "sleepEvents";
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_CONFIDENCE = "activity_date";
     private static final String COLUMN_LIGHT = "activity_average_speed";
@@ -20,10 +20,19 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
     private static final String COLUMN_TIME = "activity_distance";
 
     // sleepEvents table
-    private static final String EVENTS_TABLE_NAME = "sleepSegments";
-    private static final String EVENTS_COLUMN_ID = "_id";
-    private static final String EVENT_START_TIME = "start_time";
-    private static final String EVENT_END_TIME = "end_time";
+    private static final String SEGMENTS_TABLE_NAME = "sleepSegments";
+    private static final String SEGMENTS_COLUMN_ID = "_id";
+    private static final String SEGMENTS_START_TIME = "start_time";
+    private static final String SEGMENTS_END_TIME = "end_time";
+
+    private static MDBHSleepTracker instance;
+
+    public static MDBHSleepTracker getInstance(Context context) {
+        if(instance == null)
+            instance = new MDBHSleepTracker(context);
+
+        return instance;
+    }
 
     public MDBHSleepTracker(@Nullable Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,14 +52,14 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
 
         query =
                 "CREATE TABLE " + EVENTS_TABLE_NAME +
-                        " (" + EVENTS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        EVENT_START_TIME + " REAL, " +
-                        EVENT_END_TIME + " REAL);";
+                        " (" + SEGMENTS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        SEGMENTS_START_TIME + " REAL, " +
+                        SEGMENTS_END_TIME + " REAL);";
 
         db.execSQL(query);
     }
 
-    public void addNewSleepSegment(int confidence, int light, int motion, long time){
+    public void addNewSleepEvent(int confidence, int light, int motion, long time){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -59,7 +68,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         cv.put(COLUMN_MOTION, motion);
         cv.put(COLUMN_TIME, time);
 
-        long result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
+        long result = db.insert(EVENTS_TABLE_NAME, null, cv);
 
         if(result == -1)
             System.out.println("Fail! DATABASE");
@@ -67,14 +76,14 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
             System.out.println("Success! DATABASE");
     }
 
-    public void addNewSleepEvent(long startTime, long endTime){
+    public void addNewSleepSegment(long startTime, long endTime){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(EVENT_START_TIME, startTime);
-        cv.put(EVENT_END_TIME, endTime);
+        cv.put(SEGMENTS_START_TIME, startTime);
+        cv.put(SEGMENTS_END_TIME, endTime);
 
-        long result = db.insert(EVENTS_TABLE_NAME, null, cv);
+        long result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
 
         if(result == -1)
             System.out.println("Fail! DATABASE");
@@ -87,5 +96,16 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SEGMENTS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + EVENTS_TABLE_NAME);
         onCreate(db);
+    }
+
+    public void deleteSegmentsDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(SEGMENTS_TABLE_NAME, null, null);
+    }
+
+
+    public void deleteEventsDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(EVENTS_TABLE_NAME, null, null);
     }
 }

@@ -26,6 +26,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
     private static final String COLUMN_AVERAGE_SPEED = "activity_average_speed";
     private static final String COLUMN_CALORIES_BURNT = "activity_calories_burnt";
     private static final String COLUMN_DISTANCE = "activity_distance";
+    private static final String COLUMN_ACTIVITY_TYPE = "activity_type";
     private static final String COLUMN_IMAGE = "activity_image";
 
     private static MDBHActivityTracker instance;
@@ -50,6 +51,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                         COLUMN_AVERAGE_SPEED + " REAL, " +
                         COLUMN_CALORIES_BURNT + " INTEGER, " +
                         COLUMN_DISTANCE + " REAL, " +
+                        COLUMN_ACTIVITY_TYPE + " INTEGER, " +
                         COLUMN_IMAGE + " BLOB);";
 
         db.execSQL(query);
@@ -61,7 +63,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addNewActivity(long date, float averageSpeed, double distance, float calories, Bitmap image){
+    public void addNewActivity(long date, float averageSpeed, double distance, float calories, Bitmap image, int activityType){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -74,6 +76,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         cv.put(COLUMN_DISTANCE, distance);
         cv.put(COLUMN_CALORIES_BURNT, calories);
         cv.put(COLUMN_IMAGE, activityImage);
+        cv.put(COLUMN_ACTIVITY_TYPE, activityType);
 
         long result = db.insert(TABLE_NAME, null, cv);
 
@@ -81,6 +84,11 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
             System.out.println("Fail! DATABASE");
         else
             System.out.println("Success! DATABASE");
+    }
+
+    public void removeActivityFromDB(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_NAME+ " WHERE "+ COLUMN_ID +"='"+id+"'");
     }
 
     public List<Activity> readActivitiesDataDB() {
@@ -99,6 +107,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                     activity.setAverageSpeed(cursor.getFloat(cursor.getColumnIndex(COLUMN_AVERAGE_SPEED)));
                     activity.setDistance(cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE)));
                     activity.setCaloriesBurnt(cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT)));
+                    activity.setActivityType(cursor.getInt(cursor.getColumnIndex(COLUMN_ACTIVITY_TYPE)));
                     activities.add(activity);
                 }while(cursor.moveToNext());
                 cursor.close();
@@ -128,6 +137,26 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         }
 
         return images;
+    }
+
+    public List<Integer> readActivitiesIDs() {
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<Integer> ids = new ArrayList<>();
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                do{
+                    ids.add(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return ids;
     }
 
     public void deleteDB(){

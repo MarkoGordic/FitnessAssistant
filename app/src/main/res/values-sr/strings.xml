@@ -21,6 +21,13 @@
     <string name="background_location_access">FitnessAssistant želi da dobije dozvolu za stalan pristup lokaciji Vašeg uređaja</string>
     <string name="background_location_access_message">Bez ovoga ili ukoliko je Vaša Android verzija niža od 10, praćenje fizičke aktivnosti neće raditi dok je aplikacija u pozadini.</string>
 
+    <!-- Used for Camera Permission -->
+    <string name="camera_access">FitnessAssistant želi da dobije dozvolu za pristup Vašoj kameri</string>
+    <string name="camera_access_denied">Dozvola Za Pristup Kameri</string>
+    <string name="camera_access_message_denied_forever">Barkod skener <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="camera_access_message_denied">Barkod skener <b>nije moguće koristiti</b> bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju Aktivnost</b> ponovo.</string>
+
+
     <!-- Sign In / Register strings -->
     <!-- web client ID for Google Sign In - default - tools:ignore was used because of the warning -->
     <string name="server_client_id" tools:ignore="TypographyDashes">545598236576-1uj5ad6vbdt4b3c2fdvk356qad0r5di3.apps.googleusercontent.com</string>
@@ -260,6 +267,7 @@
     <string name="location_accuracy">Preciznost Lokacije</string>
     <string name="location_accuracy_message">Za najbolje rezultate preciznost lokacije treba da opadne na krug od 10m. Molimo Vas sačekajte…</string>
     <string name="force_start">Odmah Započni</string>
+    <string name="start_needed">Morate započeti praćenje kako bi ga zaustavili!</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Preskoči</string>

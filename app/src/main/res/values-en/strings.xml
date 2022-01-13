@@ -21,6 +21,12 @@
     <string name="background_location_access">FitnessAssistant would like to access your location all the time</string>
     <string name="background_location_access_message">Without this or if your Android version is lower than 10, Activity Tracking services won\'t work when our app is in background.</string>
 
+    <!-- Used for Camera Permission -->
+    <string name="camera_access">FitnessAssistant would like to access your camera</string>
+    <string name="camera_access_denied">Camera Permission</string>
+    <string name="camera_access_message_denied_forever">Barcode scanner <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="camera_access_message_denied">Barcode scanner  <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>Activity section</b> once again.</string>
+
     <!-- Sign In / Register strings -->
     <!-- web client ID for Google Sign In - default - tools:ignore was used because of the warning -->
     <string name="server_client_id" tools:ignore="TypographyDashes">545598236576-1uj5ad6vbdt4b3c2fdvk356qad0r5di3.apps.googleusercontent.com</string>
@@ -259,6 +265,7 @@
     <string name="location_accuracy">Location Accuracy</string>
     <string name="location_accuracy_message">For best results location accuracy needs to fall down to a range of 10m(33ft). Please wait…</string>
     <string name="force_start">Force Start</string>
+    <string name="start_needed">You need to start tracking in order to stop it!</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Skip</string>
