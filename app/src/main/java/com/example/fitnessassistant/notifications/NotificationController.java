@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.graphics.drawable.IconCompat;
 
 import com.example.fitnessassistant.R;
 
@@ -21,9 +22,9 @@ public class NotificationController {
     }
 
     // TODO : Put logo instead of launcher_foreground
-    public static Notification createNotification(Context context, String channelID, String textTitle, String textContent, PendingIntent pendingIntent, boolean cancelNotification, boolean isOngoing, boolean showWhen){
+    public static Notification createNotification(Context context, String channelID, String textTitle, String textContent, PendingIntent pendingIntent, boolean cancelNotification, boolean isOngoing, boolean showWhen, int icon){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(icon)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

@@ -45,14 +45,14 @@ public class SleepTracker extends Service {
         return START_STICKY;
     }
 
-    // TODO Put logo
+
     // TODO Put R.string
     private Notification pushSleepTrackerNotification(){
         Intent intent = new Intent(this, InAppActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "SleepTracker")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_sleep)
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setContentTitle("FitnessAssistant Tracking")

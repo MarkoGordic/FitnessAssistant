@@ -442,7 +442,7 @@ public class LocationService extends LifecycleService {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, ACTIVITY_TRACKING_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "ActivityTracking")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_pedometer)
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setContentTitle("FitnessAssistant Tracking")
