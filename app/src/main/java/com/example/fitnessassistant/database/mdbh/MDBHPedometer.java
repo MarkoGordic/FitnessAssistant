@@ -213,6 +213,79 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         return data;
     }
 
+    public List<String> getMaxSteps(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<String> data = new ArrayList<>();
+        float maxSteps = 0f;
+        String maxDate = null;
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                do{
+                    if(maxSteps < cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS))) {
+                        maxSteps = cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS));
+                        maxDate = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                    }
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        data.add(String.valueOf(maxSteps));
+        data.add(maxDate);
+
+        return data;
+    }
+
+    public List<String> getMaxStreak(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<String> data = new ArrayList<>();
+        int maxStreak = 0;
+        String maxDateStart = null;
+        String maxDateEnd = null;
+
+        int streak = 0;
+        String dateStart = null;
+        String dateEnd = null;
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                do{
+                    if(cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS)) >= cursor.getInt(cursor.getColumnIndex(COLUMN_STEP_GOAL))) {
+                        streak++;
+
+                        if(streak == 1)
+                            dateStart = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+
+                    }
+                    else{
+                        if(maxStreak < streak) {
+                            maxDateStart = dateStart;
+                            maxDateEnd = dateEnd;
+                            maxStreak = streak;
+                        }
+
+                        streak = 0;
+                    }
+                    dateEnd = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        data.add(String.valueOf(maxStreak));
+        data.add(maxDateStart);
+        data.add(maxDateEnd);
+
+        return data;
+    }
+
     public void deleteDB(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, null, null);
