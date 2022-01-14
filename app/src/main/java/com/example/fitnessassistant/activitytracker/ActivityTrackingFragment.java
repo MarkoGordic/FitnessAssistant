@@ -132,6 +132,10 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     ((TextView) alertDialog.findViewById(R.id.dialog_header)).setText(R.string.location_accuracy);
                     ((TextView) alertDialog.findViewById(R.id.dialog_message)).setText(R.string.location_accuracy_message);
 
+                    // disables the user to cancel the given dialog
+                    alertDialog.setCancelable(false);
+                    alertDialog.setCanceledOnTouchOutside(false);
+
                     ((Button) alertDialog.findViewById(R.id.dialog_button)).setText(R.string.force_start);
                     alertDialog.findViewById(R.id.dialog_button).setOnClickListener(view2 -> {
                         alertDialog.dismiss();
@@ -707,16 +711,15 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         requireContext().startService(serviceIntent);
     }
 
-    // TODO check if more precise Exceptions could be caught
     private void openSpotifyApp(){
         try {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.setComponent(new ComponentName("com.spotify.music","com.spotify.music.MainActivity"));
             startActivity(intent);
-        } catch (Exception e) {
+        } catch (android.content.ActivityNotFoundException e) {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=")));
-            }catch (android.content.ActivityNotFoundException anfe){
+            } catch (android.content.ActivityNotFoundException e1){
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.spotify.music")));
             }
         }

@@ -240,6 +240,16 @@
     <string name="sa">Sa</string>
     <string name="su">Su</string>
     <string name="changes_affect_only_future_goals">This affects only your future goals.</string>
+    <string name="mon_short"><b>M</b></string>
+    <string name="tue_short"><b>T</b></string>
+    <string name="wed_short"><b>W</b></string>
+    <string name="thu_short"><b>T</b></string>
+    <string name="fri_short"><b>F</b></string>
+    <string name="sat_short"><b>S</b></string>
+    <string name="sun_short"><b>S</b></string>
+    <string name="weekly_graph">Weekly Graph</string>
+    <string name="monthly_graph">Monthly Graph</string>
+    <string name="wm"><b>W/M</b></string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometer</string>
@@ -341,7 +351,8 @@
     <string name="sat">SAT</string>
     <string name="sun">SUN</string>
     <string name="set_all">Set All</string>
-    <string name="fill_up_all_fields">Fill Up All Fields</string>
+    <string name="step_goal_cannot_be_zero">Step goal can\'t be 0.</string>
+    <string name="step_goal_cannot_be_empty">Step goal can\'t be empty.</string>
 
     <string name="coming_soon">This will be added soon</string>
 </resources>

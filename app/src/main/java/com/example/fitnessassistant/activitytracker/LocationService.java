@@ -434,7 +434,6 @@ public class LocationService extends LifecycleService {
             }
     }
 
-    // TODO Put logo
     private Notification pushActivityTrackingNotification(Context context, PendingIntent action, String contentText){
         Intent intent = new Intent(context, InAppActivity.class);
         intent.putExtra("desiredFragment", "ActivityTrackingFragment");

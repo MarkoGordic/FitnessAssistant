@@ -5,8 +5,12 @@ import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFor
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 
+import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
+import com.example.fitnessassistant.uiprefs.LocaleExt;
+import com.example.fitnessassistant.util.ServiceFunctional;
 
 public class Restarter extends BroadcastReceiver {
 
@@ -14,10 +18,20 @@ public class Restarter extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            context.startForegroundService(new Intent(context, Pedometer.class));
+            // getting updated context
+            Context updatedContext = LocaleExt.toLangIfDiff(context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"), true, true);
 
-            // update widgets
-            Pedometer.updatePedometerWidgetData(context, (int) MDBHPedometer.getInstance(context).readPedometerSteps(getCurrentDateFormatted()), null);
+            // putting step goal for previous day
+            StepGoalFragment.putUnsavedStepGoals(updatedContext);
+
+            // updating widget and pedometer with today's data
+            Pedometer.updatePedometerWidgetData(updatedContext ,((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())), null);
+
+            // starting pedometer foreground service
+            if(ServiceFunctional.getPedometerShouldRun(context)) {
+                context.startForegroundService(new Intent(context, Pedometer.class));
+                Pedometer.pushPedometerNotification(updatedContext, ((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())) + " " + updatedContext.getString(R.string.steps_small),updatedContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(updatedContext) + ".");
+            }
         }
     }
 }

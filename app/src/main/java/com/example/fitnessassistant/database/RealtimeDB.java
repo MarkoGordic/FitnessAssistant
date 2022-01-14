@@ -308,7 +308,7 @@ public class RealtimeDB {
                     ActivityData data = dataSnapshot.getValue(ActivityData.class);
 
                     if(data != null){
-                        for(final int i : data.getIds()){
+                        for(int i : data.getIds()){
                             StorageReference storageRef = storage.getReference("users/" + userID + "/activities/" + i + ".jpg");
                             try {
                                 File file = File.createTempFile("Images", "jpg");

@@ -45,7 +45,7 @@
         android:layout_marginBottom="5dp"
 
         android:gravity="center"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
         android:indeterminate="true"
         android:indeterminateTint="@color/MangoTango"/>
 

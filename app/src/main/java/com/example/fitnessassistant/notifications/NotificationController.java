@@ -21,7 +21,6 @@ public class NotificationController {
         notificationManager.createNotificationChannel(channel);
     }
 
-    // TODO : Put logo instead of launcher_foreground
     public static Notification createNotification(Context context, String channelID, String textTitle, String textContent, PendingIntent pendingIntent, boolean cancelNotification, boolean isOngoing, boolean showWhen, int icon){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelID)
                 .setSmallIcon(icon)

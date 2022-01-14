@@ -3,12 +3,13 @@ package com.example.fitnessassistant.pedometer;
 import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +19,62 @@ import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class StepGoalFragment extends Fragment {
+
+    public synchronized static void putUnsavedStepGoals(Context context){
+        // getting last date saved in db
+        String date = MDBHPedometer.getInstance(context).findLatestDayInDB();
+
+
+        if(date == null) {
+            try {
+                date = (String) DateFormat.format("yyyyMMdd", context.getPackageManager().getPackageInfo(context.getPackageName(), 0).firstInstallTime);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(date != null) {
+            int latestDate = Integer.parseInt(date);
+
+            int latestDay = latestDate % 100;
+            latestDate /= 100;
+            int latestMonth = latestDate % 100;
+            latestDate /= 100;
+            int latestYear = latestDate;
+
+            for(LocalDate localDate = LocalDate.of(latestYear, latestMonth, latestDay); localDate.isBefore(LocalDateTime.ofInstant(Calendar.getInstance().toInstant(), Calendar.getInstance().getTimeZone().toZoneId()).toLocalDate());localDate = localDate.plusDays(1)){
+                switch (localDate.getDayOfWeek()){
+                    case MONDAY:
+                        MDBHPedometer.getInstance(context).putPedometerData(context, localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), null, getMondayStepGoal(context));
+                        break;
+                    case TUESDAY:
+                        MDBHPedometer.getInstance(context).putPedometerData(context, localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), null, getTuesdayStepGoal(context));
+                        break;
+                    case WEDNESDAY:
+                        MDBHPedometer.getInstance(context).putPedometerData(context, localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), null, getWednesdayStepGoal(context));
+                        break;
+                    case THURSDAY:
+                        MDBHPedometer.getInstance(context).putPedometerData(context, localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), null, getThursdayStepGoal(context));
+                        break;
+                    case FRIDAY:
+                        MDBHPedometer.getInstance(context).putPedometerData(context, localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), null, getFridayStepGoal(context));
+                        break;
+                    case SATURDAY:
+                        MDBHPedometer.getInstance(context).putPedometerData(context, localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), null, getSaturdayStepGoal(context));
+                        break;
+                    case SUNDAY:
+                        MDBHPedometer.getInstance(context).putPedometerData(context, localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), null, getSundayStepGoal(context));
+                        break;
+                }
+            }
+        }
+    }
 
     public synchronized static void putMondayStepGoal(Context context, int stepGoal){
         context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putInt("mondayStepGoal", stepGoal).apply();
@@ -99,7 +153,7 @@ public class StepGoalFragment extends Fragment {
         }
     }
 
-    private boolean allFieldsFilled(View view){
+    private boolean allFieldsProperlyFilled(View view){
         EditText mondayEdt = view.findViewById(R.id.mondayEdt);
         EditText tuesdayEdt = view.findViewById(R.id.tuesdayEdt);
         EditText wednesdayEdt = view.findViewById(R.id.wednesdayEdt);
@@ -108,13 +162,65 @@ public class StepGoalFragment extends Fragment {
         EditText saturdayEdt = view.findViewById(R.id.saturdayEdt);
         EditText sundayEdt = view.findViewById(R.id.sundayEdt);
 
-        return mondayEdt.getText().length() != 0 &&
-                tuesdayEdt.getText().length() != 0 &&
-                wednesdayEdt.getText().length() != 0 &&
-                thursdayEdt.getText().length() != 0 &&
-                fridayEdt.getText().length() != 0 &&
-                saturdayEdt.getText().length() != 0 &&
-                sundayEdt.getText().length() != 0;
+        boolean correctInput = true;
+
+        if (mondayEdt.getText().length() == 0) {
+            mondayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_empty));
+            correctInput = false;
+        } else if (mondayEdt.getText().toString().equals("0")) {
+            mondayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_zero));
+            correctInput = false;
+        }
+
+        if (tuesdayEdt.getText().length() == 0) {
+            tuesdayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_empty));
+            correctInput = false;
+        } else if (tuesdayEdt.getText().toString().equals("0")) {
+            tuesdayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_zero));
+            correctInput = false;
+        }
+
+        if (wednesdayEdt.getText().length() == 0) {
+            wednesdayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_empty));
+            correctInput = false;
+        } else if (wednesdayEdt.getText().toString().equals("0")) {
+            wednesdayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_zero));
+            correctInput = false;
+        }
+
+        if (thursdayEdt.getText().length() == 0) {
+            thursdayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_empty));
+            correctInput = false;
+        } else if (thursdayEdt.getText().toString().equals("0")) {
+            thursdayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_zero));
+            correctInput = false;
+        }
+
+        if (fridayEdt.getText().length() == 0) {
+            fridayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_empty));
+            correctInput = false;
+        } else if (fridayEdt.getText().toString().equals("0")) {
+            fridayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_zero));
+            correctInput = false;
+        }
+
+        if (saturdayEdt.getText().length() == 0) {
+            saturdayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_empty));
+            correctInput = false;
+        } else if (saturdayEdt.getText().toString().equals("0")) {
+            saturdayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_zero));
+            correctInput = false;
+        }
+
+        if (sundayEdt.getText().length() == 0) {
+            sundayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_empty));
+            correctInput = false;
+        } else if (sundayEdt.getText().toString().equals("0")) {
+            sundayEdt.setError(requireActivity().getString(R.string.step_goal_cannot_be_zero));
+            correctInput = false;
+        }
+
+        return  correctInput;
     }
 
     private void setUpOnClickListeners(View view){
@@ -151,7 +257,7 @@ public class StepGoalFragment extends Fragment {
 
         view.findViewById(R.id.cancelButton).setOnClickListener(v -> requireActivity().onBackPressed());
         view.findViewById(R.id.setButton).setOnClickListener(v -> {
-            if(allFieldsFilled(view)){
+            if(allFieldsProperlyFilled(view)){
                 putMondayStepGoal(requireActivity(), Integer.parseInt(mondayEdt.getText().toString()));
                 putTuesdayStepGoal(requireActivity(), Integer.parseInt(tuesdayEdt.getText().toString()));
                 putWednesdayStepGoal(requireActivity(), Integer.parseInt(wednesdayEdt.getText().toString()));
@@ -160,30 +266,12 @@ public class StepGoalFragment extends Fragment {
                 putSaturdayStepGoal(requireActivity(), Integer.parseInt(saturdayEdt.getText().toString()));
                 putSundayStepGoal(requireActivity(), Integer.parseInt(sundayEdt.getText().toString()));
 
-                switch(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)){
-                    case Calendar.MONDAY:
-                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), getCurrentDateFormatted(), null, Integer.parseInt(mondayEdt.getText().toString()));
-                    case Calendar.TUESDAY:
-                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), getCurrentDateFormatted(), null, Integer.parseInt(tuesdayEdt.getText().toString()));
-                    case Calendar.WEDNESDAY:
-                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), getCurrentDateFormatted(), null, Integer.parseInt(wednesdayEdt.getText().toString()));
-                    case Calendar.THURSDAY:
-                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), getCurrentDateFormatted(), null, Integer.parseInt(thursdayEdt.getText().toString()));
-                    case Calendar.FRIDAY:
-                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), getCurrentDateFormatted(), null, Integer.parseInt(fridayEdt.getText().toString()));
-                    case Calendar.SATURDAY:
-                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), getCurrentDateFormatted(), null, Integer.parseInt(saturdayEdt.getText().toString()));
-                    case Calendar.SUNDAY:
-                        MDBHPedometer.getInstance(requireActivity()).putPedometerData(requireActivity(), getCurrentDateFormatted(), null, Integer.parseInt(sundayEdt.getText().toString()));
-                }
-
                 if (ServiceFunctional.getPedometerShouldRun(requireActivity())) {
                     Pedometer.updatePedometerWidgetData(requireActivity(), ((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(getCurrentDateFormatted())), getStepGoalForToday(requireActivity()));
                     Pedometer.pushPedometerNotification(requireActivity(), ((int) MDBHPedometer.getInstance(requireContext()).readPedometerSteps(getCurrentDateFormatted())) + " " + requireActivity().getString(R.string.steps_small), requireActivity().getString(R.string.your_today_goal) + " " + getStepGoalForToday(requireActivity()) + ".");
                 }
                 requireActivity().onBackPressed();
-            } else
-                Toast.makeText(requireActivity(), R.string.fill_up_all_fields, Toast.LENGTH_LONG).show();
+            }
         });
     }
 

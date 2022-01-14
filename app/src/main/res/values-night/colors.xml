@@ -11,6 +11,7 @@
 
     <!-- Our palette -->
     <color name="backgroundColor">#111419</color>
+    <color name="InvertedBackgroundColor">#FFFCF2</color>
     <color name="NonBackgroundColor">#979999</color>
     <color name="NotSelectedDefaultColor">#3b3d40</color>
     <!-- main blue colors -->

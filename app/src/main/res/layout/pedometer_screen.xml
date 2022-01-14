@@ -143,7 +143,7 @@
             android:layout_marginEnd="40dp"
 
             android:gravity="center"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
             android:indeterminate="false"
             android:progress="40"
             android:progressTint="@color/BlueYonder"
@@ -409,7 +409,7 @@
                         <ProgressBar
                             android:id="@+id/firstProgress"
 
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -467,7 +467,7 @@
                         <ProgressBar
                             android:id="@+id/secondProgress"
 
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -525,7 +525,7 @@
                         <ProgressBar
                             android:id="@+id/thirdProgress"
 
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -583,7 +583,7 @@
                         <ProgressBar
                             android:id="@+id/fourthProgress"
 
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -642,7 +642,7 @@
                         <ProgressBar
                             android:id="@+id/fifthProgress"
 
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -700,7 +700,7 @@
                         <ProgressBar
                             android:id="@+id/sixthProgress"
 
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -758,7 +758,7 @@
                         <ProgressBar
                             android:id="@+id/seventhProgress"
 
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -771,6 +771,528 @@
                             android:tint="@color/backgroundColor" />
                     </LinearLayout>
                 </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/border_button" >
+
+            <TextView
+                android:id="@+id/weeklyMonthlySwitch"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/graph_header"
+                android:layout_alignParentTop="true"
+
+                android:background="@drawable/top_left_rounded"
+
+                android:fontFamily="@font/ralewaym"
+                android:includeFontPadding="false"
+                android:text="@string/wm"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:textColor="@color/backgroundColor"
+                android:textFontWeight="600"
+                android:textSize="24sp" />
+
+            <View
+                android:id="@+id/headerSeparator"
+
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+
+                android:background="@color/SpaceCadet"
+                android:layout_toEndOf="@id/weeklyMonthlySwitch"
+                android:layout_alignBottom="@id/weeklyMonthlySwitch"
+                android:layout_alignTop="@id/weeklyMonthlySwitch"/>
+
+            <TextView
+                android:id="@+id/graph_header"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_toEndOf="@id/headerSeparator"
+                android:fontFamily="@font/ralewaym"
+                android:includeFontPadding="false"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="22sp" />
+
+            <View
+                android:id="@+id/graphSeparator"
+
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:background="@color/SpaceCadet"
+                android:layout_below="@id/graph_header"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:id="@+id/sideLinearLay"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/graph"
+                android:layout_alignTop="@id/graph"
+                android:layout_marginStart="12dp"
+
+                android:orientation="vertical"
+                android:gravity="end"
+
+                android:weightSum="5">
+
+                <TextView
+                    android:id="@+id/value1"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/value2"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/value3"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/value4"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/value5"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+
+            <com.example.fitnessassistant.util.GraphView
+                android:id="@+id/graph"
+
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+
+                android:layout_below="@id/graphSeparator"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="14dp"
+                android:layout_toEndOf="@id/sideLinearLay" />
+
+            <LinearLayout
+                android:id="@+id/bottomWeeklyLL"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/graph"
+
+                android:layout_alignEnd="@id/graph"
+                android:layout_alignStart="@id/graph"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+
+                android:weightSum="7"
+                tools:ignore="DisableBaselineAlignment,TooManyViews">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+                    <TextView
+                        android:id='@+id/textLL1'
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:fontFamily="@font/raleway"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/numberLL1"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_alignStart="@id/textLL1"
+                        android:layout_alignEnd="@id/textLL1"
+                        android:layout_alignTop="@id/textLL1"
+                        android:layout_alignBottom="@id/textLL1"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+                    <TextView
+                        android:id='@+id/textLL2'
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:fontFamily="@font/raleway"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/numberLL2"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_alignStart="@id/textLL2"
+                        android:layout_alignEnd="@id/textLL2"
+                        android:layout_alignTop="@id/textLL2"
+                        android:layout_alignBottom="@id/textLL2"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+                    <TextView
+                        android:id='@+id/textLL3'
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:fontFamily="@font/raleway"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/numberLL3"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_alignStart="@id/textLL3"
+                        android:layout_alignEnd="@id/textLL3"
+                        android:layout_alignTop="@id/textLL3"
+                        android:layout_alignBottom="@id/textLL3"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+                    <TextView
+                        android:id='@+id/textLL4'
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:fontFamily="@font/raleway"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/numberLL4"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_alignStart="@id/textLL4"
+                        android:layout_alignEnd="@id/textLL4"
+                        android:layout_alignTop="@id/textLL4"
+                        android:layout_alignBottom="@id/textLL4"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+                    <TextView
+                        android:id='@+id/textLL5'
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:fontFamily="@font/raleway"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/numberLL5"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_alignStart="@id/textLL5"
+                        android:layout_alignEnd="@id/textLL5"
+                        android:layout_alignTop="@id/textLL5"
+                        android:layout_alignBottom="@id/textLL5"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+                    <TextView
+                        android:id='@+id/textLL6'
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:fontFamily="@font/raleway"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/numberLL6"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_alignStart="@id/textLL6"
+                        android:layout_alignEnd="@id/textLL6"
+                        android:layout_alignTop="@id/textLL6"
+                        android:layout_alignBottom="@id/textLL6"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+                    <TextView
+                        android:id='@+id/textLL7'
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:fontFamily="@font/raleway"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/numberLL7"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_alignStart="@id/textLL7"
+                        android:layout_alignEnd="@id/textLL7"
+                        android:layout_alignTop="@id/textLL7"
+                        android:layout_alignBottom="@id/textLL7"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/dateChangeSeparator"
+
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:layout_below="@id/bottomWeeklyLL"
+                android:background="@color/SpaceCadet" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@id/dateChangeSeparator"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+
+                android:gravity="center_vertical"
+                android:weightSum="5">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/dateBefore"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:background="@drawable/bottom_left_rounded"
+                    android:src="@drawable/caret_left"
+                    android:padding="16dp"
+                    android:tint="@color/backgroundColor"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/graphDate"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+
+                    android:fontFamily="@font/roboto_light"
+
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textFontWeight="600"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/dateAfter"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:background="@drawable/bottom_right_rounded"
+                    android:src="@drawable/caret_right"
+                    android:padding="16dp"
+                    android:tint="@color/backgroundColor"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

@@ -89,7 +89,9 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         else
             result = db.insert(TABLE_NAME, null, cv);
 
-        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putBoolean("pedometerDataChanged", !context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).getBoolean("pedometerDataChanged", false)).apply();
+        // this will surely trigger live update
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putBoolean("pedometerDataChanged", true).apply();
+        context.getSharedPreferences("pedometer", Context.MODE_PRIVATE).edit().putBoolean("pedometerDataChanged", false).apply();
 
         if(result == -1)
             System.out.println("Fail! DATABASE");
@@ -121,7 +123,7 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         int data = 10000;
 
-        if(db != null ){
+        if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor.moveToFirst()){
@@ -176,10 +178,15 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
             if(cursor != null){
-                cursor.moveToFirst();
-                do{
-                    data = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
-                }while(cursor.moveToNext());
+                if(cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    do {
+                        if(cursor.isNull(cursor.getColumnIndex(COLUMN_STEP_GOAL))){
+                            data = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                            break;
+                        }
+                    } while (cursor.moveToNext());
+                }
                 cursor.close();
             }
         }

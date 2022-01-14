@@ -4,7 +4,6 @@ import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFor
 import static com.example.fitnessassistant.util.TimeFunctional.getLast7DatesFromEnd;
 import static java.lang.Math.abs;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -30,8 +29,6 @@ import com.example.fitnessassistant.notifications.NotificationController;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
-import java.util.Calendar;
-
 public class Pedometer extends Service implements SensorEventListener {
     public static final int PEDOMETER_ID = 25;
     private Context updatedContext;
@@ -50,22 +47,6 @@ public class Pedometer extends Service implements SensorEventListener {
 
     private synchronized void updateLang(){
         updatedContext = LocaleExt.toLangIfDiff(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(this).getString("langPref", "sys"), true, true);
-    }
-
-    private PendingIntent notificationRestartIntent(Context context){
-        return PendingIntent.getBroadcast(context, PEDOMETER_ID, new Intent(context, DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-    }
-
-    // method witch sets restart of notification and widget at midnight (canceled in onDestroy)
-    private void scheduleNotificationUpdates(Context context){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, notificationRestartIntent(context));
     }
 
     private static int calculateWeeklyAverage(Context context){
@@ -95,7 +76,6 @@ public class Pedometer extends Service implements SensorEventListener {
     @Override
     public void onCreate(){
         updateLang();
-        scheduleNotificationUpdates(this);
         Notification notification = pushPedometerNotification(this, updatedContext.getString(R.string.starting_pedometer_service), updatedContext.getString(R.string.registering_steps));
 
         ServiceFunctional.setPedometerShouldRun(updatedContext, true);
@@ -162,7 +142,7 @@ public class Pedometer extends Service implements SensorEventListener {
         }
 
         // saving newest data from pedometer for later usage
-        MDBHPedometer.getInstance(this).putPedometerData(this, currentDate, (float)newSteps, -1);
+        MDBHPedometer.getInstance(this).putPedometerData(this, currentDate, (float)newSteps, null);
 
         // pushing new notification for current steps
         if(abs(newSteps - lastNotificationSteps) >= requiredDifferenceInSteps) {
@@ -172,7 +152,6 @@ public class Pedometer extends Service implements SensorEventListener {
         }
     }
 
-    // TODO Put logo
     public static Notification pushPedometerNotification(Context context, String textTitle, String textContent){
         Intent intent = new Intent(context, InAppActivity.class);
         intent.putExtra("desiredFragment", "PedometerFragment");
@@ -197,9 +176,6 @@ public class Pedometer extends Service implements SensorEventListener {
             stopForeground(true);
             stopSelf();
             sensorManager.unregisterListener(this);
-
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarmManager.cancel(notificationRestartIntent(this));
 
             // update widgets
             for (int id : AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(new ComponentName(getApplicationContext(), PedometerWidget.class))) {

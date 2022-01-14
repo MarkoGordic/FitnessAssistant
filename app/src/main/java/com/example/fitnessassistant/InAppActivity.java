@@ -3,7 +3,9 @@ package com.example.fitnessassistant;
 import static com.example.fitnessassistant.profile.AccountDataFragment.scaleBitmap;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +38,7 @@ import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.network.NetworkManager;
+import com.example.fitnessassistant.pedometer.DailyRestarter;
 import com.example.fitnessassistant.pedometer.PedometerFragment;
 import com.example.fitnessassistant.profile.AccountDataFragment;
 import com.example.fitnessassistant.profile.GoalsFragment;
@@ -62,10 +65,12 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InAppActivity extends AppCompatActivity {
+    public static final int IN_APP_ID = 29;
     // network manager for network connectivity checking
     private NetworkManager networkManager;
     // auth listener for refreshing user and UI
@@ -89,6 +94,15 @@ public class InAppActivity extends AppCompatActivity {
     private final FragmentManager fm = getSupportFragmentManager();
     // and setting the currently active fragment as home
     private Fragment active;
+    // listener for SharedPreferences - used for Updating UI
+    private final SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
+        if(key.equals("pedometerDataChanged")){
+            if(homeFragment != null && pedometerFragment != null) {
+                homeFragment.updateStepsData(null);
+                pedometerFragment.updateStepsData(null);
+            }
+        }
+    };
 
     // launcher for the Activity Recognition Permission
     public final ActivityResultLauncher<String> activityRecognitionPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
@@ -334,10 +348,28 @@ public class InAppActivity extends AppCompatActivity {
             fm.beginTransaction().add(R.id.in_app_container, new OpeningQuestionFragment(), null).commit();
     }
 
+    private PendingIntent notificationRestartIntent(Context context){
+        return PendingIntent.getBroadcast(context, IN_APP_ID, new Intent(context, DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }
+
+    // method witch sets functionality at midnight (canceled in onDestroy)
+    private void scheduleUpdates(Context context){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, notificationRestartIntent(context));
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setUpRebootKeys();
+
+        scheduleUpdates(this);
 
         // applying the color mode needed
         ColorMode.applyColorMode(this, null);
@@ -358,14 +390,7 @@ public class InAppActivity extends AppCompatActivity {
         flash.setRepeatCount(Animation.INFINITE);
         findViewById(R.id.notification).startAnimation(flash);
 
-        getSharedPreferences("pedometer", MODE_PRIVATE).registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
-            if(key.equals("pedometerDataChanged")){
-                if(homeFragment != null && pedometerFragment != null) {
-                    homeFragment.updateStepsData(null);
-                    pedometerFragment.updateStepsData(null);
-                }
-            }
-        });
+        getSharedPreferences("pedometer", MODE_PRIVATE).registerOnSharedPreferenceChangeListener(listener);
 
         if(ServiceFunctional.getPedometerShouldRun(this))
             ServiceFunctional.startPedometerService(this);

@@ -240,6 +240,16 @@
     <string name="sa">Su</string>
     <string name="su">Ne</string>
     <string name="changes_affect_only_future_goals">Ovo utiče jedino na Vaše buduće ciljeve.</string>
+    <string name="mon_short"><b>P</b></string>
+    <string name="tue_short"><b>U</b></string>
+    <string name="wed_short"><b>S</b></string>
+    <string name="thu_short"><b>Č</b></string>
+    <string name="fri_short"><b>P</b></string>
+    <string name="sat_short"><b>S</b></string>
+    <string name="sun_short"><b>N</b></string>
+    <string name="weekly_graph">Nedeljni Graf</string>
+    <string name="monthly_graph">Mesečni Graf</string>
+    <string name="wm"><b>N/M</b></string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometar</string>
@@ -342,7 +352,8 @@
     <string name="sat">SUB</string>
     <string name="sun">NED</string>
     <string name="set_all">Podesi Sve</string>
-    <string name="fill_up_all_fields">Popunite Sva Polja</string>
+    <string name="step_goal_cannot_be_zero">Cilj koraka ne može biti 0.</string>
+    <string name="step_goal_cannot_be_empty">Cilj koraka ne može biti prazan.</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>
