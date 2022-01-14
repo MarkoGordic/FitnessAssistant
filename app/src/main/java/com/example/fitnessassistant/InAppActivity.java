@@ -352,7 +352,7 @@ public class InAppActivity extends AppCompatActivity {
         return PendingIntent.getBroadcast(context, IN_APP_ID, new Intent(context, DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
-    // method witch sets functionality at midnight (canceled in onDestroy)
+    // method witch sets functionality at midnight
     private void scheduleUpdates(Context context){
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -391,9 +391,6 @@ public class InAppActivity extends AppCompatActivity {
         findViewById(R.id.notification).startAnimation(flash);
 
         getSharedPreferences("pedometer", MODE_PRIVATE).registerOnSharedPreferenceChangeListener(listener);
-
-        if(ServiceFunctional.getPedometerShouldRun(this))
-            ServiceFunctional.startPedometerService(this);
 
         if(ServiceFunctional.getPedometerShouldRun(this))
             ServiceFunctional.startPedometerService(this);

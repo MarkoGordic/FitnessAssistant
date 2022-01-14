@@ -78,7 +78,7 @@ public class HomePageFragment extends Fragment {
         // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> setUpUI(view));
 
-        view.findViewById(R.id.stepsLayout).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.pedometerFragment).addToBackStack(null).commit());
+        view.findViewById(R.id.achievement2).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.pedometerFragment).addToBackStack(null).commit());
     }
 
     @Nullable

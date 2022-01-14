@@ -248,6 +248,11 @@
     <string name="weekly_graph">Weekly Graph</string>
     <string name="monthly_graph">Monthly Graph</string>
     <string name="wm"><b>W/M</b></string>
+    <string name="total_values">Total Values</string>
+    <string name="achievements">Achievements</string>
+    <string name="steps_in_a_day">Steps In A Day</string>
+    <string name="day">Day</string>
+    <string name="streak">Streak</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometer</string>

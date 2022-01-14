@@ -32,7 +32,6 @@ import com.example.fitnessassistant.util.GraphView;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -77,12 +76,12 @@ public class PedometerFragment extends Fragment {
         return getStepLength(height) * stepCount / 100000;
     }
 
-    private List<Float> getTotals(){
-        List<Float> totals = new ArrayList<>();
+    private float[] getTotals(){
+        float[] totals = new float[3];
 
-        totals.add(MDBHPedometer.getInstance(requireContext()).getTotalSteps());
-        totals.add(getDistanceWalked((int)Math.round(totals.get(0))));
-        totals.add(getCaloriesBurnedFromSteps((int)Math.round(totals.get(0))));
+        totals[0] = MDBHPedometer.getInstance(requireContext()).getTotalSteps();
+        totals[1] = getDistanceWalked((int) Math.round(totals[0]));
+        totals[2] = getCaloriesBurnedFromSteps(((int) Math.round(totals[0])));
 
         return totals;
     }
@@ -466,8 +465,71 @@ public class PedometerFragment extends Fragment {
 
                 setUpGraph(finalView, weeklyGraph);
             });
+
+            float[] totals = getTotals();
+            ((TextView) view.findViewById(R.id.totalSteps)).setText(String.format("%d\n%s", (int) totals[0], requireActivity().getString(R.string.steps_small)));
+
+            if(UnitPreferenceFragment.getDistanceUnit(requireActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE))
+                ((TextView) view.findViewById(R.id.totalDistance)).setText(String.format("%.1f\n%s", totals[1], requireActivity().getString(R.string.mi)));
+            else
+                ((TextView) view.findViewById(R.id.totalDistance)).setText(String.format("%.1f\n%s", totals[1], requireActivity().getString(R.string.km)));
+
+            if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
+                ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%.1f\n%s", totals[2], requireActivity().getString(R.string.kj)));
+            else
+                ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%.1f\n%s", totals[2], requireActivity().getString(R.string.cal)));
+
+            List<String> streakList = MDBHPedometer.getInstance(requireActivity()).getMaxStreak();
+            int maxStreak = Integer.parseInt(streakList.get(0));
+            String streakDateStart = streakList.get(1);
+            String streakDateEnd = streakList.get(2);
+
+            List<String> stepsList = MDBHPedometer.getInstance(requireActivity()).getMaxSteps();
+            int maxSteps = (int) Float.parseFloat(stepsList.get(0));
+            String maxStepsDate = stepsList.get(1);
+
+            if(streakDateStart == null || streakDateEnd == null || maxStreak < 5)
+                view.findViewById(R.id.achievement2).setVisibility(View.GONE);
+            else {
+                int startDate = Integer.parseInt(streakDateStart);
+                int startDay = startDate % 100;
+                startDate /= 100;
+                int startMonth = startDate % 100;
+                startDate /= 100;
+                int startYear = startDate;
+                int endDate = Integer.parseInt(streakDateEnd);
+                int endDay = endDate % 100;
+                endDate /= 100;
+                int endMonth = endDate % 100;
+                endDate /= 100;
+                int endYear = endDate;
+
+                ((TextView) view.findViewById(R.id.achievementDate2)).setText(String.format("%d %s %d - %d %s %d", startDay, getMonthShort(startMonth), startYear, endDay, getMonthShort(endMonth), endYear));
+                ((TextView) view.findViewById(R.id.achievementHeader2)).setText(String.format("%d-%s\n%s", maxStreak, requireActivity().getString(R.string.day), requireActivity().getString(R.string.streak)));
+
+                view.findViewById(R.id.achievement2).setVisibility(View.VISIBLE);
+            }
+
+            if(maxStepsDate == null || maxSteps < 10000)
+                view.findViewById(R.id.achievement1).setVisibility(View.GONE);
+            else {
+                int date = Integer.parseInt(maxStepsDate);
+                int day = date % 100;
+                date /= 100;
+                int month = date % 100;
+                date /= 100;
+                int year = date;
+
+                ((TextView) view.findViewById(R.id.achievementDate1)).setText(String.format("%d %s %d", day, getMonthShort(month), year));
+                ((TextView) view.findViewById(R.id.achievementHeader1)).setText(String.format("%d\n%s", maxSteps, requireActivity().getString(R.string.steps_in_a_day)));
+
+                view.findViewById(R.id.achievement1).setVisibility(View.VISIBLE);
+            }
+
         }
     }
+
+    // TODO zameniti activity drawable sa ic_pedometer gde moze
 
     private void setUpStepCountingButton(View view, Boolean pedometerRuns){
         if(pedometerRuns == null)

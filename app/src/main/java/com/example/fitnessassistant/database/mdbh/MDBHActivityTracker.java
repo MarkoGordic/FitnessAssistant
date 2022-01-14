@@ -172,6 +172,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 do{
                     ActivityRecycler activityRecycler = new ActivityRecycler();
+                    activityRecycler.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                     activityRecycler.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_DATE)));
                     activityRecycler.setAverageSpeed(cursor.getFloat(cursor.getColumnIndex(COLUMN_AVERAGE_SPEED)));
                     activityRecycler.setDistance(cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE)));

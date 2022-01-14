@@ -3,12 +3,21 @@ package com.example.fitnessassistant.database.data;
 import android.graphics.Bitmap;
 
 public class ActivityRecycler {
+    int id;
     float distance;
     float averageSpeed;
     int caloriesBurnt;
     long date;
     int activityType;
     Bitmap image;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Bitmap getImage() {
         return image;

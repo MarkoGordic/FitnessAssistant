@@ -11,6 +11,7 @@ import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Restarter extends BroadcastReceiver {
 
@@ -18,19 +19,21 @@ public class Restarter extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            // getting updated context
-            Context updatedContext = LocaleExt.toLangIfDiff(context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"), true, true);
+            if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+                // getting updated context
+                Context updatedContext = LocaleExt.toLangIfDiff(context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"), true, true);
 
-            // putting step goal for previous day
-            StepGoalFragment.putUnsavedStepGoals(updatedContext);
+                // putting step goal for previous day
+                StepGoalFragment.putUnsavedStepGoals(updatedContext);
 
-            // updating widget and pedometer with today's data
-            Pedometer.updatePedometerWidgetData(updatedContext ,((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())), null);
+                // updating widget and pedometer with today's data
+                Pedometer.updatePedometerWidgetData(updatedContext, ((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())), null);
 
-            // starting pedometer foreground service
-            if(ServiceFunctional.getPedometerShouldRun(context)) {
-                context.startForegroundService(new Intent(context, Pedometer.class));
-                Pedometer.pushPedometerNotification(updatedContext, ((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())) + " " + updatedContext.getString(R.string.steps_small),updatedContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(updatedContext) + ".");
+                // starting pedometer foreground service
+                if (ServiceFunctional.getPedometerShouldRun(context)) {
+                    context.startForegroundService(new Intent(context, Pedometer.class));
+                    Pedometer.pushPedometerNotification(updatedContext, ((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())) + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(updatedContext) + ".");
+                }
             }
         }
     }

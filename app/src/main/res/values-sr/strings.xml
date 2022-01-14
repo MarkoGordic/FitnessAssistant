@@ -250,6 +250,11 @@
     <string name="weekly_graph">Nedeljni Graf</string>
     <string name="monthly_graph">Mesečni Graf</string>
     <string name="wm"><b>N/M</b></string>
+    <string name="total_values">Ukupne Vrednosti</string>
+    <string name="achievements">Dostignuća</string>
+    <string name="steps_in_a_day">Koraka U Danu</string>
+    <string name="day">Dana</string>
+    <string name="streak">U Nizu</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometar</string>
