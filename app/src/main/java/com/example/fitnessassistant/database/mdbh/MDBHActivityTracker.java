@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import androidx.annotation.Nullable;
 
 import com.example.fitnessassistant.database.data.Activity;
+import com.example.fitnessassistant.database.data.ActivityRecycler;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -157,6 +158,33 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         }
 
         return ids;
+    }
+
+    public List<ActivityRecycler> readActivitiesDataForRecyclerDB() {
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<ActivityRecycler> activities = new ArrayList<>();
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                do{
+                    ActivityRecycler activityRecycler = new ActivityRecycler();
+                    activityRecycler.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_DATE)));
+                    activityRecycler.setAverageSpeed(cursor.getFloat(cursor.getColumnIndex(COLUMN_AVERAGE_SPEED)));
+                    activityRecycler.setDistance(cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE)));
+                    activityRecycler.setCaloriesBurnt(cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT)));
+                    activityRecycler.setActivityType(cursor.getInt(cursor.getColumnIndex(COLUMN_ACTIVITY_TYPE)));
+                    activityRecycler.setImage(BitmapFactory.decodeByteArray(cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE)), 0, cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE)).length));
+                    activities.add(activityRecycler);
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return activities;
     }
 
     public void deleteDB(){
