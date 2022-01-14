@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- App Name -->
-    <string name="app_name">FitnessAssistant</string>
+    <string name="app_name">Fitness\nAssistant</string>
     <string name="fitness">Fitness</string>
     <string name="assistant">Assistant</string>
     <!-- Privacy Policy Link -->

@@ -1,7 +1,9 @@
 package com.example.fitnessassistant.profile;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +36,7 @@ import androidx.fragment.app.Fragment;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.activitytracker.LocationService;
+import com.example.fitnessassistant.pedometer.DailyRestarter;
 import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LanguageAdapter;
 import com.example.fitnessassistant.util.AuthFunctional;
@@ -245,12 +248,36 @@ public class SettingsFragment extends Fragment {
         // signOutButton listener - hold
         view.findViewById(R.id.signOutAccountTextView).setOnLongClickListener(view1 -> {
             if(AuthFunctional.currentlyOnline) {
-                FirebaseAuth.getInstance().signOut();
-                // signing out from facebook because they save it separately
-                LoginManager.getInstance().logOut();
-                // stopping Pedometer service
-                ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
-                ServiceFunctional.stopPedometerService(requireActivity());
+                if(LocationService.serviceKilled){
+                    FirebaseAuth.getInstance().signOut();
+                    // signing out from facebook because they save it separately
+                    LoginManager.getInstance().logOut();
+                    // stopping Pedometer service
+                    ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
+                    ServiceFunctional.stopPedometerService(requireActivity());
+                    // stopping Sleep Tracker service
+                    ServiceFunctional.setSleepTrackerShouldRun(requireActivity(), false);
+                    ServiceFunctional.stopSleepTrackerService(requireActivity());
+                    // stopping updates
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), InAppActivity.IN_APP_ID, new Intent(requireActivity(), DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.cancel(pendingIntent);
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setView(R.layout.custom_ok_alert_dialog);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    Drawable walk = AppCompatResources.getDrawable(requireActivity(), R.drawable.walk);
+                    if(walk != null)
+                        walk.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                    ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(walk);
+
+                    ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_tracking_active);
+                    ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_tracking_active_message);
+                    dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+                }
             } else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
             return true; // returns true -> onClick doesn't get triggered
@@ -259,32 +286,61 @@ public class SettingsFragment extends Fragment {
         // deleteAccountButton listener - pops up alert dialog for deletion
         view.findViewById(R.id.deleteAccountTextView).setOnClickListener(view1 -> {
             if(AuthFunctional.currentlyOnline) {
-                // setting up a custom dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setView(R.layout.custom_two_button_alert_dialog);
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                if(LocationService.serviceKilled) {
+                    // stopping Pedometer service
+                    ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
+                    ServiceFunctional.stopPedometerService(requireActivity());
+                    // stopping Sleep Tracker service
+                    ServiceFunctional.setSleepTrackerShouldRun(requireActivity(), false);
+                    ServiceFunctional.stopSleepTrackerService(requireActivity());
+                    // stopping daily restarter updates
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), InAppActivity.IN_APP_ID, new Intent(requireActivity(), DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.cancel(pendingIntent);
 
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                Drawable trash = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(requireContext(), R.drawable.trash)));
-                DrawableCompat.setTint(trash, requireContext().getColor(R.color.SpaceCadet));
-                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(trash);
+                    // setting up a custom dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setView(R.layout.custom_two_button_alert_dialog);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
-                ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.delete_your_account);
-                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.account_deletion_message);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                dialog.findViewById(R.id.dialog_input).setVisibility(View.GONE);
-                dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view2 -> dialog.dismiss());
+                    Drawable trash = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(requireContext(), R.drawable.trash)));
+                    DrawableCompat.setTint(trash, requireContext().getColor(R.color.SpaceCadet));
+                    ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(trash);
 
-                ((Button) dialog.findViewById(R.id.dialog_positive_button)).setText(R.string.delete_account);
-                dialog.findViewById(R.id.dialog_positive_button).setOnClickListener(view2 -> {
-                    dialog.dismiss();
-                    if(AuthFunctional.currentlyOnline) // signing in silently (because google id tokens expire really quick)
-                        googleLinkingClient.silentSignIn().addOnCompleteListener(task -> AuthFunctional.setUpDeletion(requireActivity()));
-                    else // no network notification flashes
-                        AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
-                });
+                    ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.delete_your_account);
+                    ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.account_deletion_message);
+
+                    dialog.findViewById(R.id.dialog_input).setVisibility(View.GONE);
+                    dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view2 -> dialog.dismiss());
+
+                    ((Button) dialog.findViewById(R.id.dialog_positive_button)).setText(R.string.delete_account);
+                    dialog.findViewById(R.id.dialog_positive_button).setOnClickListener(view2 -> {
+                        dialog.dismiss();
+                        if(AuthFunctional.currentlyOnline) // signing in silently (because google id tokens expire really quick)
+                            googleLinkingClient.silentSignIn().addOnCompleteListener(task -> AuthFunctional.setUpDeletion(requireActivity()));
+                        else // no network notification flashes
+                            AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
+                    });
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setView(R.layout.custom_ok_alert_dialog);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    Drawable walk = AppCompatResources.getDrawable(requireActivity(), R.drawable.walk);
+                    if(walk != null)
+                        walk.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                    ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(walk);
+
+                    ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_tracking_active);
+                    ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_tracking_active_message);
+                    dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+                }
             }
             else // if there is no internet, the animated notification quickly flashes
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));

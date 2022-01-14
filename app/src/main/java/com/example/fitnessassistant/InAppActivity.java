@@ -395,6 +395,9 @@ public class InAppActivity extends AppCompatActivity {
         if(ServiceFunctional.getPedometerShouldRun(this))
             ServiceFunctional.startPedometerService(this);
 
+        if(ServiceFunctional.getPedometerShouldRun(this))
+            ServiceFunctional.startPedometerService(this);
+
         setUpQuestionsUI();
     }
 
