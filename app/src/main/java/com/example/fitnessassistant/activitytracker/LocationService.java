@@ -66,6 +66,9 @@ public class LocationService extends LifecycleService {
     private final int timerDelayMs = 100;
     final Handler handler = new Handler();
 
+    private boolean notificationTrigger = false;
+    private boolean forceIcon = false;
+
     public static boolean serviceRunning = false;
     public static boolean serviceKilled = true;
     public static MutableLiveData<Boolean> shouldStart = new MutableLiveData<>();
@@ -361,6 +364,7 @@ public class LocationService extends LifecycleService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         switch (Objects.requireNonNull(intent).getStringExtra("state")){
             case "start_or_resume_service":
+                forceIcon = false;
                 if(shouldStart.getValue() != null) {
                     if (!shouldStart.getValue()) {
                         startForegroundService();
@@ -376,6 +380,7 @@ public class LocationService extends LifecycleService {
                 }
                 break;
             case "pause_service":
+                forceIcon = true;
                 pauseService();
                 break;
             case "stop_service":
@@ -441,13 +446,24 @@ public class LocationService extends LifecycleService {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, ACTIVITY_TRACKING_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "ActivityTracking")
-                .setSmallIcon(R.drawable.ic_pedometer)
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setContentTitle("FitnessAssistant Tracking")
                 .setContentText(contentText)
                 .setContentIntent(pendingIntent)
                 .setShowWhen(false);
+
+        if(forceIcon){
+            notificationTrigger = true;
+            notificationBuilder.setSmallIcon(R.drawable.ic_pedometer);
+        }
+        else if(!notificationTrigger){
+            notificationTrigger = true;
+            notificationBuilder.setSmallIcon(R.drawable.ic_pedometer);
+        }else{
+            notificationTrigger = false;
+            notificationBuilder.setSmallIcon(android.R.color.transparent);
+        }
 
         // icons get displayed in Android versions < 7,... we can never see them
         if(action != null) {

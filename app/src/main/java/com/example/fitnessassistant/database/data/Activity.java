@@ -6,6 +6,16 @@ public class Activity {
     int caloriesBurnt;
     long date;
     int activityType;
+    String duration;
+    int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
 
     public int getActivityType() {
         return activityType;
@@ -45,5 +55,13 @@ public class Activity {
 
     public void setActivityType(int activityType) {
         this.activityType = activityType;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

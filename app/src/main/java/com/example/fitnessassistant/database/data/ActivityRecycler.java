@@ -9,14 +9,15 @@ public class ActivityRecycler {
     int caloriesBurnt;
     long date;
     int activityType;
+    String duration;
     Bitmap image;
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getDuration() {
+        return duration;
     }
 
     public Bitmap getImage() {
@@ -65,5 +66,13 @@ public class ActivityRecycler {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }

@@ -351,6 +351,10 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         googleMap.snapshot(bitmap->{
             if(bitmap != null){
                 long dateRecorded = Calendar.getInstance().getTimeInMillis();
+                String duration = "00:00:00";
+                if(LocationService.timeInMilliseconds.getValue() != null)
+                    duration = getFormattedTimer(false, LocationService.timeInMilliseconds.getValue());
+
                 float averageSpeed = 0f;
                 double distance = 0f;
                 int calories = 0;
@@ -362,7 +366,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     distance = LocationService.totalDistanceInKm.getValue();
 
                 MDBHActivityTracker myDB = new MDBHActivityTracker(requireContext());
-                myDB.addNewActivity(dateRecorded, averageSpeed, distance, calories, bitmap, activityType);
+                myDB.addNewActivity(dateRecorded, averageSpeed, distance, calories, bitmap, activityType, duration);
             }
 
             stopActivity();

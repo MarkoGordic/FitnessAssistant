@@ -12,9 +12,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.adapters.ActivityAdapter;
+import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 
 
 public class MapPageFragment extends Fragment {
@@ -62,6 +66,12 @@ public class MapPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.map_screen, container, false);
         setUpOnClickListeners(view);
+
+        ActivityAdapter activityAdapter = new ActivityAdapter(requireActivity(), MDBHActivityTracker.getInstance(requireActivity()).readActivitiesDataForRecyclerDB());
+        RecyclerView recyclerView = view.findViewById(R.id.activityRecycler);
+        recyclerView.setAdapter(activityAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+
         return view;
     }
 

@@ -259,19 +259,21 @@ public class RealtimeDB {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            List<Bitmap> data = MDBHActivityTracker.getInstance(context).readActivitiesBitmapsDB();
-            List<Integer> ids = MDBHActivityTracker.getInstance(context).readActivitiesIDs();
+            storage.getReference().child(userID).child("/activities").delete().addOnCompleteListener(task -> {
+                List<Bitmap> data = MDBHActivityTracker.getInstance(context).readActivitiesBitmapsDB();
+                List<Integer> ids = MDBHActivityTracker.getInstance(context).readActivitiesIDs();
 
-            for(int i = 0; i < data.size(); i++){
-                Bitmap bitmap = data.get(i);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                Uri newUri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "ProfilePic", null));
+                for(int i = 0; i < data.size(); i++){
+                    Bitmap bitmap = data.get(i);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    Uri newUri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "ProfilePic", null));
 
-                storage.getReference("users/" + userID + "/activities/" + ids.get(i) + ".jpg").putFile(newUri).addOnFailureListener(e -> {
+                    storage.getReference("users/" + userID + "/activities/" + ids.get(i) + ".jpg").putFile(newUri).addOnFailureListener(e -> {
 
-                });
-            }
+                    });
+                }
+            });
         }
     }
 
@@ -314,7 +316,7 @@ public class RealtimeDB {
                                 File file = File.createTempFile("Images", "jpg");
                                 storageRef.getFile(file).addOnSuccessListener(taskSnapshot -> {
                                     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                                    MDBHActivityTracker.getInstance(context).addNewActivity(data.activities.get(i).getDate(), data.activities.get(i).getAverageSpeed(), data.activities.get(i).getDistance(), data.activities.get(i).getCaloriesBurnt(), bitmap, data.activities.get(i).getActivityType());
+                                    MDBHActivityTracker.getInstance(context).addNewActivity(data.activities.get(i).getDate(), data.activities.get(i).getAverageSpeed(), data.activities.get(i).getDistance(), data.activities.get(i).getCaloriesBurnt(), bitmap, data.activities.get(i).getActivityType(), data.activities.get(i).getDuration());
                                 });
                             } catch (IOException e) {
                                 e.printStackTrace();

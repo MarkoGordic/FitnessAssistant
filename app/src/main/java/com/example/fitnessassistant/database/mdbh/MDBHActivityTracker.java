@@ -27,6 +27,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
     private static final String COLUMN_AVERAGE_SPEED = "activity_average_speed";
     private static final String COLUMN_CALORIES_BURNT = "activity_calories_burnt";
     private static final String COLUMN_DISTANCE = "activity_distance";
+    private static final String COLUMN_ACTIVITY_DURATION = "activity_duration";
     private static final String COLUMN_ACTIVITY_TYPE = "activity_type";
     private static final String COLUMN_IMAGE = "activity_image";
 
@@ -52,6 +53,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                         COLUMN_AVERAGE_SPEED + " REAL, " +
                         COLUMN_CALORIES_BURNT + " INTEGER, " +
                         COLUMN_DISTANCE + " REAL, " +
+                        COLUMN_ACTIVITY_DURATION + " TEXT, " +
                         COLUMN_ACTIVITY_TYPE + " INTEGER, " +
                         COLUMN_IMAGE + " BLOB);";
 
@@ -64,7 +66,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addNewActivity(long date, float averageSpeed, double distance, float calories, Bitmap image, int activityType){
+    public void addNewActivity(long date, float averageSpeed, double distance, float calories, Bitmap image, int activityType, String duration){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -78,6 +80,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         cv.put(COLUMN_CALORIES_BURNT, calories);
         cv.put(COLUMN_IMAGE, activityImage);
         cv.put(COLUMN_ACTIVITY_TYPE, activityType);
+        cv.put(COLUMN_ACTIVITY_DURATION, duration);
 
         long result = db.insert(TABLE_NAME, null, cv);
 
@@ -104,6 +107,8 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 do{
                     Activity activity = new Activity();
+                    activity.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                    activity.setDuration(cursor.getString(cursor.getColumnIndex(COLUMN_ACTIVITY_DURATION)));
                     activity.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_DATE)));
                     activity.setAverageSpeed(cursor.getFloat(cursor.getColumnIndex(COLUMN_AVERAGE_SPEED)));
                     activity.setDistance(cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE)));
@@ -168,11 +173,12 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
                     ActivityRecycler activityRecycler = new ActivityRecycler();
                     activityRecycler.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                    activityRecycler.setDuration(cursor.getString(cursor.getColumnIndex(COLUMN_ACTIVITY_DURATION)));
                     activityRecycler.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_DATE)));
                     activityRecycler.setAverageSpeed(cursor.getFloat(cursor.getColumnIndex(COLUMN_AVERAGE_SPEED)));
                     activityRecycler.setDistance(cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE)));
