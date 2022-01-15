@@ -448,18 +448,18 @@ public class LocationService extends LifecycleService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "ActivityTracking")
                 .setAutoCancel(false)
                 .setOngoing(true)
-                .setContentTitle("FitnessAssistant Tracking")
+                .setContentTitle(context.getString(R.string.run_tracking))
                 .setContentText(contentText)
                 .setContentIntent(pendingIntent)
                 .setShowWhen(false);
 
         if(forceIcon){
             notificationTrigger = true;
-            notificationBuilder.setSmallIcon(R.drawable.ic_pedometer);
+            notificationBuilder.setSmallIcon(R.drawable.walk);
         }
         else if(!notificationTrigger){
             notificationTrigger = true;
-            notificationBuilder.setSmallIcon(R.drawable.ic_pedometer);
+            notificationBuilder.setSmallIcon(R.drawable.walk);
         }else{
             notificationTrigger = false;
             notificationBuilder.setSmallIcon(android.R.color.transparent);

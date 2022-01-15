@@ -80,8 +80,8 @@ public class PedometerFragment extends Fragment {
         float[] totals = new float[3];
 
         totals[0] = MDBHPedometer.getInstance(requireContext()).getTotalSteps();
-        totals[1] = getDistanceWalked((int) Math.round(totals[0]));
-        totals[2] = getCaloriesBurnedFromSteps(((int) Math.round(totals[0])));
+        totals[1] = getDistanceWalked(Math.round(totals[0]));
+        totals[2] = getCaloriesBurnedFromSteps(Math.round(totals[0]));
 
         return totals;
     }
@@ -98,7 +98,7 @@ public class PedometerFragment extends Fragment {
         int month = currentDate % 100;
         currentDate /= 100;
         int year = currentDate;
-        ((TextView) view.findViewById(R.id.currentDate)).setText(String.format("%s %s %s", day, getMonthShort(month), year));
+        ((TextView) view.findViewById(R.id.currentDate)).setText(String.format("%s %s %s", day, getMonthShort(requireActivity(), month), year));
     }
 
     private void setUpGraphValues(View view, int[] vals, float maxCount){
@@ -133,9 +133,9 @@ public class PedometerFragment extends Fragment {
         if(weeklyGraph) {
             Calendar tempCalendar = (Calendar) graphCal.clone();
             tempCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            ((TextView) view.findViewById(R.id.graphDate)).setText(String.format("%02d %s %d", tempCalendar.get(Calendar.DAY_OF_MONTH), getMonthShort(tempCalendar.get(Calendar.MONTH) + 1), tempCalendar.get(Calendar.YEAR)));
+            ((TextView) view.findViewById(R.id.graphDate)).setText(String.format("%02d %s %d", tempCalendar.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), tempCalendar.get(Calendar.MONTH) + 1), tempCalendar.get(Calendar.YEAR)));
             tempCalendar.add(Calendar.DAY_OF_YEAR, 6);
-            ((TextView) view.findViewById(R.id.graphDate)).setText(String.format("%s - %02d %s %d", ((TextView) view.findViewById(R.id.graphDate)).getText(), tempCalendar.get(Calendar.DAY_OF_MONTH), getMonthShort(tempCalendar.get(Calendar.MONTH) + 1), tempCalendar.get(Calendar.YEAR)));
+            ((TextView) view.findViewById(R.id.graphDate)).setText(String.format("%s - %02d %s %d", ((TextView) view.findViewById(R.id.graphDate)).getText(), tempCalendar.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), tempCalendar.get(Calendar.MONTH) + 1), tempCalendar.get(Calendar.YEAR)));
 
             ((TextView) view.findViewById(R.id.graph_header)).setText(requireActivity().getString(R.string.weekly_graph));
 
@@ -202,7 +202,7 @@ public class PedometerFragment extends Fragment {
 
             setUpGraphValues(view, weeklyVals, 7f);
         } else {
-            ((TextView) view.findViewById(R.id.graphDate)).setText(String.format("%s %d", getMonthShort(graphCal.get(Calendar.MONTH) + 1), graphCal.get(Calendar.YEAR)));
+            ((TextView) view.findViewById(R.id.graphDate)).setText(String.format("%s %d", getMonthShort(requireActivity(),graphCal.get(Calendar.MONTH) + 1), graphCal.get(Calendar.YEAR)));
 
             ((TextView) view.findViewById(R.id.graph_header)).setText(requireActivity().getString(R.string.monthly_graph));
 
@@ -488,7 +488,7 @@ public class PedometerFragment extends Fragment {
             int maxSteps = (int) Float.parseFloat(stepsList.get(0));
             String maxStepsDate = stepsList.get(1);
 
-            if(streakDateStart == null || streakDateEnd == null || maxStreak < 5)
+            if(streakDateStart == null || streakDateEnd == null || maxStreak == 0)
                 view.findViewById(R.id.achievement2).setVisibility(View.GONE);
             else {
                 int startDate = Integer.parseInt(streakDateStart);
@@ -504,13 +504,13 @@ public class PedometerFragment extends Fragment {
                 endDate /= 100;
                 int endYear = endDate;
 
-                ((TextView) view.findViewById(R.id.achievementDate2)).setText(String.format("%d %s %d - %d %s %d", startDay, getMonthShort(startMonth), startYear, endDay, getMonthShort(endMonth), endYear));
+                ((TextView) view.findViewById(R.id.achievementDate2)).setText(String.format("%d %s %d - %d %s %d", startDay, getMonthShort(requireActivity(), startMonth), startYear, endDay, getMonthShort(requireActivity(), endMonth), endYear));
                 ((TextView) view.findViewById(R.id.achievementHeader2)).setText(String.format("%d-%s\n%s", maxStreak, requireActivity().getString(R.string.day), requireActivity().getString(R.string.streak)));
 
                 view.findViewById(R.id.achievement2).setVisibility(View.VISIBLE);
             }
 
-            if(maxStepsDate == null || maxSteps < 10000)
+            if(maxStepsDate == null || maxSteps == 0)
                 view.findViewById(R.id.achievement1).setVisibility(View.GONE);
             else {
                 int date = Integer.parseInt(maxStepsDate);
@@ -520,7 +520,7 @@ public class PedometerFragment extends Fragment {
                 date /= 100;
                 int year = date;
 
-                ((TextView) view.findViewById(R.id.achievementDate1)).setText(String.format("%d %s %d", day, getMonthShort(month), year));
+                ((TextView) view.findViewById(R.id.achievementDate1)).setText(String.format("%d %s %d", day, getMonthShort(requireActivity(), month), year));
                 ((TextView) view.findViewById(R.id.achievementHeader1)).setText(String.format("%d\n%s", maxSteps, requireActivity().getString(R.string.steps_in_a_day)));
 
                 view.findViewById(R.id.achievement1).setVisibility(View.VISIBLE);
@@ -528,8 +528,6 @@ public class PedometerFragment extends Fragment {
 
         }
     }
-
-    // TODO zameniti activity drawable sa ic_pedometer gde moze
 
     private void setUpStepCountingButton(View view, Boolean pedometerRuns){
         if(pedometerRuns == null)

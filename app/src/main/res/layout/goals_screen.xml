@@ -332,6 +332,8 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/settings_field"
 
+        app:drawableStartCompat="@drawable/ic_pedometer"
+        app:drawableTint="@color/SpaceCadet"
         app:drawableEndCompat="@drawable/forward"
         android:drawablePadding="12dp"
 

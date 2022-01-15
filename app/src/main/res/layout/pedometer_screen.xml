@@ -1530,15 +1530,21 @@
 
                     android:gravity="center"
                     android:drawablePadding="2dp"
-                    android:paddingStart="8dp"
+                    android:paddingStart="14dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:paddingEnd="8dp"
+                    android:paddingEnd="2dp"
 
                     android:fontFamily="@font/roboto_light"
                     android:textColor="@color/SpaceCadet"
                     android:textFontWeight="600"
                     android:textSize="13sp"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+
+                    android:background="@color/SpaceCadet"/>
 
                 <TextView
                     android:id="@+id/totalCalories"
@@ -1552,15 +1558,21 @@
 
                     android:gravity="center"
                     android:drawablePadding="2dp"
-                    android:paddingStart="4dp"
+                    android:paddingStart="12dp"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:paddingEnd="8dp"
+                    android:paddingEnd="4dp"
 
                     android:fontFamily="@font/roboto_light"
                     android:textColor="@color/SpaceCadet"
                     android:textFontWeight="600"
                     android:textSize="13sp"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+
+                    android:background="@color/SpaceCadet"/>
 
                 <TextView
                     android:id="@+id/totalDistance"
@@ -1574,10 +1586,10 @@
 
                     android:gravity="center"
                     android:drawablePadding="2dp"
-                    android:paddingStart="8dp"
+                    android:paddingStart="14dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:paddingEnd="8dp"
+                    android:paddingEnd="2dp"
 
                     android:fontFamily="@font/roboto_light"
                     android:textColor="@color/SpaceCadet"

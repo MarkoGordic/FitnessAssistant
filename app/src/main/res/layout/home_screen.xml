@@ -121,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            app:drawableEndCompat="@drawable/walk"
+            app:drawableEndCompat="@drawable/ic_pedometer"
             app:drawableTint="@color/SpaceCadet"
 
             android:fontFamily="@font/ralewayb"

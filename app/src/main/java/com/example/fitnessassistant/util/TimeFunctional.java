@@ -1,6 +1,9 @@
 package com.example.fitnessassistant.util;
 
+import android.content.Context;
 import android.text.format.DateFormat;
+
+import com.example.fitnessassistant.R;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -11,32 +14,32 @@ public class TimeFunctional {
         return (String) DateFormat.format("yyyyMMdd", new Date());
     }
 
-    public static String getMonthShort(int numOfMonth){
+    public static String getMonthShort(Context context, int numOfMonth){
         switch(numOfMonth){
             case 1:
-                return "Jan";
+                return context.getString(R.string.jan);
             case 2:
-                return "Feb";
+                return context.getString(R.string.feb);
             case 3:
-                return "Mar";
+                return context.getString(R.string.mar);
             case 4:
-                return "Apr";
+                return context.getString(R.string.apr);
             case 5:
-                return "May";
+                return context.getString(R.string.may);
             case 6:
-                return "Jun";
+                return context.getString(R.string.jun);
             case 7:
-                return "Jul";
+                return context.getString(R.string.jul);
             case 8:
-                return "Aug";
+                return context.getString(R.string.aug);
             case 9:
-                return "Sep";
+                return context.getString(R.string.sep);
             case 10:
-                return "Oct";
+                return context.getString(R.string.oct);
             case 11:
-                return "Nov";
+                return context.getString(R.string.nov);
             case 12:
-                return "Dec";
+                return context.getString(R.string.dec);
             default:
                 return null;
         }

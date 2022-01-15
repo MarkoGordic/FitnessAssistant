@@ -202,10 +202,12 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
             if(cursor != null){
-                cursor.moveToFirst();
-                do{
-                    data += cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS));
-                }while(cursor.moveToNext());
+                if(cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    do {
+                        data += cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS));
+                    } while (cursor.moveToNext());
+                }
                 cursor.close();
             }
         }

@@ -3,6 +3,10 @@ package com.example.fitnessassistant.database.data;
 import android.graphics.Bitmap;
 
 public class ActivityRecycler {
+    public final static int ACTIVITY_RUNNING = 1;
+    public final static int ACTIVITY_WALKING = 2;
+    public final static int ACTIVITY_CYCLING = 3;
+
     int id;
     float distance;
     float averageSpeed;

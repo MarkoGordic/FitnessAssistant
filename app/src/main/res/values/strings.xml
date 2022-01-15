@@ -263,6 +263,12 @@
     <string name="activity_tracking_desc">Realtime tracking of your workout/activity.</string>
     <string name="sleep_tracking">Sleep Tracking</string>
     <string name="sleep_tracking_desc">Automatic sleep detection/tracking updates.</string>
+    <string name="run_tracking">Run Tracking</string>
+    <string name="walk_tracking">Walk Tracking</string>
+    <string name="bike_tracking">Bike Tracking</string>
+    <string name="running">Running</string>
+    <string name="walking">Walking</string>
+    <string name="cycling">Cycling</string>
 
     <!-- Map Strings -->
     <string name="map_view">Map View</string>
@@ -355,6 +361,18 @@
     <string name="fri">FRI</string>
     <string name="sat">SAT</string>
     <string name="sun">SUN</string>
+    <string name="jan">Jan</string>
+    <string name="feb">Feb</string>
+    <string name="mar">Mar</string>
+    <string name="apr">Apr</string>
+    <string name="may">May</string>
+    <string name="jun">Jun</string>
+    <string name="jul">Jul</string>
+    <string name="aug">Aug</string>
+    <string name="sep">Sep</string>
+    <string name="oct">Oct</string>
+    <string name="nov">Nov</string>
+    <string name="dec">Dec</string>
     <string name="set_all">Set All</string>
     <string name="step_goal_cannot_be_zero">Step goal can\'t be 0.</string>
     <string name="step_goal_cannot_be_empty">Step goal can\'t be empty.</string>

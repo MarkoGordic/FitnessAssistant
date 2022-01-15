@@ -86,8 +86,8 @@ public class PedometerWidget extends AppWidgetProvider {
             // set rounded background
             views.setImageViewResource(R.id.widgetBackground, R.drawable.widget_background);
 
-            views.setImageViewResource(R.id.widgetImageLarge, R.drawable.walk);
-            views.setImageViewResource(R.id.widgetImageSmall, R.drawable.walk);
+            views.setImageViewResource(R.id.widgetImageLarge, R.drawable.ic_pedometer);
+            views.setImageViewResource(R.id.widgetImageSmall, R.drawable.ic_pedometer);
 
             if (height >= 220) {
                 views.setViewVisibility(R.id.widgetHeader, View.VISIBLE);
