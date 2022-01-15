@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
@@ -264,8 +265,15 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         dialog.findViewById(R.id.dialog_exit_save_button).setOnClickListener(v -> {
             dialog.dismiss();
-            forceFocusPathOnMap();
-            exitAndSaveActivity();
+
+            mapView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+                forceFocusPathOnMap();
+                exitAndSaveActivity();
+            });
+
+            ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) mapView.getLayoutParams();
+            lp.height = 300;
+            mapView.setLayoutParams(lp);
         });
 
         dialog.findViewById(R.id.dialog_exit_button).setOnClickListener(v -> {

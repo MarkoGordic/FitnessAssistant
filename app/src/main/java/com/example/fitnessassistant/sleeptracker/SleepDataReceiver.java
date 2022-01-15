@@ -1,5 +1,6 @@
 package com.example.fitnessassistant.sleeptracker;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,9 +34,10 @@ public class SleepDataReceiver extends BroadcastReceiver {
         }
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     public static PendingIntent createPendingIntent(Context context){
         Intent intent = new Intent(context, SleepDataReceiver.class);
 
-        return PendingIntent.getBroadcast(context, SleepTracker.SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        return PendingIntent.getBroadcast(context, SleepTracker.SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 }

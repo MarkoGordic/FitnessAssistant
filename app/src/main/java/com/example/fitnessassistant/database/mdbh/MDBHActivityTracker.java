@@ -194,6 +194,41 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         return activities;
     }
 
+    public float[] getTotals(){
+        float[] totals = new float[4];
+        totals[0] = 0f;
+        totals[1] = 0f;
+        totals[2] = 0f;
+        totals[3] = 0f;
+
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null && cursor.getCount() > 0){
+                cursor.moveToFirst();
+                do{
+                    totals[0] += cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT));
+
+                    switch (cursor.getInt(cursor.getColumnIndex(COLUMN_ACTIVITY_TYPE))){
+                        case 1:
+                            totals[1] += cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
+                            break;
+                        case 2:
+                            totals[2] += cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
+                            break;
+                        case 3:
+                            totals[3] += cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
+                    }
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return totals;
+    }
+
     public void deleteDB(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, null, null);

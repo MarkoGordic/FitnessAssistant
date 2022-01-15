@@ -41,7 +41,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =
-                "CREATE TABLE " + SEGMENTS_TABLE_NAME +
+                "CREATE TABLE " + EVENTS_TABLE_NAME +
                         " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_CONFIDENCE + " INTEGER, " +
                         COLUMN_LIGHT + " INTEGER, " +
@@ -51,7 +51,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         db.execSQL(query);
 
         query =
-                "CREATE TABLE " + EVENTS_TABLE_NAME +
+                "CREATE TABLE " + SEGMENTS_TABLE_NAME +
                         " (" + SEGMENTS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         SEGMENTS_START_TIME + " REAL, " +
                         SEGMENTS_END_TIME + " REAL);";
