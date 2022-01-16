@@ -10,7 +10,7 @@ public class ActivityRecycler {
     int id;
     float distance;
     float averageSpeed;
-    int caloriesBurnt;
+    float caloriesBurnt;
     long date;
     int activityType;
     String duration;
@@ -40,7 +40,7 @@ public class ActivityRecycler {
         return distance;
     }
 
-    public int getCaloriesBurnt() {
+    public float getCaloriesBurnt() {
         return caloriesBurnt;
     }
 
@@ -52,7 +52,7 @@ public class ActivityRecycler {
         this.averageSpeed = averageSpeed;
     }
 
-    public void setCaloriesBurnt(int caloriesBurnt) {
+    public void setCaloriesBurnt(float caloriesBurnt) {
         this.caloriesBurnt = caloriesBurnt;
     }
 

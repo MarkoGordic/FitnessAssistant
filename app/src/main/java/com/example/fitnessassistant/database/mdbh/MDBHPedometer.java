@@ -106,7 +106,7 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         List<String> data = new ArrayList<>();
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
                     data.add(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)) + "#" + cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS)) + "#" + cursor.getInt(cursor.getColumnIndex(COLUMN_STEP_GOAL)));
@@ -126,10 +126,12 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
-            if(cursor.moveToFirst()){
-                data = cursor.getInt(cursor.getColumnIndex(COLUMN_STEP_GOAL));
+            if(cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    data = cursor.getInt(cursor.getColumnIndex(COLUMN_STEP_GOAL));
+                }
+                cursor.close();
             }
-            cursor.close();
         }
 
         return data;
@@ -140,13 +142,15 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         float data = 0f;
 
-        if(db != null ){
+        if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
-            if(cursor.moveToFirst()){
-                data = cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS));
+            if(cursor != null && cursor.getCount() > 0){
+                if(cursor.moveToFirst()){
+                    data = cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS));
+                }
+                cursor.close();
             }
-            cursor.close();
         }
 
         return data;
@@ -224,7 +228,7 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         String maxDate = null;
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
                     if(maxSteps < cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS))) {
@@ -256,7 +260,7 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         String dateEnd = null;
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
                     if(cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS)) >= cursor.getInt(cursor.getColumnIndex(COLUMN_STEP_GOAL))) {

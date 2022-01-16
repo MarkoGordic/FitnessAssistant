@@ -93,7 +93,7 @@ public class MDBHWeight extends SQLiteOpenHelper {
         String data = null;
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 data = cursor.getFloat(cursor.getColumnIndex(COLUMN_WEIGHT)) + "#" + cursor.getInt(cursor.getColumnIndex(COLUMN_RECORDS));
                 cursor.close();
@@ -108,13 +108,15 @@ public class MDBHWeight extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         int data = 0;
 
-        if(db != null ){
+        if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
-            if(cursor.moveToFirst()){
-                data = cursor.getInt(cursor.getColumnIndex(COLUMN_RECORDS));
+            if(cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    data = cursor.getInt(cursor.getColumnIndex(COLUMN_RECORDS));
+                }
+                cursor.close();
             }
-            cursor.close();
         }
 
         return data;
@@ -128,10 +130,12 @@ public class MDBHWeight extends SQLiteOpenHelper {
         if(db != null ){
             Cursor cursor = db.rawQuery(query, null);
 
-            if(cursor.moveToFirst()){
-                data = cursor.getFloat(cursor.getColumnIndex(COLUMN_WEIGHT));
+            if(cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    data = cursor.getFloat(cursor.getColumnIndex(COLUMN_WEIGHT));
+                }
+                cursor.close();
             }
-            cursor.close();
         }
 
         return data;
@@ -155,7 +159,7 @@ public class MDBHWeight extends SQLiteOpenHelper {
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
                     data.add(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)) + "#" + cursor.getFloat(cursor.getColumnIndex(COLUMN_WEIGHT)) + "#" + cursor.getInt(cursor.getColumnIndex(COLUMN_RECORDS)));

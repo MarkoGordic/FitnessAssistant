@@ -16,6 +16,7 @@ import com.example.fitnessassistant.database.data.ActivityRecycler;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class MDBHActivityTracker extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SavedActivities.db";
@@ -51,7 +52,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                         " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_DATE + " REAL, " +
                         COLUMN_AVERAGE_SPEED + " REAL, " +
-                        COLUMN_CALORIES_BURNT + " INTEGER, " +
+                        COLUMN_CALORIES_BURNT + " REAL, " +
                         COLUMN_DISTANCE + " REAL, " +
                         COLUMN_ACTIVITY_DURATION + " TEXT, " +
                         COLUMN_ACTIVITY_TYPE + " INTEGER, " +
@@ -102,7 +103,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
                     Activity activity = new Activity();
@@ -111,7 +112,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                     activity.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_DATE)));
                     activity.setAverageSpeed(cursor.getFloat(cursor.getColumnIndex(COLUMN_AVERAGE_SPEED)));
                     activity.setDistance(cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE)));
-                    activity.setCaloriesBurnt(cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT)));
+                    activity.setCaloriesBurnt(cursor.getFloat(cursor.getColumnIndex(COLUMN_CALORIES_BURNT)));
                     activity.setActivityType(cursor.getInt(cursor.getColumnIndex(COLUMN_ACTIVITY_TYPE)));
                     activities.add(activity);
                 }while(cursor.moveToNext());
@@ -201,7 +202,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                     activityRecycler.setDate(cursor.getLong(cursor.getColumnIndex(COLUMN_DATE)));
                     activityRecycler.setAverageSpeed(cursor.getFloat(cursor.getColumnIndex(COLUMN_AVERAGE_SPEED)));
                     activityRecycler.setDistance(cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE)));
-                    activityRecycler.setCaloriesBurnt(cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT)));
+                    activityRecycler.setCaloriesBurnt(cursor.getFloat(cursor.getColumnIndex(COLUMN_CALORIES_BURNT)));
                     activityRecycler.setActivityType(cursor.getInt(cursor.getColumnIndex(COLUMN_ACTIVITY_TYPE)));
                     activityRecycler.setImage(BitmapFactory.decodeByteArray(cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE)), 0, cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE)).length));
                     activities.add(activityRecycler);
@@ -231,13 +232,13 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
                     totals[0] += cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT));
 
                     switch (cursor.getInt(cursor.getColumnIndex(COLUMN_ACTIVITY_TYPE))){
-                        case 1:
+                        case ActivityRecycler.ACTIVITY_RUNNING:
                             totals[1] += cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
                             break;
-                        case 2:
+                        case ActivityRecycler.ACTIVITY_WALKING:
                             totals[2] += cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
                             break;
-                        case 3:
+                        case ActivityRecycler.ACTIVITY_CYCLING:
                             totals[3] += cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
                     }
                 }while(cursor.moveToNext());
@@ -246,6 +247,97 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         }
 
         return totals;
+    }
+
+    public List<String> getPersonalBests(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<String> data = new ArrayList<>();
+
+        float maxDistanceWalk = 0f;
+        String maxDateWalk = null;
+        float maxDistanceRun = 0f;
+        String maxDateRun = null;
+        float maxDistanceBicycle = 0f;
+        String maxDateBicycle = null;
+        int maxCalories = 0;
+        String maxDateCalories = null;
+        String maxDuration = "00:00:00";
+        String maxDateDuration = null;
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null && cursor.getCount() > 0){
+                cursor.moveToFirst();
+                do{
+                    if(maxCalories < cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT))){
+                        maxCalories = cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT));
+                        maxDateCalories = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                    }
+
+                    String tempDuration = cursor.getString(cursor.getColumnIndex(COLUMN_ACTIVITY_DURATION));
+                    StringTokenizer tokenizer1 = new StringTokenizer(maxDuration, ":");
+                    StringTokenizer tokenizer2 = new StringTokenizer(tempDuration, ":");
+                    List<Integer> duration1 = new ArrayList<>();
+                    List<Integer> duration2 = new ArrayList<>();
+                    while(tokenizer1.hasMoreElements()){
+                        duration1.add(Integer.parseInt(tokenizer1.nextToken()));
+                        duration2.add(Integer.parseInt(tokenizer2.nextToken()));
+                    }
+
+                    if(duration2.get(0) > duration1.get(0)){
+                        maxDuration = tempDuration;
+                        maxDateDuration = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                    }else if(duration2.get(0).equals(duration1.get(0))){
+                        if(duration2.get(1) > duration1.get(1)){
+                            maxDuration = tempDuration;
+                            maxDateDuration = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                        }
+                        else if(duration2.get(1).equals(duration1.get(1))){
+                            if(duration2.get(2) > duration1.get(2)){
+                                maxDuration = tempDuration;
+                                maxDateDuration = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                            }
+                        }
+                    }
+
+                    switch (cursor.getInt(cursor.getColumnIndex(COLUMN_ACTIVITY_TYPE))){
+                        case ActivityRecycler.ACTIVITY_RUNNING:
+                            if(maxDistanceRun < cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE))){
+                                maxDistanceRun = cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
+                                maxDateRun = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                            }
+                            break;
+                        case ActivityRecycler.ACTIVITY_WALKING:
+                            if(maxDistanceWalk < cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE))){
+                                maxDistanceWalk = cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
+                                maxDateWalk = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                            }
+                            break;
+                        case ActivityRecycler.ACTIVITY_CYCLING:
+                            if(maxDistanceBicycle < cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE))){
+                                maxDistanceBicycle = cursor.getFloat(cursor.getColumnIndex(COLUMN_DISTANCE));
+                                maxDateBicycle = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                            }
+                    }
+                }while(cursor.moveToNext());
+                cursor.close();
+
+                data.add(String.valueOf(maxDistanceRun));
+                data.add(maxDateRun);
+                data.add(String.valueOf(maxDistanceWalk));
+                data.add(maxDateWalk);
+                data.add(String.valueOf(maxDistanceBicycle));
+                data.add(maxDateBicycle);
+                data.add(String.valueOf(maxCalories));
+                data.add(maxDateCalories);
+                data.add(maxDuration);
+                data.add(maxDateDuration);
+            }
+        }
+
+        return data;
     }
 
     public void deleteDB(){

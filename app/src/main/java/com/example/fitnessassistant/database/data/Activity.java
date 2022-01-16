@@ -3,7 +3,7 @@ package com.example.fitnessassistant.database.data;
 public class Activity {
     float distance;
     float averageSpeed;
-    int caloriesBurnt;
+    float caloriesBurnt;
     long date;
     int activityType;
     String duration;
@@ -29,7 +29,7 @@ public class Activity {
         return distance;
     }
 
-    public int getCaloriesBurnt() {
+    public float getCaloriesBurnt() {
         return caloriesBurnt;
     }
 
@@ -41,7 +41,7 @@ public class Activity {
         this.averageSpeed = averageSpeed;
     }
 
-    public void setCaloriesBurnt(int caloriesBurnt) {
+    public void setCaloriesBurnt(float caloriesBurnt) {
         this.caloriesBurnt = caloriesBurnt;
     }
 
