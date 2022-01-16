@@ -84,10 +84,9 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_NAME, null, cv);
 
-        if(result == -1)
-            System.out.println("Fail! DATABASE");
-        else
-            System.out.println("Success! DATABASE");
+        if(result != -1){
+            int latestID = readLatestID();
+        }
     }
 
     public void removeActivityFromDB(int id){
@@ -131,7 +130,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
                     byte[] bytes = cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE));
@@ -153,7 +152,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor != null){
+            if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
                     ids.add(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
@@ -163,6 +162,26 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         }
 
         return ids;
+    }
+
+    public int readLatestID(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        int id = -1;
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null && cursor.getCount() > 0){
+                cursor.moveToFirst();
+                do{
+                    id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return id;
     }
 
     public List<ActivityRecycler> readActivitiesDataForRecyclerDB() {
