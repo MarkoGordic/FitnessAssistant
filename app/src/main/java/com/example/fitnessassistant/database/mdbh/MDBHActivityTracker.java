@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 
 import androidx.annotation.Nullable;
 
+import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.database.data.Activity;
 import com.example.fitnessassistant.database.data.ActivityRecycler;
 
@@ -67,7 +68,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addNewActivity(long date, float averageSpeed, double distance, float calories, Bitmap image, int activityType, String duration){
+    public void addNewActivity(Context context, long date, float averageSpeed, double distance, float calories, Bitmap image, int activityType, String duration){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -87,6 +88,19 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
 
         if(result != -1){
             int latestID = readLatestID();
+
+            // creating the given activity
+            ActivityRecycler activityRecycler = new ActivityRecycler();
+            activityRecycler.setId(latestID);
+            activityRecycler.setDuration(duration);
+            activityRecycler.setDate(date);
+            activityRecycler.setAverageSpeed(averageSpeed);
+            activityRecycler.setDistance((float) distance);
+            activityRecycler.setCaloriesBurnt((int) calories);
+            activityRecycler.setActivityType(activityType);
+            activityRecycler.setImage(BitmapFactory.decodeByteArray(activityImage, 0, activityImage.length));
+
+            ((InAppActivity) context).smallActivityAdapter.add(activityRecycler, 0);
         }
     }
 

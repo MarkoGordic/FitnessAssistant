@@ -251,10 +251,13 @@
     <string name="monthly_graph">Mesečni Graf</string>
     <string name="wm"><b>N/M</b></string>
     <string name="total_values">Ukupne Vrednosti</string>
-    <string name="achievements">Dostignuća</string>
+    <string name="personal_bests">Lični Rekordi</string>
     <string name="steps_in_a_day">Koraka U Danu</string>
     <string name="day">Dana</string>
     <string name="streak">U Nizu</string>
+    <string name="sort_by">Sortiraj Po…</string>
+    <string name="date">Datum</string>
+    <string name="time">Vreme</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometar</string>
@@ -279,9 +282,9 @@
     <string name="resume_activity_tracking">Nastavi</string>
     <string name="distance">Pređeni put</string>
     <string name="speed">Brzina</string>
-    <string name="average_speed">Prosečna Brzina</string>
+    <string name="average_speed">Pros. Brzina</string>
     <string name="pace">Tempo</string>
-    <string name="average_pace">Prosečan Tempo</string>
+    <string name="average_pace">Pros. Tempo</string>
     <string name="center">Centriraj</string>
     <string name="activity_tracking_active">Praćenje Aktivnosti Uključeno</string>
     <string name="activity_tracking_active_message">Ovo nije dostupno dok je praćenje aktivnosti uključeno. Zaustavite praćenje aktivnosti i pokušajte ponovo.</string>
@@ -289,6 +292,11 @@
     <string name="location_accuracy_message">Za najbolje rezultate preciznost lokacije treba da opadne na krug od 10m. Molimo Vas sačekajte…</string>
     <string name="force_start">Odmah Započni</string>
     <string name="start_needed">Morate započeti praćenje kako bi ga zaustavili!</string>
+    <string name="previous_activities">Prethodne Aktivnosti</string>
+    <string name="show_all">Prikaži Sve</string>
+    <string name="delete_activity">Obriši Aktivnost</string>
+    <string name="delete_activity_message">Ne postoji način da povratite ovu aktivnost. Da li ste sigurni?</string>
+    <string name="no_previous_activities">Nema Prethodnih Aktivnosti.</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Preskoči</string>

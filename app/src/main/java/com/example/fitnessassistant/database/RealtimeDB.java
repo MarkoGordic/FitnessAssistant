@@ -295,6 +295,7 @@ public class RealtimeDB {
         }
     }
 
+    // TODO pass in requireActivity()/getActivity() here (InAppActivity) as context
     public static void restoreUserActivities(Context context) {
         MDBHActivityTracker.getInstance(context).deleteDB();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -316,7 +317,7 @@ public class RealtimeDB {
                                 File file = File.createTempFile("Images", "jpg");
                                 storageRef.getFile(file).addOnSuccessListener(taskSnapshot -> {
                                     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                                    MDBHActivityTracker.getInstance(context).addNewActivity(data.activities.get(i).getDate(), data.activities.get(i).getAverageSpeed(), data.activities.get(i).getDistance(), data.activities.get(i).getCaloriesBurnt(), bitmap, data.activities.get(i).getActivityType(), data.activities.get(i).getDuration());
+                                    MDBHActivityTracker.getInstance(context).addNewActivity(context, data.activities.get(i).getDate(), data.activities.get(i).getAverageSpeed(), data.activities.get(i).getDistance(), data.activities.get(i).getCaloriesBurnt(), bitmap, data.activities.get(i).getActivityType(), data.activities.get(i).getDuration());
                                 });
                             } catch (IOException e) {
                                 e.printStackTrace();

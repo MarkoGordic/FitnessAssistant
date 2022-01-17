@@ -249,16 +249,13 @@
     <string name="monthly_graph">Monthly Graph</string>
     <string name="wm"><b>W/M</b></string>
     <string name="total_values">Total Values</string>
-    <string name="achievements">Achievements</string>
+    <string name="personal_bests">Personal Bests</string>
     <string name="steps_in_a_day">Steps In A Day</string>
     <string name="day">Day</string>
     <string name="streak">Streak</string>
-    <string name="run_tracking">Run Tracking</string>
-    <string name="walk_tracking">Walk Tracking</string>
-    <string name="bike_tracking">Bike Tracking</string>
-    <string name="running">Running</string>
-    <string name="walking">Walking</string>
-    <string name="cycling">Cycling</string>
+    <string name="sort_by">Sort By…</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometer</string>
@@ -267,6 +264,12 @@
     <string name="activity_tracking_desc">Realtime tracking of your workout/activity.</string>
     <string name="sleep_tracking">Sleep Tracking</string>
     <string name="sleep_tracking_desc">Automatic sleep detection/tracking updates.</string>
+    <string name="run_tracking">Run Tracking</string>
+    <string name="walk_tracking">Walk Tracking</string>
+    <string name="bike_tracking">Bike Tracking</string>
+    <string name="running">Running</string>
+    <string name="walking">Walking</string>
+    <string name="cycling">Cycling</string>
 
     <!-- Map Strings -->
     <string name="map_view">Map View</string>
@@ -287,6 +290,11 @@
     <string name="location_accuracy_message">For best results location accuracy needs to fall down to a range of 10m(33ft). Please wait…</string>
     <string name="force_start">Force Start</string>
     <string name="start_needed">You need to start tracking in order to stop it!</string>
+    <string name="previous_activities">Previous Activities</string>
+    <string name="show_all">Show All</string>
+    <string name="delete_activity">Delete Activity</string>
+    <string name="delete_activity_message">You don\'t have a way of getting this activity back. Are you sure?</string>
+    <string name="no_previous_activities">No Previous Activities.</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Skip</string>

@@ -2,17 +2,19 @@ package com.example.fitnessassistant.database.data;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.Nullable;
+
 public class ActivityRecycler {
     public final static int ACTIVITY_RUNNING = 1;
     public final static int ACTIVITY_WALKING = 2;
     public final static int ACTIVITY_CYCLING = 3;
 
-    int id;
-    float distance;
-    float averageSpeed;
-    float caloriesBurnt;
-    long date;
-    int activityType;
+    private int id;
+    private float distance;
+    private float averageSpeed;
+    private float caloriesBurnt;
+    private long date;
+    private int activityType;
     String duration;
     Bitmap image;
 
@@ -78,5 +80,20 @@ public class ActivityRecycler {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(!(obj instanceof ActivityRecycler))
+            return false;
+        ActivityRecycler other = (ActivityRecycler) obj;
+        return id == other.id
+                && distance == other.distance
+                && averageSpeed == other.averageSpeed
+                && caloriesBurnt == other.caloriesBurnt
+                && date == other.date
+                && activityType == other.activityType
+                && duration.equals(other.duration)
+                && image.equals(other.image);
     }
 }

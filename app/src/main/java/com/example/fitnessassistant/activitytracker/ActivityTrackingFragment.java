@@ -116,6 +116,8 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     int activityType = 0;
 
+    private boolean shouldSave = false;
+
     // method which is used to set up observers
     @SuppressLint("DefaultLocale")
     private void subscribeToObservers(){
@@ -266,9 +268,14 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         dialog.findViewById(R.id.dialog_exit_save_button).setOnClickListener(v -> {
             dialog.dismiss();
 
+            shouldSave = true;
+
             mapView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-                forceFocusPathOnMap();
-                exitAndSaveActivity();
+                if(shouldSave) {
+                    shouldSave = false;
+                    forceFocusPathOnMap();
+                    exitAndSaveActivity();
+                }
             });
 
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) mapView.getLayoutParams();
@@ -365,7 +372,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
                 float averageSpeed = 0f;
                 double distance = 0f;
-                int calories = 0;
+                float calories = 0f;
 
                 if(LocationService.averageSpeed.getValue() != null)
                     averageSpeed = LocationService.averageSpeed.getValue();
@@ -373,8 +380,11 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 if(LocationService.totalDistanceInKm.getValue() != null)
                     distance = LocationService.totalDistanceInKm.getValue();
 
+                if(LocationService.caloriesBurnt.getValue() != null)
+                    calories = LocationService.caloriesBurnt.getValue();
+
                 MDBHActivityTracker myDB = new MDBHActivityTracker(requireContext());
-                myDB.addNewActivity(dateRecorded, averageSpeed, distance, calories, bitmap, activityType, duration);
+                myDB.addNewActivity(requireActivity(), dateRecorded, averageSpeed, distance, calories, bitmap, activityType, duration);
             }
 
             stopActivity();

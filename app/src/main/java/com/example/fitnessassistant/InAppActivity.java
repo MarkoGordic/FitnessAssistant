@@ -34,8 +34,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.fitnessassistant.activitytracker.ActivityTrackingFragment;
+import com.example.fitnessassistant.adapters.ActivityAdapter;
+import com.example.fitnessassistant.database.data.ActivityRecycler;
+import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.home.HomePageFragment;
+import com.example.fitnessassistant.map.ActivityRecyclerFragment;
 import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.network.NetworkManager;
 import com.example.fitnessassistant.pedometer.DailyRestarter;
@@ -65,7 +69,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -88,6 +95,11 @@ public class InAppActivity extends AppCompatActivity {
     public static AccountDataFragment accountDataFragment;
     public static PersonalDataFragment personalDataFragment;
     public static PedometerFragment pedometerFragment;
+    public static ActivityRecyclerFragment activityRecyclerFragment;
+    public static List<ActivityRecycler> activities;
+    public ActivityAdapter activityAdapter;
+    public ActivityAdapter smallActivityAdapter;
+
     // this atomic boolean is used for Personal Data Fragments (Height, Weight, Gender, UnitPreference)
     public static AtomicBoolean useNewPersonalDataFragments = new AtomicBoolean(false);
     // and fragment manager
@@ -214,6 +226,7 @@ public class InAppActivity extends AppCompatActivity {
         accountDataFragment = new AccountDataFragment();
         personalDataFragment = new PersonalDataFragment();
         pedometerFragment = new PedometerFragment();
+        activityRecyclerFragment = new ActivityRecyclerFragment();
 
         active = homeFragment;
 
@@ -364,6 +377,29 @@ public class InAppActivity extends AppCompatActivity {
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, notificationRestartIntent(context));
     }
 
+    public void updateActivityRecyclerUI(Boolean isEmpty){
+        if(isEmpty == null)
+            isEmpty = activities.isEmpty();
+
+        if(isEmpty){
+            if(mapFragment.getView() != null) {
+                mapFragment.getView().findViewById(R.id.showAll).setVisibility(View.GONE);
+                mapFragment.getView().findViewById(R.id.dontShowAll).setVisibility(View.VISIBLE);
+                mapFragment.getView().findViewById(R.id.noPreviousActivities).setVisibility(View.VISIBLE);
+            }
+            if(activityRecyclerFragment.getView() != null)
+                activityRecyclerFragment.getView().findViewById(R.id.noPreviousActivities).setVisibility(View.VISIBLE);
+        } else {
+            if(mapFragment.getView() != null) {
+                mapFragment.getView().findViewById(R.id.showAll).setVisibility(View.VISIBLE);
+                mapFragment.getView().findViewById(R.id.dontShowAll).setVisibility(View.GONE);
+                mapFragment.getView().findViewById(R.id.noPreviousActivities).setVisibility(View.GONE);
+            }
+            if(activityRecyclerFragment.getView() != null)
+                activityRecyclerFragment.getView().findViewById(R.id.noPreviousActivities).setVisibility(View.GONE);
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -381,6 +417,13 @@ public class InAppActivity extends AppCompatActivity {
 
         // setting up listener for firebase
         authListener = firebaseAuth -> AuthFunctional.refreshUser(this);
+
+        activities = MDBHActivityTracker.getInstance(this).readActivitiesDataForRecyclerDB();
+        Collections.reverse(activities.subList(0, activities.size()));
+
+        List<ActivityRecycler> copy1 = new ArrayList<>(activities);
+        activityAdapter = new ActivityAdapter(this, copy1, ActivityAdapter.MAIN_RECYCLER);
+        smallActivityAdapter = new ActivityAdapter(this, activities, ActivityAdapter.SUPP_RECYCLER);
 
         // setting up the flashing animation for the no network notification
         Animation flash = new AlphaAnimation(0.0f, 1.0f);

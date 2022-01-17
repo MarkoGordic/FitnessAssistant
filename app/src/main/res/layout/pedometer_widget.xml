@@ -33,7 +33,7 @@
             android:includeFontPadding="false"
             android:paddingStart="2dp"
             android:paddingEnd="0dp"
-            android:textColor="@color/Flame"
+            android:textColor="@color/InvertedBackgroundColor"
             android:textFontWeight="600"
             android:textSize="25sp" />
 
@@ -45,10 +45,10 @@
             android:layout_height="wrap_content"
 
             android:layout_alignTop="@id/widgetHeader"
-            android:layout_alignBottom="@id/widgetHeader"
             android:layout_alignEnd="@id/widgetHeader"
-            tools:ignore="ContentDescription"
+            android:layout_alignBottom="@id/widgetHeader"
             android:visibility="gone"
+            tools:ignore="ContentDescription"
             tools:visibility="visible" />
 
         <!-- DailySteps ProgressBar -->
@@ -99,7 +99,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/zero"
                     android:textAlignment="center"
-                    android:textColor="@color/MangoTango"
+                    android:textColor="@color/InvertedBackgroundColor"
                     android:textFontWeight="600"
                     android:textSize="18sp"
                     tools:ignore="TextContrastCheck" />
@@ -144,7 +144,7 @@
                     android:padding="12dp"
 
                     android:visibility="gone"
-                    tools:ignore="ContentDescription"
+                    tools:ignore="ContentDescription,ImageContrastCheck"
                     tools:visibility="visible" />
             </RelativeLayout>
         </RelativeLayout>
@@ -156,13 +156,13 @@
             android:layout_height="wrap_content"
 
             android:layout_below="@id/pedometerProgressBar"
-            android:layout_alignParentBottom="true"
             android:layout_alignStart="@id/widgetHeader"
+            android:layout_alignParentBottom="true"
 
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:visibility="visible" >
+            tools:visibility="visible">
             <!-- weekly average TextView -->
             <TextView
                 android:id="@+id/weeklyAverageTextView"
@@ -192,7 +192,7 @@
                 android:layout_marginBottom="6dp"
 
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <!-- step count -->
                 <TextView
@@ -201,13 +201,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/roboto_light"
                     android:includeFontPadding="false"
 
-                    android:textAlignment="center"
                     android:text="@string/zero"
-                    android:textColor="@color/MangoTango"
+                    android:textAlignment="center"
+                    android:textColor="@color/InvertedBackgroundColor"
                     android:textFontWeight="600"
                     android:textSize="14sp"
                     tools:ignore="TextContrastCheck" />
@@ -219,8 +218,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginTop="2dp"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="2dp"
 
                     android:fontFamily="@font/raleway"
                     android:includeFontPadding="false"

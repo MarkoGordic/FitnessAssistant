@@ -4,7 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundColor">
+
+    <View
+        android:id="@+id/topSeparator"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:layout_alignParentTop="true"
+
+        android:background="@color/DarkBlueYonder" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/trashActivity"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/topSeparator"
+        android:layout_alignParentEnd="true"
+
+        android:background="@drawable/bottom_left_rounded"
+        android:backgroundTint="@color/Flame"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="7dp"
+        android:src="@drawable/trash"
+        android:tint="@color/InvertedBackgroundColor"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <LinearLayout
         android:id="@+id/header_layout"
@@ -13,7 +43,7 @@
         android:layout_height="wrap_content"
 
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/topSeparator"
 
         android:orientation="horizontal"
 
@@ -79,6 +109,28 @@
         android:textColor="@color/SpaceCadet"
         android:textFontWeight="800"
         android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/invisibleTime"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="999:99:99"
+
+        android:layout_below="@id/header_layout"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/distanceDrawable"
+
+        android:fontFamily="@font/roboto_light"
+
+        android:includeFontPadding="false"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="800"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/distanceDrawable"
@@ -162,6 +214,23 @@
         app:tint="@color/SpaceCadet"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/invisibleSpeedDrawable"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_above="@id/caloriesDrawable"
+        android:layout_alignTop="@id/invisibleTime"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="9dp"
+        android:layout_toEndOf="@id/invisibleTime"
+
+        android:src="@drawable/dashboard"
+        app:tint="@color/SpaceCadet"
+        tools:ignore="ContentDescription"
+        android:visibility="invisible"/>
+
     <TextView
         android:id="@+id/activityAverageSpeed"
 
@@ -178,14 +247,40 @@
         android:textFontWeight="600"
         android:textSize="15sp" />
 
+    <TextView
+        android:id="@+id/invisibleAverageSpeed"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="999.9km"
+
+        android:layout_alignTop="@id/activityTime"
+        android:layout_alignBottom="@id/activityTime"
+        android:layout_toEndOf="@id/invisibleSpeedDrawable"
+
+        android:fontFamily="@font/roboto_light"
+        android:includeFontPadding="false"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        tools:ignore="HardcodedText" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/activityImage"
 
-        android:layout_width="180dp"
-        android:layout_height="82dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomSeparator"
 
+        android:scaleType="fitEnd"
+
+        android:layout_below="@id/topSeparator"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/invisibleAverageSpeed"
+        android:elevation="-1dp" />
 
     <TextView
         android:id="@+id/activityDate"
@@ -213,9 +308,9 @@
         android:id="@+id/bottomSeparator"
 
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="2dp"
 
         android:layout_below="@id/activityDistance"
 
-        android:background="@color/SpaceCadet" />
+        android:background="@color/DarkBlueYonder" />
 </RelativeLayout>

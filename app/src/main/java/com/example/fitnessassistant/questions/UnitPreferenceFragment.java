@@ -2,6 +2,7 @@ package com.example.fitnessassistant.questions;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -49,16 +50,22 @@ public class UnitPreferenceFragment extends Fragment {
         return context.getSharedPreferences("questions", MODE_PRIVATE).getString("energyUnit", "unknown");
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public synchronized static void putEnergyUnit(Context context, String energyUnit){
         context.getSharedPreferences("questions", MODE_PRIVATE).edit().putString("energyUnit", energyUnit).apply();
+        ((InAppActivity) context).smallActivityAdapter.notifyDataSetChanged();
+        ((InAppActivity) context).activityAdapter.notifyDataSetChanged();
     }
 
     public static synchronized String getDistanceUnit(Context context){
         return context.getSharedPreferences("questions", MODE_PRIVATE).getString("distanceUnit", "unknown");
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public synchronized static void putDistanceUnit(Context context, String distanceUnit){
         context.getSharedPreferences("questions", MODE_PRIVATE).edit().putString("distanceUnit", distanceUnit).apply();
+        ((InAppActivity) context).smallActivityAdapter.notifyDataSetChanged();
+        ((InAppActivity) context).activityAdapter.notifyDataSetChanged();
     }
 
     public static synchronized String getWeightUnit(Context context){

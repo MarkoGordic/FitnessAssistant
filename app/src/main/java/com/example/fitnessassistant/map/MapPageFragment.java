@@ -12,13 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.adapters.ActivityAdapter;
-import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 
 
 public class MapPageFragment extends Fragment {
@@ -28,6 +25,27 @@ public class MapPageFragment extends Fragment {
     }
 
     private void setUpOnClickListeners(View view){
+        view.findViewById(R.id.showAll).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.activityRecyclerFragment).addToBackStack(null).commit());
+
+        view.findViewById(R.id.showAll).setOnTouchListener(new View.OnTouchListener() {
+            float yCord;
+            final float len = getResources().getDisplayMetrics().densityDpi / 6f;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    yCord = event.getY();
+                } else if(event.getAction() == MotionEvent.ACTION_UP){
+                    yCord -= event.getY();
+
+                    // if it's a solid swipe DOWN
+                    if(yCord < -len * 4)
+                        view.performClick();
+                }
+                return false;
+            }
+        });
+
         // set up mapButton on click listener
         view.findViewById(R.id.mapSwipeUp).setOnClickListener(view1 -> Toast.makeText(requireContext(), R.string.swipe_up_to_use_the_map, Toast.LENGTH_SHORT).show());
 
@@ -67,10 +85,9 @@ public class MapPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.map_screen, container, false);
         setUpOnClickListeners(view);
 
-        ActivityAdapter activityAdapter = new ActivityAdapter(requireActivity(), MDBHActivityTracker.getInstance(requireActivity()).readActivitiesDataForRecyclerDB());
         RecyclerView recyclerView = view.findViewById(R.id.activityRecycler);
-        recyclerView.setAdapter(activityAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        recyclerView.setAdapter(((InAppActivity) requireActivity()).smallActivityAdapter);
+        recyclerView.setLayoutManager(new CustomLinearLayout(requireActivity()));
 
         return view;
     }
@@ -87,5 +104,7 @@ public class MapPageFragment extends Fragment {
                 }
             }
         }
+
+        ((InAppActivity) requireActivity()).updateActivityRecyclerUI(null);
     }
 }

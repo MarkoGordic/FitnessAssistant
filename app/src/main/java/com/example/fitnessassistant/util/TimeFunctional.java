@@ -45,15 +45,32 @@ public class TimeFunctional {
         }
     }
 
-    public static String[] getLast7DatesFromEnd(){
-        String[] last7dates = new String[7];
-
+    public static String[] getPastDaysInTheWeek(){
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_YEAR, -7);
+        String[] last7dates;
+        int numOfDays;
 
-        for(int i = 1; i <= 7; i++){
+        switch (cal.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.SUNDAY:
+                numOfDays = 7;
+                break;
+            case Calendar.SATURDAY:
+            case Calendar.FRIDAY:
+            case Calendar.THURSDAY:
+            case Calendar.WEDNESDAY:
+            case Calendar.MONDAY:
+                numOfDays = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                break;
+            default:
+                numOfDays = 0;
+        }
+
+        last7dates = new String[numOfDays];
+        cal.add(Calendar.DAY_OF_YEAR, 1 - numOfDays);
+
+        for(int i = 0; i < numOfDays; i++){
+            last7dates[i] = (String) DateFormat.format("yyyyMMdd", cal.getTime());
             cal.add(Calendar.DAY_OF_YEAR, 1);
-            last7dates[7 - i] = (String) DateFormat.format("yyyyMMdd", cal.getTime());
         }
 
         return last7dates;

@@ -1,7 +1,7 @@
 package com.example.fitnessassistant.pedometer;
 
 import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
-import static com.example.fitnessassistant.util.TimeFunctional.getLast7DatesFromEnd;
+import static com.example.fitnessassistant.util.TimeFunctional.getPastDaysInTheWeek;
 import static java.lang.Math.abs;
 
 import android.app.Notification;
@@ -52,11 +52,12 @@ public class Pedometer extends Service implements SensorEventListener {
     private static int calculateWeeklyAverage(Context context){
         int currentHistorySum = 0;
 
-        for(String date : getLast7DatesFromEnd()){
+        String[] dates = getPastDaysInTheWeek();
+        for(String date : dates){
             currentHistorySum += MDBHPedometer.getInstance(context).readPedometerSteps(date);
         }
 
-        return currentHistorySum / 7;
+        return currentHistorySum / dates.length;
     }
 
     public static void updatePedometerWidgetData(Context updatedContext, int newSteps, Integer newStepGoal){

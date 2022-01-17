@@ -384,6 +384,7 @@
                         android:layout_alignBottom="@id/firstLayout"
 
                         android:layout_marginBottom="4dp"
+                        android:text="@string/mo"
                         android:fontFamily="@font/ralewayb"
                         android:gravity="center"
                         android:textColor="@color/SpaceCadet"
@@ -443,6 +444,7 @@
 
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/ralewayb"
+                        android:text="@string/tu"
                         android:gravity="center"
                         android:textColor="@color/SpaceCadet"
                         android:textFontWeight="600"
@@ -501,6 +503,7 @@
 
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/ralewayb"
+                        android:text="@string/we"
                         android:gravity="center"
                         android:textColor="@color/SpaceCadet"
                         android:textFontWeight="600"
@@ -559,6 +562,7 @@
 
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/ralewayb"
+                        android:text="@string/th"
                         android:gravity="center"
                         android:textColor="@color/SpaceCadet"
                         android:textFontWeight="600"
@@ -619,6 +623,7 @@
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/ralewayb"
                         android:gravity="center"
+                        android:text="@string/fr"
                         android:textColor="@color/SpaceCadet"
                         android:textFontWeight="600"
                         android:textSize="24sp" />
@@ -677,6 +682,7 @@
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/ralewayb"
                         android:gravity="center"
+                        android:text="@string/sa"
                         android:textColor="@color/SpaceCadet"
                         android:textFontWeight="600"
                         android:textSize="24sp" />
@@ -735,6 +741,7 @@
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/ralewayb"
                         android:gravity="center"
+                        android:text="@string/su"
                         android:textColor="@color/SpaceCadet"
                         android:textFontWeight="600"
                         android:textSize="24sp" />
@@ -1320,7 +1327,7 @@
             android:layout_gravity="center"
 
             android:fontFamily="@font/ralewayb"
-            android:text="@string/achievements"
+            android:text="@string/personal_bests"
             android:textSize="20sp"
             android:textColor="@color/BlueYonder"/>
 

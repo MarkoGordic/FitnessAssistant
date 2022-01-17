@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/backgroundColor">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/backButton"
+
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_gravity="start"
+
+            android:background="@color/backgroundColor"
+            android:contentDescription="@null"
+
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="4dp"
+
+            android:src="@drawable/back"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/sortButton"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignTop="@id/spinner"
+            android:layout_alignBottom="@id/spinner"
+            android:layout_toStartOf="@id/spinner"
+            android:layout_marginEnd="2dp"
+
+            android:background="@drawable/spinner_button"
+            android:contentDescription="@null"
+
+            android:src="@drawable/down"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            app:tint="@color/backgroundColor"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <com.example.fitnessassistant.util.CustomSpinner
+            android:id="@+id/spinner"
+
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="145dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/spinner_background"
+            android:dropDownWidth="145dp"
+
+            android:dropDownVerticalOffset="36dp"
+
+            android:paddingStart="0dp"
+
+            android:paddingEnd="14dp"
+            android:popupBackground="@color/BlueYonder"
+            android:popupElevation="3dp"
+            android:stateListAnimator="@xml/spinner_sla"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+
+        android:fontFamily="@font/ralewayb"
+        android:text="@string/previous_activities"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activityRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/noPreviousActivities"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="10dp"
+            android:elevation="-1dp"
+
+            android:fontFamily="@font/ralewaym"
+            android:text="@string/no_previous_activities"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,7 +1,7 @@
 package com.example.fitnessassistant.pedometer;
 
 import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
-import static com.example.fitnessassistant.util.TimeFunctional.getLast7DatesFromEnd;
+import static com.example.fitnessassistant.util.TimeFunctional.getPastDaysInTheWeek;
 import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
 
 import android.annotation.SuppressLint;
@@ -301,13 +301,34 @@ public class PedometerFragment extends Fragment {
             int[] steps = new int[7];
             int[] stepGoals = new int[7];
 
-            steps[0] = (int) MDBHPedometer.getInstance(requireActivity()).readPedometerSteps(getCurrentDateFormatted());
-            stepGoals[0] = StepGoalFragment.getStepGoalForToday(requireActivity());
+            String[] dates = getPastDaysInTheWeek();
 
-            String[] dates = getLast7DatesFromEnd();
-            for(int i = 1; i < 7; i ++){
+            for(int i = 0; i < dates.length; i++) {
                 steps[i] = (int) MDBHPedometer.getInstance(requireActivity()).readPedometerSteps(dates[i]);
                 stepGoals[i] = MDBHPedometer.getInstance(requireActivity()).readPedometerStepGoal(dates[i]);
+            }
+
+            switch (dates.length - 1) {
+                case 0:
+                    steps[1] = 0;
+                    stepGoals[0] = StepGoalFragment.getMondayStepGoal(requireActivity());
+                case 1:
+                    steps[2] = 0;
+                    stepGoals[1] = StepGoalFragment.getTuesdayStepGoal(requireActivity());
+                case 2:
+                    steps[3] = 0;
+                    stepGoals[2] = StepGoalFragment.getWednesdayStepGoal(requireActivity());
+                case 3:
+                    steps[4] = 0;
+                    stepGoals[3] = StepGoalFragment.getThursdayStepGoal(requireActivity());
+                case 4:
+                    steps[5] = 0;
+                    stepGoals[4] = StepGoalFragment.getFridayStepGoal(requireActivity());
+                case 5:
+                    steps[6] = 0;
+                    stepGoals[5] = StepGoalFragment.getSaturdayStepGoal(requireActivity());
+                case 6:
+                    stepGoals[6] = StepGoalFragment.getSundayStepGoal(requireActivity());
             }
 
             ((TextView) view.findViewById(R.id.firstStep)).setText(String.format("%d/%d", steps[0], stepGoals[0]));
@@ -330,72 +351,6 @@ public class PedometerFragment extends Fragment {
 
             ((TextView) view.findViewById(R.id.seventhStep)).setText(String.format("%d/%d", steps[6], stepGoals[6]));
             ((ProgressBar) view.findViewById(R.id.seventhProgress)).setProgress((int) (100.0f * steps[6] / stepGoals[6]));
-
-            switch (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
-                case Calendar.MONDAY:
-                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.mo);
-                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.su);
-                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.sa);
-                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.fr);
-                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.th);
-                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.we);
-                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.tu);
-                    break;
-                case Calendar.TUESDAY:
-                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.tu);
-                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.mo);
-                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.su);
-                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.sa);
-                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.fr);
-                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.th);
-                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.we);
-                    break;
-                case Calendar.WEDNESDAY:
-                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.we);
-                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.tu);
-                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.mo);
-                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.su);
-                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.sa);
-                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.fr);
-                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.th);
-                    break;
-                case Calendar.THURSDAY:
-                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.th);
-                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.we);
-                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.tu);
-                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.mo);
-                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.su);
-                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.sa);
-                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.fr);
-                    break;
-                case Calendar.FRIDAY:
-                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.fr);
-                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.th);
-                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.we);
-                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.tu);
-                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.mo);
-                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.su);
-                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.sa);
-                    break;
-                case Calendar.SATURDAY:
-                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.sa);
-                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.fr);
-                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.th);
-                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.we);
-                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.tu);
-                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.mo);
-                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.su);
-                    break;
-                case Calendar.SUNDAY:
-                    ((TextView) view.findViewById(R.id.bigFirst)).setText(R.string.su);
-                    ((TextView) view.findViewById(R.id.bigSecond)).setText(R.string.sa);
-                    ((TextView) view.findViewById(R.id.bigThird)).setText(R.string.fr);
-                    ((TextView) view.findViewById(R.id.bigFourth)).setText(R.string.th);
-                    ((TextView) view.findViewById(R.id.bigFifth)).setText(R.string.we);
-                    ((TextView) view.findViewById(R.id.bigSixth)).setText(R.string.tu);
-                    ((TextView) view.findViewById(R.id.bigSeventh)).setText(R.string.mo);
-                    break;
-            }
 
             if(graphCal == null)
                 graphCal = Calendar.getInstance();

@@ -230,12 +230,13 @@ public class MDBHPedometer extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(query, null);
             if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
-                do{
-                    if(maxSteps < cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS))) {
-                        maxSteps = cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS));
-                        maxDate = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
-                    }
-                }while(cursor.moveToNext());
+                if(cursor.getCount() > 0)
+                    do{
+                        if(maxSteps < cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS))) {
+                            maxSteps = cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS));
+                            maxDate = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                        }
+                    }while(cursor.moveToNext());
                 cursor.close();
             }
         }
@@ -262,25 +263,25 @@ public class MDBHPedometer extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(query, null);
             if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
-                do{
-                    if(cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS)) >= cursor.getInt(cursor.getColumnIndex(COLUMN_STEP_GOAL))) {
-                        streak++;
+                if(cursor.getCount() > 0)
+                    do {
+                        if (cursor.getFloat(cursor.getColumnIndex(COLUMN_STEPS)) >= cursor.getInt(cursor.getColumnIndex(COLUMN_STEP_GOAL))) {
+                            streak++;
 
-                        if(streak == 1)
-                            dateStart = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                            if (streak == 1)
+                                dateStart = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
 
-                    }
-                    else{
-                        if(maxStreak < streak) {
-                            maxDateStart = dateStart;
-                            maxDateEnd = dateEnd;
-                            maxStreak = streak;
+                        } else {
+                            if (maxStreak < streak) {
+                                maxDateStart = dateStart;
+                                maxDateEnd = dateEnd;
+                                maxStreak = streak;
+                            }
+
+                            streak = 0;
                         }
-
-                        streak = 0;
-                    }
-                    dateEnd = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
-                }while(cursor.moveToNext());
+                        dateEnd = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                    } while (cursor.moveToNext());
                 cursor.close();
             }
         }
