@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.fitnessassistant.database.mdbh.MDBHSleepTracker;
-import com.google.android.gms.location.SleepClassifyEvent;
 import com.google.android.gms.location.SleepSegmentEvent;
 
 import java.util.List;
@@ -22,13 +21,6 @@ public class SleepDataReceiver extends BroadcastReceiver {
 
             for(int i = 0; i < sleepEvents.size(); i++){
                 MDBHSleepTracker.getInstance(context).addNewSleepSegment(sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis());
-                System.out.println(sleepEvents.get(i) + " SLEEP_DATA");
-            }
-        } else if (SleepClassifyEvent.hasEvents(intent)){ // These are regular sleep updates
-            List<SleepClassifyEvent> sleepEvents = SleepClassifyEvent.extractEvents(intent);
-
-            for(int i = 0; i < sleepEvents.size(); i++){
-                MDBHSleepTracker.getInstance(context).addNewSleepEvent(sleepEvents.get(i).getConfidence(), sleepEvents.get(i).getLight(), sleepEvents.get(i).getMotion(), sleepEvents.get(i).getTimestampMillis());
                 System.out.println(sleepEvents.get(i) + " SLEEP_DATA");
             }
         }

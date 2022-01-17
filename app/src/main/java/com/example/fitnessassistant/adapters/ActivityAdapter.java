@@ -125,7 +125,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
 
                 ((Button) dialog.findViewById(R.id.dialog_positive_button)).setText(R.string.delete);
                 dialog.findViewById(R.id.dialog_positive_button).setOnClickListener(view2 -> {
-                    MDBHActivityTracker.getInstance(context).removeActivityFromDB(activities.get(position).getId());
+                    MDBHActivityTracker.getInstance(context).removeActivityFromDB(activities.get(position).getId()); // TODO: Na ovoj liniji se kres dok sam brisao activity
                     remove(position);
                     dialog.dismiss();
                 });

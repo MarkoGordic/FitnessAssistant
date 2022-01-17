@@ -2,6 +2,7 @@ package com.example.fitnessassistant.database.mdbh;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -10,14 +11,6 @@ import androidx.annotation.Nullable;
 public class MDBHSleepTracker extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SleepData.db";
     private static final int DATABASE_VERSION = 1;
-
-    // sleepEvents table
-    private static final String EVENTS_TABLE_NAME = "sleepEvents";
-    private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_CONFIDENCE = "activity_date";
-    private static final String COLUMN_LIGHT = "activity_average_speed";
-    private static final String COLUMN_MOTION = "activity_calories_burnt";
-    private static final String COLUMN_TIME = "activity_distance";
 
     // sleepEvents table
     private static final String SEGMENTS_TABLE_NAME = "sleepSegments";
@@ -41,39 +34,12 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =
-                "CREATE TABLE " + EVENTS_TABLE_NAME +
-                        " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        COLUMN_CONFIDENCE + " INTEGER, " +
-                        COLUMN_LIGHT + " INTEGER, " +
-                        COLUMN_MOTION + " INTEGER, " +
-                        COLUMN_TIME + " REAL);";
-
-        db.execSQL(query);
-
-        query =
                 "CREATE TABLE " + SEGMENTS_TABLE_NAME +
                         " (" + SEGMENTS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         SEGMENTS_START_TIME + " REAL, " +
                         SEGMENTS_END_TIME + " REAL);";
 
         db.execSQL(query);
-    }
-
-    public void addNewSleepEvent(int confidence, int light, int motion, long time){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(COLUMN_CONFIDENCE, confidence);
-        cv.put(COLUMN_LIGHT, light);
-        cv.put(COLUMN_MOTION, motion);
-        cv.put(COLUMN_TIME, time);
-
-        long result = db.insert(EVENTS_TABLE_NAME, null, cv);
-
-        if(result == -1)
-            System.out.println("Fail! DATABASE");
-        else
-            System.out.println("Success! DATABASE");
     }
 
     public void addNewSleepSegment(long startTime, long endTime){
@@ -83,29 +49,48 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         cv.put(SEGMENTS_START_TIME, startTime);
         cv.put(SEGMENTS_END_TIME, endTime);
 
-        long result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
+        boolean same = checkSleepSegment(startTime, endTime);
+        long result;
 
-        if(result == -1)
-            System.out.println("Fail! DATABASE");
-        else
-            System.out.println("Success! DATABASE");
+        if(!same){
+            result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
+
+            if(result == -1)
+                System.out.println("Fail! DATABASE");
+            else
+                System.out.println("Success! DATABASE");
+        }
+    }
+
+    public boolean checkSleepSegment(long startTime, long endTime){
+        String query = "SELECT * FROM " + SEGMENTS_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        long[] values = new long[2];
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null && cursor.getCount() > 0){
+                cursor.moveToLast();
+
+                values[0] = cursor.getLong(cursor.getColumnIndex(SEGMENTS_START_TIME));
+                values[1] = cursor.getLong(cursor.getColumnIndex(SEGMENTS_END_TIME));
+
+                cursor.close();
+            }
+        }
+
+        return values[0] == startTime && values[1] == endTime;
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + SEGMENTS_TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + EVENTS_TABLE_NAME);
         onCreate(db);
     }
 
     public void deleteSegmentsDB(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(SEGMENTS_TABLE_NAME, null, null);
-    }
-
-
-    public void deleteEventsDB(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(EVENTS_TABLE_NAME, null, null);
     }
 }

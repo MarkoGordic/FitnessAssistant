@@ -273,7 +273,6 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             mapView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
                 if(shouldSave) {
                     shouldSave = false;
-                    forceFocusPathOnMap();
                     exitAndSaveActivity();
                 }
             });
@@ -363,6 +362,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void exitAndSaveActivity(){
+        forceFocusPathOnMap();
         googleMap.snapshot(bitmap->{
             if(bitmap != null){
                 long dateRecorded = Calendar.getInstance().getTimeInMillis();
