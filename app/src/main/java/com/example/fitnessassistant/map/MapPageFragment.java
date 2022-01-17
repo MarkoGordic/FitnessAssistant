@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.InAppActivity;
@@ -87,7 +88,12 @@ public class MapPageFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.activityRecycler);
         recyclerView.setAdapter(((InAppActivity) requireActivity()).smallActivityAdapter);
-        recyclerView.setLayoutManager(new CustomLinearLayout(requireActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
+            @Override
+            public boolean supportsPredictiveItemAnimations() {
+                return false;
+            }
+        });
 
         return view;
     }

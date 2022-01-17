@@ -130,9 +130,8 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
                     dialog.dismiss();
                 });
             });
-        } else{
+        } else
             holder.trashButton.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -173,6 +172,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             handler.post(() -> {
                 activities.remove(position);
                 notifyItemRemoved(position);
+                notifyItemRangeChanged(position, getItemCount());
 
                 ActivityRecyclerFragment.updateLists(activities);
 

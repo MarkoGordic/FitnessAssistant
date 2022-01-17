@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.InAppActivity;
@@ -159,8 +160,15 @@ public class ActivityRecyclerFragment extends Fragment {
             updateView(spinner.getSelectedItemPosition());
         });
 
-        ((RecyclerView) view.findViewById(R.id.activityRecycler)).setAdapter(((InAppActivity) requireActivity()).activityAdapter);
-        ((RecyclerView) view.findViewById(R.id.activityRecycler)).setLayoutManager(new CustomLinearLayout(requireActivity()));
+        RecyclerView recyclerView = view.findViewById(R.id.activityRecycler);
+
+        recyclerView.setAdapter(((InAppActivity) requireActivity()).activityAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
+            @Override
+            public boolean supportsPredictiveItemAnimations() {
+                return false;
+            }
+        });
 
         return view;
     }
