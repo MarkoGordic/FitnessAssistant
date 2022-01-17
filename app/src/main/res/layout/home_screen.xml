@@ -144,8 +144,7 @@
 
                 android:indeterminateOnly="false"
                 android:progressDrawable="@drawable/steps_circle"
-                android:rotation="90"
-                android:progress="30"/>
+                android:rotation="90"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

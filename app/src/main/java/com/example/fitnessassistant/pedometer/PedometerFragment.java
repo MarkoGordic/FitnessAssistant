@@ -1,10 +1,11 @@
 package com.example.fitnessassistant.pedometer;
 
 import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
-import static com.example.fitnessassistant.util.TimeFunctional.getPastDaysInTheWeek;
 import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
+import static com.example.fitnessassistant.util.TimeFunctional.getPastDaysInTheWeek;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -351,6 +352,37 @@ public class PedometerFragment extends Fragment {
 
             ((TextView) view.findViewById(R.id.seventhStep)).setText(String.format("%d/%d", steps[6], stepGoals[6]));
             ((ProgressBar) view.findViewById(R.id.seventhProgress)).setProgress((int) (100.0f * steps[6] / stepGoals[6]));
+
+            switch(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)){
+                case Calendar.MONDAY:
+                    ((ProgressBar) view.findViewById(R.id.seventhProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
+                    ((ProgressBar) view.findViewById(R.id.firstProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.MangoTango)));
+                    break;
+                case Calendar.TUESDAY:
+                    ((ProgressBar) view.findViewById(R.id.firstProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
+                    ((ProgressBar) view.findViewById(R.id.secondProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.MangoTango)));
+                    break;
+                case Calendar.WEDNESDAY:
+                    ((ProgressBar) view.findViewById(R.id.secondProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
+                    ((ProgressBar) view.findViewById(R.id.thirdProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.MangoTango)));
+                    break;
+                case Calendar.THURSDAY:
+                    ((ProgressBar) view.findViewById(R.id.thirdProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
+                    ((ProgressBar) view.findViewById(R.id.fourthProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.MangoTango)));
+                    break;
+                case Calendar.FRIDAY:
+                    ((ProgressBar) view.findViewById(R.id.fourthProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
+                    ((ProgressBar) view.findViewById(R.id.fifthProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.MangoTango)));
+                    break;
+                case Calendar.SATURDAY:
+                    ((ProgressBar) view.findViewById(R.id.fifthProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
+                    ((ProgressBar) view.findViewById(R.id.sixthProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.MangoTango)));
+                    break;
+                case Calendar.SUNDAY:
+                    ((ProgressBar) view.findViewById(R.id.sixthProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
+                    ((ProgressBar) view.findViewById(R.id.seventhProgress)).setProgressTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.MangoTango)));
+            }
+
 
             if(graphCal == null)
                 graphCal = Calendar.getInstance();

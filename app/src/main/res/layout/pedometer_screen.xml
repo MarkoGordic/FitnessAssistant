@@ -146,7 +146,7 @@
             style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
             android:indeterminate="false"
             android:progress="40"
-            android:progressTint="@color/BlueYonder"
+            android:progressTint="@color/MangoTango"
             android:progressBackgroundTint="@color/NonBackgroundColor"
             android:tint="@color/backgroundColor"/>
 
