@@ -7,35 +7,148 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
     android:orientation="vertical"
+    android:padding="32dp">
 
-    android:padding="32dp"
-    android:gravity="center">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="48dp">
+
+        <TextView
+            android:id="@+id/activitySelection"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/top_rounded"
+
+            android:backgroundTint="@color/SpaceCadet"
+            android:fontFamily="@font/ralewayb"
+
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:padding="10dp"
+            android:text="@string/activity_selection"
+            android:textAllCaps="false"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/activitySelection"
+
+            android:background="@drawable/bottom_rounded_border"
+
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingTop="16dp"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/walkingActivity"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/circle_button"
+                    android:backgroundTint="@color/LightGrayColor"
+                    android:padding="8dp"
+
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/walk"
+                    android:tint="@color/backgroundColor"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/runningActivity"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/circle_button"
+                    android:backgroundTint="@color/LightGrayColor"
+                    android:padding="8dp"
+
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/run"
+                    android:tint="@color/backgroundColor"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/cyclingActivity"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/circle_button"
+                    android:backgroundTint="@color/LightGrayColor"
+                    android:padding="8dp"
+
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/bike"
+                    android:tint="@color/backgroundColor"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/activitiesHeader"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:gravity="center"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-
                 android:background="@drawable/top_rounded"
-                android:backgroundTint="@color/SpaceCadet"
 
+                android:backgroundTint="@color/SpaceCadet"
                 android:fontFamily="@font/ralewayb"
+
+                android:gravity="center"
                 android:includeFontPadding="false"
                 android:padding="10dp"
                 android:text="@string/previous_activities"
                 android:textAllCaps="false"
                 android:textColor="@color/backgroundColor"
                 android:textFontWeight="600"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
             <View
                 android:id="@+id/startSeparator"
 
@@ -131,50 +244,4 @@
                 android:layout_alignBottom="@id/relativeLayout"
                 android:background="@color/DarkBlueYonder"/>
         </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/mapSwipeUp"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="43dp"
-
-        android:orientation="vertical"
-        tools:ignore="UseCompoundDrawables">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center_horizontal"
-
-            android:layout_marginBottom="-10dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-
-            android:background="@color/backgroundColor"
-
-            android:src="@drawable/up"
-            app:tint="@color/SpaceCadet"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:background="@drawable/transparent_button"
-
-            android:elevation="-1dp"
-
-            android:fontFamily="@font/ralewayb"
-            android:includeFontPadding="false"
-            android:padding="10dp"
-            android:text="@string/map_view"
-            android:textAllCaps="false"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="16sp" />
-
-    </LinearLayout>
 </LinearLayout>

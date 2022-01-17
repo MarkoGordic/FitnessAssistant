@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
+import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -163,7 +164,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         // For map updates
         LocationService.pathHistory.observe(getViewLifecycleOwner(), newPath -> {
-            if(!LocationService.serviceKilled){
+            if(LocationService.serviceKilled.getValue() != null && !LocationService.serviceKilled.getValue()){
                 pathHistory = newPath;
                 addLatestPathToMap();
                 focusUserOnMap();
@@ -284,6 +285,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         dialog.findViewById(R.id.dialog_exit_button).setOnClickListener(v -> {
             dialog.dismiss();
+            MapPageFragment.activityChosen.set(false);
             stopActivity();
         });
 
@@ -310,7 +312,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void focusUserOnMap(){
-        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser && !LocationService.serviceKilled && googleMap != null){
+        if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser && LocationService.serviceKilled.getValue() != null && !LocationService.serviceKilled.getValue() && googleMap != null){
             float mapZoom = 18f;
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
@@ -322,7 +324,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void forceFocusPathOnMap(){
-        if(!LocationService.serviceKilled && pathHistory.size() >= 1) {
+        if(LocationService.serviceKilled.getValue() != null && !LocationService.serviceKilled.getValue() && pathHistory.size() >= 1) {
             LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
             for (int i = 0; i < pathHistory.size(); i++) {
                 for (int j = 0; j < pathHistory.get(i).size(); j++) {
@@ -342,7 +344,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
     }
 
     private void focusPathOnMap(){
-        if(!LocationService.serviceKilled && pathHistory.size() >= 1) {
+        if(LocationService.serviceKilled.getValue() != null && !LocationService.serviceKilled.getValue() && pathHistory.size() >= 1) {
             LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
             for (int i = 0; i < pathHistory.size(); i++) {
                 for (int j = 0; j < pathHistory.get(i).size(); j++) {
@@ -759,7 +761,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         mapView.onResume();
         updateTracking(isTracking);
 
-        if(!LocationService.serviceKilled && googleMap != null){
+        if(LocationService.serviceKilled.getValue() != null && !LocationService.serviceKilled.getValue() && googleMap != null){
             addWholePathToMap();
             focusUserOnMap();
         }

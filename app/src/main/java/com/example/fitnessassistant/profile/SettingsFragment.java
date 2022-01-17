@@ -93,7 +93,7 @@ public class SettingsFragment extends Fragment {
 
         // set onCheckedListener for darkModeSwitch
         ((SwitchCompat) view.findViewById(R.id.darkModeSwitch)).setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if(LocationService.serviceKilled) {
+            if(LocationService.serviceKilled.getValue() != null && LocationService.serviceKilled.getValue()) {
                 if (ServiceFunctional.getPedometerShouldRun(requireActivity()))
                     ServiceFunctional.stopPedometerService(requireActivity());
                 if (isChecked) {
@@ -131,7 +131,7 @@ public class SettingsFragment extends Fragment {
 
         // selectLanguageTextView listener - gives alert dialogs for choosing the language
         view.findViewById(R.id.selectLanguageTextView).setOnClickListener(view1 -> {
-            if(LocationService.serviceKilled) {
+            if(LocationService.serviceKilled.getValue() != null && LocationService.serviceKilled.getValue()) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(requireContext());
                 builder1.setView(R.layout.custom_select_choice_dialog);
                 Dialog dialog = builder1.create();
@@ -248,7 +248,7 @@ public class SettingsFragment extends Fragment {
         // signOutButton listener - hold
         view.findViewById(R.id.signOutAccountTextView).setOnLongClickListener(view1 -> {
             if(AuthFunctional.currentlyOnline) {
-                if(LocationService.serviceKilled){
+                if(LocationService.serviceKilled.getValue() != null && LocationService.serviceKilled.getValue()){
                     FirebaseAuth.getInstance().signOut();
                     // signing out from facebook because they save it separately
                     LoginManager.getInstance().logOut();
@@ -286,7 +286,7 @@ public class SettingsFragment extends Fragment {
         // deleteAccountButton listener - pops up alert dialog for deletion
         view.findViewById(R.id.deleteAccountTextView).setOnClickListener(view1 -> {
             if(AuthFunctional.currentlyOnline) {
-                if(LocationService.serviceKilled) {
+                if(LocationService.serviceKilled.getValue() != null && LocationService.serviceKilled.getValue()) {
                     // stopping Pedometer service
                     ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
                     ServiceFunctional.stopPedometerService(requireActivity());

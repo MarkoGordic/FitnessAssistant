@@ -258,6 +258,7 @@
     <string name="sort_by">Sortiraj Po…</string>
     <string name="date">Datum</string>
     <string name="time">Vreme</string>
+    <string name="activity_selection">Izbor Aktivnosti</string>
 
     <!-- Notification Strings -->
     <string name="pedometer">Pedometar</string>

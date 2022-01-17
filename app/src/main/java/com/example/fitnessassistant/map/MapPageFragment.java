@@ -1,31 +1,101 @@
 package com.example.fitnessassistant.map;
 
-import static java.lang.Math.abs;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.activitytracker.LocationService;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class MapPageFragment extends Fragment {
+    public static final AtomicBoolean activityChosen = new AtomicBoolean(false);
+    public static final int RUNNING_SELECTED = 1;
+    public static final int WALKING_SELECTED = 2;
+    public static final int CYCLING_SELECTED = 3;
+    public static final int NONE_SELECTED = 0;
+
 
     public void goToActivityTrackingFragment(){
         requireActivity().getSupportFragmentManager().beginTransaction().hide(this).setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down).add(R.id.in_app_container, InAppActivity.activityTrackingFragment).addToBackStack(null).commit();
     }
 
+    private void setSelected(View view, int selected){
+        AppCompatImageButton walking = view.findViewById(R.id.walkingActivity);
+        AppCompatImageButton running = view.findViewById(R.id.runningActivity);
+        AppCompatImageButton cycling = view.findViewById(R.id.cyclingActivity);
+        switch(selected){
+            case RUNNING_SELECTED:
+                ViewCompat.setBackgroundTintList(running, ContextCompat.getColorStateList(requireActivity(), R.color.SpaceCadet));
+                ViewCompat.setBackgroundTintList(walking, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                ViewCompat.setBackgroundTintList(cycling, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                break;
+            case WALKING_SELECTED:
+                ViewCompat.setBackgroundTintList(walking, ContextCompat.getColorStateList(requireActivity(), R.color.SpaceCadet));
+                ViewCompat.setBackgroundTintList(running, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                ViewCompat.setBackgroundTintList(cycling, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                break;
+            case CYCLING_SELECTED:
+                ViewCompat.setBackgroundTintList(cycling, ContextCompat.getColorStateList(requireActivity(), R.color.SpaceCadet));
+                ViewCompat.setBackgroundTintList(running, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                ViewCompat.setBackgroundTintList(walking, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                break;
+            case NONE_SELECTED:
+                ViewCompat.setBackgroundTintList(walking, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                ViewCompat.setBackgroundTintList(running, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                ViewCompat.setBackgroundTintList(cycling, ContextCompat.getColorStateList(requireActivity(), R.color.LightGrayColor));
+                break;
+        }
+    }
+
     private void setUpOnClickListeners(View view){
+        view.findViewById(R.id.walkingActivity).setOnClickListener(v -> {
+            if(!activityChosen.get()) {
+                setSelected(view, WALKING_SELECTED);
+                goToActivityTrackingFragment();
+                // TODO obavestiti da je walking
+            }
+//          else if(TODO if walking){
+//                goToActivityTrackingFragment();
+//            }
+        });
+
+        view.findViewById(R.id.runningActivity).setOnClickListener(v -> {
+            if(!activityChosen.get()) {
+                setSelected(view, RUNNING_SELECTED);
+                goToActivityTrackingFragment();
+                // TODO obavestit da je running
+            }
+//          else if(TODO if running){
+//                goToActivityTrackingFragment();
+//            }
+        });
+
+        view.findViewById(R.id.cyclingActivity).setOnClickListener(v -> {
+            if(!activityChosen.get()) {
+                setSelected(view, CYCLING_SELECTED);
+                goToActivityTrackingFragment();
+                // TODO obavestiti da je cycling
+            }
+//          else if(TODO if walking){
+//                goToActivityTrackingFragment();
+//            }
+        });
+
         view.findViewById(R.id.showAll).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.activityRecyclerFragment).addToBackStack(null).commit());
 
         view.findViewById(R.id.showAll).setOnTouchListener(new View.OnTouchListener() {
@@ -46,38 +116,6 @@ public class MapPageFragment extends Fragment {
                 return false;
             }
         });
-
-        // set up mapButton on click listener
-        view.findViewById(R.id.mapSwipeUp).setOnClickListener(view1 -> Toast.makeText(requireContext(), R.string.swipe_up_to_use_the_map, Toast.LENGTH_SHORT).show());
-
-        // set up mapButton on touch listener (for swiping)
-        view.findViewById(R.id.mapSwipeUp).setOnTouchListener(new View.OnTouchListener() {
-            // xCord and yCord of event registered
-            float xCord;
-            float yCord;
-            // len, used to determine what the event actually was
-            final float len = getResources().getDisplayMetrics().densityDpi / 6f;
-
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    // when button gets pressed, get cords of the click
-                    xCord = event.getX();
-                    yCord = event.getY();
-                } else if(event.getAction() == MotionEvent.ACTION_UP){
-                    // when button gets released, set cords to amount moved from ACTION_DOWN's click cords
-                    xCord -= event.getX();
-                    yCord -= event.getY();
-
-                    // if it's a solid swipe UP (>) and if it's not too much to the side
-                    if(yCord > len * 4 && abs(xCord) < len * 8)
-                        goToActivityTrackingFragment();
-                    else
-                        view.performClick(); // call onClickListener
-                }
-                return false;
-            }
-        });
     }
 
     @Nullable
@@ -92,6 +130,23 @@ public class MapPageFragment extends Fragment {
             @Override
             public boolean supportsPredictiveItemAnimations() {
                 return false;
+            }
+        });
+
+        LocationService.serviceKilled.observe(getViewLifecycleOwner(), isKilled -> {
+            if(isKilled) {
+                activityChosen.set(false);
+                setSelected(view, NONE_SELECTED);
+            } else{
+                if(activityChosen.get()){
+//                    if(TODO running)
+//                        setSelected(view, RUNNING_SELECTED);
+//                    else if(TODO walking)
+//                        setSelected(view, WALKING_SELECTED);
+//                    else if(TODO cycling)
+//                        setSelected(view, CYCLING_SELECTED);
+                } else
+                    setSelected(view, NONE_SELECTED);
             }
         });
 

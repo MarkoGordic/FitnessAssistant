@@ -21,6 +21,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.map.MapPageFragment;
 import com.example.fitnessassistant.questions.BirthdayFragment;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
@@ -70,7 +71,7 @@ public class LocationService extends LifecycleService {
     private boolean forceIcon = false;
 
     public static boolean serviceRunning = false;
-    public static boolean serviceKilled = true;
+    public static MutableLiveData<Boolean> serviceKilled = new MutableLiveData<>(true);
     public static MutableLiveData<Boolean> shouldStart = new MutableLiveData<>();
     public static MutableLiveData<Boolean> shouldShowAccuracyAlert = new MutableLiveData<>();
 
@@ -352,7 +353,7 @@ public class LocationService extends LifecycleService {
     }
 
     private void killService(){
-        serviceKilled = true;
+        serviceKilled.postValue(true);
         serviceRunning = true;
         resetVariables();
         pauseService();
@@ -364,6 +365,7 @@ public class LocationService extends LifecycleService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         switch (Objects.requireNonNull(intent).getStringExtra("state")){
             case "start_or_resume_service":
+                MapPageFragment.activityChosen.set(true);
                 forceIcon = false;
                 if(shouldStart.getValue() != null) {
                     if (!shouldStart.getValue()) {
@@ -398,10 +400,10 @@ public class LocationService extends LifecycleService {
                 Notification notification = pushActivityTrackingNotification(this, null, "00:00:00");
                 startForeground(ACTIVITY_TRACKING_ID, notification);
 
-                serviceKilled = false;
+                serviceKilled.postValue(false);
                 isTracking.postValue(true);
             }else{
-                serviceKilled = false;
+                serviceKilled.postValue(false);
                 startTimer();
                 isTracking.postValue(true);
 
@@ -410,7 +412,7 @@ public class LocationService extends LifecycleService {
                 startForeground(ACTIVITY_TRACKING_ID, notification);
 
                 timeInSeconds.observe(this, aLong -> {
-                    if(!serviceKilled)
+                    if(serviceKilled.getValue() != null && !serviceKilled.getValue())
                         updateNotification();
                 });
             }
@@ -425,7 +427,7 @@ public class LocationService extends LifecycleService {
     private void updateNotification(){
         PendingIntent pendingIntent;
 
-        if(isTracking.getValue() != null && timeInMilliseconds.getValue() != null && !serviceKilled)
+        if(isTracking.getValue() != null && timeInMilliseconds.getValue() != null && serviceKilled.getValue() != null && !serviceKilled.getValue())
             if(isTracking.getValue()) {
                 Intent pauseIntent = new Intent(this, LocationService.class);
                 pauseIntent.putExtra("state", "pause_service");
@@ -477,7 +479,7 @@ public class LocationService extends LifecycleService {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-        if(!serviceKilled)
+        if(serviceKilled.getValue() != null && !serviceKilled.getValue())
             notificationManager.notify(ACTIVITY_TRACKING_ID, notificationBuilder.build());
 
         return notificationBuilder.build();
