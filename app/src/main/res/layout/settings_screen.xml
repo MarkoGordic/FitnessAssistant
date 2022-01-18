@@ -190,6 +190,29 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
+                        <!-- AccountData TextView -->
+                        <TextView
+                            android:id="@+id/backupAndRestoreTextView"
+
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+
+                            android:layout_marginTop="5dp"
+
+                            android:background="@drawable/settings_field"
+
+                            app:drawableStartCompat="@drawable/cloud_download"
+                            app:drawableTint="@color/SpaceCadet"
+                            app:drawableEndCompat="@drawable/forward"
+                            android:drawablePadding="12dp"
+
+                            android:text="@string/backup_and_restore"
+                            android:textColor="@color/SpaceCadet"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="12dp"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
                         <!-- separator -->
                         <View
                             android:layout_width="wrap_content"

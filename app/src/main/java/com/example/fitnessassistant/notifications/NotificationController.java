@@ -7,9 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.graphics.drawable.IconCompat;
-
-import com.example.fitnessassistant.R;
 
 public class NotificationController {
     public static void createNotificationChannel(Context context, String channelID, String channelName, String channelDescription, boolean showBadge, int importance){

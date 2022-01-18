@@ -74,6 +74,8 @@ public class RealtimeDB {
                         // stopping pedometer service
                         ServiceFunctional.setPedometerShouldRun(context, false);
                         ServiceFunctional.stopPedometerService(context);
+                        ServiceFunctional.setSleepTrackerShouldRun(context, false);
+                        ServiceFunctional.stopSleepTrackerService(context);
                     });
                 }
 

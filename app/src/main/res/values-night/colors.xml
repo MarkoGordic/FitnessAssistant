@@ -13,7 +13,7 @@
     <color name="backgroundColor">#111419</color>
     <color name="InvertedBackgroundColor">#FFFCF2</color>
     <color name="NonBackgroundColor">#979999</color>
-    <color name="LightGrayColor">#dec8c8</color>
+    <color name="LightGrayColor">#c4c8cc</color>
     <color name="NotSelectedDefaultColor">#3b3d40</color>
     <!-- main blue colors -->
     <color name="SpaceCadet">#6cb8d9</color>

@@ -67,10 +67,13 @@ public class LocaleExt {
             Pedometer.updatePedometerWidgetData(newContext ,((int) MDBHPedometer.getInstance(newContext).readPedometerSteps(getCurrentDateFormatted())), null);
         }
 
-        if(updateNotifications)
-            if(ServiceFunctional.getPedometerShouldRun(newContext))
-                Pedometer.pushPedometerNotification(newContext, ((int) MDBHPedometer.getInstance(newContext).readPedometerSteps(getCurrentDateFormatted())) + " " + newContext.getString(R.string.steps_small),newContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(newContext) + ".");
-
+        if(updateNotifications) {
+            if (ServiceFunctional.getPedometerShouldRun(newContext))
+                Pedometer.pushPedometerNotification(newContext, ((int) MDBHPedometer.getInstance(newContext).readPedometerSteps(getCurrentDateFormatted())) + " " + newContext.getString(R.string.steps_small), newContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(newContext) + ".");
+//            TODO set correct notification
+//            if (ServiceFunctional.getSleepTrackerShouldRun(newContext))
+//                SleepTracker.pushSleepDetectedNotification();
+        }
         return newContext;
     }
 

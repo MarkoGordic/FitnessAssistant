@@ -301,6 +301,13 @@
     <string name="delete_activity">Obriši Aktivnost</string>
     <string name="delete_activity_message">Ne postoji način da povratite ovu aktivnost. Da li ste sigurni?</string>
     <string name="no_previous_activities">Nema Prethodnih Aktivnosti.</string>
+    <string name="locked">Zaključano</string>
+    <string name="backup_and_restore">Rezervne Kopije &amp; Obnova</string>
+    <string name="backup">Rezervne Kopije</string>
+    <string name="restore">Obnova</string>
+    <string name="activities">Aktivnosti</string>
+    <string name="pedometer_data">Podaci Pedometra</string>
+    <string name="sleep_data">Podaci o Spavanju</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Preskoči</string>
