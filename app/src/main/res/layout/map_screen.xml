@@ -1,126 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mapScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    android:orientation="vertical"
-    android:padding="32dp">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
+    android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/backgroundColor"
+        android:orientation="vertical"
+        android:padding="32dp">
 
-        android:layout_marginBottom="48dp">
-
-        <TextView
-            android:id="@+id/activitySelection"
-
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/top_rounded"
+            android:layout_marginBottom="48dp">
 
-            android:backgroundTint="@color/SpaceCadet"
-            android:fontFamily="@font/ralewayb"
+            <TextView
+                android:id="@+id/activitySelection"
 
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:padding="10dp"
-            android:text="@string/activity_selection"
-            android:textAllCaps="false"
-            android:textColor="@color/backgroundColor"
-            android:textFontWeight="600"
-            android:textSize="16sp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/top_rounded"
 
-            android:layout_below="@id/activitySelection"
+                android:backgroundTint="@color/SpaceCadet"
+                android:fontFamily="@font/ralewayb"
 
-            android:background="@drawable/bottom_rounded_border"
-
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:paddingTop="16dp"
-            android:paddingBottom="12dp">
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:padding="10dp"
+                android:text="@string/activity_selection"
+                android:textAllCaps="false"
+                android:textColor="@color/backgroundColor"
+                android:textFontWeight="600"
+                android:textSize="16sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-                android:gravity="center">
+                android:layout_below="@id/activitySelection"
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/walkingActivity"
+                android:background="@drawable/bottom_rounded_border"
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="16dp"
+                android:paddingBottom="12dp">
 
-                    android:background="@drawable/circle_button"
-                    android:backgroundTint="@color/LightGrayColor"
-                    android:padding="8dp"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
 
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/walk"
-                    android:tint="@color/backgroundColor"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/walkingActivity"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:background="@drawable/circle_button"
+                        android:backgroundTint="@color/LightGrayColor"
+                        android:padding="8dp"
+
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/walk"
+                        android:tint="@color/backgroundColor"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/runningActivity"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:background="@drawable/circle_button"
+                        android:backgroundTint="@color/LightGrayColor"
+                        android:padding="8dp"
+
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/run"
+                        android:tint="@color/backgroundColor"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/cyclingActivity"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:background="@drawable/circle_button"
+                        android:backgroundTint="@color/LightGrayColor"
+                        android:padding="8dp"
+
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/bike"
+                        android:tint="@color/backgroundColor"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-
-                android:gravity="center">
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/runningActivity"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:background="@drawable/circle_button"
-                    android:backgroundTint="@color/LightGrayColor"
-                    android:padding="8dp"
-
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/run"
-                    android:tint="@color/backgroundColor"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-
-                android:gravity="center">
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/cyclingActivity"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:background="@drawable/circle_button"
-                    android:backgroundTint="@color/LightGrayColor"
-                    android:padding="8dp"
-
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/bike"
-                    android:tint="@color/backgroundColor"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
+        </RelativeLayout>
 
 
         <RelativeLayout
@@ -244,4 +247,582 @@
                 android:layout_alignBottom="@id/relativeLayout"
                 android:background="@color/DarkBlueYonder"/>
         </RelativeLayout>
-</LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_marginTop="48dp"
+
+            android:background="@color/BlueYonder"/>
+
+        <TextView
+            android:id="@+id/achievementsTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center"
+
+            android:fontFamily="@font/ralewayb"
+            android:text="@string/personal_bests"
+            android:textSize="20sp"
+            android:textColor="@color/BlueYonder"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                tools:ignore="DisableBaselineAlignment">
+                <RelativeLayout
+                    android:id="@+id/achievement1"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:layout_marginTop="20dp"
+
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/trophy1"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+
+                        android:layout_alignParentTop="true"
+
+                        android:paddingStart="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="12dp"
+                        android:src="@drawable/trophy"
+                        app:tint="@color/BlueYonder"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/badge1"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignStart="@id/trophy1"
+                        android:layout_alignTop="@id/trophy1"
+                        android:layout_alignEnd="@id/trophy1"
+                        android:layout_marginTop="28dp"
+                        android:layout_marginEnd="1dp"
+
+                        android:src="@drawable/walk"
+                        app:tint="@color/SpaceCadet"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/achievementDate1"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/trophy1"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="4dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/achievementHeader1"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/achievementDate1"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/achievement2"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="20dp"
+
+                    app:layout_constraintTop_toBottomOf="@id/achievementsTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/trophy2"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+
+                        android:layout_alignParentTop="true"
+
+                        android:paddingStart="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="12dp"
+                        android:src="@drawable/trophy"
+                        app:tint="@color/BlueYonder"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/badge2"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignStart="@id/trophy2"
+                        android:layout_alignTop="@id/trophy2"
+                        android:layout_alignEnd="@id/trophy2"
+                        android:layout_marginTop="25.5dp"
+
+                        android:src="@drawable/run"
+                        app:tint="@color/SpaceCadet"
+                        tools:ignore="ContentDescription" />
+                    <TextView
+                        android:id="@+id/achievementDate2"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_below="@id/trophy2"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="4dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:id="@+id/achievementHeader2"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_below="@id/achievementDate2"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="20sp"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                tools:ignore="DisableBaselineAlignment">
+                <RelativeLayout
+                    android:id="@+id/achievement3"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:layout_marginTop="20dp"
+
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/trophy3"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+
+                        android:layout_alignParentTop="true"
+
+                        android:paddingStart="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="12dp"
+                        android:src="@drawable/trophy"
+                        app:tint="@color/BlueYonder"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/badge3"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignStart="@id/trophy3"
+                        android:layout_alignTop="@id/trophy3"
+                        android:layout_alignEnd="@id/trophy3"
+                        android:layout_marginTop="28dp"
+                        android:layout_marginEnd="1dp"
+
+                        android:src="@drawable/bike"
+                        app:tint="@color/SpaceCadet"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/achievementDate3"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/trophy3"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="4dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/achievementHeader3"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/achievementDate3"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/achievement4"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="20dp"
+
+                    app:layout_constraintTop_toBottomOf="@id/achievementsTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/trophy4"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+
+                        android:layout_alignParentTop="true"
+
+                        android:paddingStart="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="12dp"
+                        android:src="@drawable/trophy"
+                        app:tint="@color/BlueYonder"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/badge4"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignStart="@id/trophy4"
+                        android:layout_alignTop="@id/trophy4"
+                        android:layout_alignEnd="@id/trophy4"
+                        android:layout_marginTop="25.5dp"
+
+                        android:src="@drawable/fire"
+                        app:tint="@color/SpaceCadet"
+                        tools:ignore="ContentDescription" />
+                    <TextView
+                        android:id="@+id/achievementDate4"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_below="@id/trophy4"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="4dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp"/>
+                    <TextView
+                        android:id="@+id/achievementHeader4"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:layout_below="@id/achievementDate4"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="20sp"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                tools:ignore="DisableBaselineAlignment">
+                <RelativeLayout
+                    android:id="@+id/achievement5"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:layout_marginTop="20dp"
+
+                    android:gravity="center"
+                    tools:ignore="UselessParent">
+
+                    <ImageView
+                        android:id="@+id/trophy5"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+
+                        android:layout_alignParentTop="true"
+
+                        android:paddingStart="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="12dp"
+                        android:src="@drawable/trophy"
+                        app:tint="@color/BlueYonder"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/badge5"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignStart="@id/trophy5"
+                        android:layout_alignTop="@id/trophy5"
+                        android:layout_alignEnd="@id/trophy5"
+                        android:layout_marginTop="28dp"
+                        android:layout_marginEnd="1dp"
+
+                        android:src="@drawable/hourglass_end"
+                        app:tint="@color/SpaceCadet"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/achievementDate5"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/trophy5"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="4dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/achievementHeader5"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/achievementDate5"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/border_button"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="32dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/ralewaym"
+                android:text="@string/total_values"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="16sp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:background="@color/SpaceCadet"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="horizontal"
+                android:gravity="center" >
+                <TextView
+                    android:id="@+id/totalWalkDistance"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    app:drawableStartCompat="@drawable/walk"
+                    app:drawableTint="@color/SpaceCadet"
+
+                    android:gravity="center"
+                    android:drawablePadding="2dp"
+                    android:paddingStart="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="2dp"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/SpaceCadet"
+                    android:textFontWeight="600"
+                    android:textSize="16sp"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+
+                    android:background="@color/SpaceCadet"/>
+
+                <TextView
+                    android:id="@+id/totalRunDistance"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    app:drawableStartCompat="@drawable/run"
+                    app:drawableTint="@color/SpaceCadet"
+
+                    android:gravity="center"
+                    android:drawablePadding="2dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:paddingEnd="4dp"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/SpaceCadet"
+                    android:textFontWeight="600"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:background="@color/SpaceCadet"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="horizontal"
+                android:gravity="center" >
+                <TextView
+                    android:id="@+id/totalCycleDistance"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    app:drawableStartCompat="@drawable/bike"
+                    app:drawableTint="@color/SpaceCadet"
+
+                    android:gravity="center"
+                    android:drawablePadding="2dp"
+                    android:paddingStart="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="2dp"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/SpaceCadet"
+                    android:textFontWeight="600"
+                    android:textSize="16sp"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+
+                    android:background="@color/SpaceCadet"/>
+
+                <TextView
+                    android:id="@+id/totalCaloriesBurnt"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    app:drawableStartCompat="@drawable/fire"
+                    app:drawableTint="@color/SpaceCadet"
+
+                    android:gravity="center"
+                    android:drawablePadding="2dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:paddingEnd="4dp"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/SpaceCadet"
+                    android:textFontWeight="600"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

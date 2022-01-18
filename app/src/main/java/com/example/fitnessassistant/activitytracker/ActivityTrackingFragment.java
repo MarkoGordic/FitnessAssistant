@@ -215,7 +215,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         LocationService.caloriesBurnt.observe(getViewLifecycleOwner(), newCalories -> {
             if(UnitPreferenceFragment.getEnergyUnit(requireContext()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
                 ((TextView) requireView().findViewById(R.id.energyUnit)).setText(requireContext().getString(R.string.kj));
-                ((TextView) requireView().findViewById(R.id.caloriesBurned)).setText(String.format("%.1f" , newCalories * 4.2f));
+                ((TextView) requireView().findViewById(R.id.caloriesBurned)).setText(String.format("%.1f" , newCalories * 4.184f));
             }else{
                 ((TextView) requireView().findViewById(R.id.energyUnit)).setText(requireContext().getString(R.string.cal));
                 ((TextView) requireView().findViewById(R.id.caloriesBurned)).setText(String.valueOf(Math.round(newCalories)));

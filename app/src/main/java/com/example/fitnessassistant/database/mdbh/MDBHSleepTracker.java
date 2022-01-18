@@ -46,7 +46,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public void addNewSleepSegment(long startTime, long endTime){
+    public void addNewSleepSegment(Context context, long startTime, long endTime){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -60,8 +60,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         if(!same){
             result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
 
-            SleepTracker sleepTracker = new SleepTracker();
-            sleepTracker.pushSleepDetectedNotification(startTime, endTime);
+            SleepTracker.pushSleepDetectedNotification(context, startTime, endTime);
 
             if(result == -1)
                 System.out.println("Fail! DATABASE");

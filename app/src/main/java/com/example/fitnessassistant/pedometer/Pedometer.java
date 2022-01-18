@@ -57,7 +57,10 @@ public class Pedometer extends Service implements SensorEventListener {
             currentHistorySum += MDBHPedometer.getInstance(context).readPedometerSteps(date);
         }
 
-        return currentHistorySum / dates.length;
+        if(dates.length > 0)
+            return currentHistorySum / dates.length;
+        else
+            return 0;
     }
 
     public static void updatePedometerWidgetData(Context updatedContext, int newSteps, Integer newStepGoal){

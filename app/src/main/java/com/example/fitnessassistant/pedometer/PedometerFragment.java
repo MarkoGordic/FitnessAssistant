@@ -293,7 +293,7 @@ public class PedometerFragment extends Fragment {
 
             if(UnitPreferenceFragment.getDistanceUnit(requireActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE)){
                 ((TextView) view.findViewById(R.id.distanceUnit)).setText(R.string.mi);
-                ((TextView) view.findViewById(R.id.distanceNumber)).setText(String.format("%.1f", getDistanceWalked(currentSteps) / 1.609f));
+                ((TextView) view.findViewById(R.id.distanceNumber)).setText(String.format("%.1f", getDistanceWalked(currentSteps) * 0.621371f));
             } else{
                 ((TextView) view.findViewById(R.id.distanceUnit)).setText(R.string.km);
                 ((TextView) view.findViewById(R.id.distanceNumber)).setText(String.format("%.1f", getDistanceWalked(currentSteps)));
@@ -457,12 +457,12 @@ public class PedometerFragment extends Fragment {
             ((TextView) view.findViewById(R.id.totalSteps)).setText(String.format("%d\n%s", (int) totals[0], requireActivity().getString(R.string.steps_small)));
 
             if(UnitPreferenceFragment.getDistanceUnit(requireActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE))
-                ((TextView) view.findViewById(R.id.totalDistance)).setText(String.format("%.1f\n%s", totals[1], requireActivity().getString(R.string.mi)));
+                ((TextView) view.findViewById(R.id.totalDistance)).setText(String.format("%.1f\n%s", totals[1] * 0.621371f, requireActivity().getString(R.string.mi)));
             else
                 ((TextView) view.findViewById(R.id.totalDistance)).setText(String.format("%.1f\n%s", totals[1], requireActivity().getString(R.string.km)));
 
             if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
-                ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%.1f\n%s", totals[2], requireActivity().getString(R.string.kj)));
+                ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%.1f\n%s", totals[2] * 4.184f, requireActivity().getString(R.string.kj)));
             else
                 ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%.1f\n%s", totals[2], requireActivity().getString(R.string.cal)));
 

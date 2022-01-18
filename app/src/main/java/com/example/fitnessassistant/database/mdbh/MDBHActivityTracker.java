@@ -51,7 +51,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         String query =
                 "CREATE TABLE " + TABLE_NAME +
                         " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        COLUMN_DATE + " REAL, " +
+                        COLUMN_DATE + " TEXT, " +
                         COLUMN_AVERAGE_SPEED + " REAL, " +
                         COLUMN_CALORIES_BURNT + " REAL, " +
                         COLUMN_DISTANCE + " REAL, " +
@@ -340,12 +340,16 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
 
                 data.add(String.valueOf(maxDistanceRun));
                 data.add(maxDateRun);
+
                 data.add(String.valueOf(maxDistanceWalk));
                 data.add(maxDateWalk);
+
                 data.add(String.valueOf(maxDistanceBicycle));
                 data.add(maxDateBicycle);
+
                 data.add(String.valueOf(maxCalories));
                 data.add(maxDateCalories);
+
                 data.add(maxDuration);
                 data.add(maxDateDuration);
             }

@@ -83,7 +83,7 @@ public class InAppActivity extends AppCompatActivity {
     // auth listener for refreshing user and UI
     private FirebaseAuth.AuthStateListener authListener;
     // setting up all fragments
-    private MapPageFragment mapFragment;
+    public static MapPageFragment mapFragment;
     private DiaryPageFragment diaryFragment;
     private HomePageFragment homeFragment;
     private WorkoutPageFragment workoutFragment;
@@ -381,21 +381,21 @@ public class InAppActivity extends AppCompatActivity {
         if(isEmpty == null)
             isEmpty = activities.isEmpty();
 
-        if(isEmpty){
-            if(mapFragment.getView() != null) {
+        if (isEmpty) {
+            if (mapFragment != null && mapFragment.getView() != null) {
                 mapFragment.getView().findViewById(R.id.showAll).setVisibility(View.GONE);
                 mapFragment.getView().findViewById(R.id.dontShowAll).setVisibility(View.VISIBLE);
                 mapFragment.getView().findViewById(R.id.noPreviousActivities).setVisibility(View.VISIBLE);
             }
-            if(activityRecyclerFragment.getView() != null)
+            if (activityRecyclerFragment != null && activityRecyclerFragment.getView() != null)
                 activityRecyclerFragment.getView().findViewById(R.id.noPreviousActivities).setVisibility(View.VISIBLE);
         } else {
-            if(mapFragment.getView() != null) {
+            if (mapFragment != null && mapFragment.getView() != null) {
                 mapFragment.getView().findViewById(R.id.showAll).setVisibility(View.VISIBLE);
                 mapFragment.getView().findViewById(R.id.dontShowAll).setVisibility(View.GONE);
                 mapFragment.getView().findViewById(R.id.noPreviousActivities).setVisibility(View.GONE);
             }
-            if(activityRecyclerFragment.getView() != null)
+            if (activityRecyclerFragment != null && activityRecyclerFragment.getView() != null)
                 activityRecyclerFragment.getView().findViewById(R.id.noPreviousActivities).setVisibility(View.GONE);
         }
     }

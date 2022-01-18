@@ -20,7 +20,7 @@ public class SleepDataReceiver extends BroadcastReceiver {
             List<SleepSegmentEvent> sleepEvents = SleepSegmentEvent.extractEvents(intent);
 
             for(int i = 0; i < sleepEvents.size(); i++){
-                MDBHSleepTracker.getInstance(context).addNewSleepSegment(sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis());
+                MDBHSleepTracker.getInstance(context).addNewSleepSegment(context, sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis());
                 System.out.println(sleepEvents.get(i) + " SLEEP_DATA");
             }
         }

@@ -37,7 +37,7 @@ public class APISearch extends Fragment {
     final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
     final static String searchQuery = "&nocache=1&json=1";
 
-    // You need to check local DB for barcode, then global API
+    // TODO You need to check local DB for barcode, then global API
 
     @Nullable
     @Override
