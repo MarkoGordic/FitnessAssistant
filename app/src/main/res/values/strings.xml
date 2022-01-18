@@ -266,7 +266,10 @@
     <string name="activity_tracking">Activity Tracking</string>
     <string name="activity_tracking_desc">Realtime tracking of your workout/activity.</string>
     <string name="sleep_tracking">Sleep Tracking</string>
+    <string name="sleep_tracking_on">We are tracking sleep data.</string>
     <string name="sleep_tracking_desc">Automatic sleep detection/tracking updates.</string>
+    <string name="sleep_detected_1">Sleep detected! Were you asleep from </string>
+    <string name="sleep_detected_2"> to </string>
     <string name="run_tracking">Run Tracking</string>
     <string name="walk_tracking">Walk Tracking</string>
     <string name="bike_tracking">Bike Tracking</string>

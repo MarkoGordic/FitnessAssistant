@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.activitytracker.ActivityTrackingFragment;
 import com.example.fitnessassistant.activitytracker.LocationService;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -67,33 +68,33 @@ public class MapPageFragment extends Fragment {
             if(!activityChosen.get()) {
                 setSelected(view, WALKING_SELECTED);
                 goToActivityTrackingFragment();
-                // TODO obavestiti da je walking
+                ActivityTrackingFragment.activityType = WALKING_SELECTED;
             }
-//          else if(TODO if walking){
-//                goToActivityTrackingFragment();
-//            }
+          else if(ActivityTrackingFragment.activityType == WALKING_SELECTED){
+                goToActivityTrackingFragment();
+            }
         });
 
         view.findViewById(R.id.runningActivity).setOnClickListener(v -> {
             if(!activityChosen.get()) {
                 setSelected(view, RUNNING_SELECTED);
                 goToActivityTrackingFragment();
-                // TODO obavestit da je running
+                ActivityTrackingFragment.activityType = RUNNING_SELECTED;
             }
-//          else if(TODO if running){
-//                goToActivityTrackingFragment();
-//            }
+          else if(ActivityTrackingFragment.activityType == RUNNING_SELECTED){
+                goToActivityTrackingFragment();
+            }
         });
 
         view.findViewById(R.id.cyclingActivity).setOnClickListener(v -> {
             if(!activityChosen.get()) {
                 setSelected(view, CYCLING_SELECTED);
                 goToActivityTrackingFragment();
-                // TODO obavestiti da je cycling
+                ActivityTrackingFragment.activityType = CYCLING_SELECTED;
             }
-//          else if(TODO if walking){
-//                goToActivityTrackingFragment();
-//            }
+          else if(ActivityTrackingFragment.activityType == CYCLING_SELECTED){
+                goToActivityTrackingFragment();
+            }
         });
 
         view.findViewById(R.id.showAll).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.activityRecyclerFragment).addToBackStack(null).commit());
@@ -139,12 +140,12 @@ public class MapPageFragment extends Fragment {
                 setSelected(view, NONE_SELECTED);
             } else{
                 if(activityChosen.get()){
-//                    if(TODO running)
-//                        setSelected(view, RUNNING_SELECTED);
-//                    else if(TODO walking)
-//                        setSelected(view, WALKING_SELECTED);
-//                    else if(TODO cycling)
-//                        setSelected(view, CYCLING_SELECTED);
+                    if(ActivityTrackingFragment.activityType == RUNNING_SELECTED)
+                        setSelected(view, RUNNING_SELECTED);
+                    else if(ActivityTrackingFragment.activityType == WALKING_SELECTED)
+                        setSelected(view, WALKING_SELECTED);
+                    else if(ActivityTrackingFragment.activityType == CYCLING_SELECTED)
+                        setSelected(view, CYCLING_SELECTED);
                 } else
                     setSelected(view, NONE_SELECTED);
             }

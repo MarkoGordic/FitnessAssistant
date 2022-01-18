@@ -154,7 +154,7 @@ public class BarcodeScanner extends Fragment {
                         new TaskRunner().executeAsync(new JSONTask(baseURL + barcodeData + ".json"), (result) -> {
                             try {
                                 JSONObject obj = new JSONObject(result);
-                                product = new Product(obj);
+                                product = new Product(obj, requireContext());
                                 JSONResponse.setText(product.getName() + "\nProteins : " + product.getProteins_100g() + "\nUgljeni hidrati : " + product.getCarbohydrates_100g() + "\nMasti : " + product.getFat_100g() + "\nSo : " + product.getSalt_100g() + "\nKalcijum : " + product.getCalcium_100g());
                             } catch (JSONException e) {
                                 e.printStackTrace();

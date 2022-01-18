@@ -1,5 +1,6 @@
 package com.example.fitnessassistant.nutritiontracker;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,6 +37,8 @@ public class APISearch extends Fragment {
     final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
     final static String searchQuery = "&nocache=1&json=1";
 
+    // You need to check local DB for barcode, then global API
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,14 +52,14 @@ public class APISearch extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private static void searchAPI(String search){
+    private static void searchAPI(String search, Context context){
         new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery), (result) -> {
             try {
                 JSONObject obj = new JSONObject(result);
                 JSONArray jsonArray = obj.getJSONArray("products");
 
                 for(int i = 0; i < jsonArray.length(); i++)
-                    products.add(new Product(jsonArray.getJSONObject(i)));
+                    products.add(new Product(jsonArray.getJSONObject(i), context));
 
             } catch (JSONException e) {
                 e.printStackTrace();

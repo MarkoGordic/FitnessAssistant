@@ -15,6 +15,8 @@ import com.example.fitnessassistant.R;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.SleepSegmentRequest;
 
+import java.util.Calendar;
+
 public class SleepTracker extends Service {
     public static final int SLEEP_TRACKER_ID = 28;
     PendingIntent sleepReceiver;
@@ -45,8 +47,6 @@ public class SleepTracker extends Service {
         return START_STICKY;
     }
 
-
-    // TODO Put R.string
     private Notification pushSleepTrackerNotification(){
         Intent intent = new Intent(this, InAppActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -55,8 +55,8 @@ public class SleepTracker extends Service {
                 .setSmallIcon(R.drawable.ic_sleep)
                 .setAutoCancel(false)
                 .setOngoing(true)
-                .setContentTitle("FitnessAssistant Tracking")
-                .setContentText("We are tracking sleep data.")
+                .setContentTitle(String.valueOf(R.string.sleep_tracking))
+                .setContentText(String.valueOf(R.string.sleep_tracking_on))
                 .setContentIntent(pendingIntent)
                 .setShowWhen(false);
 
@@ -65,6 +65,29 @@ public class SleepTracker extends Service {
         notificationManager.notify(SLEEP_TRACKER_ID, notificationBuilder.build());
 
         return notificationBuilder.build();
+    }
+
+    public void pushSleepDetectedNotification(long startTime, long endTime){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(startTime);
+        String startString = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
+        calendar.setTimeInMillis(endTime);
+        String endString = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " ?";
+
+        Intent intent = new Intent(this, InAppActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "SleepTracker")
+                .setSmallIcon(R.drawable.ic_sleep)
+                .setAutoCancel(false)
+                .setOngoing(false)
+                .setContentTitle(String.valueOf(R.string.sleep_tracking))
+                .setContentText(R.string.sleep_detected_1 + startString + R.string.sleep_detected_2 + endString)
+                .setContentIntent(pendingIntent)
+                .setShowWhen(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(SLEEP_TRACKER_ID, notificationBuilder.build());
     }
 
     @Override

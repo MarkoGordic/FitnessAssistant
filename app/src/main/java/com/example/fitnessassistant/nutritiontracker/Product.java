@@ -1,10 +1,17 @@
 package com.example.fitnessassistant.nutritiontracker;
 
+import android.content.Context;
+
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Product {
+    int id;
     private String name;
+    private String brands;
+    private String barcode;
     private float calcium_100g;
     private float chloride_100g;
     private float fluoride_100g;
@@ -54,14 +61,25 @@ public class Product {
     private float vitamin_k_100g; // -
     private float vitamin_pp_100g; // -  / B3
 
-    Product(JSONObject object){
+    public Product(){}
+
+    public Product(JSONObject object, Context context){
         if(object != null)
             try {
+                id = MDBHNutritionTracker.getInstance(context).getLastProductID() + 1;
+
                 if(object.has("product")){
                     JSONObject product = object.getJSONObject("product");
 
-                    if(product.has("generic_name"))
-                        setName(product.getString("generic_name"));
+                    if(product.has("product_name"))
+                        setName(product.getString("product_name"));
+                    else
+                        setName(null);
+
+                    if(product.has("brands"))
+                        setBrands(product.getString("brands"));
+                    else
+                        setBrands(null);
 
                     JSONObject nutriments = product.getJSONObject("nutriments");
 
@@ -316,6 +334,63 @@ public class Product {
             }
     }
 
+    public String nutrimentsToDBString(){
+        String product = getCalcium_100g() + "#";
+        product += getChloride_100g() + "#";
+        product += getFluoride_100g() + "#";
+        product += getMagnesium_100g() + "#";
+        product += getPotassium_100g() + "#";
+        product += getCholesterol_100g() + "#";
+        product += getSalt_100g() + "#";
+        product += getZinc_100g() + "#";
+        product += getSodium_100g() + "#";
+        product += getBiotin_100g() + "#";
+        product += getCarbohydrates_100g() + "#";
+        product += getEnergy_kcal_100g() + "#";
+        product += getFiber_100g() + "#";
+        product += getFat_100g() + "#";
+        product += getSaturated_fat_100g() + "#";
+        product += getTrans_fat_100g() + "#";
+        product += getMonounsaturated_fat_100g() + "#";
+        product += getPolyunsaturated_fat_100g() + "#";
+        product += getOmega_3_fat_100g() + "#";
+        product += getOmega_6_fat_100g() + "#";
+        product += getOmega_9_fat_100g() + "#";
+        product += getProteins_100g() + "#";
+        product += getIron_100g() + "#";
+        product += getCopper_100g() + "#";
+        product += getManganese_100g() + "#";
+        product += getIodine_100g() + "#";
+        product += getCaffeine_100g() + "#";
+        product += getTaurine_100g() + "#";
+        product += getSugars_100g() + "#";
+        product += getSucrose_100g() + "#";
+        product += getGlucose_100g() + "#";
+        product += getFructose_100g() + "#";
+        product += getLactose_100g() + "#";
+        product += getMaltose_100g() + "#";
+        product += getStarch_100g() + "#";
+        product += getCasein_100g() + "#";
+        product += getAlcohol_100g() + "#";
+        product += getVitamin_a_100g() + "#";
+        product += getVitamin_b1_100g() + "#";
+        product += getVitamin_b2_100g() + "#";
+        product += getVitamin_b6_100g() + "#";
+        product += getVitamin_b9_100g() + "#";
+        product += getVitamin_b12_100g() + "#";
+        product += getVitamin_c_100g() + "#";
+        product += getVitamin_d_100g() + "#";
+        product += getVitamin_e_100g() + "#";
+        product += getVitamin_k_100g() + "#";
+        product += getVitamin_pp_100g() + "#";
+
+        return product;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public float getBiotin_100g() {
         return biotin_100g;
     }
@@ -512,6 +587,18 @@ public class Product {
         return name;
     }
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public String getBrands() {
+        return brands;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setBiotin_100g(float biotin_100g) {
         this.biotin_100g = biotin_100g;
     }
@@ -706,5 +793,13 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public void setBrands(String brands) {
+        this.brands = brands;
     }
 }

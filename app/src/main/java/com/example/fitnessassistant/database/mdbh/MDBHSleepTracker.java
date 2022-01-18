@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.fitnessassistant.sleeptracker.SleepTracker;
+
 public class MDBHSleepTracker extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SleepData.db";
     private static final int DATABASE_VERSION = 1;
@@ -17,6 +19,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
     private static final String SEGMENTS_COLUMN_ID = "_id";
     private static final String SEGMENTS_START_TIME = "start_time";
     private static final String SEGMENTS_END_TIME = "end_time";
+    private static final String SEGMENTS_SLEEP_QUALITY = "quality";
 
     private static MDBHSleepTracker instance;
 
@@ -37,6 +40,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
                 "CREATE TABLE " + SEGMENTS_TABLE_NAME +
                         " (" + SEGMENTS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         SEGMENTS_START_TIME + " REAL, " +
+                        SEGMENTS_SLEEP_QUALITY + " INTEGER, " +
                         SEGMENTS_END_TIME + " REAL);";
 
         db.execSQL(query);
@@ -48,12 +52,16 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
 
         cv.put(SEGMENTS_START_TIME, startTime);
         cv.put(SEGMENTS_END_TIME, endTime);
+        cv.put(SEGMENTS_SLEEP_QUALITY, -1);
 
         boolean same = checkSleepSegment(startTime, endTime);
         long result;
 
         if(!same){
             result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
+
+            SleepTracker sleepTracker = new SleepTracker();
+            sleepTracker.pushSleepDetectedNotification(startTime, endTime);
 
             if(result == -1)
                 System.out.println("Fail! DATABASE");

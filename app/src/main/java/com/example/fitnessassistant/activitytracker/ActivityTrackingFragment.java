@@ -115,7 +115,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
     private AlertDialog alertDialog = null;
 
-    int activityType = 0;
+    public static int activityType = 0;
 
     private boolean shouldSave = false;
 
