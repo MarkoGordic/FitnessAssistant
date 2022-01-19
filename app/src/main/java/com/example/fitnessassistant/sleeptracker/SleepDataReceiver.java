@@ -5,10 +5,12 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateFormat;
 
 import com.example.fitnessassistant.database.mdbh.MDBHSleepTracker;
 import com.google.android.gms.location.SleepSegmentEvent;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class SleepDataReceiver extends BroadcastReceiver {
@@ -20,7 +22,10 @@ public class SleepDataReceiver extends BroadcastReceiver {
             List<SleepSegmentEvent> sleepEvents = SleepSegmentEvent.extractEvents(intent);
 
             for(int i = 0; i < sleepEvents.size(); i++){
-                MDBHSleepTracker.getInstance(context).addNewSleepSegment(context, sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis());
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(sleepEvents.get(i).getEndTimeMillis());
+                String date = (String) DateFormat.format("yyyyMMdd", cal);
+                MDBHSleepTracker.getInstance(context).addNewSleepSegment(context, sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis(), date);
                 System.out.println(sleepEvents.get(i) + " SLEEP_DATA");
             }
         }
