@@ -226,9 +226,34 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + MEALS_TABLE_NAME + " WHERE "+ MEALS_COLUMN_ID +"='"+id+"'");
     }
 
-    // TODO Finish these methods
-    public void getAllMealsFromDB(){}
+    // TODO Finish this methods
     public void editMealFromDB(Meal meal){}
+
+    public List<Meal> getAllMealsFromDB(){
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<Meal> data = new ArrayList<>();
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null && cursor.getCount() > 0){
+                cursor.moveToFirst();
+                do{
+                    Meal meal = new Meal();
+                    meal.setId(cursor.getInt(cursor.getColumnIndex(MEALS_COLUMN_ID)));
+                    meal.setDate(cursor.getLong(cursor.getColumnIndex(MEALS_COLUMN_DATE)));
+                    meal.setType(cursor.getInt(cursor.getColumnIndex(MEALS_COLUMN_TYPE)));
+                    meal.setProductID(cursor.getColumnIndex(MEALS_COLUMN_PRODUCT));
+                    meal.setQuantity(cursor.getFloat(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY)));
+                    data.add(meal);
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return data;
+    }
 
     public int getLastProductID(){
         String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME;
@@ -250,6 +275,27 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         return id;
     }
 
+    public int getLastMealID(){
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        int id = -1;
+
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null && cursor.getCount() > 0){
+                cursor.moveToFirst();
+                do{
+                    id = cursor.getInt(cursor.getColumnIndex(MEALS_COLUMN_ID));
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return id;
+    }
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =
@@ -266,7 +312,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 "CREATE TABLE " + MEALS_TABLE_NAME +
                         " (" + MEALS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         MEALS_COLUMN_TYPE + " INTEGER, " +
-                        MEALS_COLUMN_DATE + " REAL, " +
+                        MEALS_COLUMN_DATE + " TEXT, " +
                         MEALS_COLUMN_QUANTITY + " REAL, " +
                         MEALS_COLUMN_PRODUCT + " INTEGER);";
 
