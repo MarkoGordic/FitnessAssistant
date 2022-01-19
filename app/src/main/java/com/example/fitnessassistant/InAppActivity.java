@@ -48,6 +48,7 @@ import com.example.fitnessassistant.pedometer.PedometerFragment;
 import com.example.fitnessassistant.profile.AccountDataFragment;
 import com.example.fitnessassistant.profile.GoalsFragment;
 import com.example.fitnessassistant.profile.LinkAccountsFragment;
+import com.example.fitnessassistant.profile.PersonalBestsFragment;
 import com.example.fitnessassistant.profile.PersonalDataFragment;
 import com.example.fitnessassistant.profile.ProfilePageFragment;
 import com.example.fitnessassistant.profile.SettingsFragment;
@@ -57,6 +58,7 @@ import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.OpeningQuestionFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
+import com.example.fitnessassistant.sleeptracker.SleepFragment;
 import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.AuthFunctional;
@@ -98,6 +100,8 @@ public class InAppActivity extends AppCompatActivity {
     public static PedometerFragment pedometerFragment;
     public static ActivityRecyclerFragment activityRecyclerFragment;
     public static BackupFragment backupFragment;
+    public static PersonalBestsFragment personalBestsFragment;
+    public static SleepFragment sleepFragment;
 
     public static List<ActivityRecycler> activities;
     public ActivityAdapter activityAdapter;
@@ -112,15 +116,16 @@ public class InAppActivity extends AppCompatActivity {
     // listener for SharedPreferences - used for Updating UI
     private final SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         if(key.equals("pedometerDataChanged")){
-            if(homeFragment != null && pedometerFragment != null) {
+            if(homeFragment != null && pedometerFragment != null && personalBestsFragment != null) {
                 homeFragment.updateStepsData(null);
                 pedometerFragment.updateStepsData(null);
+                personalBestsFragment.updateStepsData(null);
             }
         }
     };
 
     // launcher for the Activity Recognition Permission
-    public final ActivityResultLauncher<String> activityRecognitionPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
+    public final ActivityResultLauncher<String> pedometerActivityRecognitionPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
         if(result)
             ServiceFunctional.startPedometerService(this);
         else {
@@ -141,6 +146,31 @@ public class InAppActivity extends AppCompatActivity {
                 ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_recognition_access_message_denied_forever);
             else
                 ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_recognition_access_message_denied);
+        }
+    });
+
+    // launcher for the Activity Recognition Permission
+    public final ActivityResultLauncher<String> sleepActivityRecognitionPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
+        if(result)
+            ServiceFunctional.startSleepTrackerService(this);
+        else {
+            // creates an alert dialog with rationale shown
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(R.layout.custom_ok_alert_dialog);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.exclamation);
+
+            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.activity_recognition_access_denied);
+            dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+
+            // showing messages (one case if user selected don't ask again, other if user just selected deny)
+            if(!shouldShowRequestPermissionRationale(Manifest.permission.ACTIVITY_RECOGNITION))
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_recognition_access_message1_denied_forever);
+            else
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.activity_recognition_access_message1_denied);
         }
     });
 
@@ -231,6 +261,8 @@ public class InAppActivity extends AppCompatActivity {
         pedometerFragment = new PedometerFragment();
         activityRecyclerFragment = new ActivityRecyclerFragment();
         backupFragment = new BackupFragment();
+        personalBestsFragment = new PersonalBestsFragment();
+        sleepFragment = new SleepFragment();
 
         active = homeFragment;
 
@@ -294,6 +326,11 @@ public class InAppActivity extends AppCompatActivity {
     public void setUpPedometerFragmentUI(boolean pedometerRuns){
         if(pedometerFragment != null)
             pedometerFragment.setUpUI(pedometerRuns);
+    }
+
+    public void setUpSleepFragmentUI(boolean sleepRuns){
+        if(sleepFragment != null)
+            sleepFragment.setUpUI(sleepRuns);
     }
 
     public synchronized void putDesiredFragment(String desiredFragment){

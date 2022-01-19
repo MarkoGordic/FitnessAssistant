@@ -86,7 +86,7 @@
         android:background="@color/BlueYonder"/>
 
     <TextView
-        android:id="@+id/achievementsTextView"
+        android:id="@+id/dailyActivityTextView"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -102,82 +102,171 @@
         android:paddingEnd="0dp"
         android:textColor="@color/BlueYonder"/>
 
-    <LinearLayout
-        android:id="@+id/achievement2"
-
-        android:layout_width="wrap_content"
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/achievementsTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/dailyActivityTextView"
 
-        android:background="@drawable/transparent_button"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/stepsTextView"
+        android:weightSum="2">
+        <LinearLayout
+            android:id="@+id/pedometerFragment"
 
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
 
-            app:drawableEndCompat="@drawable/ic_pedometer"
-            app:drawableTint="@color/SpaceCadet"
-
-            android:fontFamily="@font/ralewayb"
-            android:text="@string/steps"
-            android:textSize="18sp"
-            android:padding="8dp"
-            android:textColor="@color/SpaceCadet"/>
-
-        <RelativeLayout
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-
-            android:layout_gravity="center">
-            <!-- DailySteps ProgressBar -->
-            <ProgressBar
-                android:id="@+id/dailyStepsProgressBar"
+            android:background="@drawable/transparent_button"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/stepsTextView"
 
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:indeterminateOnly="false"
-                android:progressDrawable="@drawable/steps_circle"
-                android:rotation="90"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
+                app:drawableEndCompat="@drawable/ic_pedometer"
+                app:drawableTint="@color/SpaceCadet"
 
-                android:gravity="center"
-                android:orientation="vertical">
+                android:fontFamily="@font/ralewayb"
+                android:layout_marginTop="4dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="10dp"
+                android:text="@string/steps"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:textColor="@color/SpaceCadet"/>
 
-                <TextView
-                    android:id="@+id/stepsActivityTV"
+            <RelativeLayout
+                android:layout_width="160dp"
+                android:layout_height="160dp"
 
+                android:layout_gravity="center">
+                <!-- DailySteps ProgressBar -->
+                <ProgressBar
+                    android:id="@+id/dailyStepsProgressBar"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:indeterminateOnly="false"
+                    android:progressDrawable="@drawable/steps_circle"
+                    android:rotation="-90"/>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:fontFamily="@font/roboto_light"
-                    android:textColor="@color/SpaceCadet"
-                    android:textSize="18sp" />
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
 
-                <TextView
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/stepsActivityTV"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:textColor="@color/SpaceCadet"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/ralewaym"
+                        android:text="@string/steps_small"
+                        android:textColor="@color/SpaceCadet"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sleepFragment"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+
+            android:background="@drawable/transparent_button"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/sleepTextView"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:drawableEndCompat="@drawable/moon"
+                app:drawableTint="@color/SpaceCadet"
+
+                android:fontFamily="@font/ralewayb"
+                android:text="@string/sleep"
+                android:layout_marginTop="4dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="10dp"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:textColor="@color/SpaceCadet"/>
+
+            <RelativeLayout
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+
+                android:layout_gravity="center">
+                <!-- DailySteps ProgressBar -->
+                <ProgressBar
+                    android:id="@+id/dailySleepProgressBar"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:indeterminateOnly="false"
+                    android:progressDrawable="@drawable/steps_circle"
+                    android:rotation="-90"/>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:fontFamily="@font/ralewaym"
-                    android:text="@string/steps_small"
-                    android:textColor="@color/SpaceCadet"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/sleepActivityTV"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:textColor="@color/SpaceCadet"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/ralewaym"
+                        android:text="@string/hours_small"
+                        android:textColor="@color/SpaceCadet"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </TableRow>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

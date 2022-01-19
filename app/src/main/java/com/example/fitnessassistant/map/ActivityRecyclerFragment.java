@@ -73,6 +73,7 @@ public class ActivityRecyclerFragment extends Fragment {
         }
 
         InAppActivity.mapFragment.setUpData(null);
+        InAppActivity.personalBestsFragment.updateActivityData(null);
     }
 
     @SuppressLint("NotifyDataSetChanged")

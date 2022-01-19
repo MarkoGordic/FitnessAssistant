@@ -9,8 +9,10 @@
     <!-- Used for Pedometer Permission -->
     <string name="activity_recognition_access">FitnessAssistant želi da dobije dozvolu za prepoznavanje aktivnosti na Vašem uređaju</string>
     <string name="activity_recognition_access_denied">Dozvola Za Prepoznavanje Aktivnosti</string>
-    <string name="activity_recognition_access_message_denied_forever">Brojač koraka <b>ne može pravilno</b> da funkcioniše bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
-    <string name="activity_recognition_access_message_denied">Brojač koraka <b>ne može pravilno</b> da funkcioniše. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>sekciju Aktivnost</b> ponovo.</string>
+    <string name="activity_recognition_access_message_denied_forever">Pedometar <b>ne može pravilno</b> da funkcioniše bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="activity_recognition_access_message_denied">Pedometar <b>ne može pravilno</b> da funkcioniše bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, pokrenite <b>Pedometar</b> ponovo.</string>
+    <string name="activity_recognition_access_message1_denied_forever">Praćenje sna <b>ne može pravilno</b> da funkcioniše bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, idite u <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="activity_recognition_access_message1_denied">Praćenje sna <b>ne može pravilno</b> da funkcioniše bez ove dozvole. Ukoliko ipak želite da date ovu dozvolu FitnessAssistant-u, pokrenite <b>Praćenje sna</b> ponovo.</string>
 
     <!-- Used for Location Permission -->
     <string name="location_access">FitnessAssistant želi da dobije dozvolu za pristup lokaciji Vašeg uređaka </string>
@@ -396,6 +398,10 @@
     <string name="set_all">Podesi Sve</string>
     <string name="step_goal_cannot_be_zero">Cilj koraka ne može biti 0.</string>
     <string name="step_goal_cannot_be_empty">Cilj koraka ne može biti prazan.</string>
+
+    <!-- Sleep Strings -->
+    <string name="sleep">Spavanje</string>
+    <string name="hours_small">sati</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

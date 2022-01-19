@@ -61,8 +61,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
-
-    <!-- TODO add in a drawable logo in link button -->
     <!-- Create Account Button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/FAlinkingButton"
@@ -85,8 +83,6 @@
         android:textAllCaps="false"
         android:textColor="@color/default_white_color"
         android:textSize="16sp" />
-
-
 
     <!-- Facebook Linking Button -->
     <androidx.appcompat.widget.AppCompatButton

@@ -105,6 +105,11 @@ public class PedometerFragment extends Fragment {
 
     private void setUpGraphValues(View view, int[] vals, float maxCount){
         GraphView graphView = view.findViewById(R.id.graph);
+
+        int[] array1 = { 10, 100, 1000, 10000 };
+        int[] array2 = { 10, 15, 20, 25, 30, 50 };
+
+        graphView.setArrayValues(array1, array2);
         graphView.setGraphValues(vals);
 
         float[] graphYValues = graphView.getYValues();
@@ -515,7 +520,6 @@ public class PedometerFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.achievementDate1)).setText(String.format("%d %s %d", day, getMonthShort(requireActivity(), month), year));
                 ((TextView) view.findViewById(R.id.achievementHeader1)).setText(String.format("%d\n%s", maxSteps, requireActivity().getString(R.string.steps_in_a_day)));
             }
-
         }
     }
 
@@ -547,7 +551,7 @@ public class PedometerFragment extends Fragment {
             if(startDrawable != null)
                 startDrawable.setTint(requireActivity().getColor(R.color.DarkBlueYonder));
             ((TextView) view.findViewById(R.id.stepCountingButton)).setCompoundDrawablesWithIntrinsicBounds(startDrawable,null,null,null);
-            view.findViewById(R.id.stepCountingButton).setOnClickListener(view1 -> PermissionFunctional.checkActivityRecognitionPermission(requireActivity(), ((InAppActivity) requireActivity()).activityRecognitionPermissionLauncher));
+            view.findViewById(R.id.stepCountingButton).setOnClickListener(view1 -> PermissionFunctional.checkPedometerActivityRecognitionPermission(requireActivity(), ((InAppActivity) requireActivity()).pedometerActivityRecognitionPermissionLauncher));
         }
     }
 

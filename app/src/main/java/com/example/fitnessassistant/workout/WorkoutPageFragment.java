@@ -1,6 +1,5 @@
 package com.example.fitnessassistant.workout;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.sleeptracker.SleepTracker;
-import com.example.fitnessassistant.util.ServiceFunctional;
 
 public class WorkoutPageFragment extends Fragment {
     @Nullable
@@ -20,11 +17,5 @@ public class WorkoutPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // returning the view
         return inflater.inflate(R.layout.workout_screen, container, false);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ServiceFunctional.startSleepTrackerService(requireActivity());
     }
 }

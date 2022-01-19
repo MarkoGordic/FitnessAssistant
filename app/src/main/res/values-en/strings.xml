@@ -9,8 +9,10 @@
     <!-- Used for Pedometer Permission -->
     <string name="activity_recognition_access">FitnessAssistant would like to access Activity Recognition on your device</string>
     <string name="activity_recognition_access_denied">Activity Recognition Permission</string>
-    <string name="activity_recognition_access_message_denied_forever">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
-    <string name="activity_recognition_access_message_denied">StepCounter services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to the <b>Activity section</b> once again.</string>
+    <string name="activity_recognition_access_message_denied_forever">Pedometer services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="activity_recognition_access_message_denied">Pedometer services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, start <b>Pedometer</b> once again.</string>
+    <string name="activity_recognition_access_message1_denied_forever">SleepTracker services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, head over to <b>Settings -> Apps -> FitnessAssistant -> Permissions</b>.</string>
+    <string name="activity_recognition_access_message1_denied">SleepTracker services <b>can\'t work properly</b> without this permission. If you want to grant this permission to FitnessAssistant, start <b>SleepTracker</b> once again.</string>
 
     <!-- Used for Location Permission -->
     <string name="location_access">FitnessAssistant would like to access your location</string>
@@ -394,6 +396,10 @@
     <string name="set_all">Set All</string>
     <string name="step_goal_cannot_be_zero">Step goal can\'t be 0.</string>
     <string name="step_goal_cannot_be_empty">Step goal can\'t be empty.</string>
+
+    <!-- Sleep Strings -->
+    <string name="sleep">Sleep</string>
+    <string name="hours_small">hours</string>
 
     <string name="coming_soon">COMING SOON</string>
 </resources>

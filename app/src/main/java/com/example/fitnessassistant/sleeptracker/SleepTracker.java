@@ -29,7 +29,6 @@ public class SleepTracker extends Service {
     public void subscribeToSleepEvents(){
         sleepReceiver = SleepDataReceiver.createPendingIntent(this);
 
-        // TODO: Before this, check for ActivityRecognition permission
         ActivityRecognition.getClient(this)
                 .requestSleepSegmentUpdates(sleepReceiver, SleepSegmentRequest.getDefaultSleepSegmentRequest());
     }

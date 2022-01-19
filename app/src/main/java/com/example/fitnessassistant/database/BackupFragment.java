@@ -17,12 +17,11 @@ import com.example.fitnessassistant.R;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BackupFragment extends Fragment {
+    private static final AtomicBoolean isBackupVisible = new AtomicBoolean(true);
 
     private void setUpOnClickListeners(View view){
         // backButton listener - calls activity's onBackPressed()
         view.findViewById(R.id.backButton).setOnClickListener(view1 -> requireActivity().onBackPressed());
-
-        AtomicBoolean isBackupVisible = new AtomicBoolean(true);
 
         TextView header = view.findViewById(R.id.backupHeader);
 
@@ -66,6 +65,14 @@ public class BackupFragment extends Fragment {
                                 .setListener(null);
                     }
                 }));
+
+        view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
+            if(isBackupVisible.get()) {
+                // TODO check switches for backup
+            } else{
+                // TODO check switches for restore
+            }
+        });
     }
 
     @Nullable

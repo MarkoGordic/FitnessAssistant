@@ -165,7 +165,7 @@ public class MapPageFragment extends Fragment {
                 float maxDistanceBike = Float.parseFloat(data.get(4));
                 String maxDistanceBikeDate = data.get(5);
 
-                float maxCaloriesBurnt = Integer.parseInt(data.get(6));
+                float maxCaloriesBurnt = Float.parseFloat(data.get(6));
                 String maxCaloriesBurntDate = data.get(7);
 
                 String maxDuration = data.get(8);

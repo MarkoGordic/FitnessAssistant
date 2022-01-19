@@ -45,8 +45,6 @@
 
     </LinearLayout>
 
-    <!-- TODO maybe add in the logo above Sign In TextView (move the whole view down) -->
-
     <!-- Sign In TextView -->
     <TextView
         android:id="@+id/signInTextView"

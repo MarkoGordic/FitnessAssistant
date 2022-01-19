@@ -69,6 +69,9 @@ public class ProfilePageFragment extends Fragment {
 
         // goalsField listener - adds a goals fragment, hides current
         view.findViewById(R.id.goalsField).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.goalsFragment).addToBackStack(null).commit());
+
+        // personalBestsField listener - adds a personalBests fragment, hides current
+        view.findViewById(R.id.personalBestsField).setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.personalBestsFragment).addToBackStack(null).commit());
     }
 
     @Nullable
@@ -92,9 +95,9 @@ public class ProfilePageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            Picasso.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).placeholder(R.drawable.user_focused).resize(60,60).centerCrop().into((ImageView) requireView().findViewById(R.id.profilePicture));
-            displayCurrentUser(requireView());
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && getView() != null) {
+            Picasso.with(requireActivity()).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).placeholder(R.drawable.user_focused).resize(60,60).centerCrop().into((ImageView) getView().findViewById(R.id.profilePicture));
+            displayCurrentUser(getView());
         }
     }
 }

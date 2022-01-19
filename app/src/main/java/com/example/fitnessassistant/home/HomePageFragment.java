@@ -43,11 +43,20 @@ public class HomePageFragment extends Fragment {
         }
     }
 
+    private void updateSleepData(View view){
+        if(view == null)
+            view = getView();
+
+        if(view != null)
+            ((TextView) view.findViewById(R.id.sleepActivityTV)).setText("?");
+    }
+
     // gives welcome message based on time
     private void setUpUI(View view){
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setRefreshing(true);
 
         updateStepsData(view);
+        updateSleepData(view);
 
         TextView welcomeTextView = view.findViewById(R.id.welcomeMessageTextView); // TextView in top right corner for welcome message
 
@@ -78,7 +87,11 @@ public class HomePageFragment extends Fragment {
         // swipeRefreshLayout refresh listener - refreshes for 1.5s while updating UI
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> setUpUI(view));
 
-        view.findViewById(R.id.achievement2).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.pedometerFragment).addToBackStack(null).commit());
+        // pedometerFragment listener - goes to PedometerFragment
+        view.findViewById(R.id.pedometerFragment).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.pedometerFragment).addToBackStack(null).commit());
+
+        // sleepFragment listener - goes to SleepFragment
+        view.findViewById(R.id.sleepFragment).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.sleepFragment).addToBackStack(null).commit());
     }
 
     @Nullable

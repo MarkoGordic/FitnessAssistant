@@ -45,7 +45,8 @@ public class ServiceFunctional {
         // starting services
         context.startService(new Intent(context, Pedometer.class));
 
-        ((InAppActivity) context).setUpPedometerFragmentUI(true);
+        if(context instanceof InAppActivity)
+            ((InAppActivity) context).setUpPedometerFragmentUI(true);
 
         // setting here too because we're updating widgets (they need to have sync information)
         setPedometerShouldRun(context, true);
@@ -59,11 +60,17 @@ public class ServiceFunctional {
     public synchronized static void stopSleepTrackerService(Context context){
         // stopping services
         context.stopService(new Intent(context, SleepTracker.class));
+
+        if(context instanceof InAppActivity)
+            ((InAppActivity) context).setUpSleepFragmentUI(false);
     }
 
     public synchronized static void startSleepTrackerService(Context context){
         // starting services
         context.startService(new Intent(context, SleepTracker.class));
+
+        if(context instanceof InAppActivity)
+            ((InAppActivity) context).setUpSleepFragmentUI(true);
 
         setSleepTrackerShouldRun(context, true);
     }

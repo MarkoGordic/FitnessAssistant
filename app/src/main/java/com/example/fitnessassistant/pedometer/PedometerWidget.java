@@ -18,7 +18,6 @@ import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
-// TODO test resizing widget once again on more phones
 public class PedometerWidget extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int height) {

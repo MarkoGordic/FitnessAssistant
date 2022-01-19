@@ -23,6 +23,8 @@ public class GraphView extends View {
     private Path path;
     private Paint pathPaint;
     private Paint backgroundPaint;
+    private int[] arr1;
+    private int[] arr2;
 
 
     private void init(Context context){
@@ -59,16 +61,18 @@ public class GraphView extends View {
         init(context);
     }
 
-    private int calculateGraphMax(int maxY){
-        int[] array1 = { 10, 100, 1000, 10000 };
-        int[] array2 = { 10, 15, 20, 25, 30, 50 };
+    public void setArrayValues(int[] array1, int[] array2){
+        arr1 = array1;
+        arr2 = array2;
+    }
 
-        for(int i : array1)
-            for(int j : array2)     // those too are skipped because they are not divisible by 4 (and they are too small for that precision)
-                if(maxY < i * j && i * j != 150 && i * j != 250)
+    private int calculateGraphMax(int maxY){
+        for(int i : arr1)
+            for(int j : arr2)     // those too are skipped because they are not divisible by 4 (and they are too small for that precision)
+                if(maxY < i * j && i * j % 4 == 0)
                     return i * j;
 
-        return 500000;
+        return arr1[arr1.length - 1] * arr2[arr2.length - 1];
     }
 
     public void setGraphValues(int[] yValues,  int maxY) {
