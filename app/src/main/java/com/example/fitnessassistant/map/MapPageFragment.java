@@ -3,11 +3,13 @@ package com.example.fitnessassistant.map;
 import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -125,8 +127,11 @@ public class MapPageFragment extends Fragment {
     }
 
     @SuppressLint("DefaultLocale")
-    private void setUpData(View view){
-        if(getActivity() != null) {
+    public void setUpData(View view){
+        if(view == null)
+            view = getView();
+
+        if(view != null && getActivity() != null) {
             float[] totals = MDBHActivityTracker.getInstance(getActivity()).getTotals();
 
             float totalCaloriesBurnt = totals[0];
@@ -160,20 +165,22 @@ public class MapPageFragment extends Fragment {
                 float maxDistanceBike = Float.parseFloat(data.get(4));
                 String maxDistanceBikeDate = data.get(5);
 
-                int maxCaloriesBurnt = Integer.parseInt(data.get(6));
+                float maxCaloriesBurnt = Integer.parseInt(data.get(6));
                 String maxCaloriesBurntDate = data.get(7);
 
                 String maxDuration = data.get(8);
                 String maxDurationDate = data.get(9);
 
-                if(maxDistanceWalkDate == null || maxDistanceWalk == 0)
-                    view.findViewById(R.id.achievement1).setVisibility(View.GONE);
-                else{
-                    view.findViewById(R.id.achievement1).setVisibility(View.VISIBLE);
+                if(maxDistanceWalkDate == null || maxDistanceWalk == 0f) {
+                    ((ImageView) view.findViewById(R.id.trophy1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((TextView) view.findViewById(R.id.achievementDate1)).setText(getActivity().getString(R.string.locked));
+                    ((TextView) view.findViewById(R.id.achievementHeader1)).setText("");
+                } else{
                     long dateInMillis = Long.parseLong(maxDistanceWalkDate);
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(dateInMillis);
 
+                    ((ImageView) view.findViewById(R.id.trophy1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
                     ((TextView) view.findViewById(R.id.achievementDate1)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
 
                     if(UnitPreferenceFragment.getDistanceUnit(getActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE))
@@ -182,14 +189,16 @@ public class MapPageFragment extends Fragment {
                         ((TextView) view.findViewById(R.id.achievementHeader1)).setText(String.format("%.1f%s", maxDistanceWalk, getActivity().getString(R.string.km)));
                 }
 
-                if(maxDistanceRunDate == null || maxDistanceRun == 0)
-                    view.findViewById(R.id.achievement2).setVisibility(View.GONE);
-                else{
-                    view.findViewById(R.id.achievement2).setVisibility(View.VISIBLE);
+                if(maxDistanceRunDate == null || maxDistanceRun == 0f) {
+                    ((ImageView) view.findViewById(R.id.trophy2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((TextView) view.findViewById(R.id.achievementDate2)).setText(getActivity().getString(R.string.locked));
+                    ((TextView) view.findViewById(R.id.achievementHeader2)).setText("");
+                } else{
                     long dateInMillis = Long.parseLong(maxDistanceRunDate);
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(dateInMillis);
 
+                    ((ImageView) view.findViewById(R.id.trophy2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
                     ((TextView) view.findViewById(R.id.achievementDate2)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
                     if(UnitPreferenceFragment.getDistanceUnit(getActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE))
                         ((TextView) view.findViewById(R.id.achievementHeader2)).setText(String.format("%.1f%s", maxDistanceRun * 0.621371f, getActivity().getString(R.string.mi)));
@@ -197,14 +206,16 @@ public class MapPageFragment extends Fragment {
                         ((TextView) view.findViewById(R.id.achievementHeader2)).setText(String.format("%.1f%s", maxDistanceRun, getActivity().getString(R.string.km)));
                 }
 
-                if(maxDistanceBikeDate == null || maxDistanceBike == 0)
-                    view.findViewById(R.id.achievement3).setVisibility(View.GONE);
-                else{
-                    view.findViewById(R.id.achievement3).setVisibility(View.VISIBLE);
+                if(maxDistanceBikeDate == null || maxDistanceBike == 0f) {
+                    ((ImageView) view.findViewById(R.id.trophy3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((TextView) view.findViewById(R.id.achievementDate3)).setText(getActivity().getString(R.string.locked));
+                    ((TextView) view.findViewById(R.id.achievementHeader3)).setText("");
+                } else{
                     long dateInMillis = Long.parseLong(maxDistanceBikeDate);
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(dateInMillis);
 
+                    ((ImageView) view.findViewById(R.id.trophy3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
                     ((TextView) view.findViewById(R.id.achievementDate3)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
                     if(UnitPreferenceFragment.getDistanceUnit(getActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE))
                         ((TextView) view.findViewById(R.id.achievementHeader3)).setText(String.format("%.1f%s", maxDistanceBike * 0.621371f, getActivity().getString(R.string.mi)));
@@ -212,31 +223,55 @@ public class MapPageFragment extends Fragment {
                         ((TextView) view.findViewById(R.id.achievementHeader3)).setText(String.format("%.1f%s", maxDistanceBike, getActivity().getString(R.string.km)));
                 }
 
-                if(maxCaloriesBurntDate == null || maxCaloriesBurnt == 0)
-                    view.findViewById(R.id.achievement4).setVisibility(View.GONE);
-                else{
-                    view.findViewById(R.id.achievement4).setVisibility(View.VISIBLE);
+                if(maxCaloriesBurntDate == null || maxCaloriesBurnt == 0f) {
+                    ((ImageView) view.findViewById(R.id.trophy4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((TextView) view.findViewById(R.id.achievementDate4)).setText(getActivity().getString(R.string.locked));
+                    ((TextView) view.findViewById(R.id.achievementHeader4)).setText("");
+                } else{
                     long dateInMillis = Long.parseLong(maxCaloriesBurntDate);
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(dateInMillis);
 
+                    ((ImageView) view.findViewById(R.id.trophy4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
                     ((TextView) view.findViewById(R.id.achievementDate4)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
                     if(UnitPreferenceFragment.getEnergyUnit(getActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
                         ((TextView) view.findViewById(R.id.achievementHeader4)).setText(String.format("%.1f%s", maxCaloriesBurnt * 4.184f, getActivity().getString(R.string.kj)));
                     else
-                        ((TextView) view.findViewById(R.id.achievementHeader4)).setText(String.format("%d%s", maxCaloriesBurnt, getActivity().getString(R.string.cal)));
+                        ((TextView) view.findViewById(R.id.achievementHeader4)).setText(String.format("%.1f%s", maxCaloriesBurnt, getActivity().getString(R.string.cal)));
                 }
 
-                if(maxDurationDate == null || maxDuration == null)
-                    view.findViewById(R.id.achievement5).setVisibility(View.GONE);
-                else {
-                    view.findViewById(R.id.achievement5).setVisibility(View.VISIBLE);
+                if(maxDurationDate == null || maxDuration == null) {
+                    ((ImageView) view.findViewById(R.id.trophy5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((TextView) view.findViewById(R.id.achievementDate5)).setText(getActivity().getString(R.string.locked));
+                    ((TextView) view.findViewById(R.id.achievementHeader5)).setText("");
+                } else {
                     long dateInMillis = Long.parseLong(maxDurationDate);
                     Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(dateInMillis);
+                    ((ImageView) view.findViewById(R.id.trophy5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
                     ((TextView) view.findViewById(R.id.achievementDate5)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
                     ((TextView) view.findViewById(R.id.achievementHeader5)).setText(maxDuration);
                 }
+            } else{
+                ((ImageView) view.findViewById(R.id.trophy1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                ((TextView) view.findViewById(R.id.achievementDate1)).setText(getActivity().getString(R.string.locked));
+                ((TextView) view.findViewById(R.id.achievementHeader1)).setText("");
+
+                ((ImageView) view.findViewById(R.id.trophy2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                ((TextView) view.findViewById(R.id.achievementDate2)).setText(getActivity().getString(R.string.locked));
+                ((TextView) view.findViewById(R.id.achievementHeader2)).setText("");
+
+                ((ImageView) view.findViewById(R.id.trophy3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                ((TextView) view.findViewById(R.id.achievementDate3)).setText(getActivity().getString(R.string.locked));
+                ((TextView) view.findViewById(R.id.achievementHeader3)).setText("");
+
+                ((ImageView) view.findViewById(R.id.trophy4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                ((TextView) view.findViewById(R.id.achievementDate4)).setText(getActivity().getString(R.string.locked));
+                ((TextView) view.findViewById(R.id.achievementHeader4)).setText("");
+
+                ((ImageView) view.findViewById(R.id.trophy5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                ((TextView) view.findViewById(R.id.achievementDate5)).setText(getActivity().getString(R.string.locked));
+                ((TextView) view.findViewById(R.id.achievementHeader5)).setText("");
             }
         }
     }
@@ -292,7 +327,6 @@ public class MapPageFragment extends Fragment {
         }
 
         ((InAppActivity) requireActivity()).updateActivityRecyclerUI(null);
-        if(getView() != null)
-            setUpData(getView());
+        setUpData(getView());
     }
 }

@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
+import com.example.fitnessassistant.sleeptracker.SleepTracker;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,9 +31,14 @@ public class Restarter extends BroadcastReceiver {
                 Pedometer.updatePedometerWidgetData(updatedContext, ((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())), null);
 
                 // starting pedometer foreground service
-                if (ServiceFunctional.getPedometerShouldRun(context)) {
-                    context.startForegroundService(new Intent(context, Pedometer.class));
+                if (ServiceFunctional.getPedometerShouldRun(updatedContext)) {
+                    context.startForegroundService(new Intent(updatedContext, Pedometer.class));
                     Pedometer.pushPedometerNotification(updatedContext, ((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())) + " " + updatedContext.getString(R.string.steps_small), updatedContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(updatedContext) + ".");
+                }
+                if (ServiceFunctional.getSleepTrackerShouldRun(updatedContext)) {
+                    context.startForegroundService(new Intent(updatedContext, SleepTracker.class));
+//                    TODO push correct notification
+//                    SleepTracker.pushSleepDetectedNotification();
                 }
             }
         }

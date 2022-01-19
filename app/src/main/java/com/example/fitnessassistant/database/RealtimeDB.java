@@ -1,15 +1,18 @@
 package com.example.fitnessassistant.database;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.fitnessassistant.database.data.ActivityData;
+import com.example.fitnessassistant.database.data.BackupStatus;
 import com.example.fitnessassistant.database.data.GoalsData;
 import com.example.fitnessassistant.database.data.PedometerData;
 import com.example.fitnessassistant.database.data.PreferencesData;
@@ -22,6 +25,8 @@ import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
 import com.example.fitnessassistant.util.ServiceFunctional;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -74,7 +80,64 @@ public class RealtimeDB {
                         // stopping pedometer service
                         ServiceFunctional.setPedometerShouldRun(context, false);
                         ServiceFunctional.stopPedometerService(context);
+                        ServiceFunctional.setSleepTrackerShouldRun(context, false);
+                        ServiceFunctional.stopSleepTrackerService(context);
                     });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    public static void checkBackupStatus(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users");
+
+            db.child(userID).child("backup").get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()){
+                    Log.e("Firebase", "Error getting data", task.getException());
+                } else {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    BackupStatus data = dataSnapshot.getValue(BackupStatus.class);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    if(data != null){
+                        editor.putString("pedometer_backup", data.getPedometer());
+                        editor.putString("preferences_backup", data.getUserPreferences());
+                        editor.putString("goals_backup", data.getUserGoals());
+                        editor.putString("sleep_backup", data.getSleepTracker());
+                        editor.putString("activities_backup", data.getActivitiesTracker());
+                        // TODO Add other backups here when added
+                    }
+                    editor.apply();
+                }
+            });
+        }
+    }
+
+    public static void updateBackupStatus(Context context) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users");
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+            BackupStatus backupStatus = new BackupStatus();
+            backupStatus.setPedometer(sharedPreferences.getString("pedometer_backup", "n#/"));
+            backupStatus.setUserPreferences(sharedPreferences.getString("preferences_backup", "n#/"));
+            backupStatus.setUserGoals(sharedPreferences.getString("goals_backup", "n#/"));
+            backupStatus.setSleepTracker(sharedPreferences.getString("sleep_backup", "n#/"));
+            backupStatus.setActivitiesTracker(sharedPreferences.getString("activities_backup", "n#/"));
+            // TODO Add other backups here when added
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.child(userID).child("backup").setValue(backupStatus);
                 }
 
                 @Override
@@ -114,6 +177,13 @@ public class RealtimeDB {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     db.child("pedometer").setValue(data);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("pedometer_backup", "y#" + Calendar.getInstance().getTimeInMillis());
+                    editor.apply();
+
+                    updateBackupStatus(context);
                 }
 
                 @Override
@@ -165,6 +235,13 @@ public class RealtimeDB {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     db.setValue(preferencesData);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("preferences_backup", "y#" + Calendar.getInstance().getTimeInMillis());
+                    editor.apply();
+
+                    updateBackupStatus(context);
                 }
 
                 @Override
@@ -216,6 +293,13 @@ public class RealtimeDB {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     db.setValue(goalsData);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("goals_backup", "y#" + Calendar.getInstance().getTimeInMillis());
+                    editor.apply();
+
+                    updateBackupStatus(context);
                 }
 
                 @Override
@@ -287,7 +371,16 @@ public class RealtimeDB {
 
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) { db.setValue(activityData); }
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.setValue(activityData);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("activities_backup", "y#" + Calendar.getInstance().getTimeInMillis());
+                    editor.apply();
+
+                    updateBackupStatus(context);
+                }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { }

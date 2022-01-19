@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 
 import com.example.fitnessassistant.database.data.SleepSegment;
 import com.example.fitnessassistant.sleeptracker.SleepTracker;
+import com.example.fitnessassistant.uiprefs.LocaleExt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +69,8 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         if(!same){
             result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
 
-            SleepTracker.pushSleepDetectedNotification(context, startTime, endTime);
+            Context updatedContext = LocaleExt.toLangIfDiff(context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"), true, false);
+            SleepTracker.pushSleepDetectedNotification(updatedContext, startTime, endTime);
 
             if(result == -1)
                 System.out.println("Fail! DATABASE");

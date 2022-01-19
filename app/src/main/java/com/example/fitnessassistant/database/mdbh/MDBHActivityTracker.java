@@ -275,7 +275,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         String maxDateRun = null;
         float maxDistanceBicycle = 0f;
         String maxDateBicycle = null;
-        int maxCalories = 0;
+        float maxCalories = 0;
         String maxDateCalories = null;
         String maxDuration = "00:00:00";
         String maxDateDuration = null;
@@ -285,8 +285,8 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
             if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
-                    if(maxCalories < cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT))){
-                        maxCalories = cursor.getInt(cursor.getColumnIndex(COLUMN_CALORIES_BURNT));
+                    if(maxCalories < cursor.getFloat(cursor.getColumnIndex(COLUMN_CALORIES_BURNT))){
+                        maxCalories = cursor.getFloat(cursor.getColumnIndex(COLUMN_CALORIES_BURNT));
                         maxDateCalories = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
                     }
 

@@ -12,8 +12,6 @@ import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
-// TODO receivers and services should be shut down when user signs out/ deletes account
-
 public class DailyRestarter extends BroadcastReceiver {
 
     // used to update notifications and widgets at midnight

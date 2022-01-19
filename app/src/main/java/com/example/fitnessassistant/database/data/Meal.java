@@ -2,7 +2,6 @@ package com.example.fitnessassistant.database.data;
 
 public class Meal {
     int id;
-    String name;
     int type;
     long date;
     int productID;
@@ -10,10 +9,6 @@ public class Meal {
 
     public float getQuantity() {
         return quantity;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public int getId() {
@@ -34,10 +29,6 @@ public class Meal {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setId(int id) {

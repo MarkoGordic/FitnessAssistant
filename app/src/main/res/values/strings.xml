@@ -300,6 +300,13 @@
     <string name="delete_activity">Delete Activity</string>
     <string name="delete_activity_message">You don\'t have a way of getting this activity back. Are you sure?</string>
     <string name="no_previous_activities">No Previous Activities.</string>
+    <string name="locked">Locked</string>
+    <string name="backup_and_restore">Backup &amp; Restore</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="activities">Activities</string>
+    <string name="pedometer_data">Pedometer Data</string>
+    <string name="sleep_data">Sleep Data</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Skip</string>

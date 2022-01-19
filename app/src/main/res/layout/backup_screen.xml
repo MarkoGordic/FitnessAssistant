@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:padding="32dp">
+    <ImageButton
+        android:id="@+id/backButton"
+
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+
+        android:layout_marginStart="-32dp"
+        android:layout_marginTop="-32dp"
+
+        android:background="@color/backgroundColor"
+        android:contentDescription="@null"
+
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="4dp"
+
+        android:src="@drawable/back"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+
+        android:weightSum="20"
+
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/backBackupButton"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+
+            android:backgroundTint="@color/backgroundColor"
+            android:src="@drawable/caret_left"
+            android:tint="@color/SpaceCadet"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <TextView
+            android:id="@+id/backupHeader"
+
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="14"
+
+            android:text="@string/backup"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/frontBackupButton"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+
+            android:backgroundTint="@color/backgroundColor"
+            android:src="@drawable/caret_right"
+            android:tint="@color/SpaceCadet"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="22dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:gravity="center"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/personal_data"
+            android:textAlignment="textStart"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/personalDataSwitch"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+
+            app:thumbTint="@color/DarkBlueYonder"
+            app:trackTint="@color/BlueYonder"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:gravity="center"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+
+        android:layout_marginTop="26dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/goals"
+            android:textAlignment="textStart"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/goalsSwitch"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+
+            app:thumbTint="@color/DarkBlueYonder"
+            app:trackTint="@color/BlueYonder" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:gravity="center"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+
+        android:layout_marginTop="26dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/activities"
+            android:textAlignment="textStart"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/activitiesSwitch"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+
+            app:thumbTint="@color/DarkBlueYonder"
+            app:trackTint="@color/BlueYonder" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:gravity="center"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+
+        android:layout_marginTop="26dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/pedometer_data"
+            android:textAlignment="textStart"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/pedometerDataSwitch"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+
+            app:thumbTint="@color/DarkBlueYonder"
+            app:trackTint="@color/BlueYonder" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:gravity="center"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+
+        android:layout_marginTop="26dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/sleep_data"
+            android:textAlignment="textStart"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/sleepDataSwitch"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+
+            app:thumbTint="@color/DarkBlueYonder"
+            app:trackTint="@color/BlueYonder" />
+    </TableRow>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="22dp"
+
+        android:background="@color/BlueYonder"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/proceedButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+
+        android:layout_gravity="center"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/proceed"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:textColor="@color/Flame"
+        android:textFontWeight="600"
+        style="?android:attr/buttonBarButtonStyle" />
+
+</LinearLayout>

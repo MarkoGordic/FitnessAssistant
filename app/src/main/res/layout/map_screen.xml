@@ -315,7 +315,6 @@
                         android:layout_alignTop="@id/trophy1"
                         android:layout_alignEnd="@id/trophy1"
                         android:layout_marginTop="28dp"
-                        android:layout_marginEnd="1dp"
 
                         android:src="@drawable/walk"
                         app:tint="@color/SpaceCadet"
@@ -395,7 +394,7 @@
                         android:layout_alignStart="@id/trophy2"
                         android:layout_alignTop="@id/trophy2"
                         android:layout_alignEnd="@id/trophy2"
-                        android:layout_marginTop="25.5dp"
+                        android:layout_marginTop="28dp"
 
                         android:src="@drawable/run"
                         app:tint="@color/SpaceCadet"

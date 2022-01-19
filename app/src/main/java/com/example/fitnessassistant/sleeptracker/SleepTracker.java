@@ -15,6 +15,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
+import com.example.fitnessassistant.util.ServiceFunctional;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.SleepSegmentRequest;
 
@@ -49,26 +50,26 @@ public class SleepTracker extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Pushing base notification
         subscribeToSleepEvents();
-        Notification notification = pushSleepTrackerNotification();
+        Notification notification = pushSleepTrackerNotification(updatedContext);
         startForeground(SLEEP_TRACKER_ID, notification);
 
         return START_STICKY;
     }
 
-    private Notification pushSleepTrackerNotification(){
-        Intent intent = new Intent(this, InAppActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    public static Notification pushSleepTrackerNotification(Context context){
+        Intent intent = new Intent(context, InAppActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "SleepTracker")
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "SleepTracker")
                 .setSmallIcon(R.drawable.ic_sleep)
                 .setAutoCancel(false)
                 .setOngoing(true)
-                .setContentTitle(updatedContext.getString(R.string.sleep_tracking))
-                .setContentText(updatedContext.getString(R.string.sleep_tracking_on))
+                .setContentTitle(context.getString(R.string.sleep_tracking))
+                .setContentText(context.getString(R.string.sleep_tracking_on))
                 .setContentIntent(pendingIntent)
                 .setShowWhen(false);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
         notificationManager.notify(SLEEP_TRACKER_ID, notificationBuilder.build());
 
@@ -89,8 +90,8 @@ public class SleepTracker extends Service {
                 .setSmallIcon(R.drawable.ic_sleep)
                 .setAutoCancel(false)
                 .setOngoing(false)
-                .setContentTitle(String.valueOf(R.string.sleep_tracking))
-                .setContentText(R.string.sleep_detected_1 + startString + R.string.sleep_detected_2 + endString)
+                .setContentTitle(context.getString(R.string.sleep_tracking))
+                .setContentText(context.getString(R.string.sleep_detected_1) + startString + context.getString(R.string.sleep_detected_2) + endString)
                 .setContentIntent(pendingIntent)
                 .setShowWhen(true);
 
@@ -101,7 +102,8 @@ public class SleepTracker extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unsubscribeFromSleepEvents();
+        if(!ServiceFunctional.getSleepTrackerShouldRun(updatedContext))
+            unsubscribeFromSleepEvents();
     }
 
     @Nullable

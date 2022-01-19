@@ -71,6 +71,8 @@ public class ActivityRecyclerFragment extends Fragment {
             Collections.reverse(activitiesSortedBySpeed);
             Collections.reverse(activitiesSortedByDate);
         }
+
+        InAppActivity.mapFragment.setUpData(null);
     }
 
     @SuppressLint("NotifyDataSetChanged")

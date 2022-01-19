@@ -35,6 +35,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.fitnessassistant.activitytracker.ActivityTrackingFragment;
 import com.example.fitnessassistant.adapters.ActivityAdapter;
+import com.example.fitnessassistant.database.BackupFragment;
 import com.example.fitnessassistant.database.data.ActivityRecycler;
 import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 import com.example.fitnessassistant.diary.DiaryPageFragment;
@@ -96,6 +97,8 @@ public class InAppActivity extends AppCompatActivity {
     public static PersonalDataFragment personalDataFragment;
     public static PedometerFragment pedometerFragment;
     public static ActivityRecyclerFragment activityRecyclerFragment;
+    public static BackupFragment backupFragment;
+
     public static List<ActivityRecycler> activities;
     public ActivityAdapter activityAdapter;
     public ActivityAdapter smallActivityAdapter;
@@ -227,6 +230,7 @@ public class InAppActivity extends AppCompatActivity {
         personalDataFragment = new PersonalDataFragment();
         pedometerFragment = new PedometerFragment();
         activityRecyclerFragment = new ActivityRecyclerFragment();
+        backupFragment = new BackupFragment();
 
         active = homeFragment;
 
@@ -271,9 +275,6 @@ public class InAppActivity extends AppCompatActivity {
             }
             return false;
         });
-
-        if(ServiceFunctional.getPedometerShouldRun(this))
-            ServiceFunctional.startPedometerService(this);
 
         goToDesiredFragment(getIntent());
     }
@@ -437,6 +438,9 @@ public class InAppActivity extends AppCompatActivity {
 
         if(ServiceFunctional.getPedometerShouldRun(this))
             ServiceFunctional.startPedometerService(this);
+
+        if(ServiceFunctional.getSleepTrackerShouldRun(this))
+            ServiceFunctional.startSleepTrackerService(this);
 
         setUpQuestionsUI();
     }

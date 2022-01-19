@@ -94,8 +94,10 @@ public class SettingsFragment extends Fragment {
         // set onCheckedListener for darkModeSwitch
         ((SwitchCompat) view.findViewById(R.id.darkModeSwitch)).setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if(LocationService.serviceKilled.getValue() != null && LocationService.serviceKilled.getValue()) {
-                if (ServiceFunctional.getPedometerShouldRun(requireActivity()))
+                if(ServiceFunctional.getPedometerShouldRun(requireActivity()))
                     ServiceFunctional.stopPedometerService(requireActivity());
+                if(ServiceFunctional.getSleepTrackerShouldRun(requireActivity()))
+                    ServiceFunctional.stopSleepTrackerService(requireActivity());
                 if (isChecked) {
                     compoundButton.setText(R.string.dark_mode);
                     compoundButton.setCompoundDrawablesWithIntrinsicBounds(AppCompatResources.getDrawable(requireContext(), R.drawable.moon), null, null, null);
@@ -193,6 +195,8 @@ public class SettingsFragment extends Fragment {
                                 PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "sr").apply();
                                 if (ServiceFunctional.getPedometerShouldRun(requireActivity()))
                                     ServiceFunctional.stopPedometerService(requireActivity());
+                                if (ServiceFunctional.getSleepTrackerShouldRun(requireActivity()))
+                                    ServiceFunctional.stopSleepTrackerService(requireActivity());
                                 restartApp(requireContext(), 500);
                             });
                         } else if (languageSelected.equals(english)) {
@@ -207,6 +211,8 @@ public class SettingsFragment extends Fragment {
                                 PreferenceManager.getDefaultSharedPreferences(requireActivity().getApplicationContext()).edit().putString("langPref", "en").apply();
                                 if (ServiceFunctional.getPedometerShouldRun(requireActivity()))
                                     ServiceFunctional.stopPedometerService(requireActivity());
+                                if (ServiceFunctional.getSleepTrackerShouldRun(requireActivity()))
+                                    ServiceFunctional.stopSleepTrackerService(requireActivity());
                                 restartApp(requireContext(), 500);
                             });
                         }
@@ -233,6 +239,8 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.personalDataTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.personalDataFragment).addToBackStack(null).commit());
 
         view.findViewById(R.id.accountDataTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.accountDataFragment).addToBackStack(null).commit());
+
+        view.findViewById(R.id.backupAndRestoreTextView).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.backupFragment).addToBackStack(null).commit());
 
         // privacyPolicy listener - opens up privacy policy in web browser
         view.findViewById(R.id.ppTextView).setOnClickListener(view1 -> startActivity(new Intent("android.intent.action.VIEW", Uri.parse(getString(R.string.privacy_policy_link)))));

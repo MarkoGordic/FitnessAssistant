@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -475,9 +476,11 @@ public class PedometerFragment extends Fragment {
             int maxSteps = (int) Float.parseFloat(stepsList.get(0));
             String maxStepsDate = stepsList.get(1);
 
-            if(streakDateStart == null || streakDateEnd == null || maxStreak == 0)
-                view.findViewById(R.id.achievement2).setVisibility(View.GONE);
-            else {
+            if(streakDateStart == null || streakDateEnd == null || maxStreak == 0) {
+                ((ImageView) view.findViewById(R.id.trophy2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                ((TextView) view.findViewById(R.id.achievementDate2)).setText(requireActivity().getString(R.string.locked));
+                ((TextView) view.findViewById(R.id.achievementHeader2)).setText("");
+            } else {
                 int startDate = Integer.parseInt(streakDateStart);
                 int startDay = startDate % 100;
                 startDate /= 100;
@@ -491,15 +494,16 @@ public class PedometerFragment extends Fragment {
                 endDate /= 100;
                 int endYear = endDate;
 
+                ((ImageView) view.findViewById(R.id.trophy2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
                 ((TextView) view.findViewById(R.id.achievementDate2)).setText(String.format("%d %s %d - %d %s %d", startDay, getMonthShort(requireActivity(), startMonth), startYear, endDay, getMonthShort(requireActivity(), endMonth), endYear));
                 ((TextView) view.findViewById(R.id.achievementHeader2)).setText(String.format("%d-%s\n%s", maxStreak, requireActivity().getString(R.string.day), requireActivity().getString(R.string.streak)));
-
-                view.findViewById(R.id.achievement2).setVisibility(View.VISIBLE);
             }
 
-            if(maxStepsDate == null || maxSteps == 0)
-                view.findViewById(R.id.achievement1).setVisibility(View.GONE);
-            else {
+            if(maxStepsDate == null || maxSteps == 0) {
+                ((ImageView) view.findViewById(R.id.trophy1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                ((TextView) view.findViewById(R.id.achievementDate1)).setText(requireActivity().getString(R.string.locked));
+                ((TextView) view.findViewById(R.id.achievementHeader1)).setText("");
+            } else {
                 int date = Integer.parseInt(maxStepsDate);
                 int day = date % 100;
                 date /= 100;
@@ -507,10 +511,9 @@ public class PedometerFragment extends Fragment {
                 date /= 100;
                 int year = date;
 
+                ((ImageView) view.findViewById(R.id.trophy1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
                 ((TextView) view.findViewById(R.id.achievementDate1)).setText(String.format("%d %s %d", day, getMonthShort(requireActivity(), month), year));
                 ((TextView) view.findViewById(R.id.achievementHeader1)).setText(String.format("%d\n%s", maxSteps, requireActivity().getString(R.string.steps_in_a_day)));
-
-                view.findViewById(R.id.achievement1).setVisibility(View.VISIBLE);
             }
 
         }
