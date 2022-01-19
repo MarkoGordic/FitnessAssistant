@@ -79,7 +79,6 @@ public class MDBHPedometer extends SQLiteOpenHelper {
         if(cursor != null)
             if(cursor.getCount() > 0) {
                 cursor.close();
-                //dbRead.close();
                 dataExists = true;
             }
 

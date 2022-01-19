@@ -4,6 +4,11 @@ public class SleepSegment {
     long startTime;
     long endTime;
     int quality;
+    int confirmationStatus;
+
+    public int getConfirmationStatus() {
+        return confirmationStatus;
+    }
 
     public int getQuality() {
         return quality;
@@ -15,6 +20,10 @@ public class SleepSegment {
 
     public long getStartTime() {
         return startTime;
+    }
+
+    public void setConfirmationStatus(int confirmationStatus) {
+        this.confirmationStatus = confirmationStatus;
     }
 
     public void setEndTime(long endTime) {

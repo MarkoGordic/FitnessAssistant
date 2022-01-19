@@ -13,9 +13,6 @@ import com.example.fitnessassistant.database.data.SleepSegment;
 import com.example.fitnessassistant.sleeptracker.SleepTracker;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MDBHSleepTracker extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SleepData.db";
     private static final int DATABASE_VERSION = 1;
@@ -27,6 +24,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
     private static final String SEGMENTS_END_TIME = "end_time";
     private static final String SEGMENTS_SLEEP_QUALITY = "quality";
     private static final String SEGMENTS_SLEEP_DATE = "date";
+    private static final String SEGMENTS_CONFIRMATION_STATUS = "status";
 
     private static MDBHSleepTracker instance;
 
@@ -48,35 +46,69 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
                         " (" + SEGMENTS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         SEGMENTS_SLEEP_DATE + " TEXT, " +
                         SEGMENTS_SLEEP_QUALITY + " INTEGER, " +
+                        SEGMENTS_CONFIRMATION_STATUS + " INTEGER, " +
                         SEGMENTS_START_TIME + " REAL, " +
                         SEGMENTS_END_TIME + " REAL);";
 
         db.execSQL(query);
     }
 
-    public void addNewSleepSegment(Context context, long startTime, long endTime, String date){
+    public void addNewSleepSegment(Context context, Long startTime, Long endTime, String date, Integer quality, Integer confirmationStatus){
+        if(date == null)
+            return;
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(SEGMENTS_START_TIME, startTime);
-        cv.put(SEGMENTS_END_TIME, endTime);
-        cv.put(SEGMENTS_SLEEP_DATE, date);
-        cv.put(SEGMENTS_SLEEP_QUALITY, -1);
+        boolean same = true;
 
-        boolean same = checkSleepSegment(startTime, endTime);
-        long result;
+        if(startTime != null && endTime != null) {
+            cv.put(SEGMENTS_START_TIME, startTime);
+            cv.put(SEGMENTS_END_TIME, endTime);
+            same = checkSleepSegment(startTime, endTime);
+        }
+
+        cv.put(SEGMENTS_SLEEP_DATE, date);
+
+        if(quality != null)
+            cv.put(SEGMENTS_SLEEP_QUALITY, quality);
+
+        if(confirmationStatus == null)
+            confirmationStatus = -1;
+
+        cv.put(SEGMENTS_CONFIRMATION_STATUS, confirmationStatus);
+
+        String query = "SELECT * FROM " + SEGMENTS_TABLE_NAME + " WHERE " + SEGMENTS_SLEEP_DATE + " = " + date;
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean dataExists = false;
+
+        if(dbRead != null){
+            cursor = dbRead.rawQuery(query, null);
+        }
+
+        if(cursor != null)
+            if(cursor.getCount() > 0) {
+                cursor.close();
+                dataExists = true;
+            }
+
+        long result = -1;
 
         if(!same){
-            result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
-
             Context updatedContext = LocaleExt.toLangIfDiff(context, PreferenceManager.getDefaultSharedPreferences(context).getString("langPref", "sys"), true, false);
             SleepTracker.pushSleepDetectedNotification(updatedContext, startTime, endTime);
-
-            if(result == -1)
-                System.out.println("Fail! DATABASE");
-            else
-                System.out.println("Success! DATABASE");
         }
+
+        if(dataExists)
+            result = db.update(SEGMENTS_TABLE_NAME, cv, "date = ?", new String[]{date});
+        else if(endTime != null && startTime != null)
+            result = db.insert(SEGMENTS_TABLE_NAME, null, cv);
+
+        if(result == -1)
+            System.out.println("Fail! DATABASE");
+        else
+            System.out.println("Success! DATABASE");
     }
 
     public boolean checkSleepSegment(long startTime, long endTime){
@@ -100,23 +132,22 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         return values[0] == startTime && values[1] == endTime;
     }
 
-    public List<SleepSegment> getSleepSegmentsForDateFromDB(String date){
+    public SleepSegment getSleepSegmentForDateFromDB(String date){
         String query = "SELECT * FROM " + SEGMENTS_TABLE_NAME + " WHERE " + SEGMENTS_SLEEP_DATE + " = " + date;
         SQLiteDatabase db = this.getReadableDatabase();
 
-        List<SleepSegment> data = null;
+        SleepSegment data = null;
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0) {
-                data = new ArrayList<>();
                 if (cursor.moveToFirst()) {
-                    SleepSegment sleepSegment = new SleepSegment();
-                    sleepSegment.setStartTime(cursor.getLong(cursor.getColumnIndex(SEGMENTS_START_TIME)));
-                    sleepSegment.setEndTime(cursor.getLong(cursor.getColumnIndex(SEGMENTS_END_TIME)));
-                    sleepSegment.setQuality(cursor.getInt(cursor.getColumnIndex(SEGMENTS_SLEEP_QUALITY)));
-                    data.add(sleepSegment);
+                    data = new SleepSegment();
+                    data.setStartTime(cursor.getLong(cursor.getColumnIndex(SEGMENTS_START_TIME)));
+                    data.setEndTime(cursor.getLong(cursor.getColumnIndex(SEGMENTS_END_TIME)));
+                    data.setQuality(cursor.getInt(cursor.getColumnIndex(SEGMENTS_SLEEP_QUALITY)));
+                    data.setConfirmationStatus(cursor.getInt(cursor.getColumnIndex(SEGMENTS_CONFIRMATION_STATUS)));
                 }
                 cursor.close();
             }
