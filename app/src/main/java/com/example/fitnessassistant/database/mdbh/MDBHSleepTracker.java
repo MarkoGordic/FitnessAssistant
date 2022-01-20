@@ -53,8 +53,28 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public void addNewSleepSegment(Context context, Long startTime, Long endTime, String date, Integer quality, Integer confirmationStatus){
+    public void addNewSleepSegment(Context context, Long startTime, Long endTime, String date, Integer quality, Integer confirmationStatus, boolean updateRequest){
         if(date == null)
+            return;
+
+        String query = "SELECT * FROM " + SEGMENTS_TABLE_NAME + " WHERE " + SEGMENTS_SLEEP_DATE + " = " + date;
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean dataExists = false;
+        int confirmation = -1; // indicator if user already confirmed today's sleep
+
+        if(dbRead != null){
+            cursor = dbRead.rawQuery(query, null);
+        }
+
+        if(cursor != null)
+            if(cursor.getCount() > 0) {
+                cursor.close();
+                confirmation = cursor.getInt(cursor.getColumnIndex(SEGMENTS_CONFIRMATION_STATUS));
+                dataExists = true;
+            }
+
+        if(confirmation == 1 && !updateRequest)
             return;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -77,21 +97,6 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
             confirmationStatus = -1;
 
         cv.put(SEGMENTS_CONFIRMATION_STATUS, confirmationStatus);
-
-        String query = "SELECT * FROM " + SEGMENTS_TABLE_NAME + " WHERE " + SEGMENTS_SLEEP_DATE + " = " + date;
-        SQLiteDatabase dbRead = this.getReadableDatabase();
-        Cursor cursor = null;
-        boolean dataExists = false;
-
-        if(dbRead != null){
-            cursor = dbRead.rawQuery(query, null);
-        }
-
-        if(cursor != null)
-            if(cursor.getCount() > 0) {
-                cursor.close();
-                dataExists = true;
-            }
 
         long result = -1;
 
