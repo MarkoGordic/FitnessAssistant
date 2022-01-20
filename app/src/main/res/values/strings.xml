@@ -194,6 +194,7 @@
     <string name="image_size_too_large">Image Size Too Large</string>
     <string name="daily_activity">Daily Activity</string>
     <string name="loading_image">Uploading Profile Picture…</string>
+    <string name="save">Save</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Select A Language: </string>
@@ -394,6 +395,18 @@
     <string name="oct">Oct</string>
     <string name="nov">Nov</string>
     <string name="dec">Dec</string>
+    <string name="jan_long">January</string>
+    <string name="feb_long">February</string>
+    <string name="mar_long">March</string>
+    <string name="apr_long">April</string>
+    <string name="may_long">May</string>
+    <string name="jun_long">June</string>
+    <string name="jul_long">July</string>
+    <string name="aug_long">August</string>
+    <string name="sep_long">September</string>
+    <string name="oct_long">October</string>
+    <string name="nov_long">November</string>
+    <string name="dec_long">December</string>
     <string name="set_all">Set All</string>
     <string name="step_goal_cannot_be_zero">Step goal can\'t be 0.</string>
     <string name="step_goal_cannot_be_empty">Step goal can\'t be empty.</string>

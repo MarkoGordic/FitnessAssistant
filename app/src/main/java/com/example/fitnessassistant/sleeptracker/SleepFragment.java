@@ -4,6 +4,7 @@ import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFor
 import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -17,21 +18,35 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.adapters.CalendarAdapter;
 import com.example.fitnessassistant.database.data.SleepSegment;
 import com.example.fitnessassistant.database.mdbh.MDBHSleepTracker;
+import com.example.fitnessassistant.util.ClockView;
 import com.example.fitnessassistant.util.GraphView;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class SleepFragment extends Fragment {
+public class SleepFragment extends Fragment implements CalendarAdapter.OnItemListener {
     private Calendar graphCal;
+    private LocalDate selectedDate;
+    private int day;
+    private int month;
+    private int year;
 
     private void setUpCurrentDate(View view){
         int currentDate = Integer.parseInt(getCurrentDateFormatted());
@@ -273,86 +288,215 @@ public class SleepFragment extends Fragment {
         }
     }
 
+    @SuppressLint("DefaultLocale")
+    private void setUpClockAndQuality(View view){
+        ClockView clock = view.findViewById(R.id.clock);
+        String date = (String) DateFormat.format("yyyyMMdd", Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        SleepSegment todaySleepSegment = MDBHSleepTracker.getInstance(requireActivity()).getSleepSegmentForDateFromDB(date);
+        ((TextView) view.findViewById(R.id.selectedDate)).setText(String.format("%d %s %d", day, getMonthShort(requireActivity(), month), year));
+        if(todaySleepSegment != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(todaySleepSegment.getStartTime());
+            float startHours = cal.get(Calendar.HOUR);
+            startHours += cal.get(Calendar.MINUTE) / 60f;
+            startHours += cal.get(Calendar.SECOND) / 3600f;
+
+            cal.setTimeInMillis(todaySleepSegment.getEndTime());
+            float endHours = cal.get(Calendar.HOUR);
+            endHours += cal.get(Calendar.MINUTE) / 60f;
+            endHours += cal.get(Calendar.SECOND) / 3600f;
+
+            clock.setStartHours(startHours);
+            clock.setHoursSlept(endHours - startHours);
+            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("%.1f\n%s", endHours - startHours, requireActivity().getString(R.string.hours_small)));
+
+            switch(todaySleepSegment.getQuality()) {
+                case 1:
+                    ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Awful)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    break;
+                case 2:
+                    ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Bad)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    break;
+                case 3:
+                    ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Neutral)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    break;
+                case 4:
+                    ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Good)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    break;
+                case 5:
+                    ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Excellent)));
+                    break;
+                default:
+                    ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+                    break;
+            }
+        } else{
+            clock.setStartHours(0f);
+            clock.setHoursSlept(0f);
+            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("?\n%s", requireActivity().getString(R.string.hours_small)));
+        }
+        clock.setFontSize(14f);
+        clock.setNumPadding(6f);
+        clock.invalidate();
+    }
+
     // TODO call when received sleep updates
     public void setUpSleepData(View view){
         if(view == null)
             view = getView();
 
         if(view != null) {
-
             if(graphCal == null)
                 graphCal = Calendar.getInstance();
 
             setUpGraph(view, null);
-
-            View finalView = view;
-            view.findViewById(R.id.weeklyMonthlySwitch).setOnClickListener(new View.OnClickListener() {
-                boolean weekly = true;
-                @Override
-                public void onClick(View v) {
-                    weekly = !weekly;
-                    setUpGraph(finalView, weekly);
-                }
-            });
-
-            view.findViewById(R.id.dateBefore).setOnClickListener(v -> {
-                Boolean weeklyGraph = null;
-                if(isWeeklyGraph(finalView)) {
-                    graphCal.add(Calendar.WEEK_OF_YEAR, -1);
-
-                    if(graphCal.get(Calendar.WEEK_OF_YEAR) == Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) && graphCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
-                        weeklyGraph = true;
-                    else
-                    if(graphCal.before(Calendar.getInstance()))
-                        graphCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-                    else
-                        graphCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                } else {
-                    graphCal.add(Calendar.MONTH, -1);
-
-                    if(graphCal.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH) && graphCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
-                        weeklyGraph = false;
-                    else
-                    if(graphCal.before(Calendar.getInstance()))
-                        graphCal.set(Calendar.DAY_OF_MONTH, graphCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-                    else
-                        graphCal.set(Calendar.DAY_OF_MONTH, 1);
-                }
-
-                setUpGraph(finalView, weeklyGraph);
-            });
-
-            view.findViewById(R.id.dateAfter).setOnClickListener(v -> {
-                Boolean weeklyGraph = null;
-                if(isWeeklyGraph(finalView)) {
-                    graphCal.add(Calendar.WEEK_OF_YEAR, 1);
-
-                    if(graphCal.get(Calendar.WEEK_OF_YEAR) == Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) && graphCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
-                        weeklyGraph = true;
-                    else
-                    if(graphCal.before(Calendar.getInstance()))
-                        graphCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-                    else
-                        graphCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                } else {
-                    graphCal.add(Calendar.MONTH, 1);
-
-                    if(graphCal.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH) && graphCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
-                        weeklyGraph = false;
-                    else
-                    if(graphCal.before(Calendar.getInstance()))
-                        graphCal.set(Calendar.DAY_OF_MONTH, graphCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-                    else
-                        graphCal.set(Calendar.DAY_OF_MONTH, 1);
-                }
-
-                setUpGraph(finalView, weeklyGraph);
-            });
+            setUpClockAndQuality(view);
         }
     }
 
     private void setUpOnClickListeners(View view){
         setUpSleepButton(view, null);
+
+        view.findViewById(R.id.weeklyMonthlySwitch).setOnClickListener(new View.OnClickListener() {
+            boolean weekly = true;
+            @Override
+            public void onClick(View v) {
+                weekly = !weekly;
+                setUpGraph(view, weekly);
+            }
+        });
+
+        view.findViewById(R.id.dateBefore).setOnClickListener(v -> {
+            Boolean weeklyGraph = null;
+            if(isWeeklyGraph(view)) {
+                graphCal.add(Calendar.WEEK_OF_YEAR, -1);
+
+                if(graphCal.get(Calendar.WEEK_OF_YEAR) == Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) && graphCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+                    weeklyGraph = true;
+                else
+                if(graphCal.before(Calendar.getInstance()))
+                    graphCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                else
+                    graphCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            } else {
+                graphCal.add(Calendar.MONTH, -1);
+
+                if(graphCal.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH) && graphCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+                    weeklyGraph = false;
+                else
+                if(graphCal.before(Calendar.getInstance()))
+                    graphCal.set(Calendar.DAY_OF_MONTH, graphCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                else
+                    graphCal.set(Calendar.DAY_OF_MONTH, 1);
+            }
+
+            setUpGraph(view, weeklyGraph);
+        });
+
+        view.findViewById(R.id.dateAfter).setOnClickListener(v -> {
+            Boolean weeklyGraph = null;
+            if(isWeeklyGraph(view)) {
+                graphCal.add(Calendar.WEEK_OF_YEAR, 1);
+
+                if(graphCal.get(Calendar.WEEK_OF_YEAR) == Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) && graphCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+                    weeklyGraph = true;
+                else
+                if(graphCal.before(Calendar.getInstance()))
+                    graphCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                else
+                    graphCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            } else {
+                graphCal.add(Calendar.MONTH, 1);
+
+                if(graphCal.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH) && graphCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+                    weeklyGraph = false;
+                else
+                if(graphCal.before(Calendar.getInstance()))
+                    graphCal.set(Calendar.DAY_OF_MONTH, graphCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                else
+                    graphCal.set(Calendar.DAY_OF_MONTH, 1);
+            }
+
+            setUpGraph(view, weeklyGraph);
+        });
+
+        view.findViewById(R.id.previousMonth).setOnClickListener(v -> {
+            selectedDate = selectedDate.minusMonths(1);
+            setMonthView(view);
+        });
+
+        view.findViewById(R.id.nextMonth).setOnClickListener(v -> {
+            selectedDate = selectedDate.plusMonths(1);
+            setMonthView(view);
+        });
+
+        view.findViewById(R.id.sleepDateFragment).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new SleepDateFragment(day, month, year)).addToBackStack(null).commit());
+    }
+
+    private ArrayList<String> daysInMonthArray(LocalDate date){
+        ArrayList<String> daysInMonthArray = new ArrayList<>();
+        YearMonth yearMonth = YearMonth.from(date);
+
+        int daysInMonth = yearMonth.lengthOfMonth();
+
+        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
+        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+
+        for(int i = 1; i <= 42; i++){
+            if(i <= dayOfWeek || i > daysInMonth + dayOfWeek){
+                daysInMonthArray.add("");
+            } else{
+                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
+            }
+        }
+
+        return daysInMonthArray;
+    }
+
+    @Override
+    public void onItemClick(int position, String dayText) {
+        day = Integer.parseInt(dayText);
+        month = selectedDate.getMonthValue();
+        year = selectedDate.getYear();
+        setUpClockAndQuality(requireView());
+
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void setMonthView(View view){
+        ((TextView) view.findViewById(R.id.monthYearTextView)).setText(String.format("%s %d", getMonthShort(requireActivity(), selectedDate.getMonthValue()), selectedDate.getYear()));
+        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+
+        RecyclerView calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
+
+        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
+
+        calendarRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 7));
+        calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
     @Nullable
@@ -360,6 +504,15 @@ public class SleepFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.sleep_screen, container, false);
         setUpOnClickListeners(view);
+
+        selectedDate = LocalDate.now();
+
+        day = selectedDate.getDayOfMonth();
+        month = selectedDate.getMonthValue();
+        year = selectedDate.getYear();
+
+        setMonthView(view);
+
         return view;
     }
 

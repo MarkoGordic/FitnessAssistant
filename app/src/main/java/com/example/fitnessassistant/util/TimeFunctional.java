@@ -45,6 +45,37 @@ public class TimeFunctional {
         }
     }
 
+    public static String getMonthLong(Context context, int numOfMonth){
+        switch(numOfMonth){
+            case 1:
+                return context.getString(R.string.jan_long);
+            case 2:
+                return context.getString(R.string.feb_long);
+            case 3:
+                return context.getString(R.string.mar_long);
+            case 4:
+                return context.getString(R.string.apr_long);
+            case 5:
+                return context.getString(R.string.may_long);
+            case 6:
+                return context.getString(R.string.jun_long);
+            case 7:
+                return context.getString(R.string.jul_long);
+            case 8:
+                return context.getString(R.string.aug_long);
+            case 9:
+                return context.getString(R.string.sep_long);
+            case 10:
+                return context.getString(R.string.oct_long);
+            case 11:
+                return context.getString(R.string.nov_long);
+            case 12:
+                return context.getString(R.string.dec_long);
+            default:
+                return null;
+        }
+    }
+
     public static String[] getPastDaysInTheWeek(){
         Calendar cal = Calendar.getInstance();
         String[] last7dates;

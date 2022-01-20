@@ -118,10 +118,302 @@
 
             android:background="@color/BlueYonder"/>
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/sleepDateFragment"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+
+            android:layout_gravity="end"
+
+            android:src="@drawable/pencil"
+            app:tint="@color/BlueYonder"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <com.example.fitnessassistant.util.ClockView
+                android:id="@+id/clock"
+
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"/>
+
+            <TextView
+                android:id="@+id/hoursSlept"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignStart="@id/clock"
+                android:layout_alignTop="@id/clock"
+                android:layout_alignEnd="@id/clock"
+                android:layout_alignBottom="@id/clock"
+
+                android:fontFamily="@font/ralewayb"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:padding="5dp"
+                android:textColor="@color/InvertedBackgroundColor"
+                android:textFontWeight="600"
+                android:textSize="26sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/selectedDate"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+
+            android:layout_gravity="center"
+
+            android:fontFamily="@font/roboto_light"
+            android:includeFontPadding="false"
+            android:padding="5dp"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="72dp"
+            android:layout_marginStart="72dp"
+
+            android:orientation="horizontal"
+            android:gravity="center">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/smiley1"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:src="@drawable/smiley1"
+                app:tint="@color/LightGrayColor"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/smiley2"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:src="@drawable/smiley2"
+                app:tint="@color/LightGrayColor"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/smiley3"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:src="@drawable/smiley3"
+                app:tint="@color/LightGrayColor"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/smiley4"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:src="@drawable/smiley4"
+                app:tint="@color/LightGrayColor"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/smiley5"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:src="@drawable/smiley5"
+                app:tint="@color/LightGrayColor"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_button">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/previousMonth"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:src="@drawable/caret_left"
+                    android:background="@drawable/top_left_rounded"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:tint="@color/backgroundColor"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                <TextView
+                    android:id="@+id/monthYearTextView"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+
+                    android:layout_gravity="center"
+                    android:gravity="center"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textFontWeight="600"
+                    android:textSize="20sp" />
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/nextMonth"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:src="@drawable/caret_right"
+                    android:background="@drawable/top_right_rounded"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:tint="@color/backgroundColor"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:background="@color/SpaceCadet"
+                android:layout_marginBottom="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/mon"
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textAlignment="center"
+                    android:textFontWeight="600"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/tue"
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textAlignment="center"
+                    android:textFontWeight="600"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/wed"
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textAlignment="center"
+                    android:textFontWeight="600"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/thu"
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textAlignment="center"
+                    android:textFontWeight="600"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/fri"
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textAlignment="center"
+                    android:textFontWeight="600"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/sat"
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textAlignment="center"
+                    android:textFontWeight="600"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/sun"
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textAlignment="center"
+                    android:textFontWeight="600"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:background="@color/SpaceCadet"
+                android:layout_marginTop="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendarRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"/>
+        </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/border_button" >
 
             <TextView

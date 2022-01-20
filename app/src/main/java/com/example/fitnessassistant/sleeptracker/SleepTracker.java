@@ -1,5 +1,6 @@
 package com.example.fitnessassistant.sleeptracker;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -75,12 +76,13 @@ public class SleepTracker extends Service {
         return notificationBuilder.build();
     }
 
+    @SuppressLint("DefaultLocale")
     public static void pushSleepDetectedNotification(Context context, long startTime, long endTime){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(startTime);
-        String startString = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
+        String startString = String.format(" %2d:%2d ", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
         calendar.setTimeInMillis(endTime);
-        String endString = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " ?";
+        String endString = String.format(" %2d:%2d ?", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
 
         Intent intent = new Intent(context, InAppActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);

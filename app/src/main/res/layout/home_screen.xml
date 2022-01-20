@@ -221,20 +221,11 @@
             <RelativeLayout
                 android:layout_width="160dp"
                 android:layout_height="160dp"
-
                 android:layout_gravity="center">
-                <!-- DailySteps ProgressBar -->
-                <ProgressBar
-                    android:id="@+id/dailySleepProgressBar"
 
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <com.example.fitnessassistant.util.ClockView
+                    android:id="@+id/clock"
 
-                    android:indeterminateOnly="false"
-                    android:progressDrawable="@drawable/steps_circle"
-                    android:rotation="-90"/>
-
-                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
@@ -242,29 +233,30 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_margin="19dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
 
+                <TextView
+                    android:id="@+id/hoursSlept"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignStart="@id/clock"
+                    android:layout_alignTop="@id/clock"
+                    android:layout_alignEnd="@id/clock"
+                    android:layout_alignBottom="@id/clock"
+
+                    android:fontFamily="@font/ralewayb"
                     android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/sleepActivityTV"
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:fontFamily="@font/roboto_light"
-                        android:textColor="@color/SpaceCadet"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:fontFamily="@font/ralewaym"
-                        android:text="@string/hours_small"
-                        android:textColor="@color/SpaceCadet"
-                        android:textSize="18sp" />
-                </LinearLayout>
+                    android:includeFontPadding="false"
+                    android:padding="5dp"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="18sp" />
             </RelativeLayout>
         </LinearLayout>
     </TableRow>

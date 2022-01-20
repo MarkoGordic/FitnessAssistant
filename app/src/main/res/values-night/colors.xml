@@ -15,6 +15,12 @@
     <color name="NonBackgroundColor">#979999</color>
     <color name="LightGrayColor">#c4c8cc</color>
     <color name="NotSelectedDefaultColor">#3b3d40</color>
+    <!-- smiley colors -->
+    <color name="Excellent">#388659</color>
+    <color name="Good">#52AA5E</color>
+    <color name="Neutral">#279AF1</color>
+    <color name="Bad">#FF9914</color>
+    <color name="Awful">#F71735</color>
     <!-- main blue colors -->
     <color name="SpaceCadet">#6cb8d9</color>
     <color name="DarkBlueYonder">#38708c</color>

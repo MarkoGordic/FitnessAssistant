@@ -193,6 +193,7 @@
     <string name="image_size_too_large">Veličina Slike Je Prevelika</string>
     <string name="daily_activity">Dnevna Aktivnost</string>
     <string name="loading_image">Čuvanje Profilne Slike…</string>
+    <string name="save">Sačuvaj</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Izaberite Jezik: </string>
@@ -395,6 +396,18 @@
     <string name="oct">Okt</string>
     <string name="nov">Nov</string>
     <string name="dec">Dec</string>
+    <string name="jan_long">Januar</string>
+    <string name="feb_long">Februar</string>
+    <string name="mar_long">Mart</string>
+    <string name="apr_long">April</string>
+    <string name="may_long">Maj</string>
+    <string name="jun_long">Jun</string>
+    <string name="jul_long">Jul</string>
+    <string name="aug_long">August</string>
+    <string name="sep_long">Septembar</string>
+    <string name="oct_long">Oktobar</string>
+    <string name="nov_long">Novembar</string>
+    <string name="dec_long">Decembar</string>
     <string name="set_all">Podesi Sve</string>
     <string name="step_goal_cannot_be_zero">Cilj koraka ne može biti 0.</string>
     <string name="step_goal_cannot_be_empty">Cilj koraka ne može biti prazan.</string>
