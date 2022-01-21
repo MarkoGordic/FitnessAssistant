@@ -25,6 +25,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
     private static final String SEGMENTS_SLEEP_QUALITY = "quality";
     private static final String SEGMENTS_SLEEP_DATE = "date";
     private static final String SEGMENTS_CONFIRMATION_STATUS = "status";
+    private static final String SEGMENTS_DURATION = "duration";
 
     private static MDBHSleepTracker instance;
 
@@ -47,13 +48,14 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
                         SEGMENTS_SLEEP_DATE + " TEXT, " +
                         SEGMENTS_SLEEP_QUALITY + " INTEGER, " +
                         SEGMENTS_CONFIRMATION_STATUS + " INTEGER, " +
+                        SEGMENTS_DURATION + " REAL, " +
                         SEGMENTS_START_TIME + " REAL, " +
                         SEGMENTS_END_TIME + " REAL);";
 
         db.execSQL(query);
     }
 
-    public void addNewSleepSegment(Context context, Long startTime, Long endTime, String date, Integer quality, Integer confirmationStatus, boolean updateRequest){
+    public void addNewSleepSegment(Context context, Long startTime, Long endTime, Long duration, String date, Integer quality, Integer confirmationStatus, boolean updateRequest){
         if(date == null)
             return;
 
@@ -69,8 +71,10 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
 
         if(cursor != null)
             if(cursor.getCount() > 0) {
-                cursor.close();
+                cursor.moveToFirst();
+
                 confirmation = cursor.getInt(cursor.getColumnIndex(SEGMENTS_CONFIRMATION_STATUS));
+                cursor.close();
                 dataExists = true;
             }
 
@@ -85,6 +89,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         if(startTime != null && endTime != null) {
             cv.put(SEGMENTS_START_TIME, startTime);
             cv.put(SEGMENTS_END_TIME, endTime);
+            cv.put(SEGMENTS_DURATION, duration);
             same = checkSleepSegment(startTime, endTime);
         }
 
@@ -151,6 +156,7 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
                     data = new SleepSegment();
                     data.setStartTime(cursor.getLong(cursor.getColumnIndex(SEGMENTS_START_TIME)));
                     data.setEndTime(cursor.getLong(cursor.getColumnIndex(SEGMENTS_END_TIME)));
+                    data.setDuration(cursor.getLong(cursor.getColumnIndex(SEGMENTS_DURATION)));
                     data.setQuality(cursor.getInt(cursor.getColumnIndex(SEGMENTS_SLEEP_QUALITY)));
                     data.setConfirmationStatus(cursor.getInt(cursor.getColumnIndex(SEGMENTS_CONFIRMATION_STATUS)));
                 }

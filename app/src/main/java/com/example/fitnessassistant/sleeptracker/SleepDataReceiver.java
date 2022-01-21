@@ -18,6 +18,7 @@ public class SleepDataReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         System.out.println("Sleep update received!");
+
         if(SleepSegmentEvent.hasEvents(intent)){ // These are whole sleep segments
             List<SleepSegmentEvent> sleepEvents = SleepSegmentEvent.extractEvents(intent);
 
@@ -25,7 +26,7 @@ public class SleepDataReceiver extends BroadcastReceiver {
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(sleepEvents.get(i).getEndTimeMillis());
                 String date = (String) DateFormat.format("yyyyMMdd", cal);
-                MDBHSleepTracker.getInstance(context).addNewSleepSegment(context, sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis(), date, null, null, false);
+                MDBHSleepTracker.getInstance(context).addNewSleepSegment(context, sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis(), sleepEvents.get(i).getSegmentDurationMillis(), date, null, null, false);
                 System.out.println(sleepEvents.get(i) + " SLEEP_DATA");
             }
         }

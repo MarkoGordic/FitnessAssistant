@@ -306,9 +306,14 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
             endHours += cal.get(Calendar.MINUTE) / 60f;
             endHours += cal.get(Calendar.SECOND) / 3600f;
 
+            float hoursSlept = endHours - startHours;
+            if(endHours < startHours){
+                hoursSlept += 24;
+            }
+
             clock.setStartHours(startHours);
-            clock.setHoursSlept(endHours - startHours);
-            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("%.1f\n%s", endHours - startHours, requireActivity().getString(R.string.hours_small)));
+            clock.setHoursSlept(hoursSlept);
+            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("%.1f\n%s", hoursSlept, requireActivity().getString(R.string.hours_small)));
 
             switch(todaySleepSegment.getQuality()) {
                 case 1:

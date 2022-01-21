@@ -450,10 +450,16 @@ public class LocationService extends LifecycleService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "ActivityTracking")
                 .setAutoCancel(false)
                 .setOngoing(true)
-                .setContentTitle(context.getString(R.string.run_tracking))
                 .setContentText(contentText)
                 .setContentIntent(pendingIntent)
                 .setShowWhen(false);
+
+        if(ActivityTrackingFragment.activityType == MapPageFragment.RUNNING_SELECTED)
+            notificationBuilder.setContentTitle(context.getString(R.string.run_tracking));
+        else if(ActivityTrackingFragment.activityType == MapPageFragment.CYCLING_SELECTED)
+            notificationBuilder.setContentTitle(context.getString(R.string.bike_tracking));
+        else if(ActivityTrackingFragment.activityType == MapPageFragment.WALKING_SELECTED)
+            notificationBuilder.setContentTitle(context.getString(R.string.walk_tracking));
 
         if(forceIcon){
             notificationTrigger = true;

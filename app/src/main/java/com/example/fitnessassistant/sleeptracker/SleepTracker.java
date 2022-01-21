@@ -1,6 +1,5 @@
 package com.example.fitnessassistant.sleeptracker;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -24,6 +23,7 @@ import java.util.Calendar;
 
 public class SleepTracker extends Service {
     public static final int SLEEP_TRACKER_ID = 28;
+    public static final int SLEEP_TRACKER_ALERT_ID = 29;
     private Context updatedContext;
     private PendingIntent sleepReceiver;
 
@@ -76,16 +76,25 @@ public class SleepTracker extends Service {
         return notificationBuilder.build();
     }
 
-    @SuppressLint("DefaultLocale")
     public static void pushSleepDetectedNotification(Context context, long startTime, long endTime){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(startTime);
-        String startString = String.format(" %2d:%2d ", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+        String hours = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+        String minutes = String.valueOf(calendar.get(Calendar.MINUTE));
+        if(Integer.parseInt(hours) < 10)
+            hours += "0";
+        if(Integer.parseInt(minutes) < 10)
+            minutes += "0";
+        String startString = " " + hours + ":" + minutes + " ";
         calendar.setTimeInMillis(endTime);
-        String endString = String.format(" %2d:%2d ?", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+        hours = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+        minutes = String.valueOf(calendar.get(Calendar.MINUTE));
+        if(Integer.parseInt(minutes) < 10)
+            minutes += "0";
+        String endString = " " + hours + ":" + minutes + " ?";
 
         Intent intent = new Intent(context, InAppActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, SLEEP_TRACKER_ALERT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "SleepTracker")
                 .setSmallIcon(R.drawable.ic_sleep)
@@ -97,7 +106,7 @@ public class SleepTracker extends Service {
                 .setShowWhen(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(SLEEP_TRACKER_ID, notificationBuilder.build());
+        notificationManager.notify(SLEEP_TRACKER_ALERT_ID, notificationBuilder.build());
     }
 
     @Override
