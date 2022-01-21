@@ -269,8 +269,10 @@
     <string name="activity_tracking">Praćenje Aktivnosti</string>
     <string name="activity_tracking_desc">Obaveštenja o praćenju Vaših fizičkih aktivnosti u realnom vremenu.</string>
     <string name="sleep_tracking">Praćenje sna</string>
+    <string name="sleep_detections">Detekcije sna</string>
     <string name="sleep_tracking_on">Automatsko praćenje Vašeg sna je ukljuceno.</string>
-    <string name="sleep_tracking_desc">Automatska detekcija i praćenje sna.</string>
+    <string name="sleep_tracking_desc">Indikator za praćenje sna.</string>
+    <string name="sleep_tracking_alert_desc">Obaveštenja o detekciji sna.</string>
     <string name="sleep_detected_1">Spavanje je detektovano! Da li ste spavali od </string>
     <string name="sleep_detected_2"> do </string>
     <string name="run_tracking">Praćenje Trčanja</string>

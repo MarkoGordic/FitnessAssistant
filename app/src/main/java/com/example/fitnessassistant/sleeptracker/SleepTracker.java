@@ -96,7 +96,7 @@ public class SleepTracker extends Service {
         Intent intent = new Intent(context, InAppActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, SLEEP_TRACKER_ALERT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "SleepTracker")
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "SleepTrackerAlerts")
                 .setSmallIcon(R.drawable.ic_sleep)
                 .setAutoCancel(false)
                 .setOngoing(false)
