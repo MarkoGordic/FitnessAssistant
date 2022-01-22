@@ -147,9 +147,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"/>
 
-            <TextView
-                android:id="@+id/hoursSlept"
-
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
@@ -158,13 +156,31 @@
                 android:layout_alignEnd="@id/clock"
                 android:layout_alignBottom="@id/clock"
 
-                android:fontFamily="@font/ralewayb"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:padding="5dp"
-                android:textColor="@color/InvertedBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="26sp" />
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/hoursSlept"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/roboto_light"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textSize="23sp"
+                    android:textFontWeight="800"/>
+                <TextView
+                    android:id="@+id/hours"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:text="@string/hours_small"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textSize="24sp" />
+            </LinearLayout>
         </RelativeLayout>
 
         <TextView
@@ -402,12 +418,16 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/calendarRecyclerView"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginEnd="8dp"
+
+                android:nestedScrollingEnabled="false"
+                android:splitMotionEvents="false"/>
         </LinearLayout>
 
         <RelativeLayout

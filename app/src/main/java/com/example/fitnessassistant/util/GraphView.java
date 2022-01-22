@@ -143,7 +143,7 @@ public class GraphView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         if(graphValues == null)

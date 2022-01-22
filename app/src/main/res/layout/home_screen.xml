@@ -173,17 +173,20 @@
                         android:layout_height="wrap_content"
 
                         android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
                         android:textColor="@color/SpaceCadet"
-                        android:textSize="18sp" />
+                        android:textSize="16sp"
+                        android:textFontWeight="800"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
                         android:fontFamily="@font/ralewaym"
+                        android:includeFontPadding="false"
                         android:text="@string/steps_small"
                         android:textColor="@color/SpaceCadet"
-                        android:textSize="18sp" />
+                        android:textSize="17sp" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -233,15 +236,13 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_margin="19dp"
+                    android:layout_margin="20dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp" />
 
-                <TextView
-                    android:id="@+id/hoursSlept"
-
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
@@ -250,13 +251,33 @@
                     android:layout_alignEnd="@id/clock"
                     android:layout_alignBottom="@id/clock"
 
-                    android:fontFamily="@font/ralewayb"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:padding="5dp"
-                    android:textColor="@color/InvertedBackgroundColor"
-                    android:textFontWeight="600"
-                    android:textSize="18sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/hoursSlept"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="800"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/hours"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/ralewaym"
+                        android:includeFontPadding="false"
+                        android:text="@string/hours_small"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textSize="17sp" />
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
     </TableRow>

@@ -43,7 +43,7 @@ public class BirthdayFragment extends Fragment {
             birthday /= 100;
             int year = birthday;
             int yearsPassed = Calendar.getInstance().get(Calendar.YEAR) - year;
-            int monthDifference = Calendar.getInstance().get(Calendar.MONTH) - month;
+            int monthDifference = (Calendar.getInstance().get(Calendar.MONTH) + 1) - month;
             int dayDifference = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - day;
 
             if (monthDifference > 0) {
@@ -69,11 +69,11 @@ public class BirthdayFragment extends Fragment {
             ((TextView) view.findViewById(R.id.dateGiven)).setError(getString(R.string.date_entered_not_valid));
             return false;
         } else if (year == Calendar.getInstance().get(Calendar.YEAR))
-            if(month > Calendar.getInstance().get(Calendar.MONTH)) {
+            if(month > (Calendar.getInstance().get(Calendar.MONTH) + 1)) {
                 view.findViewById(R.id.dateGiven).requestFocus();
                 ((TextView) view.findViewById(R.id.dateGiven)).setError(getString(R.string.date_entered_not_valid));
                 return false;
-            } else if (month == Calendar.getInstance().get(Calendar.MONTH))
+            } else if (month == (Calendar.getInstance().get(Calendar.MONTH) + 1))
                 if(day > Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
                     view.findViewById(R.id.dateGiven).requestFocus();
                     ((TextView) view.findViewById(R.id.dateGiven)).setError(getString(R.string.date_entered_not_valid));
@@ -97,7 +97,7 @@ public class BirthdayFragment extends Fragment {
 
     private boolean yearValid(View view){
         int yearsPassed = Calendar.getInstance().get(Calendar.YEAR) - year;
-        int monthDifference = Calendar.getInstance().get(Calendar.MONTH) - month;
+        int monthDifference = (Calendar.getInstance().get(Calendar.MONTH) + 1) - month;
         int dayDifference = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - day;
 
         if(yearsPassed < 14){
@@ -143,7 +143,7 @@ public class BirthdayFragment extends Fragment {
             year = birthday;
         } else {
             day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-            month = Calendar.getInstance().get(Calendar.MONTH);
+            month = (Calendar.getInstance().get(Calendar.MONTH) + 1);
             year = Calendar.getInstance().get(Calendar.YEAR);
         }
 

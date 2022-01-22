@@ -17,6 +17,7 @@ public class ClockView extends View {
 
     private int backgroundColor;
     private int invertedBackgroundColor;
+    private int lightBlueYonder;
     private int blueYonder;
 
     private Paint paint;
@@ -37,6 +38,7 @@ public class ClockView extends View {
 
         backgroundColor = context.getColor(R.color.backgroundColor);
         invertedBackgroundColor = context.getColor(R.color.InvertedBackgroundColor);
+        lightBlueYonder = context.getColor(R.color.LightBlueYonder);
         blueYonder = context.getColor(R.color.BlueYonder);
     }
 
@@ -92,7 +94,7 @@ public class ClockView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected synchronized void onDraw(Canvas canvas) {
         final float centerX = getWidth() / 2f;
         final float centerY = getHeight() / 2f;
 
@@ -111,8 +113,14 @@ public class ClockView extends View {
 
         rectF.set(centerX - innerRadius, centerY - innerRadius, centerX + innerRadius, centerY + innerRadius);
 
-        paint.setColor(blueYonder);
-        canvas.drawArc(rectF, startAngle, sweepAngle, true, paint);
+        paint.setColor(lightBlueYonder);
+        if(sweepAngle < 360)
+            canvas.drawArc(rectF, startAngle, sweepAngle, true, paint);
+        else {
+            canvas.drawArc(rectF, startAngle, 360, true, paint);
+            paint.setColor(blueYonder);
+            canvas.drawArc(rectF, startAngle, sweepAngle - 360, true, paint);
+        }
 
         drawNumeral(canvas);
     }

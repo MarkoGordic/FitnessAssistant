@@ -41,13 +41,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class SleepFragment extends Fragment implements CalendarAdapter.OnItemListener {
+public class SleepFragment extends Fragment implements CalendarAdapter.OnItemListener{
     private Calendar graphCal;
-    private LocalDate selectedDate;
+    private static LocalDate selectedDate;
+    public static CalendarAdapter calendarAdapter;
+    public static int previousPositionSelected;
     private int day;
     private int month;
     private int year;
 
+    @SuppressLint("DefaultLocale")
     private void setUpCurrentDate(View view){
         int currentDate = Integer.parseInt(getCurrentDateFormatted());
         int day = currentDate % 100;
@@ -55,7 +58,7 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
         int month = currentDate % 100;
         currentDate /= 100;
         int year = currentDate;
-        ((TextView) view.findViewById(R.id.currentDate)).setText(String.format("%s %s %s", day, getMonthShort(requireActivity(), month), year));
+        ((TextView) view.findViewById(R.id.currentDate)).setText(String.format("%02d %s %d", day, getMonthShort(requireActivity(), month), year));
     }
 
     public void setUpUI(boolean sleepRuns){
@@ -272,7 +275,7 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
                 if(sleepSegment == null)
                     monthlyVals[currentDay - 1] = 0;
                 else
-                    monthlyVals[currentDay - 1] = (int) Math.round(TimeUnit.MILLISECONDS.toHours(sleepSegment.getEndTime() - sleepSegment.getStartTime()));
+                    monthlyVals[currentDay - 1] = Math.round(TimeUnit.MILLISECONDS.toHours(sleepSegment.getEndTime() - sleepSegment.getStartTime()));
                 currentDate--;
             }
 
@@ -293,58 +296,45 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
         ClockView clock = view.findViewById(R.id.clock);
         String date = (String) DateFormat.format("yyyyMMdd", Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         SleepSegment todaySleepSegment = MDBHSleepTracker.getInstance(requireActivity()).getSleepSegmentForDateFromDB(date);
-        ((TextView) view.findViewById(R.id.selectedDate)).setText(String.format("%d %s %d", day, getMonthShort(requireActivity(), month), year));
+        ((TextView) view.findViewById(R.id.selectedDate)).setText(String.format("%02d %s %d", day, getMonthShort(requireActivity(), month), year));
         if(todaySleepSegment != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(todaySleepSegment.getStartTime());
-            float startHours = cal.get(Calendar.HOUR);
-            startHours += cal.get(Calendar.MINUTE) / 60f;
-            startHours += cal.get(Calendar.SECOND) / 3600f;
-
-            cal.setTimeInMillis(todaySleepSegment.getEndTime());
-            float endHours = cal.get(Calendar.HOUR);
-            endHours += cal.get(Calendar.MINUTE) / 60f;
-            endHours += cal.get(Calendar.SECOND) / 3600f;
-
-            float hoursSlept = endHours - startHours;
-            if(endHours < startHours){
-                hoursSlept += 24;
-            }
+            float startHours = todaySleepSegment.getStartTime() / 3600000f;
+            float hoursSlept = todaySleepSegment.getDuration() / 3600000f;
 
             clock.setStartHours(startHours);
             clock.setHoursSlept(hoursSlept);
-            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("%.1f\n%s", hoursSlept, requireActivity().getString(R.string.hours_small)));
+            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("%.1f", hoursSlept));
 
             switch(todaySleepSegment.getQuality()) {
-                case 1:
+                case SleepDateFragment.QUALITY_AWFUL:
                     ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Awful)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     break;
-                case 2:
+                case SleepDateFragment.QUALITY_BAD:
                     ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Bad)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     break;
-                case 3:
+                case SleepDateFragment.QUALITY_NEUTRAL:
                     ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Neutral)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     break;
-                case 4:
+                case SleepDateFragment.QUALITY_GOOD:
                     ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.Good)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     break;
-                case 5:
+                case SleepDateFragment.QUALITY_EXCELLENT:
                     ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
                     ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
@@ -362,14 +352,18 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
         } else{
             clock.setStartHours(0f);
             clock.setHoursSlept(0f);
-            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("?\n%s", requireActivity().getString(R.string.hours_small)));
+            ((AppCompatImageView) view.findViewById(R.id.smiley1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+            ((AppCompatImageView) view.findViewById(R.id.smiley2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+            ((AppCompatImageView) view.findViewById(R.id.smiley3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+            ((AppCompatImageView) view.findViewById(R.id.smiley4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+            ((AppCompatImageView) view.findViewById(R.id.smiley5)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.LightGrayColor)));
+            ((TextView) view.findViewById(R.id.hoursSlept)).setText("?");
         }
         clock.setFontSize(14f);
         clock.setNumPadding(6f);
         clock.invalidate();
     }
 
-    // TODO call when received sleep updates
     public void setUpSleepData(View view){
         if(view == null)
             view = getView();
@@ -462,16 +456,43 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
         view.findViewById(R.id.sleepDateFragment).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new SleepDateFragment(day, month, year)).addToBackStack(null).commit());
     }
 
+    public static int getDayPosition(int day){
+        return day + selectedDate.withDayOfMonth(1).getDayOfWeek().getValue() - 2;
+    }
+
+    private ArrayList<Integer> qualitiesOfMonthArray(LocalDate date){
+        ArrayList<Integer> qualitiesInMonth = new ArrayList<>();
+        YearMonth yearMonth = YearMonth.from(date);
+
+        int daysInMonth = yearMonth.lengthOfMonth();
+
+        LocalDate firstOfMonth = date.withDayOfMonth(1);
+        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+
+        for(int i = 2; i <= 43; i++){
+            if (i > dayOfWeek && i <= daysInMonth + dayOfWeek) {
+                SleepSegment sleepSegment = MDBHSleepTracker.getInstance(requireActivity()).getSleepSegmentForDateFromDB((String) DateFormat.format("yyyyMMdd", Date.from(LocalDate.of( yearMonth.getYear(), yearMonth.getMonth(),i - dayOfWeek).atStartOfDay(ZoneId.systemDefault()).toInstant())));
+                if(sleepSegment == null)
+                    qualitiesInMonth.add(null);
+                else
+                    qualitiesInMonth.add(sleepSegment.getQuality());
+            } else
+                qualitiesInMonth.add(null);
+        }
+
+        return qualitiesInMonth;
+    }
+
     private ArrayList<String> daysInMonthArray(LocalDate date){
         ArrayList<String> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
         int daysInMonth = yearMonth.lengthOfMonth();
 
-        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
+        LocalDate firstOfMonth = date.withDayOfMonth(1);
         int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
-        for(int i = 1; i <= 42; i++){
+        for(int i = 2; i <= 43; i++){
             if(i <= dayOfWeek || i > daysInMonth + dayOfWeek){
                 daysInMonthArray.add("");
             } else{
@@ -484,24 +505,44 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
 
     @Override
     public void onItemClick(int position, String dayText) {
-        day = Integer.parseInt(dayText);
-        month = selectedDate.getMonthValue();
-        year = selectedDate.getYear();
-        setUpClockAndQuality(requireView());
+        if(!dayText.equals("")) {
+            day = Integer.parseInt(dayText);
+            month = selectedDate.getMonthValue();
+            year = selectedDate.getYear();
+            setUpClockAndQuality(requireView());
 
+            if(previousPositionSelected >= 0)
+                calendarAdapter.notifyItemChanged(previousPositionSelected, -42455);
+            calendarAdapter.notifyItemChanged(position, 42455);
+        }
     }
 
     @SuppressLint("DefaultLocale")
     private void setMonthView(View view){
         ((TextView) view.findViewById(R.id.monthYearTextView)).setText(String.format("%s %d", getMonthShort(requireActivity(), selectedDate.getMonthValue()), selectedDate.getYear()));
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+        ArrayList<Integer> qualitiesOfMonth = qualitiesOfMonthArray(selectedDate);
+
+        previousPositionSelected = -1;
+
+        calendarAdapter = new CalendarAdapter(requireActivity(), daysInMonth, qualitiesOfMonth, this);
 
         RecyclerView calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
+        calendarRecyclerView.setHasFixedSize(true);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
-
-        calendarRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 7));
+        calendarRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 7){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         calendarRecyclerView.setAdapter(calendarAdapter);
+
+        if(selectedDate.getMonthValue() == month)
+            calendarRecyclerView.post(() -> {
+                onItemClick(day + selectedDate.withDayOfMonth(1).getDayOfWeek().getValue() - 2, String.valueOf(day));
+                onItemClick(day + selectedDate.withDayOfMonth(1).getDayOfWeek().getValue() - 2, String.valueOf(day));
+            });
     }
 
     @Nullable

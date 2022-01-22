@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:rsb="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     android:padding="32dp">
     <ImageButton
         android:id="@+id/backButton"
@@ -33,10 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
 
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
         android:textAlignment="center"
         android:textColor="@color/SpaceCadet"
-        android:textSize="28sp"
-        android:textStyle="bold"/>
+        android:textSize="28sp"/>
 
     <View
         android:layout_width="wrap_content"
@@ -49,21 +50,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+
         android:orientation="horizontal"
-        android:padding="8dp">
-        <TextView
+        android:gravity="center">
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
 
             android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/startDate"
 
-            android:text="22:30"
-            android:fontFamily="@font/roboto_light"
-            android:includeFontPadding="false"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="40sp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/roboto_light"
+                android:includeFontPadding="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/startTime"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/roboto_light"
+                android:includeFontPadding="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="45sp"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,47 +96,109 @@
 
             android:gravity="center"
 
-            android:text="-"
+            android:text="@string/hyphen"
             android:fontFamily="@font/ralewaym"
             android:includeFontPadding="false"
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
-            android:textSize="50sp"/>
+            android:textSize="65sp"/>
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
 
             android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/endDate"
 
-            android:text="06:30"
-            android:fontFamily="@font/roboto_light"
-            android:includeFontPadding="false"
-            android:textColor="@color/SpaceCadet"
-            android:textFontWeight="600"
-            android:textSize="40sp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/roboto_light"
+                android:includeFontPadding="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/endTime"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+
+                android:fontFamily="@font/roboto_light"
+                android:includeFontPadding="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="45sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="4dp"
+
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/plusOne"
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="4dp"
+
+                android:gravity="center"
+                android:background="@drawable/border_button"
+
+                android:text="@string/plus_one"
+                android:padding="8dp"
+                android:fontFamily="@font/roboto_light"
+                android:includeFontPadding="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/minusOne"
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="4dp"
+
+                android:gravity="center"
+                android:background="@drawable/border_button"
+
+                android:text="@string/minus_one"
+                android:padding="8dp"
+                android:fontFamily="@font/roboto_light"
+                android:includeFontPadding="false"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="16sp"/>
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <com.example.fitnessassistant.util.RangeSeekBar
         android:id="@+id/rangeSeekBar"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
-        tools:ignore="UselessLeaf"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:layout_marginTop="25dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="30dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginStart="72dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginStart="60dp"
 
         android:orientation="horizontal"
         android:gravity="center">
@@ -161,6 +248,15 @@
             android:src="@drawable/smiley5"
             app:tint="@color/LightGrayColor"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+
+        android:background="@color/BlueYonder"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveButton"

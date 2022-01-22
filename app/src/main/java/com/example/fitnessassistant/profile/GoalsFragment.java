@@ -51,7 +51,7 @@ public class GoalsFragment extends Fragment {
             int month = firstWeightDate % 100;
             firstWeightDate /= 100;
             int year = firstWeightDate;
-            ((TextView) view.findViewById(R.id.startingWeightDateTextView)).setText(String.format("%s %s %s", day, getMonthShort(requireActivity(), month), year));
+            ((TextView) view.findViewById(R.id.startingWeightDateTextView)).setText(String.format("%02d %s %d", day, getMonthShort(requireActivity(), month), year));
         }
 
         // setting up GoalWeight
@@ -74,7 +74,7 @@ public class GoalsFragment extends Fragment {
             int month = lastUpdatedWeightDate % 100;
             lastUpdatedWeightDate /= 100;
             int year = lastUpdatedWeightDate;
-            ((TextView) view.findViewById(R.id.lastUpdatedWeightDateTextView)).setText(String.format("%s %s %s", day, getMonthShort(requireActivity(), month), year));
+            ((TextView) view.findViewById(R.id.lastUpdatedWeightDateTextView)).setText(String.format("%02d %s %d", day, getMonthShort(requireActivity(), month), year));
         }
     }
 

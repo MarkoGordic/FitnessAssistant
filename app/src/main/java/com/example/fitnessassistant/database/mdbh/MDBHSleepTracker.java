@@ -59,6 +59,8 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
         if(date == null)
             return;
 
+        System.out.println("DATE : "+ date);
+
         String query = "SELECT * FROM " + SEGMENTS_TABLE_NAME + " WHERE " + SEGMENTS_SLEEP_DATE + " = " + date;
         SQLiteDatabase dbRead = this.getReadableDatabase();
         Cursor cursor = null;

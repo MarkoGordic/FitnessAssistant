@@ -62,7 +62,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         date /= 100;
         int year = date;
 
-        holder.activityDate.setText(String.format("%d %s %d", day, TimeFunctional.getMonthShort(context, month), year));
+        holder.activityDate.setText(String.format("%02d %s %d", day, TimeFunctional.getMonthShort(context, month), year));
 
         holder.activityTime.setText(activities.get(position).getDuration());
         holder.activityImage.setImageBitmap(activities.get(position).getImage());

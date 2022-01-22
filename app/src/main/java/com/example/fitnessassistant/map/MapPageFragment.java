@@ -181,7 +181,7 @@ public class MapPageFragment extends Fragment {
                     cal.setTimeInMillis(dateInMillis);
 
                     ((ImageView) view.findViewById(R.id.trophy1)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
-                    ((TextView) view.findViewById(R.id.achievementDate1)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
+                    ((TextView) view.findViewById(R.id.achievementDate1)).setText(String.format("%02d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
 
                     if(UnitPreferenceFragment.getDistanceUnit(getActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE))
                         ((TextView) view.findViewById(R.id.achievementHeader1)).setText(String.format("%.1f%s", maxDistanceWalk * 0.621371f, getActivity().getString(R.string.mi)));
@@ -199,7 +199,7 @@ public class MapPageFragment extends Fragment {
                     cal.setTimeInMillis(dateInMillis);
 
                     ((ImageView) view.findViewById(R.id.trophy2)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
-                    ((TextView) view.findViewById(R.id.achievementDate2)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
+                    ((TextView) view.findViewById(R.id.achievementDate2)).setText(String.format("%02d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
                     if(UnitPreferenceFragment.getDistanceUnit(getActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE))
                         ((TextView) view.findViewById(R.id.achievementHeader2)).setText(String.format("%.1f%s", maxDistanceRun * 0.621371f, getActivity().getString(R.string.mi)));
                     else
@@ -216,7 +216,7 @@ public class MapPageFragment extends Fragment {
                     cal.setTimeInMillis(dateInMillis);
 
                     ((ImageView) view.findViewById(R.id.trophy3)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
-                    ((TextView) view.findViewById(R.id.achievementDate3)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
+                    ((TextView) view.findViewById(R.id.achievementDate3)).setText(String.format("%02d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
                     if(UnitPreferenceFragment.getDistanceUnit(getActivity()).equals(UnitPreferenceFragment.DISTANCE_UNIT_MILE))
                         ((TextView) view.findViewById(R.id.achievementHeader3)).setText(String.format("%.1f%s", maxDistanceBike * 0.621371f, getActivity().getString(R.string.mi)));
                     else
@@ -233,7 +233,7 @@ public class MapPageFragment extends Fragment {
                     cal.setTimeInMillis(dateInMillis);
 
                     ((ImageView) view.findViewById(R.id.trophy4)).setImageTintList(ColorStateList.valueOf(requireActivity().getColor(R.color.BlueYonder)));
-                    ((TextView) view.findViewById(R.id.achievementDate4)).setText(String.format("%d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
+                    ((TextView) view.findViewById(R.id.achievementDate4)).setText(String.format("%02d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
                     if(UnitPreferenceFragment.getEnergyUnit(getActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
                         ((TextView) view.findViewById(R.id.achievementHeader4)).setText(String.format("%.1f%s", maxCaloriesBurnt * 4.184f, getActivity().getString(R.string.kj)));
                     else

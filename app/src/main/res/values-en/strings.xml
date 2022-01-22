@@ -193,6 +193,9 @@
     <string name="daily_activity">Daily Activity</string>
     <string name="loading_image">Uploading Profile Picture…</string>
     <string name="save">Save</string>
+    <string name="plus_one">+1</string>
+    <string name="minus_one">-1</string>
+    <string name="hyphen">-</string>
 
     <!-- Language Strings -->
     <string name="select_a_language">Select a Language: </string>

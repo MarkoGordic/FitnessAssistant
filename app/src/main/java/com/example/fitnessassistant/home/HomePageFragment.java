@@ -52,31 +52,22 @@ public class HomePageFragment extends Fragment {
         ClockView clock = view.findViewById(R.id.clock);
         SleepSegment todaySleepSegment = MDBHSleepTracker.getInstance(requireActivity()).getSleepSegmentForDateFromDB(getCurrentDateFormatted());
         if(todaySleepSegment != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(todaySleepSegment.getStartTime());
-            float startHours = cal.get(Calendar.HOUR);
-            startHours += cal.get(Calendar.MINUTE) / 60f;
-            startHours += cal.get(Calendar.SECOND) / 3600f;
-
-            cal.setTimeInMillis(todaySleepSegment.getEndTime());
-            float endHours = cal.get(Calendar.HOUR);
-            endHours += cal.get(Calendar.MINUTE) / 60f;
-            endHours += cal.get(Calendar.SECOND) / 3600f;
+            float startHours = todaySleepSegment.getStartTime() / 3600000f;
+            float hoursSlept = todaySleepSegment.getDuration() / 3600000f;
 
             clock.setStartHours(startHours);
-            clock.setHoursSlept(endHours - startHours);
-            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("%.1f\n%s", endHours - startHours, requireActivity().getString(R.string.hours_small)));
+            clock.setHoursSlept(hoursSlept);
+            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("%.1f", hoursSlept));
         } else{
             clock.setStartHours(0f);
             clock.setHoursSlept(0f);
-            ((TextView) view.findViewById(R.id.hoursSlept)).setText(String.format("?\n%s", requireActivity().getString(R.string.hours_small)));
+            ((TextView) view.findViewById(R.id.hoursSlept)).setText("?");
         }
         clock.setFontSize(11f);
         clock.setNumPadding(5f);
         clock.invalidate();
     }
 
-    // TODO call when received sleep updates
     private void updateSleepData(View view){
         if(view == null)
             view = getView();
