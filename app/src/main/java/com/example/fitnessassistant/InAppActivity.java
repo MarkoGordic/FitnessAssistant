@@ -36,6 +36,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.fitnessassistant.activitytracker.ActivityTrackingFragment;
 import com.example.fitnessassistant.adapters.ActivityAdapter;
 import com.example.fitnessassistant.database.BackupFragment;
+import com.example.fitnessassistant.database.RealtimeDB;
 import com.example.fitnessassistant.database.data.ActivityRecycler;
 import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 import com.example.fitnessassistant.diary.DiaryPageFragment;
@@ -444,6 +445,8 @@ public class InAppActivity extends AppCompatActivity {
         setUpRebootKeys();
 
         scheduleUpdates(this);
+
+        RealtimeDB.checkBackupStatus(this);
 
         // applying the color mode needed
         ColorMode.applyColorMode(this, null);

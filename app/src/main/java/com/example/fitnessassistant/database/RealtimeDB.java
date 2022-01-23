@@ -20,6 +20,7 @@ import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.database.mdbh.MDBHWeight;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
+import com.example.fitnessassistant.questions.BirthdayFragment;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
@@ -263,6 +264,7 @@ public class RealtimeDB {
                     if(data != null) {
                         GenderFragment.putGender(context, data.getGender());
                         HeightFragment.putHeight(context, data.getHeight());
+                        BirthdayFragment.putBirthday(context, data.getBirthday());
 
                         List<String> units = data.getUnits();
                         UnitPreferenceFragment.putHeightUnit(context, units.get(0));
@@ -321,7 +323,7 @@ public class RealtimeDB {
                     if(data != null) {
                         WeightFragment.putGoalWeight(context, data.getTargetWeight());
                         WeightFragment.putFirstWeight(context, data.getFirstWeight());
-                        WeightFragment.putFirstWeightDate(context, String.valueOf(data.getFirstDate()));
+                        WeightFragment.putFirstWeightDate(context, data.getFirstDate());
 
                         StepGoalFragment.putMondayStepGoal(context, data.getWeeklySteps().get(0));
                         StepGoalFragment.putTuesdayStepGoal(context, data.getWeeklySteps().get(1));

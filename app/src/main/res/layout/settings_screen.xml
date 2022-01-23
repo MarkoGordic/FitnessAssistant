@@ -201,7 +201,7 @@
 
                             android:background="@drawable/settings_field"
 
-                            app:drawableStartCompat="@drawable/cloud_download"
+                            app:drawableStartCompat="@drawable/cloud_share"
                             app:drawableTint="@color/SpaceCadet"
                             app:drawableEndCompat="@drawable/forward"
                             android:drawablePadding="12dp"

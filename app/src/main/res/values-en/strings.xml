@@ -311,9 +311,17 @@
     <string name="backup_and_restore">Backup &amp; Restore</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
+    <string name="to_restore">Restore</string>
+    <string name="backup_message">Your previous backup will be overwritten.</string>
+    <string name="restore_message">All local data will be erased.</string>
+    <string name="backing_up">Backing up data…</string>
+    <string name="restoring">Restoring data…</string>
     <string name="activities">Activities</string>
     <string name="pedometer_data">Pedometer Data</string>
     <string name="sleep_data">Sleep Data</string>
+    <string name="last_backup">Last backup</string>
+    <string name="n_a">N/A</string>
+    <string name="select_one">Select At Least One Field</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Skip</string>

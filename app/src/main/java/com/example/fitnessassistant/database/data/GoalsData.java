@@ -11,7 +11,7 @@ import java.util.List;
 public class GoalsData {
     private float firstWeight;
     private float targetWeight;
-    private int firstDate;
+    private String firstDate;
 
     private List<Integer> weeklySteps = new ArrayList<>();
 
@@ -21,7 +21,7 @@ public class GoalsData {
         firstWeight = WeightFragment.getFirstWeight(context);
         targetWeight = WeightFragment.getGoalWeight(context);
 
-        firstDate = Integer.parseInt(WeightFragment.getFirstWeightDate(context));
+        firstDate = WeightFragment.getFirstWeightDate(context);
 
         weeklySteps.add(StepGoalFragment.getMondayStepGoal(context));
         weeklySteps.add(StepGoalFragment.getTuesdayStepGoal(context));
@@ -32,7 +32,7 @@ public class GoalsData {
         weeklySteps.add(StepGoalFragment.getSundayStepGoal(context));
     }
 
-    public void setFirstDate(int firstDate) {
+    public void setFirstDate(String firstDate) {
         this.firstDate = firstDate;
     }
 
@@ -48,7 +48,7 @@ public class GoalsData {
         this.weeklySteps = weeklySteps;
     }
 
-    public int getFirstDate() {
+    public String getFirstDate() {
         return firstDate;
     }
 

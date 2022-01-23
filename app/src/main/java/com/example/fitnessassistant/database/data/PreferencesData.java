@@ -3,6 +3,7 @@ package com.example.fitnessassistant.database.data;
 import android.content.Context;
 
 import com.example.fitnessassistant.database.mdbh.MDBHWeight;
+import com.example.fitnessassistant.questions.BirthdayFragment;
 import com.example.fitnessassistant.questions.GenderFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
@@ -13,6 +14,7 @@ import java.util.List;
 public class PreferencesData {
     private float height;
     private String gender;
+    private int birthday;
     private List<String> units = new ArrayList<>();
     private List<String> weights = new ArrayList<>();
 
@@ -21,6 +23,7 @@ public class PreferencesData {
     public void setData(Context context){
         this.height = HeightFragment.getHeight(context);
         this.gender = GenderFragment.getGender(context);
+        this.birthday = BirthdayFragment.getBirthday(context);
 
         units.add(UnitPreferenceFragment.getHeightUnit(context));
         units.add(UnitPreferenceFragment.getWeightUnit(context));
@@ -47,6 +50,10 @@ public class PreferencesData {
         return weights;
     }
 
+    public int getBirthday() {
+        return birthday;
+    }
+
     public void setGender(String gender) {
         this.gender = gender;
     }
@@ -61,5 +68,9 @@ public class PreferencesData {
 
     public void setWeights(List<String> weights) {
         this.weights = weights;
+    }
+
+    public void setBirthday(int birthday) {
+        this.birthday = birthday;
     }
 }
