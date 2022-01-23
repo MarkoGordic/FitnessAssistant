@@ -23,6 +23,8 @@ import com.example.fitnessassistant.database.data.SleepSegment;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.database.mdbh.MDBHSleepTracker;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
+import com.example.fitnessassistant.sleeptracker.SleepDateFragment;
+import com.example.fitnessassistant.sleeptracker.SleepFragment;
 import com.example.fitnessassistant.util.ClockView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -32,6 +34,27 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class HomePageFragment extends Fragment {
+
+    private void goToSleepFragment(){
+        requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.sleepFragment).addToBackStack(null).commit();
+    }
+
+    private void goToSleepDateFragment(){
+        boolean addSleep = true, addSleepDate = true;
+        for(Fragment f : requireActivity().getSupportFragmentManager().getFragments()){
+            if(f instanceof SleepFragment) {
+                addSleep = false;
+            } else if (f instanceof SleepDateFragment) {
+                addSleepDate = false;
+            }
+        }
+
+        Calendar cal = Calendar.getInstance();
+        if(addSleep)
+            requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.sleepFragment).addToBackStack(null).hide(InAppActivity.sleepFragment).add(R.id.in_app_container, new SleepDateFragment(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR))).addToBackStack(null).commit();
+        else if(addSleepDate)
+            requireActivity().getSupportFragmentManager().beginTransaction().hide(InAppActivity.sleepFragment).add(R.id.in_app_container, new SleepDateFragment(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR))).addToBackStack(null).commit();
+    }
 
     private void goToPedometerFragment(){
         requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.pedometerFragment).addToBackStack(null).commit();
@@ -113,10 +136,10 @@ public class HomePageFragment extends Fragment {
         ((SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout)).setOnRefreshListener(() -> setUpUI(view));
 
         // pedometerFragment listener - goes to PedometerFragment
-        view.findViewById(R.id.pedometerFragment).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.pedometerFragment).addToBackStack(null).commit());
+        view.findViewById(R.id.pedometerFragment).setOnClickListener(v -> goToPedometerFragment());
 
         // sleepFragment listener - goes to SleepFragment
-        view.findViewById(R.id.sleepFragment).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.sleepFragment).addToBackStack(null).commit());
+        view.findViewById(R.id.sleepFragment).setOnClickListener(v -> goToSleepFragment());
     }
 
     @Nullable
@@ -135,9 +158,19 @@ public class HomePageFragment extends Fragment {
         if(getActivity() != null) {
             String desiredFragment = ((InAppActivity) getActivity()).getDesiredFragment();
             if (desiredFragment != null) {
-                if (desiredFragment.equals("PedometerFragment")) {
-                    ((InAppActivity) getActivity()).putDesiredFragment(null);
-                    goToPedometerFragment();
+                switch (desiredFragment) {
+                    case "PedometerFragment":
+                        ((InAppActivity) getActivity()).putDesiredFragment(null);
+                        goToPedometerFragment();
+                        break;
+                    case "SleepDateFragment":
+                        ((InAppActivity) getActivity()).putDesiredFragment(null);
+                        goToSleepDateFragment();
+                        break;
+                    case "SleepFragment":
+                        ((InAppActivity) getActivity()).putDesiredFragment(null);
+                        goToSleepFragment();
+                        break;
                 }
             }
         }

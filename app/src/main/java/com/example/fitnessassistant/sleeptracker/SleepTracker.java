@@ -59,6 +59,7 @@ public class SleepTracker extends Service {
 
     public static Notification pushSleepTrackerNotification(Context context){
         Intent intent = new Intent(context, InAppActivity.class);
+        intent.putExtra("desiredFragment", "SleepFragment");
         PendingIntent pendingIntent = PendingIntent.getActivity(context, SLEEP_TRACKER_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "SleepTracker")
@@ -86,11 +87,13 @@ public class SleepTracker extends Service {
         String endString = String.format(" %02d:%02d ?", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
 
         Intent intent = new Intent(context, InAppActivity.class);
+        intent.putExtra("desiredFragment", "SleepDateFragment");
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, SLEEP_TRACKER_ALERT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "SleepTrackerAlerts")
                 .setSmallIcon(R.drawable.ic_sleep)
-                .setAutoCancel(false)
+                .setAutoCancel(true)
                 .setOngoing(false)
                 .setContentTitle(context.getString(R.string.sleep_tracking))
                 .setContentText(context.getString(R.string.sleep_detected_1) + startString + context.getString(R.string.sleep_detected_2) + endString)

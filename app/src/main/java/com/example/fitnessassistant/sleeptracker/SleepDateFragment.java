@@ -257,7 +257,7 @@ public class SleepDateFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.sleep_data_screen, container, false);
+        final View view = inflater.inflate(R.layout.sleep_date_screen, container, false);
 
         // setting up the view
         setUpOnClickListeners(view);

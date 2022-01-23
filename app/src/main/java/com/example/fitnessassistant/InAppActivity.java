@@ -342,6 +342,10 @@ public class InAppActivity extends AppCompatActivity {
         return PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("desiredFragment", null);
     }
 
+    private boolean isSleepDateFragmentVisible(){
+        return findViewById(R.id.plusOne) != null;
+    }
+
     // if intent given has it, go to desired fragment
     private void goToDesiredFragment(Intent intent){
         if(intent != null && intent.getStringExtra("desiredFragment") != null)
@@ -353,6 +357,18 @@ public class InAppActivity extends AppCompatActivity {
                 putDesiredFragment("PedometerFragment");
                 ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.home);
                 active = homeFragment;
+            } else if(intent.getStringExtra("desiredFragment").equals("SleepDateFragment") && !isSleepDateFragmentVisible()){
+                putDesiredFragment("SleepDateFragment");
+                ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.home);
+                active = homeFragment;
+            } else if(intent.getStringExtra("desiredFragment").equals("SleepFragment") && !sleepFragment.isVisible()){
+                if(isSleepDateFragmentVisible())
+                    onBackPressed();
+                else {
+                    putDesiredFragment("SleepFragment");
+                    ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.home);
+                    active = homeFragment;
+                }
             }
     }
 

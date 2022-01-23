@@ -5,6 +5,7 @@ import static com.example.fitnessassistant.sleeptracker.SleepDateFragment.QUALIT
 import static com.example.fitnessassistant.sleeptracker.SleepDateFragment.QUALITY_EXCELLENT;
 import static com.example.fitnessassistant.sleeptracker.SleepDateFragment.QUALITY_GOOD;
 import static com.example.fitnessassistant.sleeptracker.SleepDateFragment.QUALITY_NEUTRAL;
+import static com.example.fitnessassistant.sleeptracker.SleepDateFragment.QUALITY_NONE;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
