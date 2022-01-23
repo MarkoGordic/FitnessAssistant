@@ -2,6 +2,7 @@ package com.example.fitnessassistant.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -78,6 +79,8 @@ public class SignInActivity extends AppCompatActivity {
                 }).addOnSuccessListener(authResult -> {
                     if(authResult.getAdditionalUserInfo() != null && authResult.getAdditionalUserInfo().isNewUser())
                         RealtimeDB.registerNewUser();
+                    else
+                        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("promptRestoreDialog", true).apply();
                 });
             }
         });
@@ -110,6 +113,8 @@ public class SignInActivity extends AppCompatActivity {
                     }).addOnSuccessListener(authResult -> {
                         if(authResult.getAdditionalUserInfo() != null && authResult.getAdditionalUserInfo().isNewUser())
                             RealtimeDB.registerNewUser();
+                        else
+                            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("promptRestoreDialog", true).apply();
                     });
                 } catch (ApiException e){ // if there is an error, check if we're currently not online
                     AuthFunctional.finishLoading(view, findViewById(R.id.googleSignInProgressBar));
@@ -156,6 +161,8 @@ public class SignInActivity extends AppCompatActivity {
                                             }).addOnSuccessListener(authResult -> {
                                                 if(authResult.getAdditionalUserInfo() != null && authResult.getAdditionalUserInfo().isNewUser())
                                                     RealtimeDB.registerNewUser();
+                                                else
+                                                    PreferenceManager.getDefaultSharedPreferences(SignInActivity.this).edit().putBoolean("promptRestoreDialog", true).apply();
                                             });
                                         } else {
                                             AuthFunctional.finishLoading(view, findViewById(R.id.facebookSignInProgressBar));

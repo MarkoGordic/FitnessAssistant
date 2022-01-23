@@ -314,8 +314,10 @@
     <string name="backup">Rezervne Kopije</string>
     <string name="restore">Obnova</string>
     <string name="to_restore">Obnovi</string>
+    <string name="to_backup">Sačuvaj</string>
     <string name="backup_message">Vaša prethonda rezervna kopija će biti prepisana.</string>
     <string name="restore_message">Svi lokalni podaci će biti obrisani.</string>
+    <string name="new_restore_message">Rezervne kopije podataka su pronađene.\nObnovite Vaše prethodne podatke.</string>
     <string name="backing_up">Kreiranje rezervne kopije podataka…</string>
     <string name="restoring">Obnavljanje podataka…</string>
     <string name="activities">Aktivnosti</string>

@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
@@ -38,7 +39,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BackupFragment extends Fragment {
-    private static final AtomicBoolean isBackupVisible = new AtomicBoolean(true);
+    public static final AtomicBoolean isBackupVisible = new AtomicBoolean(true);
 
     private static final AtomicBoolean personalData = new AtomicBoolean(false);
     private static final AtomicBoolean goalsData = new AtomicBoolean(false);
@@ -144,6 +145,15 @@ public class BackupFragment extends Fragment {
         view.findViewById(R.id.backButton).setOnClickListener(view1 -> requireActivity().onBackPressed());
 
         TextView header = view.findViewById(R.id.backupHeader);
+        AppCompatButton button = view.findViewById(R.id.proceedButton);
+
+        if(isBackupVisible.get()) {
+            header.setText(R.string.backup);
+            button.setText(R.string.to_backup);
+        } else {
+            header.setText(R.string.restore);
+            button.setText(R.string.to_restore);
+        }
 
         view.findViewById(R.id.backBackupButton).setOnClickListener(v -> header.animate()
                 .translationX(-view.getWidth())
@@ -154,9 +164,11 @@ public class BackupFragment extends Fragment {
                         if(isBackupVisible.get()){
                             isBackupVisible.set(false);
                             header.setText(R.string.restore);
+                            button.setText(R.string.to_restore);
                         } else{
                             isBackupVisible.set(true);
                             header.setText(R.string.backup);
+                            button.setText(R.string.to_backup);
                         }
                         header.setX(view.getWidth());
                         header.animate()
@@ -174,9 +186,11 @@ public class BackupFragment extends Fragment {
                         if(isBackupVisible.get()){
                             isBackupVisible.set(false);
                             header.setText(R.string.restore);
+                            button.setText(R.string.to_restore);
                         } else{
                             isBackupVisible.set(true);
                             header.setText(R.string.backup);
+                            button.setText(R.string.to_backup);
                         }
                         header.setX(-view.getWidth());
                         header.animate()

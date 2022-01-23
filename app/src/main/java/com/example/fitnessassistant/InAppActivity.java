@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -22,6 +23,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -234,6 +237,14 @@ public class InAppActivity extends AppCompatActivity {
         }
     });
 
+    private boolean hasBackupData(){
+        return !PreferenceManager.getDefaultSharedPreferences(this).getString("pedometer_backup", "n#/").equals("n#/") ||
+                !PreferenceManager.getDefaultSharedPreferences(this).getString("preferences_backup", "n#/").equals("n#/") ||
+                !PreferenceManager.getDefaultSharedPreferences(this).getString("goals_backup", "n#/").equals("n#/") ||
+                !PreferenceManager.getDefaultSharedPreferences(this).getString("sleep_backup", "n#/").equals("n#/") ||
+                !PreferenceManager.getDefaultSharedPreferences(this).getString("activities_backup", "n#/").equals("n#/");
+    }
+
     // return to previous fragment (if it exists)
     @Override
     public void onBackPressed() {
@@ -309,6 +320,35 @@ public class InAppActivity extends AppCompatActivity {
             return false;
         });
 
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("promptRestoreDialog", false)){
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("promptRestoreDialog", false).apply();
+            if(hasBackupData()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setView(R.layout.custom_two_button_alert_dialog);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Drawable restore = AppCompatResources.getDrawable(this, R.drawable.restore);
+                if (restore != null)
+                    restore.setTint(getColor(R.color.SpaceCadet));
+                ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(restore);
+
+                ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.restore);
+                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.new_restore_message);
+                dialog.findViewById(R.id.dialog_input).setVisibility(View.GONE);
+
+                dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view2 -> dialog.dismiss());
+
+                ((Button) dialog.findViewById(R.id.dialog_positive_button)).setText(R.string.to_restore);
+                dialog.findViewById(R.id.dialog_positive_button).setOnClickListener(view2 -> {
+                    dialog.dismiss();
+                    getSupportFragmentManager().beginTransaction().hide(active).add(R.id.in_app_container, backupFragment).addToBackStack(null).commit();
+                    BackupFragment.isBackupVisible.set(false); // to show restore
+                });
+            }
+        }
+
         goToDesiredFragment(getIntent());
     }
 
@@ -362,9 +402,18 @@ public class InAppActivity extends AppCompatActivity {
                 ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.home);
                 active = homeFragment;
             } else if(intent.getStringExtra("desiredFragment").equals("SleepFragment") && !sleepFragment.isVisible()){
-                if(isSleepDateFragmentVisible())
+                boolean sleepFragmentAvailable = false;
+                for (Fragment f : getSupportFragmentManager().getFragments()) {
+                    if (f instanceof SleepFragment) {
+                        sleepFragmentAvailable = true;
+                        break;
+                    }
+                }
+
+                if(isSleepDateFragmentVisible() && sleepFragmentAvailable) {
                     onBackPressed();
-                else {
+                    getSupportFragmentManager().beginTransaction().show(sleepFragment);
+                } else {
                     putDesiredFragment("SleepFragment");
                     ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.home);
                     active = homeFragment;

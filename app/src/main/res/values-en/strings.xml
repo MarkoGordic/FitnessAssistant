@@ -312,8 +312,10 @@
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
     <string name="to_restore">Restore</string>
+    <string name="to_backup">Backup</string>
     <string name="backup_message">Your previous backup will be overwritten.</string>
     <string name="restore_message">All local data will be erased.</string>
+    <string name="new_restore_message">Data backup was found.\nYou might want to restore your previous data.</string>
     <string name="backing_up">Backing up data…</string>
     <string name="restoring">Restoring data…</string>
     <string name="activities">Activities</string>

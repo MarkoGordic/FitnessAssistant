@@ -60,6 +60,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                app:backgroundTint="@color/SpaceCadet"
+
                 android:fontFamily="@font/roboto_light"
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
@@ -103,6 +105,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                app:backgroundTint="@color/SpaceCadet"
+
                 android:importantForAutofill="no"
                 android:inputType="number"
                 android:maxLength="2"
@@ -135,6 +139,8 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                app:backgroundTint="@color/SpaceCadet"
 
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
