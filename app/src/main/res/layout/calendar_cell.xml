@@ -4,7 +4,7 @@
     android:id="@+id/cellDayText"
 
     android:layout_width="match_parent"
-    android:layout_height="24dp"
+    android:layout_height="wrap_content"
 
     android:fontFamily="@font/roboto_light"
     android:gravity="center"

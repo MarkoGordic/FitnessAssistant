@@ -7,7 +7,6 @@ import static com.example.fitnessassistant.sleeptracker.SleepDateFragment.QUALIT
 import static com.example.fitnessassistant.sleeptracker.SleepDateFragment.QUALITY_NEUTRAL;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,26 +30,24 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     private final OnItemListener listener;
     private final int backgroundColor;
     private final int invertedBackgroundColor;
-    private final int blueYonder;
     private final int awful;
     private final int bad;
     private final int neutral;
     private final int good;
     private final int excellent;
     private final int gray;
-    private final Drawable bike;
+    private Drawable circle;
 
     public CalendarAdapter(Context context, ArrayList<String> daysOfMonth, ArrayList<Integer> qualitiesOfMonth, OnItemListener listener){
         this.backgroundColor = ContextCompat.getColor(context, R.color.backgroundColor);
         this.invertedBackgroundColor = ContextCompat.getColor(context, R.color.InvertedBackgroundColor);
-        this.blueYonder = ContextCompat.getColor(context, R.color.BlueYonder);
         this.awful = ContextCompat.getColor(context, R.color.Awful);
         this.bad = ContextCompat.getColor(context, R.color.Bad);
         this.neutral = ContextCompat.getColor(context, R.color.Neutral);
         this.good = ContextCompat.getColor(context, R.color.Good);
         this.excellent = ContextCompat.getColor(context, R.color.Excellent);
         this.gray = ContextCompat.getColor(context, R.color.LightGrayColor);
-        this.bike = ContextCompat.getDrawable(context, R.drawable.bike);
+        this.circle = ContextCompat.getDrawable(context, R.drawable.calendar_circle);
         this.daysOfMonth = daysOfMonth;
         this.qualitiesOfMonth = qualitiesOfMonth;
         this.listener = listener;
@@ -61,6 +58,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.calendar_cell, parent, false);
+        view.post(() -> {
+            int side = view.getMeasuredWidth();
+
+            ViewGroup.LayoutParams lp = view.getLayoutParams();
+            lp.width = side;
+            lp.height = side;
+            view.setLayoutParams(lp);
+        });
         return new CalendarViewHolder(listener, view);
     }
 
@@ -72,31 +77,27 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         holder.dayOfMonth.setText(daysOfMonth.get(position));
         if(qualitiesOfMonth.get(position) != null) {
+            circle = circle.getConstantState().newDrawable();
             switch(qualitiesOfMonth.get(position)){
                 case QUALITY_AWFUL:
-                    bike.setTint(awful);
-                    holder.dayOfMonth.setBackground(bike);
+                    circle.setTint(awful);
                     break;
                 case QUALITY_BAD:
-                    bike.setTint(bad);
-                    holder.dayOfMonth.setBackground(bike);
+                    circle.setTint(bad);
                     break;
                 case QUALITY_NEUTRAL:
-                    bike.setTint(neutral);
-                    holder.dayOfMonth.setBackground(bike);
+                    circle.setTint(neutral);
                     break;
                 case QUALITY_GOOD:
-                    bike.setTint(good);
-                    holder.dayOfMonth.setBackground(bike);
+                    circle.setTint(good);
                     break;
                 case QUALITY_EXCELLENT:
-                    bike.setTint(excellent);
-                    holder.dayOfMonth.setBackground(bike);
+                    circle.setTint(excellent);
                     break;
                 default:
-                    bike.setTint(gray);
-                    holder.dayOfMonth.setBackground(bike);
+                    circle.setTint(gray);
             }
+            holder.dayOfMonth.setBackground(circle);
         }
     }
 
@@ -107,36 +108,35 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
                 holder.dayOfMonth.setBackgroundResource(R.color.BlueYonder);
                 holder.dayOfMonth.setTextColor(backgroundColor);
                 SleepFragment.previousPositionSelected = holder.getAdapterPosition();
-            } else {
+            } else if((Integer) payloads.get(0) < 0){
                 if(qualitiesOfMonth.get(position) != null) {
+                    circle = circle.getConstantState().newDrawable();
                     switch(qualitiesOfMonth.get(position)){
                         case QUALITY_AWFUL:
-                            bike.setTint(awful);
-                            holder.dayOfMonth.setBackground(bike);
+                            circle.setTint(awful);
                             break;
                         case QUALITY_BAD:
-                            bike.setTint(bad);
-                            holder.dayOfMonth.setBackground(bike);
+                            circle.setTint(bad);
                             break;
                         case QUALITY_NEUTRAL:
-                            bike.setTint(neutral);
-                            holder.dayOfMonth.setBackground(bike);
+                            circle.setTint(neutral);
                             break;
                         case QUALITY_GOOD:
-                            bike.setTint(good);
-                            holder.dayOfMonth.setBackground(bike);
+                            circle.setTint(good);
                             break;
                         case QUALITY_EXCELLENT:
-                            bike.setTint(excellent);
-                            holder.dayOfMonth.setBackground(bike);
+                            circle.setTint(excellent);
                             break;
                         default:
-                            bike.setTint(gray);
-                            holder.dayOfMonth.setBackground(bike);
+                            circle.setTint(gray);
                     }
+                    holder.dayOfMonth.setBackground(circle);
                 } else
                     holder.dayOfMonth.setBackgroundResource(R.color.backgroundColor);
 
+                holder.dayOfMonth.setTextColor(invertedBackgroundColor);
+            } else { // DEFAULT
+                holder.dayOfMonth.setBackgroundResource(R.color.backgroundColor);
                 holder.dayOfMonth.setTextColor(invertedBackgroundColor);
             }
         } else

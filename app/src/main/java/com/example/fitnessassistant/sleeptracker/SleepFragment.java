@@ -449,8 +449,10 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
         });
 
         view.findViewById(R.id.nextMonth).setOnClickListener(v -> {
-            selectedDate = selectedDate.plusMonths(1);
-            setMonthView(view);
+            if((selectedDate.getYear() == Calendar.getInstance().get(Calendar.YEAR) && selectedDate.getMonthValue() < Calendar.getInstance().get(Calendar.MONTH) + 1) || (selectedDate.getYear() < Calendar.getInstance().get(Calendar.YEAR))) {
+                selectedDate = selectedDate.plusMonths(1);
+                setMonthView(view);
+            }
         });
 
         view.findViewById(R.id.sleepDateFragment).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new SleepDateFragment(day, month, year)).addToBackStack(null).commit());
@@ -458,6 +460,10 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
 
     public static int getDayPosition(int day){
         return day + selectedDate.withDayOfMonth(1).getDayOfWeek().getValue() - 2;
+    }
+
+    public static int getPositionDay(int position){
+        return position - selectedDate.withDayOfMonth(1).getDayOfWeek().getValue() + 2;
     }
 
     private ArrayList<Integer> qualitiesOfMonthArray(LocalDate date){
@@ -506,14 +512,29 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
     @Override
     public void onItemClick(int position, String dayText) {
         if(!dayText.equals("")) {
-            day = Integer.parseInt(dayText);
-            month = selectedDate.getMonthValue();
-            year = selectedDate.getYear();
-            setUpClockAndQuality(requireView());
+            if(position != previousPositionSelected) {
+                if (selectedDate.getYear() == Calendar.getInstance().get(Calendar.YEAR) && selectedDate.getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1) {
+                    if (getPositionDay(position) <= Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                        day = Integer.parseInt(dayText);
+                        month = selectedDate.getMonthValue();
+                        year = selectedDate.getYear();
+                        setUpClockAndQuality(requireView());
 
-            if(previousPositionSelected >= 0)
-                calendarAdapter.notifyItemChanged(previousPositionSelected, -42455);
-            calendarAdapter.notifyItemChanged(position, 42455);
+                        if (previousPositionSelected >= 0)
+                            calendarAdapter.notifyItemChanged(previousPositionSelected, -42455);
+                        calendarAdapter.notifyItemChanged(position, 42455);
+                    }
+                } else {
+                    day = Integer.parseInt(dayText);
+                    month = selectedDate.getMonthValue();
+                    year = selectedDate.getYear();
+                    setUpClockAndQuality(requireView());
+
+                    if (previousPositionSelected >= 0)
+                        calendarAdapter.notifyItemChanged(previousPositionSelected, -42455);
+                    calendarAdapter.notifyItemChanged(position, 42455);
+                }
+            }
         }
     }
 
@@ -538,11 +559,19 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
         });
         calendarRecyclerView.setAdapter(calendarAdapter);
 
-        if(selectedDate.getMonthValue() == month)
-            calendarRecyclerView.post(() -> {
+        calendarRecyclerView.post(() -> {
+            int side = calendarRecyclerView.getMeasuredWidth();
+
+            ViewGroup.LayoutParams lp = calendarRecyclerView.getLayoutParams();
+            lp.width = side;
+            lp.height = Math.round(side * 6f / 7f);
+            calendarRecyclerView.setLayoutParams(lp);
+
+            if(selectedDate.getMonthValue() == month && selectedDate.getYear() == year){
                 onItemClick(day + selectedDate.withDayOfMonth(1).getDayOfWeek().getValue() - 2, String.valueOf(day));
-                onItemClick(day + selectedDate.withDayOfMonth(1).getDayOfWeek().getValue() - 2, String.valueOf(day));
-            });
+            }
+            calendarAdapter.notifyItemChanged(10, 0); // dummy notify for animation to occur
+        });
     }
 
     @Nullable
