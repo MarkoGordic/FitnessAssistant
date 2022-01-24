@@ -79,7 +79,10 @@ public class Product {
                         if (product.has("product_name"))
                             setName(product.getString("product_name"));
                         else
-                            setName(null);
+                            if(object.has("generic_name"))
+                                setName(object.getString("generic_name"));
+                            else
+                                setName(null);
 
                         if (product.has("brands"))
                             setBrands(product.getString("brands"));
@@ -338,7 +341,10 @@ public class Product {
                     if(object.has("product_name"))
                         setName(object.getString("product_name"));
                     else
-                        setName(null);
+                        if(object.has("generic_name"))
+                            setName(object.getString("generic_name"));
+                        else
+                            setName(null);
 
                     if (object.has("_id"))
                         setBarcode(object.getString("_id"));

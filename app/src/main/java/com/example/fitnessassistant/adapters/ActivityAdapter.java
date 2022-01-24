@@ -3,6 +3,7 @@ package com.example.fitnessassistant.adapters;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -65,7 +66,10 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         holder.activityDate.setText(String.format("%02d %s %d", day, TimeFunctional.getMonthShort(context, month), year));
 
         holder.activityTime.setText(activities.get(position).getDuration());
-        holder.activityImage.setImageBitmap(activities.get(position).getImage());
+        holder.activityImage.post(()->{
+            Bitmap newBitmap = Bitmap.createScaledBitmap(activities.get(position).getImage(), holder.activityImage.getWidth(), holder.activityImage.getHeight(), true);
+            holder.activityImage.setImageBitmap(newBitmap);
+        });
 
         switch(activities.get(position).getActivityType()){
             case ActivityRecycler.ACTIVITY_RUNNING:

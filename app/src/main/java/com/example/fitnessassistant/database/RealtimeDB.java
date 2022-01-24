@@ -419,15 +419,19 @@ public class RealtimeDB {
                     DataSnapshot dataSnapshot = task.getResult();
                     ActivityData data = dataSnapshot.getValue(ActivityData.class);
 
+
                     if(data != null){
+                        int j = 0;
                         for(int i : data.getIds()){
+                            final int jFinal = j;
                             StorageReference storageRef = storage.getReference("users/" + userID + "/activities/" + i + ".jpg");
                             try {
                                 File file = File.createTempFile("Images", "jpg");
                                 storageRef.getFile(file).addOnSuccessListener(taskSnapshot -> {
                                     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                                    MDBHActivityTracker.getInstance(context).addNewActivity(context, data.activities.get(i).getDate(), data.activities.get(i).getAverageSpeed(), data.activities.get(i).getDistance(), data.activities.get(i).getCaloriesBurnt(), bitmap, data.activities.get(i).getActivityType(), data.activities.get(i).getDuration());
+                                    MDBHActivityTracker.getInstance(context).addNewActivity(context, data.activities.get(jFinal).getDate(), data.activities.get(jFinal).getAverageSpeed(), data.activities.get(jFinal).getDistance(), data.activities.get(jFinal).getCaloriesBurnt(), bitmap, data.activities.get(jFinal).getActivityType(), data.activities.get(jFinal).getDuration());
                                 });
+                                j++;
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
