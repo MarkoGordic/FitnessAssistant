@@ -492,7 +492,7 @@ public class RealtimeDB {
                             long endTime = Long.parseLong(tokenizer.nextToken());
                             int confirmationStatus = Integer.parseInt(tokenizer.nextToken());
                             int quality = Integer.parseInt(tokenizer.nextToken());
-                            MDBHSleepTracker.getInstance(context).forceAddNewSleepSegment(context, startTime, endTime, duration, date, quality, confirmationStatus);
+                            MDBHSleepTracker.getInstance(context).forceAddNewSleepSegment(startTime, endTime, duration, date, quality, confirmationStatus);
                         }
                     }
                 }

@@ -120,7 +120,12 @@ public class MDBHSleepTracker extends SQLiteOpenHelper {
             System.out.println("Success! DATABASE");
     }
 
-    public void forceAddNewSleepSegment(Context context, Long startTime, Long endTime, Long duration, String date, Integer quality, Integer confirmationStatus){
+    public void removeSleepSegment(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + SEGMENTS_TABLE_NAME+ " WHERE "+ SEGMENTS_SLEEP_DATE +"='"+date+"'");
+    }
+
+    public void forceAddNewSleepSegment(Long startTime, Long endTime, Long duration, String date, Integer quality, Integer confirmationStatus){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 

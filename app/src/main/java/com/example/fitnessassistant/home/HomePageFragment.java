@@ -50,10 +50,21 @@ public class HomePageFragment extends Fragment {
         }
 
         Calendar cal = Calendar.getInstance();
+        String date = InAppActivity.getSleepDate(requireActivity());
+        int day = cal.get(Calendar.DAY_OF_MONTH), month = cal.get(Calendar.MONTH) + 1, year = cal.get(Calendar.YEAR);
+        if(date != null) {
+            int dateInt = Integer.parseInt(date);
+            day = dateInt % 100;
+            dateInt /= 100;
+            month = dateInt % 100;
+            dateInt /= 100;
+            year = dateInt;
+        }
+
         if(addSleep)
-            requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.sleepFragment).addToBackStack(null).hide(InAppActivity.sleepFragment).add(R.id.in_app_container, new SleepDateFragment(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR))).addToBackStack(null).commit();
+            requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, InAppActivity.sleepFragment).addToBackStack(null).hide(InAppActivity.sleepFragment).add(R.id.in_app_container, new SleepDateFragment(day, month, year)).addToBackStack(null).commit();
         else if(addSleepDate)
-            requireActivity().getSupportFragmentManager().beginTransaction().hide(InAppActivity.sleepFragment).add(R.id.in_app_container, new SleepDateFragment(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR))).addToBackStack(null).commit();
+            requireActivity().getSupportFragmentManager().beginTransaction().hide(InAppActivity.sleepFragment).add(R.id.in_app_container, new SleepDateFragment(day, month, year)).addToBackStack(null).commit();
     }
 
     private void goToPedometerFragment(){

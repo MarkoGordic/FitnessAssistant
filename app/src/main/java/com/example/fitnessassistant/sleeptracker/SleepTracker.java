@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -88,6 +89,7 @@ public class SleepTracker extends Service {
 
         Intent intent = new Intent(context, InAppActivity.class);
         intent.putExtra("desiredFragment", "SleepDateFragment");
+        intent.putExtra("date", DateFormat.format("yyyyMMdd", calendar));
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, SLEEP_TRACKER_ALERT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 

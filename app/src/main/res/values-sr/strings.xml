@@ -194,6 +194,7 @@
     <string name="daily_activity">Dnevna Aktivnost</string>
     <string name="loading_image">Čuvanje Profilne Slike…</string>
     <string name="save">Sačuvaj</string>
+    <string name="clear">Ukloni</string>
     <string name="plus_one">+1</string>
     <string name="minus_one">-1</string>
     <string name="hyphen">-</string>

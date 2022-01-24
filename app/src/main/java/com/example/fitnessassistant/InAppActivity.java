@@ -374,6 +374,16 @@ public class InAppActivity extends AppCompatActivity {
             sleepFragment.setUpUI(sleepRuns);
     }
 
+    public synchronized void putSleepDate(String date){
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("SleepDateFragmentDate", date).apply();
+    }
+
+    public static synchronized String getSleepDate(Context context){
+        String date = PreferenceManager.getDefaultSharedPreferences(context).getString("SleepDateFragmentDate", null);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("SleepDateFragmentDate", null).apply();
+        return date;
+    }
+
     public synchronized void putDesiredFragment(String desiredFragment){
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("desiredFragment",desiredFragment).apply();
     }
@@ -399,6 +409,7 @@ public class InAppActivity extends AppCompatActivity {
                 active = homeFragment;
             } else if(intent.getStringExtra("desiredFragment").equals("SleepDateFragment") && !isSleepDateFragmentVisible()){
                 putDesiredFragment("SleepDateFragment");
+                putSleepDate(intent.getStringExtra("date"));
                 ((BottomNavigationView) findViewById(R.id.bottomNavigation)).setSelectedItemId(R.id.home);
                 active = homeFragment;
             } else if(intent.getStringExtra("desiredFragment").equals("SleepFragment") && !sleepFragment.isVisible()){

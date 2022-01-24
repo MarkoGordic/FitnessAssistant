@@ -55,16 +55,21 @@ public class SleepDateFragment extends Fragment {
     }
 
     @SuppressLint("DefaultLocale")
-    private String getTime(int value, boolean isStartTime){
+    private String getTime(View view, int value, boolean isStartTime){
         int minutes = value * 15;
         int hours = minutes / 60;
         minutes %= 60;
 
         hours += plusHours;
 
-        if((isStartTime && hours == 24 && minutes == 0))
-            return "23:59";
-        else if(!isStartTime && hours == 48 && minutes == 0)
+        if(isStartTime){
+            if(hours >= 24)
+                ((TextView) view.findViewById(R.id.startDate)).setText(String.format("%02d %s %d", day, getMonthShort(requireActivity(), month), year));
+            else
+                ((TextView) view.findViewById(R.id.startDate)).setText(String.format("%02d %s %d", day - 1, getMonthShort(requireActivity(), month), year));
+        }
+
+        if(!isStartTime && hours == 48 && minutes == 0)
             return "23:59";
 
         return String.format("%02d:%02d", hours % 24, minutes);
@@ -134,16 +139,14 @@ public class SleepDateFragment extends Fragment {
 
         ((TextView) view.findViewById(R.id.sleepDateHeader)).setText(String.format("%02d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthLong(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
         ((TextView) view.findViewById(R.id.endDate)).setText(String.format("%02d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-        ((TextView) view.findViewById(R.id.startDate)).setText(String.format("%02d %s %d", cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR)));
 
         rangeSeekBar = view.findViewById(R.id.rangeSeekBar);
         rangeSeekBar.setRangeValues(MIN_VALUE, MAX_VALUE);
         rangeSeekBar.setNotifyWhileDragging(true);
 
         rangeSeekBar.setOnRangeSeekBarChangeListener((bar, minValue, maxValue) -> {
-            ((TextView) view.findViewById(R.id.startTime)).setText(getTime(minValue, true));
-            ((TextView) view.findViewById(R.id.endTime)).setText(getTime(maxValue, false));
+            ((TextView) view.findViewById(R.id.startTime)).setText(getTime(view, minValue, true));
+            ((TextView) view.findViewById(R.id.endTime)).setText(getTime(view, maxValue, false));
         });
 
         view.findViewById(R.id.smiley1).setOnClickListener(v -> setUpQuality(view, QUALITY_AWFUL));
@@ -158,8 +161,8 @@ public class SleepDateFragment extends Fragment {
                 VALUE_BLOCK -= 4;
                 rangeSeekBar.setSelectedMaxValue(rangeSeekBar.getSelectedMaxValue() - 4);
                 rangeSeekBar.setSelectedMinValue(rangeSeekBar.getSelectedMinValue() - 4);
-                ((TextView) view.findViewById(R.id.startTime)).setText(getTime(rangeSeekBar.getSelectedMinValue(), true));
-                ((TextView) view.findViewById(R.id.endTime)).setText(getTime(rangeSeekBar.getSelectedMaxValue(), false));
+                ((TextView) view.findViewById(R.id.startTime)).setText(getTime(view , rangeSeekBar.getSelectedMinValue(), true));
+                ((TextView) view.findViewById(R.id.endTime)).setText(getTime(view, rangeSeekBar.getSelectedMaxValue(), false));
             }
         });
 
@@ -169,8 +172,8 @@ public class SleepDateFragment extends Fragment {
                 VALUE_BLOCK += 4;
                 rangeSeekBar.setSelectedMaxValue(rangeSeekBar.getSelectedMaxValue() + 4);
                 rangeSeekBar.setSelectedMinValue(rangeSeekBar.getSelectedMinValue() + 4);
-                ((TextView) view.findViewById(R.id.startTime)).setText(getTime(rangeSeekBar.getSelectedMinValue(), true));
-                ((TextView) view.findViewById(R.id.endTime)).setText(getTime(rangeSeekBar.getSelectedMaxValue(), false));
+                ((TextView) view.findViewById(R.id.startTime)).setText(getTime(view, rangeSeekBar.getSelectedMinValue(), true));
+                ((TextView) view.findViewById(R.id.endTime)).setText(getTime(view, rangeSeekBar.getSelectedMaxValue(), false));
             }
         });
 
@@ -182,6 +185,7 @@ public class SleepDateFragment extends Fragment {
 
             StringTokenizer tokenizer1 = new StringTokenizer(((TextView) view.findViewById(R.id.startTime)).getText().toString(),":");
             StringTokenizer tokenizer2 = new StringTokenizer(((TextView) view.findViewById(R.id.endTime)).getText().toString(),":");
+            StringTokenizer tokenizer3 = new StringTokenizer(((TextView) view.findViewById(R.id.startDate)).getText().toString(), " ");
 
             int startHours = Integer.parseInt(tokenizer1.nextToken());
             int startMinutes = Integer.parseInt(tokenizer1.nextToken());
@@ -194,7 +198,8 @@ public class SleepDateFragment extends Fragment {
             long endMillis =  cal1.getTimeInMillis();
             String date = (String) DateFormat.format("yyyyMMdd", cal1);
 
-            cal1.add(Calendar.DAY_OF_MONTH, -1);
+            if(!tokenizer3.nextToken().equals(String.valueOf(day)))
+                cal1.add(Calendar.DAY_OF_MONTH, -1);
 
             cal1.set(Calendar.HOUR_OF_DAY, startHours);
             cal1.set(Calendar.MINUTE, startMinutes);
@@ -202,6 +207,26 @@ public class SleepDateFragment extends Fragment {
 
             MDBHSleepTracker.getInstance(requireActivity()).addNewSleepSegment(requireActivity(), startMillis, endMillis, endMillis - startMillis, date, selectedQuality, 1, true);
             SleepFragment.calendarAdapter.setAddedQuality(SleepFragment.getDayPosition(day), selectedQuality);
+            requireActivity().onBackPressed();
+        });
+
+        view.findViewById(R.id.clearButton).setOnClickListener(v -> {
+            Calendar cal1 = Calendar.getInstance();
+            cal1.set(Calendar.YEAR, year);
+            cal1.set(Calendar.MONTH, month - 1);
+            cal1.set(Calendar.DAY_OF_MONTH, day);
+
+            StringTokenizer tokenizer2 = new StringTokenizer(((TextView) view.findViewById(R.id.endTime)).getText().toString(),":");
+
+            int endHours = Integer.parseInt(tokenizer2.nextToken());
+            int endMinutes = Integer.parseInt(tokenizer2.nextToken());
+
+            cal1.set(Calendar.HOUR_OF_DAY, endHours);
+            cal1.set(Calendar.MINUTE, endMinutes);
+            String date = (String) DateFormat.format("yyyyMMdd", cal1);
+
+            MDBHSleepTracker.getInstance(requireActivity()).removeSleepSegment(date);
+            SleepFragment.calendarAdapter.setAddedQuality(SleepFragment.getDayPosition(day), null);
             requireActivity().onBackPressed();
         });
     }
@@ -222,6 +247,7 @@ public class SleepDateFragment extends Fragment {
 
             int startHours = cal.get(Calendar.HOUR_OF_DAY);
             int startMinutes = cal.get(Calendar.MINUTE);
+            int startDay = cal.get(Calendar.DAY_OF_MONTH);
 
             cal.setTimeInMillis(todaySleepSegment.getEndTime());
             String endTime = String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
@@ -229,28 +255,45 @@ public class SleepDateFragment extends Fragment {
 
             int endHours = cal.get(Calendar.HOUR_OF_DAY);
             int endMinutes = cal.get(Calendar.MINUTE);
+            int endDay = cal.get(Calendar.DAY_OF_MONTH);
 
-            int minutesPassed = endMinutes - startMinutes;
-            int hoursPassed = endHours + 24 - startHours;
+            int minutesPassed = endMinutes - startMinutes, hoursPassed = endHours - startHours;
 
             if(minutesPassed < 0){
                 minutesPassed += 60;
                 hoursPassed -= 1;
             }
 
-            plusHours = startHours;
-            VALUE_BLOCK = (24 - plusHours) * 4;
+            int selectedMinValue, selectedMaxValue;
 
-            rangeSeekBar.setSelectedMaxValue(Math.round((hoursPassed * 60 + minutesPassed) / 15f));
-            rangeSeekBar.setSelectedMinValue(Math.round(startMinutes / 15f));
+            if(endDay != startDay) {
+                hoursPassed += 24;
+                ((TextView) view.findViewById(R.id.startDate)).setText(String.format("%02d %s %d", day - 1, getMonthShort(requireActivity(), month), year));
+                plusHours = startHours;
+                selectedMaxValue = Math.round((hoursPassed * 60 + startMinutes + minutesPassed) / 15f);
+                selectedMinValue = Math.round(startMinutes / 15f);
+            } else {
+                ((TextView) view.findViewById(R.id.startDate)).setText(String.format("%02d %s %d", day, getMonthShort(requireActivity(), month), year));
+                plusHours = 24;
+                selectedMaxValue = Math.round(((startHours + hoursPassed) * 60 + startMinutes + minutesPassed) / 15f);
+                selectedMinValue = Math.round((startHours * 60 + startMinutes) / 15f);
+            }
+            rangeSeekBar.setSelectedMinValue(selectedMinValue);
+            rangeSeekBar.setSelectedMaxValue(selectedMaxValue);
+
+            VALUE_BLOCK = (24 - plusHours) * 4;
         } else{
             selectedQuality = QUALITY_NONE;
-            ((TextView) view.findViewById(R.id.startTime)).setText(getTime(MIN_VALUE, true));
-            ((TextView) view.findViewById(R.id.endTime)).setText(getTime(MAX_VALUE, false));
+
+            ((TextView) view.findViewById(R.id.startTime)).setText(getTime(view, MIN_VALUE, true));
+            ((TextView) view.findViewById(R.id.endTime)).setText(getTime(view, MAX_VALUE, false));
+
             plusHours = 12;
             VALUE_BLOCK = 48;
             rangeSeekBar.setSelectedMinValue(MIN_VALUE);
             rangeSeekBar.setSelectedMaxValue(MAX_VALUE);
+
+            ((TextView) view.findViewById(R.id.startDate)).setText(String.format("%02d %s %d", day - 1, getMonthShort(requireActivity(), month), year));
         }
     }
 

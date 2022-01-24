@@ -238,7 +238,7 @@ public class RangeSeekBar extends androidx.appcompat.widget.AppCompatImageView {
 
         double normX = screenToNormalized(x);
 
-        if (pressedThumb.equals(Thumb.MIN) && normX * (absoluteMaxValue - absoluteMinValue) * ((VALUE_BLOCK == 4) ? 0.95f : 0.99f) <= VALUE_BLOCK)
+        if (pressedThumb.equals(Thumb.MIN))
             setNormalizedMinValue(normX);
         else if (pressedThumb.equals(Thumb.MAX) && normX * (absoluteMaxValue - absoluteMinValue) >= VALUE_BLOCK)
             setNormalizedMaxValue(normX);
