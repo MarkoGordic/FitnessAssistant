@@ -239,6 +239,7 @@ public class BackupFragment extends Fragment {
                             ((TextView) view.findViewById(R.id.progressTV)).setText(requireActivity().getString(R.string.backing_up));
                             new TaskRunner().executeAsync(new BackupTask(requireActivity()), result -> {
                                 resetBools();
+                                Toast.makeText(requireActivity(), R.string.backup_finished, Toast.LENGTH_SHORT).show();
                                 view.findViewById(R.id.progressBar).setVisibility(View.GONE);
                                 view.findViewById(R.id.progressTV).setVisibility(View.GONE);
                             });
@@ -246,6 +247,7 @@ public class BackupFragment extends Fragment {
                             ((TextView) view.findViewById(R.id.progressTV)).setText(requireActivity().getString(R.string.restoring));
                             new TaskRunner().executeAsync(new RestoreTask(requireActivity()), result -> {
                                 resetBools();
+                                Toast.makeText(requireActivity(), R.string.restore_finished, Toast.LENGTH_SHORT).show();
                                 view.findViewById(R.id.progressBar).setVisibility(View.GONE);
                                 view.findViewById(R.id.progressTV).setVisibility(View.GONE);
                             });

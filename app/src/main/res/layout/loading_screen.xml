@@ -7,7 +7,7 @@
     android:background="@color/backgroundColor">
 
     <!-- Opening Screen with the logo -->
-    <!-- TODO Add the logo or heartbeat animation -->
+    <!-- TODO heartbeat animation -->
     <RelativeLayout
         android:id="@+id/appLogo"
 

@@ -320,6 +320,8 @@
     <string name="new_restore_message">Data backup was found.\nYou might want to restore your previous data.</string>
     <string name="backing_up">Backing up data…</string>
     <string name="restoring">Restoring data…</string>
+    <string name="backup_finished">Backup Finished</string>
+    <string name="restore_finished">Restore Finished</string>
     <string name="activities">Activities</string>
     <string name="pedometer_data">Pedometer Data</string>
     <string name="sleep_data">Sleep Data</string>
@@ -431,6 +433,10 @@
     <!-- Sleep Strings -->
     <string name="sleep">Sleep</string>
     <string name="hours_small">hours</string>
+
+    <!-- Nutrition Strings -->
+    <string name="product_not_found">Product Not Found</string>
+    <string name="search_hint">Search for a food</string>
 
     <string name="coming_soon">This will be added soon</string>
 </resources>

@@ -404,7 +404,6 @@ public class RealtimeDB {
         }
     }
 
-    // TODO pass in requireActivity()/getActivity() here (InAppActivity) as context
     public static void restoreUserActivities(Context context) {
         MDBHActivityTracker.getInstance(context).deleteDB();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {

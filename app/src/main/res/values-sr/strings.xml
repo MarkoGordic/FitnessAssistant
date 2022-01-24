@@ -321,6 +321,8 @@
     <string name="new_restore_message">Rezervne kopije podataka su pronađene.\nObnovite Vaše prethodne podatke.</string>
     <string name="backing_up">Kreiranje rezervne kopije podataka…</string>
     <string name="restoring">Obnavljanje podataka…</string>
+    <string name="backup_finished">Kreiranje Rezervne Kopije Završeno</string>
+    <string name="restore_finished">Obnova Završena</string>
     <string name="activities">Aktivnosti</string>
     <string name="pedometer_data">Podaci Pedometra</string>
     <string name="sleep_data">Podaci o Spavanju</string>
@@ -432,6 +434,10 @@
     <!-- Sleep Strings -->
     <string name="sleep">Spavanje</string>
     <string name="hours_small">sati</string>
+
+    <!-- Nutrition Strings -->
+    <string name="product_not_found">Proizvod Nije Pronađen</string>
+    <string name="search_hint">Potražite hranu</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

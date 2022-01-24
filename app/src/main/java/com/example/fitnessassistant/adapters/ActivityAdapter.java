@@ -69,6 +69,15 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         holder.activityImage.post(()->{
             Bitmap newBitmap = Bitmap.createScaledBitmap(activities.get(position).getImage(), holder.activityImage.getWidth(), holder.activityImage.getHeight(), true);
             holder.activityImage.setImageBitmap(newBitmap);
+
+            holder.activityImage.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                ImageView imageView = new ImageView(context);
+                imageView.setImageBitmap(newBitmap);
+                imageView.setAdjustViewBounds(true);
+                builder.setView(imageView);
+                builder.create().show();
+            });
         });
 
         switch(activities.get(position).getActivityType()){

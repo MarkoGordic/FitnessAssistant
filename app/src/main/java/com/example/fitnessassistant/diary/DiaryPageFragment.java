@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +26,9 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
     @Override
     public void onItemClick(Product product) {
-        if(product != null){
+        if(product == null)
+            Toast.makeText(requireActivity(), R.string.product_not_found , Toast.LENGTH_SHORT).show();
+        else{
             // todo baciti na novi fragment
             System.out.println("PRODUCT: " + product.getName());
         }
@@ -52,9 +55,8 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             searchView.setSelected(hasFocus);
             searchView.setIconified(!hasFocus);
-            if(!hasFocus){
+            if(!hasFocus)
                 recyclerView.setVisibility(View.GONE);
-            }
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -66,7 +68,6 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
             @Override
             public boolean onQueryTextChange(String query) {
-                // TODO perform API Search
                 // Only local API search is available due to API's TOS
                 APISearch.getInstance().searchAPI(query, requireContext(), false, true);
                 return false;
