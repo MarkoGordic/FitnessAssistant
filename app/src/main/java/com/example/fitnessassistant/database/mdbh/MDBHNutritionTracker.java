@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.fitnessassistant.database.data.Meal;
-import com.example.fitnessassistant.database.data.ProductSearch;
 import com.example.fitnessassistant.nutritiontracker.Product;
 
 import java.util.ArrayList;
@@ -81,22 +80,146 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
             System.out.println("Success! DATABASE");
     }
 
-    public List<ProductSearch> searchProducts(String searchTerm){
-        // TODO: Allow similar results
-        String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_NAME + "= ?";
+    public List<Product> searchProductsByName(String searchTerm){
+        System.out.println("***REMOVED***");
+        String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_NAME + " LIKE " + "?";
         SQLiteDatabase db = this.getReadableDatabase();
 
-        List<ProductSearch> data = new ArrayList<>();
+        List<Product> data = new ArrayList<>();
 
         if(db != null) {
             Cursor cursor = db.rawQuery(query, new String[]{searchTerm});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do{
-                    ProductSearch product = new ProductSearch();
-                    product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCTS_COLUMN_ID)));
+                    Product product = new Product();
                     product.setName(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NAME)));
+                    product.setBarcode(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BARCODE)));
                     product.setBrands(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BRANDS)));
+                    String nutriments = cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NUTRIMENTS));
+                    StringTokenizer stringTokenizer = new StringTokenizer(nutriments, "#");
+                    product.setCalcium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setChloride_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFluoride_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMagnesium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setPotassium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCholesterol_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSalt_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setZinc_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSodium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setBiotin_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCarbohydrates_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setEnergy_kcal_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFiber_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setTrans_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMonounsaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setPolyunsaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_3_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_6_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_9_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setProteins_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setIron_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCopper_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setManganese_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setIodine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCaffeine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setTaurine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSugars_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSucrose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setGlucose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFructose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setLactose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMaltose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setStarch_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCasein_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setAlcohol_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_a_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b1_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b2_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b6_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b9_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b12_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_c_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_d_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_e_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_k_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_pp_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    data.add(product);
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return data;
+    }
+
+    public List<Product> searchProductsByBarcode(String searchTerm){
+        String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_BARCODE + "= ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<Product> data = new ArrayList<>();
+
+        if(db != null) {
+            Cursor cursor = db.rawQuery(query, new String[]{searchTerm});
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                do{
+                    Product product = new Product();
+                    product.setName(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NAME)));
+                    product.setBarcode(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BARCODE)));
+                    product.setBrands(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BRANDS)));
+                    String nutriments = cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NUTRIMENTS));
+                    StringTokenizer stringTokenizer = new StringTokenizer(nutriments, "#");
+                    product.setCalcium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setChloride_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFluoride_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMagnesium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setPotassium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCholesterol_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSalt_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setZinc_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSodium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setBiotin_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCarbohydrates_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setEnergy_kcal_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFiber_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setTrans_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMonounsaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setPolyunsaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_3_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_6_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_9_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setProteins_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setIron_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCopper_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setManganese_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setIodine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCaffeine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setTaurine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSugars_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSucrose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setGlucose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFructose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setLactose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMaltose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setStarch_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCasein_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setAlcohol_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_a_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b1_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b2_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b6_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b9_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b12_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_c_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_d_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_e_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_k_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_pp_100g(Float.parseFloat(stringTokenizer.nextToken()));
                     data.add(product);
                 }while(cursor.moveToNext());
                 cursor.close();

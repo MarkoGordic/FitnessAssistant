@@ -14,11 +14,18 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.nutritiontracker.APISearch;
 import com.example.fitnessassistant.nutritiontracker.BarcodeScanner;
 import com.example.fitnessassistant.nutritiontracker.Product;
 
 public class DiaryPageFragment extends Fragment {
     public static Product currentProduct;
+
+    private void subscribeToObservers(){
+        APISearch.products.observe(getViewLifecycleOwner(), products -> {
+            // TODO : Display search results to user
+        });
+    }
 
     private void setUpOnClickListeners(View view){
         SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -33,13 +40,15 @@ public class DiaryPageFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // TODO perform API Search
+                APISearch.getInstance().searchAPI(query, requireContext(), false, false);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(String query) {
                 // TODO perform API Search
+                // Only local API search is available due to API's TOS
+                APISearch.getInstance().searchAPI(query, requireContext(), false, true);
                 return false;
             }
         });
@@ -52,6 +61,7 @@ public class DiaryPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.diary_screen, container, false);
         setUpOnClickListeners(view);
+        subscribeToObservers();
         return view;
     }
 

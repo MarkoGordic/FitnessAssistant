@@ -1,19 +1,13 @@
 package com.example.fitnessassistant.nutritiontracker;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 
-import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,38 +23,47 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
-public class APISearch extends Fragment {
-    public static List<Product> products;
+public class APISearch {
+    public static MutableLiveData<List<Product>> products = new MutableLiveData<>();
 
     final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
     final static String searchQuery = "&nocache=1&json=1";
 
-    // TODO You need to check local DB for barcode, then global API
+    public static APISearch instance;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.barcodescanner_screen, container, false);
+    public static APISearch getInstance() {
+        if(instance == null)
+            instance = new APISearch();
+
+        return instance;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public void searchAPI(String search, Context context, boolean isBarcode, boolean autocomplete){
+        List<Product> results;
+        // First, we check local DB for results
+        if(!isBarcode)
+            results = MDBHNutritionTracker.getInstance(context).searchProductsByName(search);
+        else
+            results = MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(search);
 
-    private static void searchAPI(String search, Context context){
-        new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery), (result) -> {
+        // Then we will search API for additional results
+        List<Product> finalResults = results;
+        if(!autocomplete)
+            new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery), (result) -> {
             try {
                 JSONObject obj = new JSONObject(result);
                 JSONArray jsonArray = obj.getJSONArray("products");
 
                 for(int i = 0; i < jsonArray.length(); i++)
-                    products.add(new Product(jsonArray.getJSONObject(i), context));
-
+                    finalResults.add(new Product(jsonArray.getJSONObject(i), context, true));
             } catch (JSONException e) {
                 e.printStackTrace();
+            } finally {
+                products.postValue(finalResults);
             }
         });
+        else
+            products.postValue(finalResults);
     }
 
     private static class TaskRunner {

@@ -63,26 +63,294 @@ public class Product {
 
     public Product(){}
 
-    public Product(JSONObject object, Context context){
+    public Product(JSONObject object, Context context, boolean search){
         if(object != null)
             try {
                 id = MDBHNutritionTracker.getInstance(context).getLastProductID() + 1;
+                if(!search) {
+                    if (object.has("product")) {
+                        JSONObject product = object.getJSONObject("product");
 
-                if(object.has("product")){
-                    JSONObject product = object.getJSONObject("product");
+                        if (object.has("_id"))
+                            setBarcode(product.getString("_id"));
+                        else
+                            setBarcode(null);
 
-                    if(product.has("product_name"))
-                        setName(product.getString("product_name"));
+                        if (product.has("product_name"))
+                            setName(product.getString("product_name"));
+                        else
+                            setName(null);
+
+                        if (product.has("brands"))
+                            setBrands(product.getString("brands"));
+                        else
+                            setBrands(null);
+
+                        JSONObject nutriments = product.getJSONObject("nutriments");
+
+                        if (nutriments.has("getBiotin_100g"))
+                            setBiotin_100g((float) nutriments.getDouble("getBiotin_100g"));
+                        else
+                            setBiotin_100g(0f);
+
+                        if (nutriments.has("calcium_100g"))
+                            setCalcium_100g((float) nutriments.getDouble("calcium_100g"));
+                        else
+                            setCalcium_100g(0f);
+
+                        if (nutriments.has("fluoride_100g"))
+                            setFluoride_100g((float) nutriments.getDouble("fluoride_100g"));
+                        else
+                            setFluoride_100g(0f);
+
+                        if (nutriments.has("chloride_100g"))
+                            setChloride_100g((float) nutriments.getDouble("chloride_100g"));
+                        else
+                            setChloride_100g(0f);
+
+                        if (nutriments.has("magnesium_100g"))
+                            setMagnesium_100g((float) nutriments.getDouble("magnesium_100g"));
+                        else
+                            setMagnesium_100g(0f);
+
+                        if (nutriments.has("potassium_100g"))
+                            setPotassium_100g((float) nutriments.getDouble("potassium_100g"));
+                        else
+                            setPotassium_100g(0f);
+
+                        if (nutriments.has("cholesterol_100g"))
+                            setCholesterol_100g((float) nutriments.getDouble("cholesterol_100g"));
+                        else
+                            setCholesterol_100g(0f);
+
+                        if (nutriments.has("salt_100g"))
+                            setSalt_100g((float) nutriments.getDouble("salt_100g"));
+                        else
+                            setSalt_100g(0f);
+
+                        if (nutriments.has("sodium_100g"))
+                            setSodium_100g((float) nutriments.getDouble("sodium_100g"));
+                        else
+                            setSodium_100g(0f);
+
+                        if (nutriments.has(" carbohydrates_100g"))
+                            setCarbohydrates_100g((float) nutriments.getDouble(" carbohydrates_100g"));
+                        else
+                            setCarbohydrates_100g(0f);
+
+                        if (nutriments.has("energy-kcal_100g"))
+                            setEnergy_kcal_100g((float) nutriments.getDouble("energy-kcal_100g"));
+                        else
+                            setEnergy_kcal_100g(0f);
+
+                        if (nutriments.has("fiber_100g"))
+                            setFiber_100g((float) nutriments.getDouble("fiber_100g"));
+                        else
+                            setFiber_100g(0f);
+
+                        if (nutriments.has("fat_100g"))
+                            setFat_100g((float) nutriments.getDouble("fat_100g"));
+                        else
+                            setFat_100g(0f);
+
+                        if (nutriments.has("saturated-fat_100g"))
+                            setSaturated_fat_100g((float) nutriments.getDouble("saturated-fat_100g"));
+                        else
+                            setSaturated_fat_100g(0f);
+
+                        if (nutriments.has("trans-fat_100g"))
+                            setTrans_fat_100g((float) nutriments.getDouble("trans-fat_100g"));
+                        else
+                            setTrans_fat_100g(0f);
+
+                        if (nutriments.has("monounsaturated-fat_100g"))
+                            setMonounsaturated_fat_100g((float) nutriments.getDouble("monounsaturated-fat_100g"));
+                        else
+                            setMonounsaturated_fat_100g(0f);
+
+                        if (nutriments.has("polyunsaturated-fat_100g"))
+                            setPolyunsaturated_fat_100g((float) nutriments.getDouble("polyunsaturated-fat_100g"));
+                        else
+                            setPolyunsaturated_fat_100g(0f);
+
+                        if (nutriments.has("omega-3-fat_100g"))
+                            setOmega_3_fat_100g((float) nutriments.getDouble("omega-3-fat_100g"));
+                        else
+                            setOmega_3_fat_100g(0f);
+
+                        if (nutriments.has("omega-6-fat_100g"))
+                            setOmega_6_fat_100g((float) nutriments.getDouble("omega-6-fat_100g"));
+                        else
+                            setOmega_6_fat_100g(0f);
+
+                        if (nutriments.has("omega-9-fat_100g"))
+                            setOmega_9_fat_100g((float) nutriments.getDouble("omega-9-fat_100g"));
+                        else
+                            setOmega_9_fat_100g(0f);
+
+                        if (nutriments.has("caffeine_100g"))
+                            setCaffeine_100g((float) nutriments.getDouble("caffeine_100g"));
+                        else
+                            setCaffeine_100g(0f);
+
+                        if (nutriments.has("copper_100g"))
+                            setCopper_100g((float) nutriments.getDouble("copper_100g"));
+                        else
+                            setCopper_100g(0f);
+
+                        if (nutriments.has("iodine_100g"))
+                            setIodine_100g((float) nutriments.getDouble("iodine_100g"));
+                        else
+                            setIodine_100g(0f);
+
+                        if (nutriments.has("manganese_100g"))
+                            setManganese_100g((float) nutriments.getDouble("manganese_100g"));
+                        else
+                            setManganese_100g(0f);
+
+                        if (nutriments.has("glucose_100g"))
+                            setGlucose_100g((float) nutriments.getDouble("glucose_100g"));
+                        else
+                            setGlucose_100g(0f);
+
+                        if (nutriments.has("fructose_100g"))
+                            setFructose_100g((float) nutriments.getDouble("fructose_100g"));
+                        else
+                            setFructose_100g(0f);
+
+                        if (nutriments.has("lactose_100g"))
+                            setLactose_100g((float) nutriments.getDouble("lactose_100g"));
+                        else
+                            setLactose_100g(0f);
+
+                        if (nutriments.has("lactose_100g"))
+                            setLactose_100g((float) nutriments.getDouble("lactose_100g"));
+                        else
+                            setLactose_100g(0f);
+
+                        if (nutriments.has("sucrose_100g"))
+                            setSucrose_100g((float) nutriments.getDouble("sucrose_100g"));
+                        else
+                            setSucrose_100g(0f);
+
+                        if (nutriments.has("alcohol_100g"))
+                            setAlcohol_100g((float) nutriments.getDouble("alcohol_100g"));
+                        else
+                            setAlcohol_100g(0f);
+
+                        if (nutriments.has("casein_100g"))
+                            setCasein_100g((float) nutriments.getDouble("casein_100g"));
+                        else
+                            setCasein_100g(0f);
+
+                        if (nutriments.has("maltose_100g"))
+                            setMaltose_100g((float) nutriments.getDouble("maltose_100g"));
+                        else
+                            setMaltose_100g(0f);
+
+                        if (nutriments.has("starch_100g"))
+                            setStarch_100g((float) nutriments.getDouble("starch_100g"));
+                        else
+                            setStarch_100g(0f);
+
+                        if (nutriments.has("taurine_100g"))
+                            setTaurine_100g((float) nutriments.getDouble("taurine_100g"));
+                        else
+                            setTaurine_100g(0f);
+
+                        if (nutriments.has("zinc_100g"))
+                            setZinc_100g((float) nutriments.getDouble("zinc_100g"));
+                        else
+                            setZinc_100g(0f);
+
+                        if (nutriments.has("proteins_100g"))
+                            setProteins_100g((float) nutriments.getDouble("proteins_100g"));
+                        else
+                            setProteins_100g(0f);
+
+                        if (nutriments.has("iron_100g"))
+                            setIron_100g((float) nutriments.getDouble("iron_100g"));
+                        else
+                            setIron_100g(0f);
+
+                        if (nutriments.has("sugars_100g"))
+                            setSugars_100g((float) nutriments.getDouble("sugars_100g"));
+                        else
+                            setSugars_100g(0f);
+
+                        if (nutriments.has("vitamin-a_100g"))
+                            setVitamin_a_100g((float) nutriments.getDouble("vitamin-a_100g"));
+                        else
+                            setVitamin_a_100g(0f);
+
+                        if (nutriments.has("vitamin-b1_100g"))
+                            setVitamin_b1_100g((float) nutriments.getDouble("vitamin-b1_100g"));
+                        else
+                            setVitamin_b1_100g(0f);
+
+                        if (nutriments.has("vitamin-b2_100g"))
+                            setVitamin_b2_100g((float) nutriments.getDouble("vitamin-b2_100g"));
+                        else
+                            setVitamin_b2_100g(0f);
+
+                        if (nutriments.has("vitamin-pp_100g"))
+                            setVitamin_pp_100g((float) nutriments.getDouble("vitamin-pp_100g"));
+                        else
+                            setVitamin_pp_100g(0f);
+
+                        if (nutriments.has("vitamin-b6_100g"))
+                            setVitamin_b6_100g((float) nutriments.getDouble("vitamin-b6_100g"));
+                        else
+                            setVitamin_b6_100g(0f);
+
+                        if (nutriments.has("vitamin-b9_100g"))
+                            setVitamin_b9_100g((float) nutriments.getDouble("vitamin-b9_100g"));
+                        else
+                            setVitamin_b9_100g(0f);
+
+                        if (nutriments.has("vitamin-b12_100g"))
+                            setVitamin_b12_100g((float) nutriments.getDouble("vitamin-b12_100g"));
+                        else
+                            setVitamin_b12_100g(0f);
+
+                        if (nutriments.has("vitamin-c_100g"))
+                            setVitamin_c_100g((float) nutriments.getDouble("vitamin-c_100g"));
+                        else
+                            setVitamin_c_100g(0f);
+
+                        if (nutriments.has("vitamin-d_100g"))
+                            setVitamin_d_100g((float) nutriments.getDouble("vitamin-d_100g"));
+                        else
+                            setVitamin_d_100g(0f);
+
+                        if (nutriments.has("vitamin-e_100g"))
+                            setVitamin_e_100g((float) nutriments.getDouble("vitamin-e_100g"));
+                        else
+                            setVitamin_e_100g(0f);
+
+                        if (nutriments.has("vitamin-k_100g"))
+                            setVitamin_k_100g((float) nutriments.getDouble("vitamin-k_100g"));
+                        else
+                            setVitamin_k_100g(0f);
+                    }
+                }
+                else{
+                    if(object.has("product_name"))
+                        setName(object.getString("product_name"));
                     else
                         setName(null);
 
-                    if(product.has("brands"))
-                        setBrands(product.getString("brands"));
+                    if (object.has("_id"))
+                        setBarcode(object.getString("_id"));
+                    else
+                        setBarcode(null);
+
+                    if(object.has("brands"))
+                        setBrands(object.getString("brands"));
                     else
                         setBrands(null);
 
-                    JSONObject nutriments = product.getJSONObject("nutriments");
-
+                    JSONObject nutriments = object.getJSONObject("nutriments");
                     if(nutriments.has("getBiotin_100g"))
                         setBiotin_100g((float)nutriments.getDouble("getBiotin_100g"));
                     else
@@ -143,191 +411,190 @@ public class Product {
                     else
                         setFiber_100g(0f);
 
-                    if(nutriments.has("fat_100g"))
-                        setFat_100g((float)nutriments.getDouble("fat_100g"));
-                    else
-                        setFat_100g(0f);
+                        if(nutriments.has("fat_100g"))
+                            setFat_100g((float)nutriments.getDouble("fat_100g"));
+                        else
+                            setFat_100g(0f);
 
-                    if(nutriments.has("saturated-fat_100g"))
-                        setSaturated_fat_100g((float)nutriments.getDouble("saturated-fat_100g"));
-                    else
-                        setSaturated_fat_100g(0f);
+                        if(nutriments.has("saturated-fat_100g"))
+                            setSaturated_fat_100g((float)nutriments.getDouble("saturated-fat_100g"));
+                        else
+                            setSaturated_fat_100g(0f);
 
-                    if(nutriments.has("trans-fat_100g"))
-                        setTrans_fat_100g((float)nutriments.getDouble("trans-fat_100g"));
-                    else
-                        setTrans_fat_100g(0f);
+                        if(nutriments.has("trans-fat_100g"))
+                            setTrans_fat_100g((float)nutriments.getDouble("trans-fat_100g"));
+                        else
+                            setTrans_fat_100g(0f);
 
-                    if(nutriments.has("monounsaturated-fat_100g"))
-                        setMonounsaturated_fat_100g((float)nutriments.getDouble("monounsaturated-fat_100g"));
-                    else
-                        setMonounsaturated_fat_100g(0f);
+                        if(nutriments.has("monounsaturated-fat_100g"))
+                            setMonounsaturated_fat_100g((float)nutriments.getDouble("monounsaturated-fat_100g"));
+                        else
+                            setMonounsaturated_fat_100g(0f);
 
-                    if(nutriments.has("polyunsaturated-fat_100g"))
-                        setPolyunsaturated_fat_100g((float)nutriments.getDouble("polyunsaturated-fat_100g"));
-                    else
-                        setPolyunsaturated_fat_100g(0f);
+                        if(nutriments.has("polyunsaturated-fat_100g"))
+                            setPolyunsaturated_fat_100g((float)nutriments.getDouble("polyunsaturated-fat_100g"));
+                        else
+                            setPolyunsaturated_fat_100g(0f);
 
-                    if(nutriments.has("omega-3-fat_100g"))
-                        setOmega_3_fat_100g((float)nutriments.getDouble("omega-3-fat_100g"));
-                    else
-                        setOmega_3_fat_100g(0f);
+                        if(nutriments.has("omega-3-fat_100g"))
+                            setOmega_3_fat_100g((float)nutriments.getDouble("omega-3-fat_100g"));
+                        else
+                            setOmega_3_fat_100g(0f);
 
-                    if(nutriments.has("omega-6-fat_100g"))
-                        setOmega_6_fat_100g((float)nutriments.getDouble("omega-6-fat_100g"));
-                    else
-                        setOmega_6_fat_100g(0f);
+                        if(nutriments.has("omega-6-fat_100g"))
+                            setOmega_6_fat_100g((float)nutriments.getDouble("omega-6-fat_100g"));
+                        else
+                            setOmega_6_fat_100g(0f);
 
-                    if(nutriments.has("omega-9-fat_100g"))
-                        setOmega_9_fat_100g((float)nutriments.getDouble("omega-9-fat_100g"));
-                    else
-                        setOmega_9_fat_100g(0f);
+                        if(nutriments.has("omega-9-fat_100g"))
+                            setOmega_9_fat_100g((float)nutriments.getDouble("omega-9-fat_100g"));
+                        else
+                            setOmega_9_fat_100g(0f);
 
-                    if(nutriments.has("caffeine_100g"))
-                        setCaffeine_100g((float)nutriments.getDouble("caffeine_100g"));
-                    else
-                        setCaffeine_100g(0f);
+                        if(nutriments.has("caffeine_100g"))
+                            setCaffeine_100g((float)nutriments.getDouble("caffeine_100g"));
+                        else
+                            setCaffeine_100g(0f);
 
-                    if(nutriments.has("copper_100g"))
-                        setCopper_100g((float)nutriments.getDouble("copper_100g"));
-                    else
-                        setCopper_100g(0f);
+                        if(nutriments.has("copper_100g"))
+                            setCopper_100g((float)nutriments.getDouble("copper_100g"));
+                        else
+                            setCopper_100g(0f);
 
-                    if(nutriments.has("iodine_100g"))
-                        setIodine_100g((float)nutriments.getDouble("iodine_100g"));
-                    else
-                        setIodine_100g(0f);
+                        if(nutriments.has("iodine_100g"))
+                            setIodine_100g((float)nutriments.getDouble("iodine_100g"));
+                        else
+                            setIodine_100g(0f);
 
-                    if(nutriments.has("manganese_100g"))
-                        setManganese_100g((float)nutriments.getDouble("manganese_100g"));
-                    else
-                        setManganese_100g(0f);
+                        if(nutriments.has("manganese_100g"))
+                            setManganese_100g((float)nutriments.getDouble("manganese_100g"));
+                        else
+                            setManganese_100g(0f);
 
-                    if(nutriments.has("glucose_100g"))
-                        setGlucose_100g((float)nutriments.getDouble("glucose_100g"));
-                    else
-                        setGlucose_100g(0f);
+                        if(nutriments.has("glucose_100g"))
+                            setGlucose_100g((float)nutriments.getDouble("glucose_100g"));
+                        else
+                            setGlucose_100g(0f);
 
-                    if(nutriments.has("fructose_100g"))
-                        setFructose_100g((float)nutriments.getDouble("fructose_100g"));
-                    else
-                        setFructose_100g(0f);
+                        if(nutriments.has("fructose_100g"))
+                            setFructose_100g((float)nutriments.getDouble("fructose_100g"));
+                        else
+                            setFructose_100g(0f);
 
-                    if(nutriments.has("lactose_100g"))
-                        setLactose_100g((float)nutriments.getDouble("lactose_100g"));
-                    else
-                        setLactose_100g(0f);
+                        if(nutriments.has("lactose_100g"))
+                            setLactose_100g((float)nutriments.getDouble("lactose_100g"));
+                        else
+                            setLactose_100g(0f);
 
-                    if(nutriments.has("lactose_100g"))
-                        setLactose_100g((float)nutriments.getDouble("lactose_100g"));
-                    else
-                        setLactose_100g(0f);
+                        if(nutriments.has("lactose_100g"))
+                            setLactose_100g((float)nutriments.getDouble("lactose_100g"));
+                        else
+                            setLactose_100g(0f);
 
-                    if(nutriments.has("sucrose_100g"))
-                        setSucrose_100g((float)nutriments.getDouble("sucrose_100g"));
-                    else
-                        setSucrose_100g(0f);
+                        if(nutriments.has("sucrose_100g"))
+                            setSucrose_100g((float)nutriments.getDouble("sucrose_100g"));
+                        else
+                            setSucrose_100g(0f);
 
-                    if(nutriments.has("alcohol_100g"))
-                        setAlcohol_100g((float)nutriments.getDouble("alcohol_100g"));
-                    else
-                        setAlcohol_100g(0f);
+                        if(nutriments.has("alcohol_100g"))
+                            setAlcohol_100g((float)nutriments.getDouble("alcohol_100g"));
+                        else
+                            setAlcohol_100g(0f);
 
-                    if(nutriments.has("casein_100g"))
-                        setCasein_100g((float)nutriments.getDouble("casein_100g"));
-                    else
-                        setCasein_100g(0f);
+                        if(nutriments.has("casein_100g"))
+                            setCasein_100g((float)nutriments.getDouble("casein_100g"));
+                        else
+                            setCasein_100g(0f);
 
-                    if(nutriments.has("maltose_100g"))
-                        setMaltose_100g((float)nutriments.getDouble("maltose_100g"));
-                    else
-                        setMaltose_100g(0f);
+                        if(nutriments.has("maltose_100g"))
+                            setMaltose_100g((float)nutriments.getDouble("maltose_100g"));
+                        else
+                            setMaltose_100g(0f);
 
-                    if(nutriments.has("starch_100g"))
-                        setStarch_100g((float)nutriments.getDouble("starch_100g"));
-                    else
-                        setStarch_100g(0f);
+                        if(nutriments.has("starch_100g"))
+                            setStarch_100g((float)nutriments.getDouble("starch_100g"));
+                        else
+                            setStarch_100g(0f);
 
-                    if(nutriments.has("taurine_100g"))
-                        setTaurine_100g((float)nutriments.getDouble("taurine_100g"));
-                    else
-                        setTaurine_100g(0f);
+                        if(nutriments.has("taurine_100g"))
+                            setTaurine_100g((float)nutriments.getDouble("taurine_100g"));
+                        else
+                            setTaurine_100g(0f);
 
-                    if(nutriments.has("zinc_100g"))
-                        setZinc_100g((float)nutriments.getDouble("zinc_100g"));
-                    else
-                        setZinc_100g(0f);
+                        if(nutriments.has("zinc_100g"))
+                            setZinc_100g((float)nutriments.getDouble("zinc_100g"));
+                        else
+                            setZinc_100g(0f);
 
-                    if(nutriments.has("proteins_100g"))
-                        setProteins_100g((float)nutriments.getDouble("proteins_100g"));
-                    else
-                        setProteins_100g(0f);
+                        if(nutriments.has("proteins_100g"))
+                            setProteins_100g((float)nutriments.getDouble("proteins_100g"));
+                        else
+                            setProteins_100g(0f);
 
-                    if(nutriments.has("iron_100g"))
-                        setIron_100g((float)nutriments.getDouble("iron_100g"));
-                    else
-                        setIron_100g(0f);
+                        if(nutriments.has("iron_100g"))
+                            setIron_100g((float)nutriments.getDouble("iron_100g"));
+                        else
+                            setIron_100g(0f);
 
-                    if(nutriments.has("sugars_100g"))
-                        setSugars_100g((float)nutriments.getDouble("sugars_100g"));
-                    else
-                        setSugars_100g(0f);
+                        if(nutriments.has("sugars_100g"))
+                            setSugars_100g((float)nutriments.getDouble("sugars_100g"));
+                        else
+                            setSugars_100g(0f);
 
-                    if(nutriments.has("vitamin-a_100g"))
-                        setVitamin_a_100g((float)nutriments.getDouble("vitamin-a_100g"));
-                    else
-                        setVitamin_a_100g(0f);
+                        if(nutriments.has("vitamin-a_100g"))
+                            setVitamin_a_100g((float)nutriments.getDouble("vitamin-a_100g"));
+                        else
+                            setVitamin_a_100g(0f);
 
-                    if(nutriments.has("vitamin-b1_100g"))
-                        setVitamin_b1_100g((float)nutriments.getDouble("vitamin-b1_100g"));
-                    else
-                        setVitamin_b1_100g(0f);
+                        if(nutriments.has("vitamin-b1_100g"))
+                            setVitamin_b1_100g((float)nutriments.getDouble("vitamin-b1_100g"));
+                        else
+                            setVitamin_b1_100g(0f);
 
-                    if(nutriments.has("vitamin-b2_100g"))
-                        setVitamin_b2_100g((float)nutriments.getDouble("vitamin-b2_100g"));
-                    else
-                        setVitamin_b2_100g(0f);
+                        if(nutriments.has("vitamin-b2_100g"))
+                            setVitamin_b2_100g((float)nutriments.getDouble("vitamin-b2_100g"));
+                        else
+                            setVitamin_b2_100g(0f);
 
-                    if(nutriments.has("vitamin-pp_100g"))
-                        setVitamin_pp_100g((float)nutriments.getDouble("vitamin-pp_100g"));
-                    else
-                        setVitamin_pp_100g(0f);
+                        if(nutriments.has("vitamin-pp_100g"))
+                            setVitamin_pp_100g((float)nutriments.getDouble("vitamin-pp_100g"));
+                        else
+                            setVitamin_pp_100g(0f);
 
-                    if(nutriments.has("vitamin-b6_100g"))
-                        setVitamin_b6_100g((float)nutriments.getDouble("vitamin-b6_100g"));
-                    else
-                        setVitamin_b6_100g(0f);
+                        if(nutriments.has("vitamin-b6_100g"))
+                            setVitamin_b6_100g((float)nutriments.getDouble("vitamin-b6_100g"));
+                        else
+                            setVitamin_b6_100g(0f);
 
-                    if(nutriments.has("vitamin-b9_100g"))
-                        setVitamin_b9_100g((float)nutriments.getDouble("vitamin-b9_100g"));
-                    else
-                        setVitamin_b9_100g(0f);
+                        if(nutriments.has("vitamin-b9_100g"))
+                            setVitamin_b9_100g((float)nutriments.getDouble("vitamin-b9_100g"));
+                        else
+                            setVitamin_b9_100g(0f);
 
-                    if(nutriments.has("vitamin-b12_100g"))
-                        setVitamin_b12_100g((float)nutriments.getDouble("vitamin-b12_100g"));
-                    else
-                        setVitamin_b12_100g(0f);
+                        if(nutriments.has("vitamin-b12_100g"))
+                            setVitamin_b12_100g((float)nutriments.getDouble("vitamin-b12_100g"));
+                        else
+                            setVitamin_b12_100g(0f);
 
-                    if(nutriments.has("vitamin-c_100g"))
-                        setVitamin_c_100g((float)nutriments.getDouble("vitamin-c_100g"));
-                    else
-                        setVitamin_c_100g(0f);
+                        if(nutriments.has("vitamin-c_100g"))
+                            setVitamin_c_100g((float)nutriments.getDouble("vitamin-c_100g"));
+                        else
+                            setVitamin_c_100g(0f);
 
-                    if(nutriments.has("vitamin-d_100g"))
-                        setVitamin_d_100g((float)nutriments.getDouble("vitamin-d_100g"));
-                    else
-                        setVitamin_d_100g(0f);
+                        if(nutriments.has("vitamin-d_100g"))
+                            setVitamin_d_100g((float)nutriments.getDouble("vitamin-d_100g"));
+                        else
+                            setVitamin_d_100g(0f);
 
-                    if(nutriments.has("vitamin-e_100g"))
-                        setVitamin_e_100g((float)nutriments.getDouble("vitamin-e_100g"));
-                    else
-                        setVitamin_e_100g(0f);
+                        if(nutriments.has("vitamin-e_100g"))
+                            setVitamin_e_100g((float)nutriments.getDouble("vitamin-e_100g"));
+                        else
+                            setVitamin_e_100g(0f);
 
-                    if(nutriments.has("vitamin-k_100g"))
-                        setVitamin_k_100g((float)nutriments.getDouble("vitamin-k_100g"));
-                    else
-                        setVitamin_k_100g(0f);
-
+                        if(nutriments.has("vitamin-k_100g"))
+                            setVitamin_k_100g((float)nutriments.getDouble("vitamin-k_100g"));
+                        else
+                            setVitamin_k_100g(0f);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

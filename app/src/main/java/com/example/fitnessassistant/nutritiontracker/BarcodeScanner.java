@@ -77,8 +77,6 @@ public class BarcodeScanner extends Fragment {
     private boolean performingSearch = false;
 
     final static String baseURL = "https://world.openfoodfacts.org/api/v0/product/";
-    final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
-    final static String searchQuery = "&nocache=1&json=1";
 
     @Nullable
     @Override
@@ -151,9 +149,10 @@ public class BarcodeScanner extends Fragment {
 
                     if(!performingSearch) {
                         performingSearch = true;
+                        // TODO : Add mutable live data, attempt to move task to APISearch class
                         new TaskRunner().executeAsync(new JSONTask(baseURL + barcodes.valueAt(0).displayValue + ".json"), (result) -> {
                             try {
-                                DiaryPageFragment.currentProduct = new Product(new JSONObject(result), requireContext());
+                                DiaryPageFragment.currentProduct = new Product(new JSONObject(result), requireContext(), false);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } finally {
