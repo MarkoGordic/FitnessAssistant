@@ -87,11 +87,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
             System.out.println("Success! DATABASE");
     }
 
-    public List<Product> searchProductsByName(String searchTerm){
+    public ArrayList<Product> searchProductsByName(String searchTerm){
         String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_NAME + " LIKE " + "?";
         SQLiteDatabase db = this.getReadableDatabase();
 
-        List<Product> data = new ArrayList<>();
+        ArrayList<Product> data = new ArrayList<>();
 
         if(db != null) {
             Cursor cursor = db.rawQuery(query, new String[]{searchTerm});
@@ -161,11 +161,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         return data;
     }
 
-    public List<Product> searchProductsByBarcode(String searchTerm){
+    public ArrayList<Product> searchProductsByBarcode(String searchTerm){
         String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_BARCODE + "= ?";
         SQLiteDatabase db = this.getReadableDatabase();
 
-        List<Product> data = new ArrayList<>();
+        ArrayList<Product> data = new ArrayList<>();
 
         if(db != null) {
             Cursor cursor = db.rawQuery(query, new String[]{searchTerm});

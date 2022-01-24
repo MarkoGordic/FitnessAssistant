@@ -19,12 +19,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
 public class APISearch {
-    public static MutableLiveData<List<Product>> products = new MutableLiveData<>();
+    public static MutableLiveData<ArrayList<Product>> products = new MutableLiveData<>();
     public static MutableLiveData<Product> barcodeProduct = new MutableLiveData<>();
 
     final static String baseURL = "https://world.openfoodfacts.org/api/v0/product/";
@@ -41,7 +41,7 @@ public class APISearch {
     }
 
     public void searchAPI(String search, Context context, boolean isBarcode, boolean autocomplete) {
-        List<Product> results;
+        ArrayList<Product> results;
         // First, we check local DB for results
         if (!isBarcode)
             results = MDBHNutritionTracker.getInstance(context).searchProductsByName(search);
@@ -49,7 +49,7 @@ public class APISearch {
             results = MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(search);
 
         // Then we will search API for additional results
-        List<Product> finalResults = results;
+        ArrayList<Product> finalResults = results;
         if (!autocomplete) {
             if(isBarcode){
                 new TaskRunner().executeAsync(new JSONTask(baseURL + search + ".json"), (result) -> {

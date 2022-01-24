@@ -8,6 +8,8 @@
     android:background="@color/backgroundColor">
 
     <LinearLayout
+        android:id="@+id/searchLay"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -52,21 +54,14 @@
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/currentProduct"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchRecycler"
+        android:visibility="gone"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        android:fontFamily="@font/roboto_light"
-        android:includeFontPadding="false"
-        android:textColor="@color/SpaceCadet"
-        android:textFontWeight="600"
-        android:textSize="16sp"/>
+        app:layout_constraintTop_toBottomOf="@id/searchLay"
+        app:layout_constrainedHeight="true"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

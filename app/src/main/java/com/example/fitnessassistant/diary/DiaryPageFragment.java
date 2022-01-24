@@ -6,29 +6,42 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.adapters.SearchAdapter;
 import com.example.fitnessassistant.nutritiontracker.APISearch;
 import com.example.fitnessassistant.nutritiontracker.BarcodeScanner;
 import com.example.fitnessassistant.nutritiontracker.Product;
 
-public class DiaryPageFragment extends Fragment {
-    public static Product currentProduct;
+public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemListener {
+    private RecyclerView recyclerView;
+
+    @Override
+    public void onItemClick(Product product) {
+        if(product != null){
+            // todo baciti na novi fragment
+            System.out.println("PRODUCT: " + product.getName());
+        }
+    }
 
     private void subscribeToObservers(){
         APISearch.products.observe(getViewLifecycleOwner(), products -> {
-            // TODO : Display search results to user
+            if(!products.isEmpty()) {
+                SearchAdapter adapter = new SearchAdapter(products, this);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setVisibility(View.VISIBLE);
+            } else
+                recyclerView.setVisibility(View.GONE);
         });
 
-        APISearch.barcodeProduct.observe(getViewLifecycleOwner(), product -> {
-            // TODO : Do what you want with product
-        });
+        APISearch.barcodeProduct.observe(getViewLifecycleOwner(), this::onItemClick);
     }
 
     private void setUpOnClickListeners(View view){
@@ -39,6 +52,9 @@ public class DiaryPageFragment extends Fragment {
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             searchView.setSelected(hasFocus);
             searchView.setIconified(!hasFocus);
+            if(!hasFocus){
+                recyclerView.setVisibility(View.GONE);
+            }
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -66,17 +82,15 @@ public class DiaryPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.diary_screen, container, false);
         setUpOnClickListeners(view);
         subscribeToObservers();
-        return view;
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // TODO ne znam jel id != 0 dobra provera da ga nije nasao
-        if(currentProduct != null && getView() != null && currentProduct.getId() != 0){
-            ((TextView) getView().findViewById(R.id.currentProduct)).setText(
-                    String.format("ID: %s\nProtein: %s\nCarbs: %s\nFats: %s", currentProduct.getId(), currentProduct.getProteins_100g(), currentProduct.getCarbohydrates_100g(), currentProduct.getFat_100g())
-            );
-        }
+        recyclerView = view.findViewById(R.id.searchRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
+            @Override
+            public boolean supportsPredictiveItemAnimations() {
+                return false;
+            }
+        });
+
+        return view;
     }
 }
