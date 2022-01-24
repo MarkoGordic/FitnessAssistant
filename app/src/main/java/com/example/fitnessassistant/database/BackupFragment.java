@@ -48,7 +48,7 @@ public class BackupFragment extends Fragment {
     private static final AtomicBoolean sleepData = new AtomicBoolean(false);
 
     @SuppressLint("DefaultLocale")
-    private final SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
+    public final SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         if(getView() != null) {
             Calendar cal = Calendar.getInstance();
             String lastBackup = requireActivity().getString(R.string.last_backup);
@@ -309,7 +309,7 @@ public class BackupFragment extends Fragment {
             if(pedometerData.get())
                 RealtimeDB.savePedometerData(context);
             if(sleepData.get()) {
-                // TODO
+                RealtimeDB.saveUserSleepData(context);
             }
             return null;
         }
@@ -333,7 +333,7 @@ public class BackupFragment extends Fragment {
             if(pedometerData.get())
                 RealtimeDB.restorePedometerData(context);
             if(sleepData.get()) {
-                // TODO
+                RealtimeDB.restoreSleepData(context);
             }
             return null;
         }

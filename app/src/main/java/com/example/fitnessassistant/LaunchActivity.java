@@ -65,7 +65,7 @@ public class LaunchActivity extends AppCompatActivity {
         NotificationController.createNotificationChannelGroup(this, getString(R.string.activity_tracking), "activity_tracking");
         NotificationController.createNotificationChannel(this, "Pedometer", getString(R.string.pedometer), getString(R.string.pedometer_desc), false, 2);
         NotificationController.createNotificationChannel(this,  "ActivityTracking", getString(R.string.activity_tracking), getString(R.string.activity_tracking_desc), false, 2);
-        NotificationController.createNotificationChannel(this, "SleepTracker", getString(R.string.sleep_tracking), getString(R.string.sleep_tracking_desc), false, 3);
+        NotificationController.createNotificationChannel(this, "SleepTracker", getString(R.string.sleep_tracking), getString(R.string.sleep_tracking_desc), false, 2);
         NotificationController.createNotificationChannel(this, "SleepTrackerAlerts", getString(R.string.sleep_detections), getString(R.string.sleep_tracking_alert_desc), false, 3);
 
         // initializing safety net

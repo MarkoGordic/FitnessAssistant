@@ -26,7 +26,7 @@ public class SleepDataReceiver extends BroadcastReceiver {
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(sleepEvents.get(i).getEndTimeMillis());
                 String date = (String) DateFormat.format("yyyyMMdd", cal);
-                MDBHSleepTracker.getInstance(context).addNewSleepSegment(context, sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis(), sleepEvents.get(i).getSegmentDurationMillis(), date, null, null, false);
+                MDBHSleepTracker.getInstance(context).addNewSleepSegment(context, sleepEvents.get(i).getStartTimeMillis(), sleepEvents.get(i).getEndTimeMillis(), sleepEvents.get(i).getSegmentDurationMillis(), date, -1, -1, false);
                 System.out.println(sleepEvents.get(i) + " SLEEP_DATA");
             }
         }

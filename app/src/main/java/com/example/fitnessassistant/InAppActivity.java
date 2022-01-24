@@ -118,7 +118,7 @@ public class InAppActivity extends AppCompatActivity {
     // and setting the currently active fragment as home
     private Fragment active;
     // listener for SharedPreferences - used for Updating UI
-    private final SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
+    public final SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         if(key.equals("pedometerDataChanged")){
             if(homeFragment != null && pedometerFragment != null && personalBestsFragment != null) {
                 homeFragment.updateStepsData(null);

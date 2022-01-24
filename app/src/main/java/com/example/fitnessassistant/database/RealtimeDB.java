@@ -16,8 +16,10 @@ import com.example.fitnessassistant.database.data.BackupStatus;
 import com.example.fitnessassistant.database.data.GoalsData;
 import com.example.fitnessassistant.database.data.PedometerData;
 import com.example.fitnessassistant.database.data.PreferencesData;
+import com.example.fitnessassistant.database.data.SleepData;
 import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHSleepTracker;
 import com.example.fitnessassistant.database.mdbh.MDBHWeight;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
 import com.example.fitnessassistant.questions.BirthdayFragment;
@@ -44,7 +46,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class RealtimeDB {
-
     // method for adding new user to database
     public static void registerNewUser(){
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -343,7 +344,24 @@ public class RealtimeDB {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            storage.getReference().child(userID).child("/activities").delete().addOnCompleteListener(task -> {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String check = sharedPreferences.getString("sleep_data", "n#/");
+
+            if(check.charAt(0) != 'n'){
+                storage.getReference().child(userID).child("/activities").delete().addOnCompleteListener(task -> {
+                    List<Bitmap> data = MDBHActivityTracker.getInstance(context).readActivitiesBitmapsDB();
+                    List<Integer> ids = MDBHActivityTracker.getInstance(context).readActivitiesIDs();
+
+                    for(int i = 0; i < data.size(); i++){
+                        Bitmap bitmap = data.get(i);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        Uri newUri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "ProfilePic", null));
+
+                        storage.getReference("users/" + userID + "/activities/" + ids.get(i) + ".jpg").putFile(newUri).addOnFailureListener(e -> { });
+                    }
+                });
+            }else{
                 List<Bitmap> data = MDBHActivityTracker.getInstance(context).readActivitiesBitmapsDB();
                 List<Integer> ids = MDBHActivityTracker.getInstance(context).readActivitiesIDs();
 
@@ -353,11 +371,9 @@ public class RealtimeDB {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     Uri newUri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "ProfilePic", null));
 
-                    storage.getReference("users/" + userID + "/activities/" + ids.get(i) + ".jpg").putFile(newUri).addOnFailureListener(e -> {
-
-                    });
+                    storage.getReference("users/" + userID + "/activities/" + ids.get(i) + ".jpg").putFile(newUri).addOnFailureListener(e -> { });
                 }
-            });
+            }
         }
     }
 
@@ -415,6 +431,68 @@ public class RealtimeDB {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    public static void saveUserSleepData(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data");
+
+            SleepData data = new SleepData();
+
+            data.setData(MDBHSleepTracker.getInstance(context).readSleepDB());
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.child("sleep").setValue(data);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("sleep_backup", "y#" + Calendar.getInstance().getTimeInMillis());
+                    editor.apply();
+
+                    updateBackupStatus(context);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    public static void restoreSleepData(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("sleep");
+
+            db.get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()){
+                    Log.e("Firebase", "Error getting data", task.getException());
+                } else {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    SleepData data = dataSnapshot.getValue(SleepData.class);
+                    List<String> sleep;
+
+                    MDBHSleepTracker.getInstance(context).deleteSegmentsDB();
+
+                    // Saving new data
+                    if(data != null) {
+                        sleep = data.getData();
+                        for(String day : sleep){
+                            StringTokenizer tokenizer = new StringTokenizer(day, "#");
+                            String date = tokenizer.nextToken();
+                            long duration = Long.parseLong(tokenizer.nextToken());
+                            long startTime = Integer.parseInt(tokenizer.nextToken());
+                            long endTime = Long.parseLong(tokenizer.nextToken());
+                            int confirmationStatus = Integer.parseInt(tokenizer.nextToken());
+                            int quality = Integer.parseInt(tokenizer.nextToken());
+                            MDBHSleepTracker.getInstance(context).forceAddNewSleepSegment(context, startTime, endTime, duration, date, quality, confirmationStatus);
                         }
                     }
                 }

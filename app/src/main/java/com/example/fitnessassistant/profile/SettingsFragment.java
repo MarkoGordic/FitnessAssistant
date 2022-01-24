@@ -36,6 +36,11 @@ import androidx.fragment.app.Fragment;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.activitytracker.LocationService;
+import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
+import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
+import com.example.fitnessassistant.database.mdbh.MDBHSleepTracker;
+import com.example.fitnessassistant.database.mdbh.MDBHWeight;
 import com.example.fitnessassistant.pedometer.DailyRestarter;
 import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LanguageAdapter;
@@ -72,6 +77,32 @@ public class SettingsFragment extends Fragment {
             context.startActivity(mainIntent);
             Runtime.getRuntime().exit(0);
         }, delayMillis);
+    }
+
+    public static void clearUserData(Context context){
+        MDBHSleepTracker.getInstance(context).deleteSegmentsDB();
+        MDBHActivityTracker.getInstance(context).deleteDB();
+        MDBHPedometer.getInstance(context).deleteDB();
+        MDBHWeight.getInstance(context).deleteDB();
+        MDBHNutritionTracker.getInstance(context).deleteDB();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(InAppActivity.backupFragment.listener);
+        String lang = sharedPreferences.getString("langPref", "sys");
+        String mode = sharedPreferences.getString("mode", "none");
+        SharedPreferences.Editor editor = sharedPreferences.edit().clear();
+        editor.putString("langPref", lang);
+        editor.putString("mode", mode);
+        editor.apply();
+
+        sharedPreferences = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(((InAppActivity)context).listener);
+        editor = sharedPreferences.edit().clear();
+        editor.apply();
+
+        sharedPreferences = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit().clear();
+        editor.apply();
     }
 
     private void setUpOnClickListeners(View view){
@@ -270,6 +301,8 @@ public class SettingsFragment extends Fragment {
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), InAppActivity.IN_APP_ID, new Intent(requireActivity(), DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
                     alarmManager.cancel(pendingIntent);
+                    // clearing user's data
+                    clearUserData(requireActivity());
                 }else{
                     AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
                     builder.setView(R.layout.custom_ok_alert_dialog);
@@ -305,7 +338,8 @@ public class SettingsFragment extends Fragment {
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), InAppActivity.IN_APP_ID, new Intent(requireActivity(), DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
                     alarmManager.cancel(pendingIntent);
-
+                    // clearing user's data
+                    clearUserData(requireActivity());
 
                     // setting up a custom dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
