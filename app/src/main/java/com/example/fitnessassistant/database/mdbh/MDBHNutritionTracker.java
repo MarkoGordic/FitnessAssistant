@@ -30,7 +30,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     private static final String MEALS_COLUMN_ID = "_id";
     private static final String MEALS_COLUMN_TYPE = "type";
     private static final String MEALS_COLUMN_DATE = "date";
-    private static final String MEALS_COLUMN_PRODUCT = "product";
+    private static final String MEALS_COLUMN_PRODUCTS = "product";
     private static final String MEALS_COLUMN_QUANTITY = "quantity";
 
     private static MDBHNutritionTracker instance;
@@ -63,13 +63,20 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
             System.out.println("Success! DATABASE");
     }
 
-    public void addNewMeal(int type, long date, int product_id, float quantity){
+    public void addNewMeal(int type, long date, List<Integer> product_ids, float quantity){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
+        StringBuilder products = new StringBuilder();
+        for(int i = 0; i < product_ids.size(); i++) {
+            products.append(product_ids.get(i));
+            if(i != product_ids.size() - 1)
+                products.append('#');
+        }
+
         cv.put(MEALS_COLUMN_TYPE, type);
         cv.put(MEALS_COLUMN_DATE, date);
-        cv.put(MEALS_COLUMN_PRODUCT, product_id);
+        cv.put(MEALS_COLUMN_PRODUCTS, String.valueOf(products));
         cv.put(MEALS_COLUMN_QUANTITY, quantity);
 
         long result = db.insert(MEALS_TABLE_NAME, null, cv);
@@ -81,7 +88,6 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public List<Product> searchProductsByName(String searchTerm){
-        System.out.println("***REMOVED***");
         String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_NAME + " LIKE " + "?";
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -304,18 +310,18 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     // returns false if targeted product does not exist in DB
-    public boolean editProductFromDB(int id, Product product){
+    public boolean editProductFromDB(Product product){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(PRODUCTS_COLUMN_ID, id);
+        cv.put(PRODUCTS_COLUMN_ID, product.getId());
         cv.put(PRODUCTS_COLUMN_NAME, product.getName());
         cv.put(PRODUCTS_COLUMN_BARCODE, product.getBarcode());
         cv.put(PRODUCTS_COLUMN_BRANDS, product.getBrands());
         cv.put(PRODUCTS_COLUMN_NUTRIMENTS, product.nutrimentsToDBString());
 
         // now we need to determine does old data exists
-        String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_ID + " = " + id;
+        String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_ID + " = " + product.getId();
         SQLiteDatabase dbRead = this.getReadableDatabase();
         Cursor cursor = null;
         boolean dataExists = false;
@@ -331,7 +337,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
             }
 
         if(dataExists) {
-            db.update(PRODUCTS_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+            db.update(PRODUCTS_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(product.getId())});
             return true;
         }
         else
@@ -349,8 +355,47 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + MEALS_TABLE_NAME + " WHERE "+ MEALS_COLUMN_ID +"='"+id+"'");
     }
 
-    // TODO Finish this methods
-    public void editMealFromDB(Meal meal){}
+    public boolean editMealFromDB(Meal meal){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        List<Integer> product_ids = meal.getProductIDs();
+        StringBuilder products = new StringBuilder();
+        for(int i = 0; i < product_ids.size(); i++) {
+            products.append(product_ids.get(i));
+            if(i != product_ids.size() - 1)
+                products.append('#');
+        }
+
+        cv.put(MEALS_COLUMN_ID, meal.getId());
+        cv.put(MEALS_COLUMN_PRODUCTS, String.valueOf(products));
+        cv.put(MEALS_COLUMN_TYPE, meal.getType());
+        cv.put(MEALS_COLUMN_DATE, meal.getDate());
+        cv.put(MEALS_COLUMN_QUANTITY, meal.getQuantity());
+
+        // now we need to determine does old data exists
+        String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_ID + " = " + meal.getId();
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean dataExists = false;
+
+        if(dbRead != null){
+            cursor = dbRead.rawQuery(query, null);
+        }
+
+        if(cursor != null)
+            if(cursor.getCount() > 0) {
+                cursor.close();
+                dataExists = true;
+            }
+
+        if(dataExists) {
+            db.update(MEALS_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(meal.getId())});
+            return true;
+        }
+        else
+            return false;
+    }
 
     public List<Meal> getAllMealsFromDB(){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME;
@@ -367,7 +412,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                     meal.setId(cursor.getInt(cursor.getColumnIndex(MEALS_COLUMN_ID)));
                     meal.setDate(cursor.getLong(cursor.getColumnIndex(MEALS_COLUMN_DATE)));
                     meal.setType(cursor.getInt(cursor.getColumnIndex(MEALS_COLUMN_TYPE)));
-                    meal.setProductID(cursor.getColumnIndex(MEALS_COLUMN_PRODUCT));
+                    String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                    StringTokenizer stringTokenizer = new StringTokenizer(products,"#");
+                    List<Integer> product_ids = new ArrayList<>();
+                    while (stringTokenizer.hasMoreElements())
+                        product_ids.add(Integer.parseInt(stringTokenizer.nextToken()));
+                    meal.setProductIDs(product_ids);
                     meal.setQuantity(cursor.getFloat(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY)));
                     data.add(meal);
                 }while(cursor.moveToNext());
@@ -418,7 +468,6 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         return id;
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =
@@ -437,7 +486,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                         MEALS_COLUMN_TYPE + " INTEGER, " +
                         MEALS_COLUMN_DATE + " TEXT, " +
                         MEALS_COLUMN_QUANTITY + " REAL, " +
-                        MEALS_COLUMN_PRODUCT + " INTEGER);";
+                        MEALS_COLUMN_PRODUCTS + " TEXT);";
 
         db.execSQL(query);
     }
@@ -445,7 +494,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + PRODUCTS_TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + MEALS_COLUMN_PRODUCT);
+        db.execSQL("DROP TABLE IF EXISTS " + MEALS_TABLE_NAME);
         onCreate(db);
     }
 

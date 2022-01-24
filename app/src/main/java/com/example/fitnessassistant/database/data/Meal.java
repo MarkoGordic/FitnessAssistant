@@ -1,10 +1,12 @@
 package com.example.fitnessassistant.database.data;
 
+import java.util.List;
+
 public class Meal {
     int id;
     int type;
     long date;
-    int productID;
+    List<Integer> productIDs;
     float quantity;
 
     public float getQuantity() {
@@ -15,8 +17,8 @@ public class Meal {
         return id;
     }
 
-    public int getProductID() {
-        return productID;
+    public List<Integer> getProductIDs() {
+        return productIDs;
     }
 
     public int getType() {
@@ -39,8 +41,8 @@ public class Meal {
         this.date = date;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setProductIDs(List<Integer> productIDs) {
+        this.productIDs = productIDs;
     }
 
     public void setQuantity(float quantity) {
