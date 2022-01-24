@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@android:color/transparent" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bottom_rounded"
+        android:gravity="center"
+
+        android:fontFamily="@font/ralewayb"
+        android:includeFontPadding="false"
+        android:text="@string/barcode_message"
+        android:textColor="@color/backgroundColor"
+        android:padding="18dp"
+        android:textFontWeight="600"
+        android:textSize="18sp"/>
+
+    <SurfaceView
+        android:id="@+id/surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginTop="-8dp"
+        android:elevation="-1dp"/>
+</LinearLayout>

@@ -91,7 +91,7 @@ public class InAppActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     // setting up all fragments
     public static MapPageFragment mapFragment;
-    private DiaryPageFragment diaryFragment;
+    public static DiaryPageFragment diaryFragment;
     private HomePageFragment homeFragment;
     private WorkoutPageFragment workoutFragment;
     private ProfilePageFragment profileFragment;

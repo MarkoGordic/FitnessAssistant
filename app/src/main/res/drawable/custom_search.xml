@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:padding="12dp" android:shape="rectangle">
+            <solid android:color="@color/backgroundColor"/>
+            <stroke android:width="2dp"
+                android:color="@color/InvertedBackgroundColor"/>
+            <corners android:radius="10dp"/>
+        </shape>
+    </item>
+    <item android:state_selected="false">
+        <shape android:padding="12dp"
+            android:shape="rectangle">
+            <solid android:color="@color/backgroundColor"/>
+            <corners android:radius="10dp"/>
+        </shape>
+    </item>
+</selector>

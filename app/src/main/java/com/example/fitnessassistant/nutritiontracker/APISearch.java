@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +31,6 @@ import java.util.concurrent.Executors;
 
 public class APISearch extends Fragment {
     public static List<Product> products;
-    public TextView JSONResponse;
 
     final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
     final static String searchQuery = "&nocache=1&json=1";
@@ -42,9 +40,7 @@ public class APISearch extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.barcodescanner, container, false);
-        JSONResponse = view.findViewById(R.id.barcode_text);
-        return view;
+        return inflater.inflate(R.layout.barcodescanner_screen, container, false);
     }
 
     @Override

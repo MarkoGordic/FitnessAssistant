@@ -324,6 +324,7 @@
     <string name="last_backup">Last backup</string>
     <string name="n_a">N/A</string>
     <string name="select_one">Select At Least One Field</string>
+    <string name="barcode_message">Make sure the entire barcode is inside the viewfinder and keep the phone steady.</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Skip</string>

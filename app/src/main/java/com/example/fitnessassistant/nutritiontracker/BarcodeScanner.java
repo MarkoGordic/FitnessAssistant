@@ -29,6 +29,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -73,8 +74,7 @@ public class BarcodeScanner extends Fragment {
 
     public CameraSource cameraSource;
     private ToneGenerator toneGenerator;
-    public static Product product;
-    public TextView JSONResponse;
+    private boolean performingSearch = false;
 
     final static String baseURL = "https://world.openfoodfacts.org/api/v0/product/";
     final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
@@ -83,10 +83,16 @@ public class BarcodeScanner extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.barcodescanner, container, false);
+        View view = inflater.inflate(R.layout.barcodescanner_screen, container, false);
+        requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
         startRealtimeDetection(view);
-        JSONResponse = view.findViewById(R.id.barcode_text);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -141,27 +147,22 @@ public class BarcodeScanner extends Fragment {
             public void receiveDetections(@NonNull Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if(barcodes.size() != 0){
-                    view.findViewById(R.id.barcode_text).post(() -> {
-                        String barcodeData;
-                        barcodes.valueAt(0);
+                    toneGenerator.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
 
-                        view.findViewById(R.id.barcode_text).removeCallbacks(null);
-                        barcodeData = barcodes.valueAt(0).displayValue;
-                        ((TextView) view.findViewById(R.id.barcode_text)).setText(barcodeData);
-
-                        toneGenerator.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
-
-                        new TaskRunner().executeAsync(new JSONTask(baseURL + barcodeData + ".json"), (result) -> {
+                    if(!performingSearch) {
+                        performingSearch = true;
+                        new TaskRunner().executeAsync(new JSONTask(baseURL + barcodes.valueAt(0).displayValue + ".json"), (result) -> {
                             try {
-                                JSONObject obj = new JSONObject(result);
-                                product = new Product(obj, requireContext());
-                                JSONResponse.setText(product.getName() + "\nProteins : " + product.getProteins_100g() + "\nUgljeni hidrati : " + product.getCarbohydrates_100g() + "\nMasti : " + product.getFat_100g() + "\nSo : " + product.getSalt_100g() + "\nKalcijum : " + product.getCalcium_100g());
+                                DiaryPageFragment.currentProduct = new Product(new JSONObject(result), requireContext());
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                            } finally {
+                                if (getActivity() != null)
+                                    getActivity().onBackPressed();
+                                cameraSource.stop();
                             }
                         });
-                        cameraSource.stop();
-                    });
+                    }
                 }
             }
         });

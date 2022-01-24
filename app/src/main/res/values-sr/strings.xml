@@ -326,6 +326,7 @@
     <string name="last_backup">Poslednje čuvanje</string>
     <string name="n_a">Nikad</string>
     <string name="select_one">Odaberite Bar Jedno Polje</string>
+    <string name="barcode_message">Postavite barkod u vidokrug kamere i mirno držite telefon.</string>
 
     <!-- QUESTIONS Strings -->
     <string name="skip">Preskoči</string>

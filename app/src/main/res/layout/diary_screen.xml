@@ -7,28 +7,66 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
 
-    <!-- Temporary TextView -->
-    <TextView
-        android:id="@+id/temporaryTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
 
-        android:text="@string/coming_soon"
-        android:textColor="@color/SpaceCadet"/>
+        android:background="@color/SpaceCadet"
+        android:gravity="center_vertical"
 
-    <Button
-        android:id="@+id/mindzascanner"
+        android:orientation="horizontal"
+        android:weightSum="20">
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="17.7"
+
+            android:background="@drawable/custom_search"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+
+            app:iconifiedByDefault="false"
+            app:queryHint=""/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/qrCodeScanner"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="2.3"
+
+            android:background="@drawable/border_button"
+            android:backgroundTint="@color/backgroundColor"
+            android:src="@drawable/qr_code_scanner"
+            android:tint="@color/InvertedBackgroundColor"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/currentProduct"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mindza Scanner"
+
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:fontFamily="@font/roboto_light"
+        android:includeFontPadding="false"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="16sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
