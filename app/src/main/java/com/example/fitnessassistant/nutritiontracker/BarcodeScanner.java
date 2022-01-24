@@ -9,9 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -29,24 +26,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.util.PermissionFunctional;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
 
 public class BarcodeScanner extends Fragment {
     // launcher for the Camera Permission
@@ -75,8 +61,6 @@ public class BarcodeScanner extends Fragment {
     public CameraSource cameraSource;
     private ToneGenerator toneGenerator;
     private boolean performingSearch = false;
-
-    final static String baseURL = "https://world.openfoodfacts.org/api/v0/product/";
 
     @Nullable
     @Override
@@ -136,9 +120,7 @@ public class BarcodeScanner extends Fragment {
 
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
-            public void release() {
-
-            }
+            public void release() { }
 
             @SuppressLint("SetTextI18n")
             @Override
@@ -149,88 +131,11 @@ public class BarcodeScanner extends Fragment {
 
                     if(!performingSearch) {
                         performingSearch = true;
-                        // TODO : Add mutable live data, attempt to move task to APISearch class
-                        new TaskRunner().executeAsync(new JSONTask(baseURL + barcodes.valueAt(0).displayValue + ".json"), (result) -> {
-                            try {
-                                DiaryPageFragment.currentProduct = new Product(new JSONObject(result), requireContext(), false);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            } finally {
-                                if (getActivity() != null)
-                                    getActivity().onBackPressed();
-                                cameraSource.stop();
-                            }
-                        });
+                        cameraSource.stop();
+                        APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false);
                     }
                 }
             }
         });
-    }
-
-    private static class TaskRunner {
-        private interface Callback<x>{
-            void onComplete(x Result);
-        }
-
-        public<x> void executeAsync(Callable<x> callable, Callback<x> callback){
-            Executors.newSingleThreadExecutor().execute(() -> {
-                try{
-                    final x result = callable.call();
-
-                    new Handler(Looper.getMainLooper()).post(() -> callback.onComplete(result));
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            });
-        }
-    }
-
-    private static class JSONTask implements Callable<String>{
-        private final String URL;
-
-        public JSONTask(String... params) {
-            this.URL = params[0];
-        }
-
-        @Override
-        public String call() {
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-
-            try {
-                URL url = new URL(URL);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuilder buffer = new StringBuilder();
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line).append("\n");
-                    Log.d("Response: ", "> " + line);
-                }
-
-                return buffer.toString();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
     }
 }

@@ -25,6 +25,10 @@ public class DiaryPageFragment extends Fragment {
         APISearch.products.observe(getViewLifecycleOwner(), products -> {
             // TODO : Display search results to user
         });
+
+        APISearch.barcodeProduct.observe(getViewLifecycleOwner(), product -> {
+            // TODO : Do what you want with product
+        });
     }
 
     private void setUpOnClickListeners(View view){

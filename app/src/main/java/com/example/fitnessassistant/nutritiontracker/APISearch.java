@@ -25,7 +25,9 @@ import java.util.concurrent.Executors;
 
 public class APISearch {
     public static MutableLiveData<List<Product>> products = new MutableLiveData<>();
+    public static MutableLiveData<Product> barcodeProduct = new MutableLiveData<>();
 
+    final static String baseURL = "https://world.openfoodfacts.org/api/v0/product/";
     final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
     final static String searchQuery = "&nocache=1&json=1";
 
@@ -38,30 +40,47 @@ public class APISearch {
         return instance;
     }
 
-    public void searchAPI(String search, Context context, boolean isBarcode, boolean autocomplete){
+    public void searchAPI(String search, Context context, boolean isBarcode, boolean autocomplete) {
         List<Product> results;
         // First, we check local DB for results
-        if(!isBarcode)
+        if (!isBarcode)
             results = MDBHNutritionTracker.getInstance(context).searchProductsByName(search);
         else
             results = MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(search);
 
         // Then we will search API for additional results
         List<Product> finalResults = results;
-        if(!autocomplete)
-            new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery), (result) -> {
-            try {
-                JSONObject obj = new JSONObject(result);
-                JSONArray jsonArray = obj.getJSONArray("products");
+        if (!autocomplete) {
+            if(isBarcode){
+                new TaskRunner().executeAsync(new JSONTask(baseURL + search + ".json"), (result) -> {
+                    try {
+                        JSONObject obj = new JSONObject(result);
+                        Product product = null;
+                        if(obj.has("status"))
+                            if(obj.getInt("status") != 0)
+                                product = new Product(obj, context, false);
 
-                for(int i = 0; i < jsonArray.length(); i++)
-                    finalResults.add(new Product(jsonArray.getJSONObject(i), context, true));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } finally {
-                products.postValue(finalResults);
+                        barcodeProduct.postValue(product);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }else{
+                new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery), (result) -> {
+                    try {
+                        JSONObject obj = new JSONObject(result);
+                        JSONArray jsonArray = obj.getJSONArray("products");
+
+                        for (int i = 0; i < jsonArray.length(); i++)
+                            finalResults.add(new Product(jsonArray.getJSONObject(i), context, true));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
+                        products.postValue(finalResults);
+                    }
+                });
             }
-        });
+        }
         else
             products.postValue(finalResults);
     }
