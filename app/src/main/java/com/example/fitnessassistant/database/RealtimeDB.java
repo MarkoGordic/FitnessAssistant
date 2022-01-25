@@ -46,6 +46,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class RealtimeDB {
+    public static void enablePersistence(){
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
+
     // method for adding new user to database
     public static void registerNewUser(){
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {

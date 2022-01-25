@@ -29,7 +29,7 @@ public class APISearch {
 
     final static String baseURL = "https://world.openfoodfacts.org/api/v0/product/";
     final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";
-    final static String searchQuery = "&nocache=1&json=1";
+    final static String searchQuery = "&nocache=1&json=1&page=";
 
     public static APISearch instance;
 
@@ -40,7 +40,7 @@ public class APISearch {
         return instance;
     }
 
-    public void searchAPI(String search, Context context, boolean isBarcode, boolean autocomplete) {
+    public void searchAPI(String search, Context context, boolean isBarcode, boolean autocomplete, int page) {
         ArrayList<Product> results;
         // First, we check local DB for results
         if (!isBarcode)
@@ -66,7 +66,7 @@ public class APISearch {
                     }
                 });
             }else{
-                new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery), (result) -> {
+                new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery + page), (result) -> {
                     try {
                         JSONObject obj = new JSONObject(result);
                         JSONArray jsonArray = obj.getJSONArray("products");

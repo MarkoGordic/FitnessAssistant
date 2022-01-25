@@ -279,7 +279,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             });
 
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) mapView.getLayoutParams();
-            lp.height = 300;
+            lp.height = 350;
             mapView.setLayoutParams(lp);
         });
 
@@ -335,9 +335,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             googleMap.moveCamera(
                     CameraUpdateFactory.newLatLngBounds(
                             pathBounds.build(),
-                            mapView.getWidth(),
-                            mapView.getHeight(),
-                            (int) (mapView.getHeight() * 0.05f)
+                            10
                     )
             );
         }
@@ -355,9 +353,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngBounds(
                             pathBounds.build(),
-                            mapView.getWidth(),
-                            mapView.getHeight(),
-                            (int) (mapView.getHeight() * 0.05f)
+                            10
                     )
             );
         }

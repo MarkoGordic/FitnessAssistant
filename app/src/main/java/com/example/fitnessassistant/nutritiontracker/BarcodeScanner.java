@@ -132,7 +132,7 @@ public class BarcodeScanner extends Fragment {
                     if(!performingSearch) {
                         performingSearch = true;
                         cameraSource.stop();
-                        APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false);
+                        APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false, 1);
                     }
                 }
             }

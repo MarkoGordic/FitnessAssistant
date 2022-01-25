@@ -73,7 +73,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         byte[] activityImage = outputStream.toByteArray();
 
         cv.put(COLUMN_DATE, date);

@@ -74,14 +74,14 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                APISearch.getInstance().searchAPI(query, requireContext(), false, false);
+                APISearch.getInstance().searchAPI(query, requireContext(), false, false, 1);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
                 // Only local API search is available due to API's TOS
-                APISearch.getInstance().searchAPI(query, requireContext(), false, true);
+                APISearch.getInstance().searchAPI(query, requireContext(), false, true, 1);
                 return false;
             }
         });
