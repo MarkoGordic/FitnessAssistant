@@ -10,10 +10,12 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,8 +62,11 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                 ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.camera_access_message_denied);
         }
     });
+
     private RecyclerView recyclerView;
     private LocalDate currentDay;
+    private SearchView searchView;
+    public static int currentPage = -1;
 
     @SuppressLint("DefaultLocale")
     private void setUpCurrentDay(View view){
@@ -75,14 +81,37 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product)).addToBackStack(null).commit();
     }
 
-    private void subscribeToObservers(){
+    private void subscribeToObservers(View view){
         APISearch.products.observe(getViewLifecycleOwner(), products -> {
-            if(!products.isEmpty()) {
-                SearchAdapter adapter = new SearchAdapter(products, this);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setVisibility(View.VISIBLE);
-            } else
-                recyclerView.setVisibility(View.GONE);
+            if(products.isEmpty()){
+                if(recyclerView.getAdapter() == null)
+                    ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_results));
+                else
+                    ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
+
+                currentPage = -1;
+                view.findViewById(R.id.loadMore).setClickable(false);
+            } else {
+                if (recyclerView.getAdapter() == null){
+                    currentPage = 1;
+                    recyclerView.setAdapter(new SearchAdapter(products, this));
+                    view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.VISIBLE);
+                } else {
+                    ((SearchAdapter) recyclerView.getAdapter()).addProducts(products);
+                }
+
+                if (products.size() < 24){
+                    currentPage = -1;
+                    ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
+                    view.findViewById(R.id.loadMore).setClickable(false);
+                } else{
+                    ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.load_more));
+                    view.findViewById(R.id.loadMore).setOnClickListener(v -> {
+                        currentPage++;
+                        APISearch.getInstance().searchAPI(searchView.getQuery().toString(), requireContext(), false, false, currentPage);
+                    });
+                }
+            }
         });
 
         APISearch.barcodeProduct.observe(getViewLifecycleOwner(), this::onItemClick);
@@ -90,14 +119,24 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
     private void setUpOnClickListeners(View view){
         SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = view.findViewById(R.id.searchView);
+        searchView = view.findViewById(R.id.searchView);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().getComponentName()));
+
+        ImageView searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_mag_icon);
+        Drawable search = ContextCompat.getDrawable(requireActivity(),R.drawable.search);
+        if (search != null)
+            search.setTint(requireActivity().getColor(R.color.SpaceCadet));
+        searchIcon.setImageDrawable(search);
+
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchAutoComplete.setHintTextColor(requireActivity().getColor(R.color.LightGrayColor));
+        searchAutoComplete.setTextColor(requireActivity().getColor(R.color.SpaceCadet));
 
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             searchView.setSelected(hasFocus);
             searchView.setIconified(!hasFocus);
             if(!hasFocus)
-                recyclerView.setVisibility(View.GONE);
+                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -131,6 +170,11 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             currentDay = currentDay.plusDays(1);
             setUpCurrentDay(view);
         });
+
+        view.findViewById(R.id.loadMore).setOnClickListener(v -> {
+            currentPage++;
+            APISearch.getInstance().searchAPI(searchView.getQuery().toString(), requireContext(), false, false, currentPage);
+        });
     }
 
     @Nullable
@@ -139,7 +183,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         View view = inflater.inflate(R.layout.diary_screen, container, false);
 
         setUpOnClickListeners(view);
-        subscribeToObservers();
+        subscribeToObservers(view);
 
         currentDay = LocalDate.now();
         setUpCurrentDay(view);
@@ -151,6 +195,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                 return false;
             }
         });
+        recyclerView.setHasFixedSize(true);
 
         return view;
     }

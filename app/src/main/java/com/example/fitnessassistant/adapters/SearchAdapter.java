@@ -25,17 +25,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     @NonNull
     @Override
-    public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.product_field, parent, false);
-        return new SearchViewHolder(listener, view);
+        return new SearchViewHolder(listener, inflater.inflate(R.layout.product_field, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchAdapter.SearchViewHolder holder, int position) {
-        holder.productName.setText(products.get(position).getName());
-        holder.brandName.setText(products.get(position).getBrands());
-        holder.calorieAmount.setText(String.valueOf(Math.round(products.get(position).getEnergy_kcal_100g())));
+    public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
+        holder.productName.setText(products.get(holder.getAdapterPosition()).getName());
+        holder.brandName.setText(products.get(holder.getAdapterPosition()).getBrands());
+        holder.calorieAmount.setText(String.valueOf(Math.round(products.get(holder.getAdapterPosition()).getEnergy_kcal_100g())));
     }
 
     @Override
@@ -46,7 +45,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public interface OnItemListener {
         void onItemClick(Product product);
     }
-
 
     public class SearchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView productName;
@@ -67,5 +65,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         public void onClick(View v) {
             onItemListener.onItemClick(products.get(getAdapterPosition()));
         }
+    }
+
+    public void addProducts(ArrayList<Product> newProducts){
+        products.addAll(products.size(), newProducts);
+        notifyItemRangeInserted(products.size(), newProducts.size());
     }
 }

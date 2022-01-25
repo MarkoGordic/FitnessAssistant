@@ -446,6 +446,9 @@
     <string name="fat">Masti</string>
     <string name="protein">Proteini</string>
     <string name="cal_big">Kal</string>
+    <string name="load_more">Učitaj još…</string>
+    <string name="no_more_results">Nema Više Rezultata.</string>
+    <string name="no_results">Nema Rezultata.</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

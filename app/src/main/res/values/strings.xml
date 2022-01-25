@@ -445,6 +445,9 @@
     <string name="fat">Fat</string>
     <string name="protein">Protein</string>
     <string name="cal_big">Cal</string>
+    <string name="load_more">Load more…</string>
+    <string name="no_more_results">No More Results.</string>
+    <string name="no_results">No Results.</string>
 
     <string name="coming_soon">This will be added soon</string>
 </resources>
