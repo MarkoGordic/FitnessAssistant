@@ -14,6 +14,7 @@ import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.pedometer.Pedometer;
 import com.example.fitnessassistant.pedometer.PedometerWidget;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
+import com.example.fitnessassistant.sleeptracker.SleepTracker;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
 import java.util.Locale;
@@ -70,9 +71,8 @@ public class LocaleExt {
         if(updateNotifications) {
             if (ServiceFunctional.getPedometerShouldRun(newContext))
                 Pedometer.pushPedometerNotification(newContext, ((int) MDBHPedometer.getInstance(newContext).readPedometerSteps(getCurrentDateFormatted())) + " " + newContext.getString(R.string.steps_small), newContext.getString(R.string.your_today_goal) + " " + StepGoalFragment.getStepGoalForToday(newContext) + ".");
-//            TODO set correct notification
-//            if (ServiceFunctional.getSleepTrackerShouldRun(newContext))
-//                SleepTracker.pushSleepDetectedNotification();
+            if (ServiceFunctional.getSleepTrackerShouldRun(newContext))
+                SleepTracker.pushSleepTrackerNotification(newContext);
         }
         return newContext;
     }

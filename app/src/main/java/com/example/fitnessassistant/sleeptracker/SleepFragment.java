@@ -298,7 +298,13 @@ public class SleepFragment extends Fragment implements CalendarAdapter.OnItemLis
         SleepSegment todaySleepSegment = MDBHSleepTracker.getInstance(requireActivity()).getSleepSegmentForDateFromDB(date);
         ((TextView) view.findViewById(R.id.selectedDate)).setText(String.format("%02d %s %d", day, getMonthShort(requireActivity(), month), year));
         if(todaySleepSegment != null) {
-            float startHours = todaySleepSegment.getStartTime() / 3600000f;
+            Calendar cal =  Calendar.getInstance();
+            cal.setTimeInMillis(todaySleepSegment.getStartTime());
+            float startHours = cal.get(Calendar.HOUR_OF_DAY);
+            startHours += cal.get(Calendar.MINUTE) / 60f;
+            startHours += cal.get(Calendar.SECOND) / 3600f;
+            startHours += cal.get(Calendar.MILLISECOND) / 3600000f;
+
             float hoursSlept = todaySleepSegment.getDuration() / 3600000f;
 
             clock.setStartHours(startHours);

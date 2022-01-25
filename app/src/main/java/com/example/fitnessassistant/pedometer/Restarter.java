@@ -37,8 +37,7 @@ public class Restarter extends BroadcastReceiver {
                 }
                 if (ServiceFunctional.getSleepTrackerShouldRun(updatedContext)) {
                     context.startForegroundService(new Intent(updatedContext, SleepTracker.class));
-//                    TODO push correct notification
-//                    SleepTracker.pushSleepDetectedNotification();
+                    SleepTracker.pushSleepTrackerNotification(updatedContext);
                 }
             }
         }
