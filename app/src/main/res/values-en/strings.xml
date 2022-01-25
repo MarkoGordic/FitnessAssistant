@@ -436,6 +436,14 @@
     <!-- Nutrition Strings -->
     <string name="product_not_found">Product Not Found</string>
     <string name="search_hint">Search for a food</string>
+    <string name="product_details">Product Details</string>
+    <string name="g">g</string>
+    <string name="meal">Meal</string>
+    <string name="amount">Amount</string>
+    <string name="carbs">Carbs</string>
+    <string name="fat">Fat</string>
+    <string name="protein">Protein</string>
+    <string name="cal_big">Cal</string>
 
     <string name="coming_soon">COMING SOON</string>
 </resources>

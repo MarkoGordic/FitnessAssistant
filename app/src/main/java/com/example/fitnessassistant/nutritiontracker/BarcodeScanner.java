@@ -35,29 +35,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 
 public class BarcodeScanner extends Fragment {
-    // launcher for the Camera Permission
-    public final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
-        if (!result){
-            // creates an alert dialog with rationale shown
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-            builder.setView(R.layout.custom_ok_alert_dialog);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            ((AppCompatImageView)dialog.findViewById(R.id.dialog_drawable)).setImageResource(R.drawable.exclamation);
-
-            ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.camera_access_denied);
-            dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
-
-            // showing messages (one case if user selected don't ask again, other if user just selected deny)
-            if(!shouldShowRequestPermissionRationale(Manifest.permission.ACTIVITY_RECOGNITION))
-                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.camera_access_message_denied_forever);
-            else
-                ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.camera_access_message_denied);
-        }
-    });
-
     public CameraSource cameraSource;
     private ToneGenerator toneGenerator;
     private boolean performingSearch = false;
@@ -100,8 +77,7 @@ public class BarcodeScanner extends Fragment {
                     if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
                         cameraSource.start(holder);
                     else
-                        PermissionFunctional.checkCameraPermission(requireContext(), cameraPermissionLauncher);
-
+                        requireActivity();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

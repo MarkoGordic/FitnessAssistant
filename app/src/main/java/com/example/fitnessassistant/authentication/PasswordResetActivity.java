@@ -80,7 +80,7 @@ public class PasswordResetActivity extends AppCompatActivity {
     // sets up listeners for back button and resetPassword button
     private void setUpOnClickListeners(){
         // backButton listener - goes back to SignInActivity
-        findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
+        findViewById(R.id.backButton).setOnClickListener(view -> onBackPressed());
 
         // resetPassword listener - checking for errors(email empty/not registered) -> sending reset password email
         findViewById(R.id.resetPasswordButton).setOnClickListener(view -> {

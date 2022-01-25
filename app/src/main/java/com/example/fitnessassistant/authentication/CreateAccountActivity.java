@@ -58,7 +58,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void setUpOnClickListeners(){
         // backButton listener - goes back to SignInActivity
-        findViewById(R.id.backToSignInButton).setOnClickListener(view -> onBackPressed());
+        findViewById(R.id.backButton).setOnClickListener(view -> onBackPressed());
 
         // registerButton Listener - validates input and checkbox checked and if online creates a new user
         findViewById(R.id.registerButton).setOnClickListener(view -> {

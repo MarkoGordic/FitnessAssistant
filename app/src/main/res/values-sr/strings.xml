@@ -438,6 +438,14 @@
     <!-- Nutrition Strings -->
     <string name="product_not_found">Proizvod Nije Pronađen</string>
     <string name="search_hint">Potražite hranu</string>
+    <string name="product_details">Detalji o Proizvodu</string>
+    <string name="g">g</string>
+    <string name="meal">Meal</string>
+    <string name="amount">Količina</string>
+    <string name="carbs">Hidrati</string>
+    <string name="fat">Masti</string>
+    <string name="protein">Proteini</string>
+    <string name="cal_big">Kal</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

@@ -136,8 +136,8 @@ public class Product {
                         else
                             setSodium_100g(0f);
 
-                        if (nutriments.has(" carbohydrates_100g"))
-                            setCarbohydrates_100g((float) nutriments.getDouble(" carbohydrates_100g"));
+                        if (nutriments.has("carbohydrates_100g"))
+                            setCarbohydrates_100g((float) nutriments.getDouble("carbohydrates_100g"));
                         else
                             setCarbohydrates_100g(0f);
 
@@ -402,8 +402,8 @@ public class Product {
                     else
                         setSodium_100g(0f);
 
-                    if(nutriments.has(" carbohydrates_100g"))
-                        setCarbohydrates_100g((float)nutriments.getDouble(" carbohydrates_100g"));
+                    if(nutriments.has("carbohydrates_100g"))
+                        setCarbohydrates_100g((float)nutriments.getDouble("carbohydrates_100g"));
                     else
                         setCarbohydrates_100g(0f);
 
