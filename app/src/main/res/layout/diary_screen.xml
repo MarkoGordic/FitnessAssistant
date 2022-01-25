@@ -64,4 +64,58 @@
         app:layout_constraintTop_toBottomOf="@id/searchLay"
         app:layout_constrainedHeight="true"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+
+        android:background="@drawable/border_button"
+        android:weightSum="20"
+
+        app:layout_constraintTop_toBottomOf="@id/searchLay"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/dayBefore"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+
+            android:backgroundTint="@color/backgroundColor"
+            android:src="@drawable/caret_left"
+            android:tint="@color/SpaceCadet"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <TextView
+            android:id="@+id/currentDay"
+
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="14"
+
+            android:fontFamily="@font/roboto_light"
+            android:includeFontPadding="false"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/dayAfter"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+
+            android:backgroundTint="@color/backgroundColor"
+            android:src="@drawable/caret_right"
+            android:tint="@color/SpaceCadet"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

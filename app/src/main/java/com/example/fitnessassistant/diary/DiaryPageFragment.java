@@ -1,11 +1,15 @@
 package com.example.fitnessassistant.diary;
 
+import static com.example.fitnessassistant.util.TimeFunctional.getMonthLong;
+
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,8 +25,16 @@ import com.example.fitnessassistant.nutritiontracker.APISearch;
 import com.example.fitnessassistant.nutritiontracker.BarcodeScanner;
 import com.example.fitnessassistant.nutritiontracker.Product;
 
+import java.time.LocalDate;
+
 public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemListener {
     private RecyclerView recyclerView;
+    private LocalDate currentDay;
+
+    @SuppressLint("DefaultLocale")
+    private void setUpCurrentDay(View view){
+        ((TextView) view.findViewById(R.id.currentDay)).setText(String.format("%02d %s %d", currentDay.getDayOfMonth(), getMonthLong(requireActivity(), currentDay.getMonthValue()), currentDay.getYear()));
+    }
 
     @Override
     public void onItemClick(Product product) {
@@ -75,14 +87,28 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         });
 
         view.findViewById(R.id.qrCodeScanner).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(DiaryPageFragment.this).add(R.id.in_app_container, new BarcodeScanner()).addToBackStack(null).commit());
+
+        view.findViewById(R.id.dayBefore).setOnClickListener(v -> {
+            currentDay = currentDay.minusDays(1);
+            setUpCurrentDay(view);
+        });
+
+        view.findViewById(R.id.dayAfter).setOnClickListener(v -> {
+            currentDay = currentDay.plusDays(1);
+            setUpCurrentDay(view);
+        });
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.diary_screen, container, false);
+
         setUpOnClickListeners(view);
         subscribeToObservers();
+
+        currentDay = LocalDate.now();
+        setUpCurrentDay(view);
 
         recyclerView = view.findViewById(R.id.searchRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
