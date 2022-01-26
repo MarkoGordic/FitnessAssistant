@@ -7,8 +7,17 @@
     android:background="@color/backgroundColor"
     android:gravity="center"
     android:orientation="vertical">
+    <View
+        android:id="@+id/productSeparator"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:background="@color/InvertedBackgroundColor"/>
     <LinearLayout
         android:id="@+id/wholeProductView"
+
+        android:layout_below="@id/productSeparator"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,11 +89,4 @@
             android:padding="16dp"
             tools:ignore="RtlCompat" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-
-        android:layout_below="@id/wholeProductView"
-        android:background="@color/InvertedBackgroundColor"/>
 </RelativeLayout>

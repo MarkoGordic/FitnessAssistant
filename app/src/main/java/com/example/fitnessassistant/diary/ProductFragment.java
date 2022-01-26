@@ -83,6 +83,7 @@ public class ProductFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.product_screen, container, false);
+
         // setting up the view
         setUpProductView(view);
         setUpOnClickListeners(view);

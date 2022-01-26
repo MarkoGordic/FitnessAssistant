@@ -71,4 +71,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         products.addAll(products.size(), newProducts);
         notifyItemRangeInserted(products.size(), newProducts.size());
     }
+
+    public void clear(){
+        int size = products.size();
+        products.clear();
+        notifyItemRangeRemoved(0, size);
+    }
 }

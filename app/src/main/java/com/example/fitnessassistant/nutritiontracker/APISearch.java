@@ -49,7 +49,7 @@ public class APISearch {
             results = MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(search);
 
         // Then we will search API for additional results
-        ArrayList<Product> finalResults = results;
+        ArrayList<Product> finalResults = new ArrayList<>(results);
         if (!autocomplete) {
             if(isBarcode){
                 new TaskRunner().executeAsync(new JSONTask(baseURL + search + ".json"), (result) -> {

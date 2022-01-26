@@ -36,9 +36,11 @@ import com.example.fitnessassistant.adapters.SearchAdapter;
 import com.example.fitnessassistant.nutritiontracker.APISearch;
 import com.example.fitnessassistant.nutritiontracker.BarcodeScanner;
 import com.example.fitnessassistant.nutritiontracker.Product;
+import com.example.fitnessassistant.util.EndlessScrollListener;
 import com.example.fitnessassistant.util.PermissionFunctional;
 
 import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemListener {
     public final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
@@ -66,7 +68,14 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
     private RecyclerView recyclerView;
     private LocalDate currentDay;
     private SearchView searchView;
-    public static int currentPage = -1;
+
+    private EndlessScrollListener listener;
+    private static final AtomicBoolean shouldReceiveProducts = new AtomicBoolean(true);
+    private static final AtomicBoolean performingSearch = new AtomicBoolean(false);
+    public static final AtomicBoolean shouldRestoreState = new AtomicBoolean(false);
+
+    // booleans for saving state of search when going to diff fragments
+    public static final AtomicBoolean activityOnBackPressed = new AtomicBoolean(false);
 
     @SuppressLint("DefaultLocale")
     private void setUpCurrentDay(View view){
@@ -75,42 +84,50 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
     @Override
     public void onItemClick(Product product) {
+        // TODO change
         if(product == null)
             Toast.makeText(requireActivity(), R.string.product_not_found , Toast.LENGTH_SHORT).show();
-        else
+        else {
+            shouldRestoreState.set(true);
             requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product)).addToBackStack(null).commit();
+        }
     }
 
     private void subscribeToObservers(View view){
         APISearch.products.observe(getViewLifecycleOwner(), products -> {
-            if(products.isEmpty()){
-                if(recyclerView.getAdapter() == null)
-                    ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_results));
-                else
-                    ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
+            performingSearch.set(false);
+            view.findViewById(R.id.searchBar).setVisibility(View.GONE);
+            view.findViewById(R.id.loadMore).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.loading).setVisibility(View.INVISIBLE);
+            if(shouldReceiveProducts.get()) {
+                activityOnBackPressed.set(true);
+                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.VISIBLE);
+                requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
+                if (products.isEmpty()) {
+                    if (recyclerView.getAdapter() == null)
+                        ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_results));
+                    else
+                        ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
 
-                currentPage = -1;
-                view.findViewById(R.id.loadMore).setClickable(false);
-            } else {
-                if (recyclerView.getAdapter() == null){
-                    currentPage = 1;
-                    recyclerView.setAdapter(new SearchAdapter(products, this));
-                    view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.VISIBLE);
+                    listener.noMorePages();
                 } else {
-                    ((SearchAdapter) recyclerView.getAdapter()).addProducts(products);
-                }
+                    if (recyclerView.getAdapter() == null) {
+                        recyclerView.setAdapter(new SearchAdapter(products, this));
+                    } else {
+                        ((SearchAdapter) recyclerView.getAdapter()).addProducts(products);
+                    }
 
-                if (products.size() < 24){
-                    currentPage = -1;
-                    ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
-                    view.findViewById(R.id.loadMore).setClickable(false);
-                } else{
-                    ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.load_more));
-                    view.findViewById(R.id.loadMore).setOnClickListener(v -> {
-                        currentPage++;
-                        APISearch.getInstance().searchAPI(searchView.getQuery().toString(), requireContext(), false, false, currentPage);
-                    });
+                    if (products.size() < 24) {
+                        ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
+                        listener.noMorePages();
+                    } else {
+                        ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.swipe_down_for_more));
+                        listener.notifyMorePages();
+                    }
                 }
+            } else {
+                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
+                requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
             }
         });
 
@@ -118,46 +135,84 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
     }
 
     private void setUpOnClickListeners(View view){
+        // setting up search
         SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView = view.findViewById(R.id.searchView);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().getComponentName()));
 
+        // search icon changed
         ImageView searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_mag_icon);
         Drawable search = ContextCompat.getDrawable(requireActivity(),R.drawable.search);
         if (search != null)
             search.setTint(requireActivity().getColor(R.color.SpaceCadet));
         searchIcon.setImageDrawable(search);
 
+        // search text color changed
         SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(requireActivity().getColor(R.color.LightGrayColor));
         searchAutoComplete.setTextColor(requireActivity().getColor(R.color.SpaceCadet));
 
+        // focus listener
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             searchView.setSelected(hasFocus);
-            searchView.setIconified(!hasFocus);
-            if(!hasFocus)
-                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
+            if(!hasFocus) {
+                shouldReceiveProducts.set(false);
+                if(!shouldRestoreState.get()) {
+                    if (recyclerView.getAdapter() != null) {
+                        ((SearchAdapter) recyclerView.getAdapter()).clear();
+                        recyclerView.setAdapter(null);
+                    }
+                    view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
+                    requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
+                } else {
+                    shouldRestoreState.set(false);
+                    activityOnBackPressed.set(true);
+                }
+            }
         });
 
+        // query listener
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                APISearch.getInstance().searchAPI(query, requireContext(), false, false, 1);
+                if(!query.isEmpty() && !performingSearch.get()) {
+                    shouldReceiveProducts.set(true);
+                    performingSearch.set(true);
+                    view.findViewById(R.id.searchBar).setVisibility(View.VISIBLE);
+                    APISearch.getInstance().searchAPI(query, requireContext(), false, false, 1);
+                } else
+                    shouldReceiveProducts.set(false);
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
                 // Only local API search is available due to API's TOS
-                APISearch.getInstance().searchAPI(query, requireContext(), false, true, 1);
+                if(!shouldRestoreState.get()) {
+                    if (recyclerView.getAdapter() != null)
+                        recyclerView.setAdapter(null);
+
+                    view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
+                    requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
+
+                    if(!query.isEmpty() && !performingSearch.get()) {
+                        shouldReceiveProducts.set(true);
+                        performingSearch.set(true);
+                        APISearch.getInstance().searchAPI(query, requireContext(), false, true, 1);
+                    } else
+                        shouldReceiveProducts.set(false);
+                }
+
                 return false;
             }
         });
 
         view.findViewById(R.id.qrCodeScanner).setOnClickListener(v -> {
-            if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                shouldRestoreState.set(true);
                 requireActivity().getSupportFragmentManager().beginTransaction().hide(DiaryPageFragment.this).add(R.id.in_app_container, new BarcodeScanner()).addToBackStack(null).commit();
-            else
+            } else
                 PermissionFunctional.checkCameraPermission(requireContext(), cameraPermissionLauncher);
         });
 
@@ -170,11 +225,12 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             currentDay = currentDay.plusDays(1);
             setUpCurrentDay(view);
         });
+    }
 
-        view.findViewById(R.id.loadMore).setOnClickListener(v -> {
-            currentPage++;
-            APISearch.getInstance().searchAPI(searchView.getQuery().toString(), requireContext(), false, false, currentPage);
-        });
+    public void clearRecycler(){
+        requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
+        requireView().findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
+        recyclerView.setAdapter(null);
     }
 
     @Nullable
@@ -188,14 +244,24 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         currentDay = LocalDate.now();
         setUpCurrentDay(view);
 
+        listener = new EndlessScrollListener(pageNumber -> {
+            view.findViewById(R.id.loadMore).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+            shouldReceiveProducts.set(true);
+            performingSearch.set(true);
+            APISearch.getInstance().searchAPI(searchView.getQuery().toString(), requireContext(), false, false, pageNumber);
+        });
+
         recyclerView = view.findViewById(R.id.searchRecycler);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
             @Override
             public boolean supportsPredictiveItemAnimations() {
                 return false;
             }
         });
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true); // all items have same height (they don't vary or change)
+        recyclerView.addOnScrollListener(listener);
 
         return view;
     }

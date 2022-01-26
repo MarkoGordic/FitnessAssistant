@@ -248,6 +248,12 @@ public class InAppActivity extends AppCompatActivity {
     // return to previous fragment (if it exists)
     @Override
     public void onBackPressed() {
+        if(DiaryPageFragment.activityOnBackPressed.get() && diaryFragment.isVisible()){
+            DiaryPageFragment.activityOnBackPressed.set(false);
+            diaryFragment.clearRecycler();
+            return;
+        }
+
         if(fm.getBackStackEntryCount() == 0)
             super.onBackPressed();
         else {
