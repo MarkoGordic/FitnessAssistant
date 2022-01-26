@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.nutritiontracker.Product;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
 import com.example.fitnessassistant.util.PieView;
 
@@ -133,8 +134,16 @@ public class ProductFragment extends Fragment {
         float fat = product.getFat_100g() * amountChosen;
         float protein = product.getProteins_100g() * amountChosen;
 
-        ((TextView) view.findViewById(R.id.caloriesAmount)).setText(String.format("%d", Math.round(totalKcal)));
-        ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%d", Math.round(totalKcal)));
+        if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
+            int kjBurned = Math.round(totalKcal *  4.184f);
+            ((TextView) view.findViewById(R.id.caloriesAmount)).setText(String.format("%d", kjBurned));
+            ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%d", kjBurned));
+            ((TextView) view.findViewById(R.id.energyUnit)).setText(requireActivity().getString(R.string.kj));
+        } else{
+            ((TextView) view.findViewById(R.id.caloriesAmount)).setText(String.format("%d", Math.round(totalKcal)));
+            ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%d", Math.round(totalKcal)));
+        }
+
         ((TextView) view.findViewById(R.id.carbsAmount)).setText(String.format("%.1fg", carbs));
         ((TextView) view.findViewById(R.id.carbsAmount1)).setText(String.format("%.1f", carbs));
         ((TextView) view.findViewById(R.id.fatAmount)).setText(String.format("%.1fg", fat));
@@ -222,7 +231,7 @@ public class ProductFragment extends Fragment {
         });
 
         view.findViewById(R.id.forwardButton).setOnClickListener(v -> {
-
+            // TODO handle product and amount and meal
         });
     }
 

@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <!-- EnterYourWeight TextView-->
+    <TextView
+        android:id="@+id/enterYourWeightTextView"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:text="@string/set_your_nutrition_goal"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="24sp"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="12dp"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="20"
+
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginTop="20dp">
+        <EditText
+            android:id="@+id/mainKcal"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:backgroundTint="@color/SpaceCadet"
+
+            android:layout_weight="16"
+
+            android:fontFamily="@font/roboto_light"
+            android:importantForAutofill="no"
+            android:includeFontPadding="false"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="14sp"
+            tools:ignore="LabelFor,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        <TextView
+            android:id="@+id/mainUnit"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+
+            app:backgroundTint="@color/SpaceCadet"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:textAlignment="center"
+            android:text="@string/cal"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="14sp"
+            tools:ignore="LabelFor,TouchTargetSizeCheck,SpeakableTextPresentCheck"/>
+    </TableRow>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="24dp"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="32dp"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.25"
+
+            android:background="@color/Green" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.45"
+
+            android:background="@color/LightGrayColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/Green" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/Green" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+
+            android:background="@color/Green"
+            android:fontFamily="@font/ralewayb"
+
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/carbs"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"
+            tools:ignore="TextContrastCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/LightGrayColor" />
+
+        <EditText
+            android:id="@+id/carbsGoal"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+
+            app:backgroundTint="@color/SpaceCadet"
+
+            android:fontFamily="@font/roboto_light"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05"
+
+            android:gravity="center"
+            android:background="@color/backgroundColor"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/g"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/LightGrayColor" />
+        <TextView
+            android:id="@+id/carbsCalories"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+
+            android:gravity="center"
+            android:background="@color/Green"
+
+            android:fontFamily="@font/roboto_light"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/carbUnit"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+
+            android:background="@color/Green"
+            android:fontFamily="@font/ralewaym"
+
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/cal"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"
+            tools:ignore="TextContrastCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/Green" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.25"
+
+            android:background="@color/backgroundColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.45"
+
+            android:background="@color/LightGrayColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/backgroundColor" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/Yellow" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+
+            android:background="@color/Yellow"
+            android:fontFamily="@font/ralewayb"
+
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/fat"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"
+            tools:ignore="TextContrastCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/LightGrayColor" />
+
+        <EditText
+            android:id="@+id/fatGoal"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+
+            app:backgroundTint="@color/SpaceCadet"
+
+            android:fontFamily="@font/roboto_light"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05"
+
+            android:gravity="center"
+            android:background="@color/backgroundColor"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/g"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/LightGrayColor" />
+        <TextView
+            android:id="@+id/fatCalories"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+
+            android:gravity="center"
+            android:background="@color/Yellow"
+
+            android:fontFamily="@font/roboto_light"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/fatUnit"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+
+            android:background="@color/Yellow"
+            android:fontFamily="@font/ralewaym"
+
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/cal"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"
+            tools:ignore="TextContrastCheck" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/Yellow" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.25"
+
+            android:background="@color/backgroundColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.45"
+
+            android:background="@color/LightGrayColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/backgroundColor" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/Red" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+
+            android:gravity="center"
+            android:background="@color/Red"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/protein"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/LightGrayColor" />
+
+        <EditText
+            android:id="@+id/proteinGoal"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+
+            app:backgroundTint="@color/SpaceCadet"
+
+            android:fontFamily="@font/roboto_light"
+            android:importantForAutofill="no"
+
+            android:includeFontPadding="false"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="16sp"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05"
+
+            android:gravity="center"
+            android:background="@color/backgroundColor"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/g"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/LightGrayColor" />
+        <TextView
+            android:id="@+id/proteinCals"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+
+            android:gravity="center"
+            android:background="@color/Red"
+
+            android:fontFamily="@font/roboto_light"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/proteinUnit"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+
+            android:gravity="center"
+            android:background="@color/Red"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:text="@string/cal"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/backgroundColor"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/Red" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.25"
+
+            android:background="@color/Red" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.45"
+
+            android:background="@color/LightGrayColor" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.3"
+
+            android:background="@color/Red" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.65"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05"
+
+            android:gravity="center"
+            android:background="@color/backgroundColor"
+
+            android:fontFamily="@font/roboto_light"
+            android:includeFontPadding="false"
+            android:text="@string/equals_sign"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/backgroundColor" />
+        <TextView
+            android:id="@+id/totalKcal"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+
+            android:gravity="center"
+            android:background="@color/backgroundColor"
+
+            android:fontFamily="@font/roboto_light"
+            android:includeFontPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="800"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/totalUnit"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+
+            android:gravity="center"
+            android:background="@color/backgroundColor"
+
+            android:fontFamily="@font/ralewaym"
+            android:includeFontPadding="false"
+            android:text="@string/cal"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            android:textSize="14sp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/backgroundColor" />
+    </TableRow>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+
+        android:fontFamily="@font/ralewaym"
+        android:includeFontPadding="false"
+        android:text="@string/changes_affect_only_future_goals"
+        android:textAlignment="center"
+        android:textColor="@color/SpaceCadet"
+        android:textFontWeight="600"
+        android:textSize="13sp"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+
+        android:background="@color/SpaceCadet"
+        android:layout_marginTop="8dp"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:gravity="center" >
+        <!-- Skip Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelButton"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/cancel"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/Flame"
+            android:textFontWeight="600"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <!-- Proceed Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/setButton"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+
+            android:fontFamily="@font/ralewayb"
+            android:includeFontPadding="false"
+            android:text="@string/set"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/SpaceCadet"
+            android:textFontWeight="600"
+            style="?android:attr/buttonBarButtonStyle" />
+    </TableRow>
+</LinearLayout>

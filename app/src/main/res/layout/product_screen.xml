@@ -325,6 +325,8 @@
                             android:textSize="17sp" />
 
                         <TextView
+                            android:id="@+id/energyUnit"
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 

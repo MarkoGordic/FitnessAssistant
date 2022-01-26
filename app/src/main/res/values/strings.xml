@@ -498,6 +498,17 @@
     <string name="amount_hint">Enter amount</string>
     <string name="amount_cannot_be_empty">Amount Cannot Be Empty</string>
     <string name="amount_probably_not_that_large">Amount Probably Not That Large</string>
+    <string name="intake">Intake</string>
+    <string name="remaining">Remaining</string>
+    <string name="equals_sign">=</string>
+    <string name="minus_sign">-</string>
+    <string name="calories_remaining">Calories Remaining</string>
+    <string name="kilojoules_remaining">Kilojoules Remaining</string>
+    <string name="set_your_nutrition_goal">Set Your Nutrition Goals</string>
+    <string name="set_calories">Set Calories</string>
+    <string name="fill_up_all_fields">Fill Up All Fields</string>
+    <string name="total_kcal_must_be_equal">Total Calories Must Be Equal</string>
+    <string name="total_kj_must_be_equal">Total Kilojoules Must Be Equal</string>
 
     <string name="coming_soon">This will be added soon</string>
 </resources>

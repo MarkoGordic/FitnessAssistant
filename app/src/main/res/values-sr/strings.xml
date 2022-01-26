@@ -499,6 +499,17 @@
     <string name="amount_hint">Unesite količinu</string>
     <string name="amount_cannot_be_empty">Količina Ne Može Biti Prazna</string>
     <string name="amount_probably_not_that_large">Količina Verovatno Nije Toliko Velika</string>
+    <string name="intake">Unos</string>
+    <string name="remaining">Preostalo</string>
+    <string name="equals_sign">=</string>
+    <string name="minus_sign">-</string>
+    <string name="calories_remaining">Preostale Kalorije</string>
+    <string name="kilojoules_remaining">Preostali Kilodžuli</string>
+    <string name="set_your_nutrition_goal">Podesite Vaše Ciljeve U Ishrani</string>
+    <string name="set_calories">Podesite Kalorije</string>
+    <string name="fill_up_all_fields">Popunite Sva Polja</string>
+    <string name="total_kcal_must_be_equal">Totalne Kalorije Moraju Biti Jednake</string>
+    <string name="total_kj_must_be_equal">Totalni Kilodžuli Moraju Biti Jednaki</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

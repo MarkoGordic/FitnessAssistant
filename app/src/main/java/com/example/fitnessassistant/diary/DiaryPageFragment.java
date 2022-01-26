@@ -36,10 +36,12 @@ import com.example.fitnessassistant.adapters.SearchAdapter;
 import com.example.fitnessassistant.nutritiontracker.APISearch;
 import com.example.fitnessassistant.nutritiontracker.BarcodeScanner;
 import com.example.fitnessassistant.nutritiontracker.Product;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.util.EndlessScrollListener;
 import com.example.fitnessassistant.util.PermissionFunctional;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemListener {
@@ -222,9 +224,15 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         });
 
         view.findViewById(R.id.dayAfter).setOnClickListener(v -> {
-            currentDay = currentDay.plusDays(1);
-            setUpCurrentDay(view);
+            if(currentDay.getYear() < Calendar.getInstance().get(Calendar.YEAR) ||
+                    (currentDay.getYear() == Calendar.getInstance().get(Calendar.YEAR) && currentDay.getMonthValue() < Calendar.getInstance().get(Calendar.MONTH) + 1) ||
+                    (currentDay.getYear() == Calendar.getInstance().get(Calendar.YEAR) && currentDay.getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1) && currentDay.getDayOfMonth() < Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                currentDay = currentDay.plusDays(1);
+                setUpCurrentDay(view);
+            }
         });
+
+        view.findViewById(R.id.three_dots).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new NutritionGoals()).addToBackStack(null).commit());
     }
 
     public void clearRecycler(){
@@ -264,5 +272,35 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         recyclerView.addOnScrollListener(listener);
 
         return view;
+    }
+
+    @SuppressLint("DefaultLocale")
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getView() != null) {
+            // TODO change remaining also
+            if (UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
+                ((TextView) getView().findViewById(R.id.unitRemaining)).setText(requireActivity().getString(R.string.kilojoules_remaining));
+
+                if(NutritionGoals.getCaloriesGoal(requireActivity()) != -1)
+                    ((TextView) getView().findViewById(R.id.goalCalories)).setText(String.format("%d", Math.round(NutritionGoals.getCaloriesGoal(requireActivity()) * 4.184f)));
+                else
+                    ((TextView) getView().findViewById(R.id.goalCalories)).setText("?");
+
+                ((TextView) getView().findViewById(R.id.intakeCalories)).setText("?");
+                ((TextView) getView().findViewById(R.id.remainingCalories)).setText("?");
+            } else {
+                ((TextView) getView().findViewById(R.id.unitRemaining)).setText(requireActivity().getString(R.string.calories_remaining));
+
+                if(NutritionGoals.getCaloriesGoal(requireActivity()) != -1)
+                    ((TextView) getView().findViewById(R.id.goalCalories)).setText(String.format("%d", Math.round(NutritionGoals.getCaloriesGoal(requireActivity()))));
+                else
+                    ((TextView) getView().findViewById(R.id.goalCalories)).setText("?");
+
+                ((TextView) getView().findViewById(R.id.intakeCalories)).setText("?");
+                ((TextView) getView().findViewById(R.id.remainingCalories)).setText("?");
+            }
+        }
     }
 }
