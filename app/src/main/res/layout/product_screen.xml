@@ -6,24 +6,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:background="@color/backgroundColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clipChildren="false">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/backgroundColor">
+
         <ImageButton
             android:id="@+id/backButton"
 
             android:layout_width="64dp"
             android:layout_height="64dp"
 
-            android:background="@color/backgroundColor"
-            android:contentDescription="@null"
-
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+
+            android:background="@color/backgroundColor"
+            android:contentDescription="@null"
 
             android:paddingStart="20dp"
             android:paddingTop="20dp"
@@ -42,6 +45,7 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@id/forwardButton"
             android:layout_toEndOf="@id/backButton"
+            android:background="@color/backgroundColor"
 
             android:fontFamily="@font/ralewaym"
             android:includeFontPadding="false"
@@ -70,395 +74,3594 @@
             android:paddingEnd="28dp"
             android:paddingBottom="4dp"
 
-            android:src="@drawable/check"
             android:scaleX="0.75"
             android:scaleY="0.75"
+            android:src="@drawable/check"
             app:tint="@color/SpaceCadet"
             tools:ignore="SpeakableTextPresentCheck" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/productName"
-
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:ellipsize="end"
-        android:maxLines="1"
-
-        android:layout_marginTop="8dp"
-
-        android:gravity="center_vertical"
-
-        android:fontFamily="@font/ralewaym"
-        android:includeFontPadding="false"
-        android:padding="20dp"
-        android:textColor="@color/InvertedBackgroundColor"
-        android:textFontWeight="900"
-        android:textSize="23sp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-
-        android:background="@color/LightGrayColor"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:fontFamily="@font/ralewaym"
-
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
-            android:padding="20dp"
-            android:text="@string/amount"
-            android:textColor="@color/InvertedBackgroundColor"
-            android:textFontWeight="600"
-            android:textSize="17sp" />
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/changeAmount"
+            android:id="@+id/productFacts"
 
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-
-            android:orientation="horizontal"
-            android:padding="20dp"
-            tools:ignore="RelativeOverlap">
-
+            android:gravity="center"
+            android:orientation="vertical">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginEnd="2dp"
-                android:fontFamily="@font/roboto_light"
-
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:textColor="@color/SpaceCadet"
-                android:textFontWeight="600"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/grams"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginStart="1dp"
-                android:fontFamily="@font/ralewaym"
-
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:text="@string/g"
-                android:textColor="@color/SpaceCadet"
-                android:textFontWeight="600"
-                android:textSize="17sp" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-
-        android:background="@color/LightGrayColor"/>
-
-    <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:fontFamily="@font/ralewaym"
-
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
-            android:padding="20dp"
-            android:text="@string/meal"
-            android:textColor="@color/InvertedBackgroundColor"
-            android:textFontWeight="600"
-            android:textSize="17sp" />
-
-
-        <LinearLayout
-            android:id="@+id/changeMeal"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-
-            android:orientation="horizontal"
-            android:padding="20dp"
-            tools:ignore="RelativeOverlap">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginEnd="2dp"
-                android:fontFamily="@font/ralewaym"
-
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:text="@string/meal"
-                android:textColor="@color/SpaceCadet"
-                android:textFontWeight="600"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/mealNumber"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginStart="1dp"
-                android:fontFamily="@font/roboto_light"
-
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:textColor="@color/SpaceCadet"
-                android:textFontWeight="600"
-                android:textSize="17sp" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-
-        android:background="@color/LightGrayColor"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-
-        android:baselineAligned="true">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:gravity="center">
-
-            <com.example.fitnessassistant.util.PieView
-                android:id="@+id/productPie"
+                android:id="@+id/productName"
 
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
 
-                app:layout_constraintDimensionRatio="H, 1:1"
-                app:layout_constraintTop_toTopOf="parent"
+                android:ellipsize="end"
+                android:maxLines="1"
 
-                tools:ignore="SpeakableTextPresentCheck" />
+                android:background="@color/backgroundColor"
+                android:gravity="center_vertical"
 
-            <LinearLayout
-                android:id="@+id/caloriesLay"
+                android:fontFamily="@font/ralewaym"
+                android:includeFontPadding="false"
+                android:paddingTop="30dp"
+                android:paddingBottom="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="@color/InvertedBackgroundColor"
+                android:textFontWeight="900"
+                android:textSize="23sp"/>
 
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="3dp"
 
-                app:layout_constraintDimensionRatio="H, 1:1"
-                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/LightGrayColor"/>
 
-                android:gravity="center"
-                android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="@color/backgroundColor">
 
                 <TextView
-                    android:id="@+id/caloriesAmount"
-
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginBottom="2dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:gravity="center_horizontal"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/ralewaym"
+
+                    android:gravity="center_vertical"
                     android:includeFontPadding="false"
+                    android:padding="20dp"
+                    android:text="@string/amount"
                     android:textColor="@color/InvertedBackgroundColor"
                     android:textFontWeight="600"
                     android:textSize="17sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/changeAmount"
+
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginTop="1dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    tools:ignore="RelativeOverlap">
+
+                    <TextView
+                        android:id="@+id/amountChosen"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginEnd="2dp"
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="1dp"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="@string/g"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+
+                android:background="@color/LightGrayColor"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="@color/backgroundColor">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:fontFamily="@font/ralewaym"
-                    android:gravity="center_horizontal"
+
+                    android:gravity="center_vertical"
                     android:includeFontPadding="false"
-                    android:text="@string/cal_big"
+                    android:padding="20dp"
+                    android:text="@string/meal"
                     android:textColor="@color/InvertedBackgroundColor"
                     android:textFontWeight="600"
-                    android:textSize="13sp" />
+                    android:textSize="17sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/changeMeal"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    tools:ignore="RelativeOverlap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginEnd="2dp"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="@string/meal"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/mealNumber"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="1dp"
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+
+                android:background="@color/LightGrayColor"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:background="@color/backgroundColor"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+
+                android:baselineAligned="true">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:gravity="center">
+
+                    <com.example.fitnessassistant.util.PieView
+                        android:id="@+id/productPie"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+
+                        app:layout_constraintDimensionRatio="H, 1:1"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <LinearLayout
+                        android:id="@+id/caloriesLay"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+
+                        app:layout_constraintDimensionRatio="H, 1:1"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/caloriesAmount"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="@font/roboto_light"
+                            android:gravity="center_horizontal"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginTop="1dp"
+                            android:fontFamily="@font/ralewaym"
+                            android:gravity="center_horizontal"
+                            android:includeFontPadding="false"
+                            android:text="@string/cal_big"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/carbsPercent"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:textColor="@color/Green"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/carbsAmount"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:padding="2dp"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/ralewaym"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="@string/carbs"
+                        android:padding="1dp"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/fatPercent"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:textColor="@color/Yellow"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/fatAmount"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:padding="2dp"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/ralewaym"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="@string/fat"
+                        android:padding="1dp"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/proteinPercent"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:padding="1dp"
+                        android:textColor="@color/Red"
+                        android:textFontWeight="600"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/proteinAmount"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:padding="2dp"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/ralewaym"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="@string/protein"
+                        android:padding="1dp"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="13sp"/>
+                </LinearLayout>
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
 
-            android:gravity="center"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/carbsPercent"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+
+                android:background="@color/LightGrayColor"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/showMoreDetails"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/roboto_light"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:padding="1dp"
-                android:textColor="@color/Green"
-                android:textFontWeight="600"
-                android:textSize="14sp"/>
-            <TextView
-                android:id="@+id/carbsAmount"
+                android:background="@color/backgroundColor"
+                android:src="@drawable/down"
+                android:tint="@color/InvertedBackgroundColor"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+
+                android:background="@color/LightGrayColor"/>
+
+            <LinearLayout
+                android:id="@+id/detailsLayout"
+                android:elevation="-1dp"
+                android:visibility="gone"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/roboto_light"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:padding="2dp"
-                android:textColor="@color/InvertedBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="17sp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
 
-                android:fontFamily="@font/ralewaym"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:text="@string/carbs"
-                android:padding="1dp"
-                android:textColor="@color/InvertedBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="13sp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
 
-            android:gravity="center"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/fatPercent"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
 
-                android:fontFamily="@font/roboto_light"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:padding="1dp"
-                android:textColor="@color/Yellow"
-                android:textFontWeight="600"
-                android:textSize="14sp"/>
-            <TextView
-                android:id="@+id/fatAmount"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/calories"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/caloriesAmount1"
 
-                android:fontFamily="@font/roboto_light"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:padding="2dp"
-                android:textColor="@color/InvertedBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="17sp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                android:fontFamily="@font/ralewaym"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:text="@string/fat"
-                android:padding="1dp"
-                android:textColor="@color/InvertedBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="13sp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
 
-            android:gravity="center"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/proteinPercent"
+                        android:fontFamily="@font/roboto_light"
+                        android:padding="20dp"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp"
+                        tools:ignore="RelativeOverlap" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
 
-                android:fontFamily="@font/roboto_light"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:padding="1dp"
-                android:textColor="@color/Red"
-                android:textFontWeight="600"
-                android:textSize="14sp"/>
-            <TextView
-                android:id="@+id/proteinAmount"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
 
-                android:fontFamily="@font/roboto_light"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:padding="2dp"
-                android:textColor="@color/InvertedBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="17sp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/carbs"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
 
-                android:fontFamily="@font/ralewaym"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:text="@string/protein"
-                android:padding="1dp"
-                android:textColor="@color/InvertedBackgroundColor"
-                android:textFontWeight="600"
-                android:textSize="13sp"/>
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/carbsAmount1"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/fiber"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/fiberAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/sugar"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/sugarAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/starch"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/starchAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/glucose"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/glucoseAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/fructose"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp"
+                        tools:ignore="TooManyViews" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/fructoseAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/sucrose"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/sucroseAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/lactose"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/lactoseAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/maltose"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/maltoseAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/fat"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/fatAmount1"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/cholesterol"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/cholesterolAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/saturated_fat"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/saturatedFatAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/mono_unsaturated_fat"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/monoUnsaturatedFatAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/poly_unsaturated_fat"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/polyUnsaturatedFatAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/trans_fat"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/transFatAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/omega_3_fat"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/omega3FatAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/omega_6_fat"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/omega6FatAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/omega_9_fat"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/omega9FatAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/protein"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/proteinAmount1"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/casein"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/caseinAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/LightGrayColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/caffeine"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/caffeineAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/taurine"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/taurineAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/alcohol"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/alcoholAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/g"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/potassium"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/potassiumAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/sodium"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/sodiumAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/salt"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/saltAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/calcium"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/calciumAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/magnesium"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/magnesiumAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/zinc"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/zincAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/iron"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/ironAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/iodine"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/iodineAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/fluoride"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/fluorideAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/copper"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/copperAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/manganese"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/manganeseAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/chloride"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/chlorideAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_b1"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminB1Amount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_b2"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminB2Amount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_b3"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminB3Amount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_b6"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminB6Amount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_b7"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminB7Amount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_b9"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminB9Amount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_b12"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminB12Amount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_c"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminCAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_d"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminDAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_e"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminEAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_k"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminKAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/ralewaym"
+
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:padding="20dp"
+                        android:text="@string/vitamin_a"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        tools:ignore="RelativeOverlap">
+
+                        <TextView
+                            android:id="@+id/vitaminAAmount"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginEnd="2dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="1dp"
+                            android:fontFamily="@font/ralewaym"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/mcg"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="@color/LightGrayColor"/>
+            </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-
-        android:background="@color/LightGrayColor"/>
-    
+    </ScrollView>
 </LinearLayout>
