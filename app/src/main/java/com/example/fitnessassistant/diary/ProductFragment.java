@@ -220,7 +220,7 @@ public class ProductFragment extends Fragment {
                 } else{
                     float amount = Float.parseFloat(input.getText().toString());
                     // if amount is more than 20 % of user's weight
-                    if(amount / 1000f > 0.2f * ((WeightFragment.getAverageWeightToday(requireActivity()) == 0f) ? WeightFragment.getWorldwideAverageWeight(requireActivity()) : WeightFragment.getAverageWeightToday(requireActivity())))
+                    if(amount / 1000f > 0.2f * ((WeightFragment.getLastDailyAverage(requireActivity()) == -1f) ? WeightFragment.getWorldwideAverageWeight(requireActivity()) : WeightFragment.getLastDailyAverage(requireActivity())))
                         Toast.makeText(requireActivity(), R.string.amount_probably_not_that_large, Toast.LENGTH_SHORT).show();
                     else {
                         dialog.dismiss();

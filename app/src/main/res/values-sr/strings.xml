@@ -511,6 +511,16 @@
     <string name="total_kcal_must_be_equal">Totalne Kalorije Moraju Biti Jednake</string>
     <string name="total_kj_must_be_equal">Totalni Kilodžuli Moraju Biti Jednaki</string>
     <string name="connect_and_search_again">Povežite se na Mrežu</string>
+    <string name="nutrition_recommendations">Saveti za Ishranu</string>
+    <string name="calorie_message">Kalorijski unos veoma varira od osobe do osobe, jer zavisi od aktivnosti, godina, težine, visine i mnogo drugih stvari, čak i genetike. Isprobajte jedan cilj na nedelju dana, a potom podesite novi na osnovu rezultata.</string>
+    <string name="carbs_colon">Hidrati:</string>
+    <string name="fat_colon">Masti:</string>
+    <string name="protein_colon">Proteini:</string>
+    <string name="calories_colon">Kalorije:</string>
+    <string name="around_1g_per_pound">Oko 1g/lbs ili 2.2g/kg</string>
+    <string name="not_less_than_25_per_cent">Ne Manje Od 25% od Totalnih Kal/kJ</string>
+    <string name="fill_out_the_rest">Preostale Kalorije</string>
+    <string name="based_on_your_weight">Po Vašoj Kilaži, Vaše Kalorije &amp; Makronutrienti Bi Trebalo Da Budu:</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

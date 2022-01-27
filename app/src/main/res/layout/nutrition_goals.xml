@@ -40,7 +40,9 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="20"
+        android:weightSum="32"
+
+        android:gravity="center_vertical"
 
         android:layout_marginStart="128dp"
         android:layout_marginEnd="128dp"
@@ -53,7 +55,7 @@
 
             app:backgroundTint="@color/SpaceCadet"
 
-            android:layout_weight="16"
+            android:layout_weight="18"
 
             android:fontFamily="@font/roboto_light"
             android:importantForAutofill="no"
@@ -82,6 +84,18 @@
             android:textFontWeight="600"
             android:textSize="14sp"
             tools:ignore="LabelFor,TouchTargetSizeCheck,SpeakableTextPresentCheck"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/moreInfo"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+
+            android:backgroundTint="@color/backgroundColor"
+            android:src="@drawable/info"
+            android:tint="@color/SpaceCadet"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
     </TableRow>
 
     <View

@@ -1,7 +1,10 @@
 package com.example.fitnessassistant.diary;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -19,7 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.activitytracker.LocationService;
+import com.example.fitnessassistant.questions.BirthdayFragment;
+import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
+import com.example.fitnessassistant.questions.WeightFragment;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -101,6 +108,23 @@ public class NutritionGoals extends Fragment {
             } catch(ParseException ignored){}
         }
         return total;
+    }
+
+    private float getCaloriesAmount(Context context){
+        return LocationService.getBMR(requireActivity(), WeightFragment.getLastDailyAverage(requireActivity()), HeightFragment.getHeight(requireActivity()), BirthdayFragment.getYears(context)) * 1.425f;
+    }
+
+    private float getFatRecommendation(float calories){
+        return (calories / 4f) / 9f; // 25% and 9cal per gram
+    }
+
+    private float getProteinRecommendation(float caloriesLeft){
+        float weight = WeightFragment.getLastDailyAverage(requireActivity());
+
+        if(weight == -1)
+            weight = WeightFragment.getWorldwideAverageWeight(requireActivity());
+
+        return Math.min(caloriesLeft, weight * 2.2f);
     }
 
     @SuppressLint("DefaultLocale")
@@ -297,6 +321,37 @@ public class NutritionGoals extends Fragment {
                 setFatGoal(requireActivity(), faGoal);
                 requireActivity().onBackPressed();
             }
+        });
+
+        view.findViewById(R.id.moreInfo).setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setView(R.layout.macro_recommendation_dialog);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view1 -> dialog.dismiss());
+
+            float calories = getCaloriesAmount(requireActivity());
+
+            if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
+                ((TextView) dialog.findViewById(R.id.caloriesAmount)).setText(String.format("%.1f%s", calories * 4.184f, requireActivity().getString(R.string.kj)));
+            else
+                ((TextView) dialog.findViewById(R.id.caloriesAmount)).setText(String.format("%d%s", Math.round(calories), requireActivity().getString(R.string.cal)));
+
+            float fat = getFatRecommendation(calories);
+
+            calories -= fat * 9f;
+
+            float protein = getProteinRecommendation(calories);
+
+            calories -= protein * 4f;
+
+            float carb = calories / 4f;
+
+            ((TextView) dialog.findViewById(R.id.proteinAmount)).setText(String.format("%.1fg", protein));
+            ((TextView) dialog.findViewById(R.id.fatAmount)).setText(String.format("%.1fg", fat));
+            ((TextView) dialog.findViewById(R.id.carbAmount)).setText(String.format("%.1fg", carb));
         });
     }
 

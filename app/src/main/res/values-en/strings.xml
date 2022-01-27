@@ -509,6 +509,16 @@
     <string name="total_kcal_must_be_equal">Total Calories Must Be Equal</string>
     <string name="total_kj_must_be_equal">Total Kilojoules Must Be Equal</string>
     <string name="connect_and_search_again">Connect to a Network</string>
+    <string name="nutrition_recommendations">Nutrition Recommendations</string>
+    <string name="calorie_message">Calorie intake can vary a lot from person to person. This can be different based on your activity, age, weight, height and so many more things, even genetics. Try one goal out for a week and then adjust based on results.</string>
+    <string name="carbs_colon">Carbs:</string>
+    <string name="fat_colon">Fat:</string>
+    <string name="protein_colon">Protein:</string>
+    <string name="calories_colon">Calories:</string>
+    <string name="around_1g_per_pound">Around 1g/lbs or 2.2g/kg</string>
+    <string name="not_less_than_25_per_cent">Not Less Than 25% of Total Cal/kJ</string>
+    <string name="fill_out_the_rest">Calories Left</string>
+    <string name="based_on_your_weight">Based On Your Current Weight, Your Calories &amp; Macros Should Be Around:</string>
 
     <string name="coming_soon">COMING SOON</string>
 </resources>

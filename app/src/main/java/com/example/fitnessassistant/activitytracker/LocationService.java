@@ -146,21 +146,21 @@ public class LocationService extends LifecycleService {
             speed = currentSpeed.getValue();
 
         if(caloriesBurnt.getValue() != null)
-            caloriesBurnt.postValue(caloriesBurnt.getValue() + getBMR(weight, height, BirthdayFragment.getYears(this)) / 24 / 60 * timeInMinutes * speed * 1.35f);
+            caloriesBurnt.postValue(caloriesBurnt.getValue() + getBMR(this, weight, height, BirthdayFragment.getYears(this)) / 24 / 60 * timeInMinutes * speed * 1.35f);
     }
 
-    private float getBMR(float weightInKGs, float heightInCMs, int ageInYears){
+    public static float getBMR(Context context, float weightInKGs, float heightInCMs, int ageInYears){
         if(ageInYears == -1)
             ageInYears = BirthdayFragment.getWorldwideAverageYears();
         if(weightInKGs == -1)
-            weightInKGs = WeightFragment.getWorldwideAverageWeight(this);
+            weightInKGs = WeightFragment.getWorldwideAverageWeight(context);
         if(heightInCMs == -1)
-            heightInCMs = HeightFragment.getWorldwideAverageHeight(this);
+            heightInCMs = HeightFragment.getWorldwideAverageHeight(context);
 
 
-        if(GenderFragment.getGender(this).equals(GenderFragment.MALE))
+        if(GenderFragment.getGender(context).equals(GenderFragment.MALE))
             return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) + 5;
-        else if(GenderFragment.getGender(this).equals(GenderFragment.FEMALE))
+        else if(GenderFragment.getGender(context).equals(GenderFragment.FEMALE))
             return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) - 161;
         else
             return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) - 83;
