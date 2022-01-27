@@ -571,7 +571,7 @@ public class RealtimeDB {
                                 productIDs.add(Integer.parseInt(tokenizer.nextToken()));
                                 quantities.add(Float.parseFloat(tokenizer.nextToken()));
                             }
-                            MDBHNutritionTracker.getInstance(context).addNewMeal(type,date,productIDs,quantities);
+                            MDBHNutritionTracker.getInstance(context).addOrUpdateMeal(type,date,productIDs,quantities);
                         }
                     }
                 }

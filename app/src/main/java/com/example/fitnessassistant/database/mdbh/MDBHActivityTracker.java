@@ -68,6 +68,7 @@ public class MDBHActivityTracker extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // adds new activity to the database
     public void addNewActivity(Context context, long date, float averageSpeed, double distance, float calories, Bitmap image, int activityType, String duration){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();

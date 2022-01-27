@@ -149,6 +149,7 @@ public class LocationService extends LifecycleService {
             caloriesBurnt.postValue(caloriesBurnt.getValue() + getBMR(this, weight, height, BirthdayFragment.getYears(this)) / 24 / 60 * timeInMinutes * speed * 1.35f);
     }
 
+    // BMR calculation
     public static float getBMR(Context context, float weightInKGs, float heightInCMs, int ageInYears){
         if(ageInYears == -1)
             ageInYears = BirthdayFragment.getWorldwideAverageYears();
@@ -166,6 +167,7 @@ public class LocationService extends LifecycleService {
             return (10 * weightInKGs) + (6.25f * heightInCMs) - (5 * ageInYears) - 83;
     }
 
+    // calculates the length of the distance traveled between the old location and the new one
     private void calculateNewDistanceInKm(LatLng newLocation){
         if(lastLatLng != null) {
             double lat1 = lastLatLng.latitude;
@@ -246,6 +248,7 @@ public class LocationService extends LifecycleService {
         });
     }
 
+    // is called each time the application gets a new user location
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -352,6 +355,7 @@ public class LocationService extends LifecycleService {
         }
     }
 
+    // terminates service
     private void killService(){
         serviceKilled.postValue(true);
         serviceRunning = true;

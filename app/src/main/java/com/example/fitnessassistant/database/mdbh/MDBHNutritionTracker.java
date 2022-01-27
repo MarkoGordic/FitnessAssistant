@@ -369,12 +369,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 data = new ArrayList<>();
-                if(cursor.moveToFirst()){
-                    String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
-                    StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
-                    while(stringTokenizer.hasMoreElements()){
-                        data.add(getProductFromDB(Integer.parseInt(stringTokenizer.nextToken())));
-                    }
+                cursor.moveToFirst();
+                String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
+                while(stringTokenizer.hasMoreElements()){
+                    data.add(getProductFromDB(Integer.parseInt(stringTokenizer.nextToken())));
                 }
                 cursor.close();
             }
@@ -393,12 +392,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 data = new ArrayList<>();
-                if(cursor.moveToFirst()){
-                    String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
-                    StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
-                    while(stringTokenizer.hasMoreElements()){
-                        data.add(getProductFromDB(Integer.parseInt(stringTokenizer.nextToken())));
-                    }
+                cursor.moveToFirst();
+                String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
+                while(stringTokenizer.hasMoreElements()){
+                    data.add(getProductFromDB(Integer.parseInt(stringTokenizer.nextToken())));
                 }
                 cursor.close();
             }
@@ -417,12 +415,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 data = new ArrayList<>();
-                if(cursor.moveToFirst()){
-                    String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
-                    StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
-                    while(stringTokenizer.hasMoreElements()){
-                        data.add(getProductFromDB(Integer.parseInt(stringTokenizer.nextToken())));
-                    }
+                cursor.moveToFirst();
+                String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
+                while(stringTokenizer.hasMoreElements()){
+                    data.add(getProductFromDB(Integer.parseInt(stringTokenizer.nextToken())));
                 }
                 cursor.close();
             }
@@ -441,12 +438,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 data = new ArrayList<>();
-                if(cursor.moveToFirst()){
-                    String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
-                    StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
-                    while(stringTokenizer.hasMoreElements()){
-                        data.add(getProductFromDB(Integer.parseInt(stringTokenizer.nextToken())));
-                    }
+                cursor.moveToFirst();
+                String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
+                while(stringTokenizer.hasMoreElements()){
+                    data.add(getProductFromDB(Integer.parseInt(stringTokenizer.nextToken())));
                 }
                 cursor.close();
             }
@@ -465,12 +461,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 data = new ArrayList<>();
-                if(cursor.moveToFirst()){
-                    String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
-                    StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
-                    while(stringTokenizer.hasMoreElements()){
-                        data.add(Float.parseFloat(stringTokenizer.nextToken()));
-                    }
+                cursor.moveToFirst();
+                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
+                while(stringTokenizer.hasMoreElements()){
+                    data.add(Float.parseFloat(stringTokenizer.nextToken()));
                 }
                 cursor.close();
             }
@@ -489,12 +484,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 data = new ArrayList<>();
-                if(cursor.moveToFirst()){
-                    String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
-                    StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
-                    while(stringTokenizer.hasMoreElements()){
-                        data.add(Float.parseFloat(stringTokenizer.nextToken()));
-                    }
+                cursor.moveToFirst();
+                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
+                while(stringTokenizer.hasMoreElements()){
+                    data.add(Float.parseFloat(stringTokenizer.nextToken()));
                 }
                 cursor.close();
             }
@@ -513,12 +507,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 data = new ArrayList<>();
-                if(cursor.moveToFirst()){
-                    String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
-                    StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
-                    while(stringTokenizer.hasMoreElements()){
-                        data.add(Float.parseFloat(stringTokenizer.nextToken()));
-                    }
+                cursor.moveToFirst();
+                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
+                while(stringTokenizer.hasMoreElements()){
+                    data.add(Float.parseFloat(stringTokenizer.nextToken()));
                 }
                 cursor.close();
             }
@@ -537,12 +530,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 data = new ArrayList<>();
-                if(cursor.moveToFirst()){
-                    String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
-                    StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
-                    while(stringTokenizer.hasMoreElements()){
-                        data.add(Float.parseFloat(stringTokenizer.nextToken()));
-                    }
+                cursor.moveToFirst();
+                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
+                while(stringTokenizer.hasMoreElements()){
+                    data.add(Float.parseFloat(stringTokenizer.nextToken()));
                 }
                 cursor.close();
             }
