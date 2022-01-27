@@ -522,6 +522,7 @@
     <string name="not_less_than_25_per_cent">Ne Manje Od 25% od Totalnih Kal/kJ</string>
     <string name="fill_out_the_rest">Preostale Kalorije</string>
     <string name="based_on_your_weight">Po Vašoj Kilaži, Vaše Kalorije &amp; Makronutrienti Bi Otprilike Trebalo Da Budu:</string>
+    <string name="percent_of_your_daily_goals">Procenat Vaših Dnevnih Ciljeva</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

@@ -81,6 +81,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
     // booleans for saving state of search when going to diff fragments
     public static final AtomicBoolean activityOnBackPressed = new AtomicBoolean(false);
+    public static final AtomicBoolean onDiaryFragment = new AtomicBoolean(false);
 
     @SuppressLint("DefaultLocale")
     private void setUpCurrentDay(View view){
@@ -160,7 +161,8 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                 }
             } else {
                 view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
-                requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
+                if(isVisible())
+                    requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
             }
         });
 

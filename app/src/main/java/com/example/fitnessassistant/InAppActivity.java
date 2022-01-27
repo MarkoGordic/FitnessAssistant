@@ -536,7 +536,8 @@ public class InAppActivity extends AppCompatActivity {
 
         scheduleUpdates(this);
 
-        RealtimeDB.checkBackupStatus(this);
+        if(AuthFunctional.currentlyOnline)
+            RealtimeDB.checkBackupStatus(this);
 
         // applying the color mode needed
         ColorMode.applyColorMode(this, null);

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -128,16 +129,86 @@ public class ProductFragment extends Fragment {
     }
 
     @SuppressLint("DefaultLocale")
+    private void setProductGoalPercents(View view, float kcal, float carb, float fat, float pro){
+        float kcalGoal = NutritionGoals.getCaloriesGoal(requireActivity());
+        float carbGoal = NutritionGoals.getCarbsGoal(requireActivity());
+        float fatGoal = NutritionGoals.getFatGoal(requireActivity());
+        float proGoal = NutritionGoals.getProteinGoal(requireActivity());
+
+        if(kcalGoal > 0) {
+            if (UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
+                ((TextView) view.findViewById(R.id.calorieGoal)).setText(String.format("%.1f", Math.round(kcalGoal) * 4.184f));
+            else
+                ((TextView) view.findViewById(R.id.calorieGoal)).setText(String.format("%d", Math.round(kcalGoal)));
+
+            float kcalGoalPercent =  (kcal / kcalGoal) * 100f;
+
+            if (kcalGoalPercent > 100f)
+                kcalGoalPercent = 100f;
+
+            ((TextView) view.findViewById(R.id.caloriePercentage)).setText(String.format("%d%%", Math.round(kcalGoalPercent)));
+            ((ProgressBar) view.findViewById(R.id.caloriesProgress)).setProgress(Math.round(kcalGoalPercent));
+        } else {
+            ((TextView) view.findViewById(R.id.calorieGoal)).setText("?");
+            ((TextView) view.findViewById(R.id.caloriePercentage)).setText("?");
+        }
+
+        if(carbGoal > 0){
+            float carbGoalPercent =  (carb / carbGoal) * 100f;
+
+            if(carbGoalPercent > 100f)
+                carbGoalPercent = 100f;
+
+            ((TextView) view.findViewById(R.id.carbsGoal)).setText(String.format("%.1fg", carbGoal));
+            ((TextView) view.findViewById(R.id.carbsPercentage)).setText(String.format("%d%%", Math.round(carbGoalPercent)));
+            ((ProgressBar) view.findViewById(R.id.carbsProgress)).setProgress(Math.round(carbGoalPercent));
+        } else {
+            ((TextView) view.findViewById(R.id.carbsPercentage)).setText("?");
+            ((TextView) view.findViewById(R.id.carbsGoal)).setText("?g");
+        }
+
+        if(fatGoal > 0){
+            float fatGoalPercent = (fat / fatGoal) * 100f;
+
+            if(fatGoalPercent > 100f)
+                fatGoalPercent = 100f;
+
+            ((TextView) view.findViewById(R.id.fatGoal)).setText(String.format("%.1fg", fatGoal));
+            ((TextView) view.findViewById(R.id.fatPercentage)).setText(String.format("%d%%", Math.round(fatGoalPercent)));
+            ((ProgressBar) view.findViewById(R.id.fatProgress)).setProgress(Math.round(fatGoalPercent));
+        } else {
+            ((TextView) view.findViewById(R.id.fatGoal)).setText("?g");
+            ((TextView) view.findViewById(R.id.fatPercentage)).setText("?");
+        }
+
+        if(proGoal > 0) {
+            float proGoalPercent = (pro / proGoal) * 100f;
+
+            if (proGoalPercent > 100f)
+                proGoalPercent = 100f;
+
+            ((TextView) view.findViewById(R.id.proteinGoal)).setText(String.format("%.1fg", proGoal));
+            ((TextView) view.findViewById(R.id.proteinPercentage)).setText(String.format("%d%%", Math.round(proGoalPercent)));
+            ((ProgressBar) view.findViewById(R.id.proteinProgress)).setProgress(Math.round(proGoalPercent));
+        } else {
+            ((TextView) view.findViewById(R.id.proteinPercentage)).setText("?");
+            ((TextView) view.findViewById(R.id.proteinGoal)).setText("?g");
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
     private void setProductMacros(View view, float amountChosen){
         float totalKcal = product.getEnergy_kcal_100g() * amountChosen;
         float carbs = product.getCarbohydrates_100g() * amountChosen;
         float fat = product.getFat_100g() * amountChosen;
         float protein = product.getProteins_100g() * amountChosen;
 
+        setProductGoalPercents(view, totalKcal, carbs, fat, protein);
+
         if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
-            int kjBurned = Math.round(totalKcal *  4.184f);
-            ((TextView) view.findViewById(R.id.caloriesAmount)).setText(String.format("%d", kjBurned));
-            ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%d", kjBurned));
+            float kilojoules = Math.round(totalKcal) *  4.184f;
+            ((TextView) view.findViewById(R.id.caloriesAmount)).setText(String.format("%.1f", kilojoules));
+            ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%.1f", kilojoules));
             ((TextView) view.findViewById(R.id.energyUnit)).setText(requireActivity().getString(R.string.kj));
         } else{
             ((TextView) view.findViewById(R.id.caloriesAmount)).setText(String.format("%d", Math.round(totalKcal)));

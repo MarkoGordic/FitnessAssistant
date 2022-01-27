@@ -521,6 +521,7 @@
     <string name="not_less_than_25_per_cent">Not Less Than 25% of Total Cal/kJ</string>
     <string name="fill_out_the_rest">Calories Left</string>
     <string name="based_on_your_weight">Based On Your Current Weight, Your Calories &amp; Macros Should Be Around:</string>
+    <string name="percent_of_your_daily_goals">Percent Of Your Daily Goals</string>
 
     <string name="coming_soon">This will be added soon</string>
 </resources>
