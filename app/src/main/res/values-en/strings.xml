@@ -508,6 +508,7 @@
     <string name="fill_up_all_fields">Fill Up All Fields</string>
     <string name="total_kcal_must_be_equal">Total Calories Must Be Equal</string>
     <string name="total_kj_must_be_equal">Total Kilojoules Must Be Equal</string>
+    <string name="connect_and_search_again">Connect to a Network</string>
 
     <string name="coming_soon">COMING SOON</string>
 </resources>

@@ -19,6 +19,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.diary.DiaryPageFragment;
+import com.example.fitnessassistant.util.AuthFunctional;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -29,13 +31,15 @@ import java.io.IOException;
 public class BarcodeScanner extends Fragment {
     public CameraSource cameraSource;
     private ToneGenerator toneGenerator;
-    private boolean performingSearch = false;
+    private boolean performingSearch;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.barcodescanner_screen, container, false);
         requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
+
+        performingSearch = false;
 
         startRealtimeDetection(view);
         return view;
@@ -101,7 +105,12 @@ public class BarcodeScanner extends Fragment {
                     if(!performingSearch) {
                         performingSearch = true;
                         cameraSource.stop();
-                        APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false, 1);
+                        if(AuthFunctional.currentlyOnline) {
+                            DiaryPageFragment.shouldReceiveProducts.set(true);
+                            APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false, 1);
+                        } else
+                            AuthFunctional.quickFlash(requireActivity(), requireActivity().findViewById(R.id.notification));
+
                         requireActivity().onBackPressed();
                     }
                 }

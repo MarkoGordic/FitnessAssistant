@@ -510,6 +510,7 @@
     <string name="fill_up_all_fields">Popunite Sva Polja</string>
     <string name="total_kcal_must_be_equal">Totalne Kalorije Moraju Biti Jednake</string>
     <string name="total_kj_must_be_equal">Totalni Kilodžuli Moraju Biti Jednaki</string>
+    <string name="connect_and_search_again">Povežite se na Mrežu</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>
