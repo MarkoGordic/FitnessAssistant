@@ -206,9 +206,8 @@
     <string name="english">Engleski (ENG)</string>
     <string name="your_selected_language_is">Izabrali ste sledeći jezik: </string>
 
-    <!-- TODO ne menjaj ni slucajno -->
     <!-- Network Strings -->
-    <string name="limited_or_no_connectivity">Primetili smo da koristite internet usluge koje pruža MTS.</string>
+    <string name="limited_or_no_connectivity">Nema internet veze.</string>
 
     <!-- NavBar strings -->
     <string name="activity">Aktivnost</string>

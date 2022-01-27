@@ -97,6 +97,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         }
     });
+
     // launcher for Background Location Permission
     ActivityResultLauncher<String> backgroundLocationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> onActivityTrackingStart());
 
@@ -136,7 +137,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                     ((TextView) alertDialog.findViewById(R.id.dialog_header)).setText(R.string.location_accuracy);
                     ((TextView) alertDialog.findViewById(R.id.dialog_message)).setText(R.string.location_accuracy_message);
 
-                    // disables the user to cancel the given dialog
+                    // removing the possibility for the user to leave the dialog
                     alertDialog.setCancelable(false);
                     alertDialog.setCanceledOnTouchOutside(false);
 
@@ -157,6 +158,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
             }
         });
 
+        // For location accuracy updates
         LocationService.accuracy.observe(getViewLifecycleOwner(), this::changeAccuracy);
 
         // For service updates
@@ -254,6 +256,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    // a method that is called upon after the user requests to stop activity tracking
     private void promptCancelTrackingDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setView(R.layout.cancel_tracking_dialog);
@@ -268,9 +271,9 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
 
         dialog.findViewById(R.id.dialog_exit_save_button).setOnClickListener(v -> {
             dialog.dismiss();
-
             shouldSave = true;
 
+            // observer waiting for the resize process to complete
             mapView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
                 if(shouldSave) {
                     shouldSave = false;
@@ -278,6 +281,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 }
             });
 
+            // we change the size of the map, that is, we prepare it to be of good dimensions when we save its view
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) mapView.getLayoutParams();
             lp.height = 350;
             mapView.setLayoutParams(lp);
@@ -297,6 +301,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         requireActivity().onBackPressed();
     }
 
+    // changes the current state of activity tracking
     private void updateTracking(Boolean tracking){
         this.isTracking = tracking;
 
@@ -311,6 +316,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    // after the call, the map will follow the user's gps and move towards him so that he stays in focus
     private void focusUserOnMap(){
         if(!pathHistory.isEmpty() && !pathHistory.get(pathHistory.size() - 1).isEmpty() && followUser && LocationService.serviceKilled.getValue() != null && !LocationService.serviceKilled.getValue() && googleMap != null){
             float mapZoom = 18f;
@@ -323,6 +329,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    // changes the appearance of the map so that the entire route is displayed (no animation)
     private void forceFocusPathOnMap(){
         if(LocationService.serviceKilled.getValue() != null && !LocationService.serviceKilled.getValue() && pathHistory.size() >= 1) {
             LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
@@ -341,6 +348,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    // changes the appearance of the map so that the entire route is displayed (with animation)
     private void focusPathOnMap(){
         if(LocationService.serviceKilled.getValue() != null && !LocationService.serviceKilled.getValue() && pathHistory.size() >= 1) {
             LatLngBounds.Builder pathBounds = new LatLngBounds.Builder();
@@ -359,6 +367,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    // interrupts activity tracking, captures the map, and saves the activity to the database
     private void exitAndSaveActivity(){
         forceFocusPathOnMap();
         googleMap.snapshot(bitmap->{
@@ -389,6 +398,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         });
     }
 
+    // in case the map is restarted for some reason, this method redraws the entire previous route on it
     private void addWholePathToMap(){
         for(int i = 0; i < pathHistory.size(); i++){
             PolylineOptions polylineOptions = new PolylineOptions()
@@ -400,6 +410,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    // draws the latest location change on the map
     private void addLatestPathToMap(){
         if(!pathHistory.isEmpty() && pathHistory.get(pathHistory.size() - 1).size() > 1 && googleMap != null){
             LatLng preLastLatLng = pathHistory.get(pathHistory.size() - 1).get(pathHistory.get(pathHistory.size() - 1).size() - 2);
@@ -474,6 +485,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
                 });
     }
 
+    // is called at each change of precision to update the indicator
     private void changeAccuracy(float accuracy){
         if(getView() != null) {
             if (accuracy <= 10) {
@@ -731,6 +743,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         requireContext().startService(serviceIntent);
     }
 
+    // launches the Spotify application, in case the user does not have it installed, it will take him to the play store download page
     private void openSpotifyApp(){
         try {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -786,6 +799,7 @@ public class ActivityTrackingFragment extends Fragment implements OnMapReadyCall
         mapView.onSaveInstanceState(outState);
     }
 
+    // a method for properly formatting time in milliseconds for easier display
     public static String getFormattedTimer(boolean showMilliseconds, long totalTimeInMilliseconds){
         String formattedTimer = "";
         long totalTimeInMs = totalTimeInMilliseconds;

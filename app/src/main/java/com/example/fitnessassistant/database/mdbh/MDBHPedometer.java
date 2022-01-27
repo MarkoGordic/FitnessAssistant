@@ -11,8 +11,6 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO : Close DB when Pedometer DB is no longer in use (if even needed)
-
 public class MDBHPedometer extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Pedometer.db";
     private static final int DATABASE_VERSION = 1;
