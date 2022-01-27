@@ -6,7 +6,16 @@ public class BackupStatus {
     String userGoals;
     String sleepTracker;
     String activitiesTracker;
-    // TODO Add other backups when added
+    String products;
+    String meals;
+
+    public String getMeals() {
+        return meals;
+    }
+
+    public String getProducts() {
+        return products;
+    }
 
     public String getActivitiesTracker() {
         return activitiesTracker;
@@ -46,5 +55,13 @@ public class BackupStatus {
 
     public void setUserPreferences(String userPreferences) {
         this.userPreferences = userPreferences;
+    }
+
+    public void setMeals(String meals) {
+        this.meals = meals;
+    }
+
+    public void setProducts(String products) {
+        this.products = products;
     }
 }

@@ -113,7 +113,8 @@ public class RealtimeDB {
                         editor.putString("goals_backup", data.getUserGoals());
                         editor.putString("sleep_backup", data.getSleepTracker());
                         editor.putString("activities_backup", data.getActivitiesTracker());
-                        // TODO Add other backups here when added
+                        editor.putString("meals_backup", data.getMeals());
+                        editor.putString("products_backup", data.getProducts());
                     }
                     editor.apply();
                 }
@@ -139,7 +140,8 @@ public class RealtimeDB {
             backupStatus.setUserGoals(sharedPreferences.getString("goals_backup", "n#/"));
             backupStatus.setSleepTracker(sharedPreferences.getString("sleep_backup", "n#/"));
             backupStatus.setActivitiesTracker(sharedPreferences.getString("activities_backup", "n#/"));
-            // TODO Add other backups here when added
+            backupStatus.setMeals(sharedPreferences.getString("meals_backup", "n#/"));
+            backupStatus.setProducts(sharedPreferences.getString("products_backup", "n#/"));
 
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
