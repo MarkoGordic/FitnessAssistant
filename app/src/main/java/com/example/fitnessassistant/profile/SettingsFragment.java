@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
@@ -55,6 +56,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SettingsFragment extends Fragment {
     private GoogleSignInClient googleLinkingClient;
@@ -285,25 +287,46 @@ public class SettingsFragment extends Fragment {
                 AuthFunctional.quickFlash(getActivity(), requireActivity().findViewById(R.id.notification));
         });
 
+        final AtomicBoolean backupRecommended = new AtomicBoolean(false);
+
         // signOutButton listener - hold
         view.findViewById(R.id.signOutAccountTextView).setOnLongClickListener(view1 -> {
             if(AuthFunctional.currentlyOnline) {
                 if(LocationService.serviceKilled.getValue() != null && LocationService.serviceKilled.getValue()){
-                    FirebaseAuth.getInstance().signOut();
-                    // signing out from facebook because they save it separately
-                    LoginManager.getInstance().logOut();
-                    // stopping Pedometer service
-                    ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
-                    ServiceFunctional.stopPedometerService(requireActivity());
-                    // stopping Sleep Tracker service
-                    ServiceFunctional.setSleepTrackerShouldRun(requireActivity(), false);
-                    ServiceFunctional.stopSleepTrackerService(requireActivity());
-                    // stopping updates
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), InAppActivity.IN_APP_ID, new Intent(requireActivity(), DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                    AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.cancel(pendingIntent);
-                    // clearing user's data
-                    clearUserData(requireActivity());
+                    if(!backupRecommended.get()) {
+                        backupRecommended.set(true);
+                        // creates an alert dialog with rationale shown
+                        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                        builder.setView(R.layout.custom_ok_alert_dialog);
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        Drawable backup = ContextCompat.getDrawable(requireActivity(), R.drawable.backup);
+                        if (backup != null)
+                            backup.setTint(requireActivity().getColor(R.color.SpaceCadet));
+                        ((AppCompatImageView) dialog.findViewById(R.id.dialog_drawable)).setImageDrawable(backup);
+
+                        ((TextView) dialog.findViewById(R.id.dialog_header)).setText(R.string.backup);
+                        ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.backup_recommended_message);
+                        dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view2 -> dialog.dismiss());
+                    } else {
+                        FirebaseAuth.getInstance().signOut();
+                        // signing out from facebook because they save it separately
+                        LoginManager.getInstance().logOut();
+                        // stopping Pedometer service
+                        ServiceFunctional.setPedometerShouldRun(requireActivity(), false);
+                        ServiceFunctional.stopPedometerService(requireActivity());
+                        // stopping Sleep Tracker service
+                        ServiceFunctional.setSleepTrackerShouldRun(requireActivity(), false);
+                        ServiceFunctional.stopSleepTrackerService(requireActivity());
+                        // stopping updates
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireActivity(), InAppActivity.IN_APP_ID, new Intent(requireActivity(), DailyRestarter.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.cancel(pendingIntent);
+                        // clearing user's data
+                        clearUserData(requireActivity());
+                    }
                 }else{
                     AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
                     builder.setView(R.layout.custom_ok_alert_dialog);

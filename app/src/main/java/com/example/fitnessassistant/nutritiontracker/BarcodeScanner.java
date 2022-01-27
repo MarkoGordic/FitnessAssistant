@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -38,6 +39,22 @@ public class BarcodeScanner extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.barcodescanner_screen, container, false);
         requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
+
+        view.findViewById(R.id.flashSwitch).setOnClickListener(new View.OnClickListener() {
+            boolean flashOn = false;
+            @Override
+            public void onClick(View v) {
+                if(flashOn){
+                    flashOn = false;
+                    ((AppCompatImageButton) v).setImageResource(R.drawable.flash_off);
+                    // TODO turn off flash
+                } else{
+                    flashOn = true;
+                    ((AppCompatImageButton) v).setImageResource(R.drawable.flash_on);
+                    // TODO turn on flash
+                }
+            }
+        });
 
         performingSearch = false;
 

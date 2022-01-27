@@ -94,6 +94,7 @@
     <string name="units_preference">Units Preference</string>
     <string name="birthdate">Birthdate</string>
     <string name="last_updated">Last Updated</string>
+    <string name="backup_recommended_message">It is recommended to back up your data before you sign out. Otherwise all your previous progress will be lost.</string>
 
     <!-- errors -->
     <!-- general errors -->

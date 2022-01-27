@@ -93,6 +93,7 @@
     <string name="units_preference">Jedinice Mere</string>
     <string name="birthdate">Datum rođenja</string>
     <string name="last_updated">Poslednje Ažurirano</string>
+    <string name="backup_recommended_message">Preporučujemo da napravite rezervnu kopiju podataka pre odjave. U suprotnom Vaš dosadašnji napredak će biti izgubljen.</string>
 
     <!-- errors -->
     <!-- general errors -->
