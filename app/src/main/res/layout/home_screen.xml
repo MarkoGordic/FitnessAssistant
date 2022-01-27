@@ -103,6 +103,8 @@
         android:textColor="@color/BlueYonder"/>
 
     <TableRow
+        android:id="@+id/stepsAndSleepRow"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -281,5 +283,38 @@
             </RelativeLayout>
         </LinearLayout>
     </TableRow>
+
+    <LinearLayout
+        android:id="@+id/calories"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stepsAndSleepRow"
+        android:layout_marginTop="20dp"
+
+        android:background="@drawable/transparent_button"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/nutritionTextView"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:drawableEndCompat="@drawable/fork_and_knife"
+            app:drawableTint="@color/SpaceCadet"
+
+            android:fontFamily="@font/ralewayb"
+            android:text="@string/nutrition"
+            android:layout_marginTop="4dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:textColor="@color/SpaceCadet"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

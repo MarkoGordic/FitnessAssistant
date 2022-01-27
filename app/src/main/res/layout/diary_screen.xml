@@ -186,7 +186,7 @@
             android:fontFamily="@font/roboto_light"
             android:includeFontPadding="false"
             android:textAlignment="center"
-            android:textColor="@color/SpaceCadet"
+            android:textColor="@color/InvertedBackgroundColor"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:textSize="18sp"
@@ -246,7 +246,7 @@
             android:includeFontPadding="false"
             android:text="@string/calories_remaining"
             android:textAlignment="textStart"
-            android:textColor="@color/SpaceCadet"
+            android:textColor="@color/InvertedBackgroundColor"
             android:textSize="15sp"
             android:textStyle="bold"
             tools:ignore="RtlCompat" />
@@ -262,7 +262,7 @@
             android:backgroundTint="@color/backgroundColor"
 
             android:src="@drawable/menu_dots"
-            app:tint="@color/SpaceCadet"
+            app:tint="@color/InvertedBackgroundColor"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
     </RelativeLayout>
 
@@ -294,7 +294,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:includeFontPadding="false"
                 android:textAlignment="center"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/InvertedBackgroundColor"
                 android:textSize="19sp" />
             <TextView
                 android:layout_height="wrap_content"
@@ -305,7 +305,7 @@
                 android:includeFontPadding="false"
                 android:textAlignment="center"
                 android:text="@string/goal"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/InvertedBackgroundColor"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -318,7 +318,7 @@
             android:includeFontPadding="false"
             android:textAlignment="center"
             android:text="@string/minus_sign"
-            android:textColor="@color/SpaceCadet"
+            android:textColor="@color/InvertedBackgroundColor"
             android:textSize="19sp" />
         <LinearLayout
             android:layout_width="0dp"
@@ -337,7 +337,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:includeFontPadding="false"
                 android:textAlignment="center"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/InvertedBackgroundColor"
                 android:textSize="19sp" />
             <TextView
                 android:layout_height="wrap_content"
@@ -348,7 +348,7 @@
                 android:includeFontPadding="false"
                 android:textAlignment="center"
                 android:text="@string/intake"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/InvertedBackgroundColor"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -361,7 +361,7 @@
             android:includeFontPadding="false"
             android:textAlignment="center"
             android:text="@string/equals_sign"
-            android:textColor="@color/SpaceCadet"
+            android:textColor="@color/InvertedBackgroundColor"
             android:textSize="19sp" />
         <LinearLayout
             android:layout_width="0dp"
@@ -381,7 +381,7 @@
                 android:textFontWeight="800"
                 android:includeFontPadding="false"
                 android:textAlignment="center"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/InvertedBackgroundColor"
                 android:textSize="19sp" />
             <TextView
                 android:layout_height="wrap_content"
@@ -392,7 +392,7 @@
                 android:includeFontPadding="false"
                 android:textAlignment="center"
                 android:text="@string/remaining"
-                android:textColor="@color/SpaceCadet"
+                android:textColor="@color/InvertedBackgroundColor"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -406,5 +406,366 @@
 
         android:background="@color/SpaceCadet"
         app:layout_constraintTop_toBottomOf="@id/caloriesLay" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/caloriesSeparator"
+        android:padding="12dp"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_button">
+
+            <RelativeLayout
+                android:id="@+id/bf"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_rounded">
+                <TextView
+                    android:id="@+id/breakfast"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/breakfast"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/backgroundColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:id="@+id/breakfastCalories"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/roboto_light"
+
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp"
+                    android:textColor="@color/backgroundColor"
+                    android:textFontWeight="900"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bf">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/breakfastRecyclerView"
+
+                    android:visibility="invisible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/breakfastEmpty"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:padding="20dp"
+                    android:text="@string/add_food_via_search_or_qr"
+                    android:textAlignment="center"
+                    android:textColor="@color/LightGrayColor"
+                    android:textSize="15sp"
+                    tools:ignore="TextContrastCheck" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_button"
+            android:layout_marginTop="6dp">
+
+            <RelativeLayout
+                android:id="@+id/lu"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_rounded">
+                <TextView
+                    android:id="@+id/lunch"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/lunch"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/backgroundColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:id="@+id/lunchCalories"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/roboto_light"
+
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp"
+                    android:textColor="@color/backgroundColor"
+                    android:textFontWeight="900"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lu">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lunchRecyclerView"
+
+                    android:visibility="invisible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/lunchEmpty"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:padding="20dp"
+                    android:text="@string/add_food_via_search_or_qr"
+                    android:textAlignment="center"
+                    android:textColor="@color/LightGrayColor"
+                    android:textSize="15sp"
+                    tools:ignore="TextContrastCheck" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_button"
+            android:layout_marginTop="6dp">
+
+            <RelativeLayout
+                android:id="@+id/di"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_rounded">
+                <TextView
+                    android:id="@+id/dinner"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/dinner"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/backgroundColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:id="@+id/dinnerCalories"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/roboto_light"
+
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp"
+                    android:textColor="@color/backgroundColor"
+                    android:textFontWeight="900"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/di">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dinnerRecyclerView"
+
+                    android:visibility="invisible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/dinnerEmpty"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:padding="20dp"
+                    android:text="@string/add_food_via_search_or_qr"
+                    android:textAlignment="center"
+                    android:textColor="@color/LightGrayColor"
+                    android:textSize="15sp"
+                    tools:ignore="TextContrastCheck" />
+            </RelativeLayout>
+        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_button"
+                android:layout_marginTop="6dp">
+
+            <RelativeLayout
+                android:id="@+id/sn"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_rounded">
+                <TextView
+                    android:id="@+id/snack"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/snack"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/backgroundColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:id="@+id/snackCalories"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/roboto_light"
+
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="12dp"
+                    android:textColor="@color/backgroundColor"
+                    android:textFontWeight="900"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sn">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/snackRecyclerView"
+
+                    android:visibility="invisible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/snackEmpty"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:padding="20dp"
+                    android:text="@string/add_food_via_search_or_qr"
+                    android:textAlignment="center"
+                    android:textColor="@color/LightGrayColor"
+                    android:textSize="15sp"
+                    tools:ignore="TextContrastCheck" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

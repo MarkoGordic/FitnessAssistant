@@ -24,6 +24,7 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
 import com.example.fitnessassistant.nutritiontracker.Product;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
@@ -32,9 +33,17 @@ import com.example.fitnessassistant.util.PieView;
 public class ProductFragment extends Fragment {
     private final Product product;
     private float amountChosen;
+    private int mealType;
 
-    public ProductFragment(Product product){
+    public ProductFragment(Product product, Float quantity, Integer mealType){
+        if(quantity == null)
+            quantity = 100f;
+        if(mealType == null)
+            mealType = -1;
+
         this.product = product;
+        this.amountChosen = quantity;
+        this.mealType = mealType;
     }
 
     @SuppressLint("DefaultLocale")
@@ -315,8 +324,19 @@ public class ProductFragment extends Fragment {
         ((TextView) view.findViewById(R.id.productName)).setText(product.getName());
         setProductMacroPercentages(view);
 
-        setUpProductView(view, 100f);
+        setUpProductView(view, amountChosen);
         setUpOnClickListeners(view);
+
+        switch(mealType){
+            case MDBHNutritionTracker.BREAKFAST:
+                break;
+            case MDBHNutritionTracker.LUNCH:
+                break;
+            case MDBHNutritionTracker.DINNER:
+                break;
+            case MDBHNutritionTracker.SNACK:
+                break;
+        }
 
         return view;
     }

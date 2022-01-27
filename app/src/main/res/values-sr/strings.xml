@@ -523,6 +523,12 @@
     <string name="fill_out_the_rest">Preostale Kalorije</string>
     <string name="based_on_your_weight">Po Vašoj Kilaži, Vaše Kalorije &amp; Makronutrienti Bi Otprilike Trebalo Da Budu:</string>
     <string name="percent_of_your_daily_goals">Procenat Vaših Dnevnih Ciljeva</string>
+    <string name="nutrition">Ishrana</string>
+    <string name="breakfast">Doručak</string>
+    <string name="lunch">Ručak</string>
+    <string name="dinner">Večera</string>
+    <string name="snack">Užina</string>
+    <string name="add_food_via_search_or_qr">Dodajte Hranu preko Pretrage ili QR Koda</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

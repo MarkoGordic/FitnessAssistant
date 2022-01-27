@@ -33,6 +33,11 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     private static final String MEALS_COLUMN_PRODUCTS = "products";
     private static final String MEALS_COLUMN_QUANTITY = "quantity";
 
+    public static final int BREAKFAST = 101;
+    public static final int LUNCH = 102;
+    public static final int DINNER = 103;
+    public static final int SNACK = 104;
+
     private static MDBHNutritionTracker instance;
 
     public static MDBHNutritionTracker getInstance(Context context) {

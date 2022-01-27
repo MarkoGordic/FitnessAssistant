@@ -32,22 +32,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.R;
+import com.example.fitnessassistant.adapters.MealAdapter;
 import com.example.fitnessassistant.adapters.SearchAdapter;
 import com.example.fitnessassistant.database.mdbh.MDBHNutritionGoals;
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
 import com.example.fitnessassistant.nutritiontracker.APISearch;
 import com.example.fitnessassistant.nutritiontracker.BarcodeScanner;
 import com.example.fitnessassistant.nutritiontracker.Product;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
-import com.example.fitnessassistant.util.AuthFunctional;
 import com.example.fitnessassistant.util.EndlessScrollListener;
 import com.example.fitnessassistant.util.PermissionFunctional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemListener {
+public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemListener, MealAdapter.OnItemListener {
     public final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
         if (!result) {
             // creates an alert dialog with rationale shown
@@ -70,9 +72,13 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         }
     });
 
-    private RecyclerView recyclerView;
+    private RecyclerView searchRecyclerView;
     private LocalDate currentDay;
     private SearchView searchView;
+    private RecyclerView breakfastRecyclerView;
+    private RecyclerView lunchRecyclerView;
+    private RecyclerView dinnerRecyclerView;
+    private RecyclerView snackRecyclerView;
 
     private EndlessScrollListener listener;
     public static final AtomicBoolean shouldReceiveProducts = new AtomicBoolean(true);
@@ -88,16 +94,18 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         ((TextView) view.findViewById(R.id.currentDay)).setText(String.format("%02d %s %d", currentDay.getDayOfMonth(), getMonthLong(requireActivity(), currentDay.getMonthValue()), currentDay.getYear()));
     }
 
-    @Override
+    @Override // SEARCH RECYCLER
     public void onItemClick(Product product) {
         // TODO change
         if(product == null)
             Toast.makeText(requireActivity(), R.string.product_not_found , Toast.LENGTH_SHORT).show();
         else {
             shouldRestoreState.set(true);
-            requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product)).addToBackStack(null).commit();
+            requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product, null, null)).addToBackStack(null).commit();
         }
     }
+
+
 
     @SuppressLint("DefaultLocale")
     private void setUpCalories(View view){
@@ -138,17 +146,17 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                 view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.VISIBLE);
                 requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
                 if (products.isEmpty()) {
-                    if (recyclerView.getAdapter() == null)
+                    if (searchRecyclerView.getAdapter() == null)
                         ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_results));
                     else
                         ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
 
                     listener.noMorePages();
                 } else {
-                    if (recyclerView.getAdapter() == null) {
-                        recyclerView.setAdapter(new SearchAdapter(products, this));
+                    if (searchRecyclerView.getAdapter() == null) {
+                        searchRecyclerView.setAdapter(new SearchAdapter(products, this));
                     } else {
-                        ((SearchAdapter) recyclerView.getAdapter()).addProducts(products);
+                        ((SearchAdapter) searchRecyclerView.getAdapter()).addProducts(products);
                     }
 
                     if (products.size() < 24) {
@@ -169,6 +177,16 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         APISearch.barcodeProduct.observe(getViewLifecycleOwner(), this::onItemClick);
     }
 
+    private void setUpRecyclerViews(View view){
+        breakfastRecyclerView = view.findViewById(R.id.breakfastRecyclerView);
+        lunchRecyclerView = view.findViewById(R.id.lunchRecyclerView);
+        dinnerRecyclerView = view.findViewById(R.id.dinnerRecyclerView);
+        snackRecyclerView = view.findViewById(R.id.snackRecyclerView);
+
+        // TODO add adapters with arrayLists with products and quantities for currentDate
+        MealAdapter adapter = new MealAdapter(new ArrayList<>(),new ArrayList<>(),this, MDBHNutritionTracker.BREAKFAST);
+    }
+
     private void setUpOnClickListeners(View view){
         // setting up search
         SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -185,7 +203,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         // search text color changed
         SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(requireActivity().getColor(R.color.LightGrayColor));
-        searchAutoComplete.setTextColor(requireActivity().getColor(R.color.SpaceCadet));
+        searchAutoComplete.setTextColor(requireActivity().getColor(R.color.InvertedBackgroundColor));
 
         // focus listener
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
@@ -193,9 +211,9 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             if(!hasFocus) {
                 shouldReceiveProducts.set(false);
                 if(!shouldRestoreState.get()) {
-                    if (recyclerView.getAdapter() != null) {
-                        ((SearchAdapter) recyclerView.getAdapter()).clear();
-                        recyclerView.setAdapter(null);
+                    if (searchRecyclerView.getAdapter() != null) {
+                        ((SearchAdapter) searchRecyclerView.getAdapter()).clear();
+                        searchRecyclerView.setAdapter(null);
                     }
                     view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
                     requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
@@ -211,8 +229,8 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(!query.isEmpty() && !performingSearch.get()) {
-                    if (recyclerView.getAdapter() != null)
-                        recyclerView.setAdapter(null);
+                    if (searchRecyclerView.getAdapter() != null)
+                        searchRecyclerView.setAdapter(null);
 
                     view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
                     requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
@@ -230,8 +248,8 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             public boolean onQueryTextChange(String query) {
                 // Only local API search is available due to API's TOS
                 if(!shouldRestoreState.get()) {
-                    if (recyclerView.getAdapter() != null)
-                        recyclerView.setAdapter(null);
+                    if (searchRecyclerView.getAdapter() != null)
+                        searchRecyclerView.setAdapter(null);
 
                     view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
                     requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
@@ -270,6 +288,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                     (currentDay.getYear() == cal.get(Calendar.YEAR) && currentDay.getMonthValue() == cal.get(Calendar.MONTH) + 1 && currentDay.getDayOfMonth() > cal.get(Calendar.DAY_OF_MONTH))) {
                 currentDay = currentDay.minusDays(1);
                 setUpCurrentDay(view);
+                setUpRecyclerViews(view);
                 setUpCalories(view);
             }
         });
@@ -280,6 +299,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                     (currentDay.getYear() == Calendar.getInstance().get(Calendar.YEAR) && currentDay.getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1) && currentDay.getDayOfMonth() < Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
                 currentDay = currentDay.plusDays(1);
                 setUpCurrentDay(view);
+                setUpRecyclerViews(view);
                 setUpCalories(view);
             }
         });
@@ -290,7 +310,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
     public void clearRecycler(){
         requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
         requireView().findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
-        recyclerView.setAdapter(null);
+        searchRecyclerView.setAdapter(null);
     }
 
     @Nullable
@@ -303,6 +323,8 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
         currentDay = LocalDate.now();
         setUpCurrentDay(view);
+        setUpRecyclerViews(view);
+        setUpCalories(view);
 
         listener = new EndlessScrollListener(pageNumber -> {
             view.findViewById(R.id.loadMore).setVisibility(View.INVISIBLE);
@@ -312,16 +334,16 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             APISearch.getInstance().searchAPI(searchView.getQuery().toString(), requireContext(), false, false, pageNumber);
         });
 
-        recyclerView = view.findViewById(R.id.searchRecycler);
+        searchRecyclerView = view.findViewById(R.id.searchRecycler);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
+        searchRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
             @Override
             public boolean supportsPredictiveItemAnimations() {
                 return false;
             }
         });
-        recyclerView.setHasFixedSize(true); // all items have same height (they don't vary or change)
-        recyclerView.addOnScrollListener(listener);
+        searchRecyclerView.setHasFixedSize(true); // all items have same height (they don't vary or change)
+        searchRecyclerView.addOnScrollListener(listener);
 
         return view;
     }
@@ -333,6 +355,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         if(view != null){
             currentDay = LocalDate.now();
             setUpCurrentDay(view);
+            setUpRecyclerViews(view);
             setUpCalories(view);
         }
     }
@@ -341,7 +364,15 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
     public void onResume() {
         super.onResume();
         if(getView() != null) {
+            setUpCurrentDay(getView());
             setUpCalories(getView());
+            setUpRecyclerViews(getView());
         }
+    }
+
+    @Override // MEAL RECYCLER
+    public void onItemClick(Product product, float quantity, int mealType) {
+        // TODO add flag to customize product fragment for edits
+        requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product, quantity, mealType)).addToBackStack(null).commit();
     }
 }

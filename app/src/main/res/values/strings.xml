@@ -522,6 +522,12 @@
     <string name="fill_out_the_rest">Calories Left</string>
     <string name="based_on_your_weight">Based On Your Current Weight, Your Calories &amp; Macros Should Be Around:</string>
     <string name="percent_of_your_daily_goals">Percent Of Your Daily Goals</string>
+    <string name="nutrition">Nutrition</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="snack">Snack</string>
+    <string name="add_food_via_search_or_qr">Add Food via Search or QR Code</string>
 
     <string name="coming_soon">This will be added soon</string>
 </resources>

@@ -238,27 +238,13 @@
                     tools:ignore="RelativeOverlap">
 
                     <TextView
+                        android:id="@+id/mealType"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
                         android:layout_marginEnd="2dp"
                         android:fontFamily="@font/ralewaym"
-
-                        android:gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:text="@string/meal"
-                        android:textColor="@color/SpaceCadet"
-                        android:textFontWeight="600"
-                        android:textSize="17sp" />
-
-                    <TextView
-                        android:id="@+id/mealNumber"
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginStart="1dp"
-                        android:fontFamily="@font/roboto_light"
 
                         android:gravity="center_vertical"
                         android:includeFontPadding="false"
