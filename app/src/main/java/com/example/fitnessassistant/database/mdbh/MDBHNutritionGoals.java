@@ -55,7 +55,28 @@ public class MDBHNutritionGoals extends SQLiteOpenHelper {
         cv.put(COLUMN_FAT, fat);
         cv.put(COLUMN_PROTEIN, protein);
 
-        long result = db.insert(TABLE_NAME, null, cv);
+        // now we need to determine do we need to update old data or insert new
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_DATE + " = " + date;
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean dataExists = false;
+
+        if(dbRead != null){
+            cursor = dbRead.rawQuery(query, null);
+        }
+
+        if(cursor != null)
+            if(cursor.getCount() > 0) {
+                cursor.close();
+                dataExists = true;
+            }
+
+        long result;
+
+        if(dataExists)
+            result = db.update(TABLE_NAME, cv, "date = ?", new String[]{String.valueOf(date)});
+        else
+            result = db.insert(TABLE_NAME, null, cv);
 
         if(result == -1)
             System.out.println("Fail! DATABASE");
