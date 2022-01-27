@@ -45,7 +45,7 @@ public class MDBHNutritionGoals extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public void putPedometerData(String date, Float calories, Float carbs, Float fat, Float protein){
+    public void putNutritionGoalsData(String date, Float calories, Float carbs, Float fat, Float protein){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -61,6 +61,30 @@ public class MDBHNutritionGoals extends SQLiteOpenHelper {
             System.out.println("Fail! DATABASE");
         else
             System.out.println("Success! DATABASE");
+    }
+
+    public String findLatestDayInDB(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String data = null;
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor != null){
+                if(cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    do {
+                        if(cursor.isNull(cursor.getColumnIndex(COLUMN_CALORIES))){
+                            data = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                            break;
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        }
+
+        return data;
     }
 
     public float readCaloriesForDate(String date){
