@@ -123,11 +123,8 @@ public class BarcodeScanner extends Fragment {
                     if(!performingSearch) {
                         performingSearch = true;
                         cameraSource.stop();
-                        if(AuthFunctional.currentlyOnline) {
-                            DiaryPageFragment.shouldReceiveProducts.set(true);
-                            APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false, 1);
-                        } else
-                            AuthFunctional.quickFlash(requireActivity(), requireActivity().findViewById(R.id.notification));
+                        DiaryPageFragment.shouldReceiveProducts.set(true);
+                        APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false, 1);
 
                         requireActivity().onBackPressed();
                     }

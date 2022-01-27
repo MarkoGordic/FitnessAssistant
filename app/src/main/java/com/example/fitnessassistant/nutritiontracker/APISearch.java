@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
+import com.example.fitnessassistant.util.AuthFunctional;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,41 +49,49 @@ public class APISearch {
         else
             results = MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(search);
 
-        // Then we will search API for additional results
-        ArrayList<Product> finalResults = new ArrayList<>(results);
-        if (!autocomplete) {
-            if(isBarcode){
-                new TaskRunner().executeAsync(new JSONTask(baseURL + search + ".json"), (result) -> {
-                    try {
-                        JSONObject obj = new JSONObject(result);
-                        Product product = null;
-                        if(obj.has("status"))
-                            if(obj.getInt("status") != 0)
-                                product = new Product(obj, context, false);
-
-                        barcodeProduct.postValue(product);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }else{
-                new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery + page), (result) -> {
-                    try {
-                        JSONObject obj = new JSONObject(result);
-                        JSONArray jsonArray = obj.getJSONArray("products");
-
-                        for (int i = 0; i < jsonArray.length(); i++)
-                            finalResults.add(new Product(jsonArray.getJSONObject(i), context, true));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } finally {
-                        products.postValue(finalResults);
-                    }
-                });
-            }
+        if(results.size() > 0 && isBarcode){
+            products.postValue(results);
+            return;
         }
-        else
-            products.postValue(finalResults);
+
+        // Then we will search API for additional results
+        if(AuthFunctional.currentlyOnline){
+            ArrayList<Product> finalResults = new ArrayList<>(results);
+            if (!autocomplete) {
+                if(isBarcode){
+                    new TaskRunner().executeAsync(new JSONTask(baseURL + search + ".json"), (result) -> {
+                        try {
+                            JSONObject obj = new JSONObject(result);
+                            Product product = null;
+                            if(obj.has("status"))
+                                if(obj.getInt("status") != 0)
+                                    product = new Product(obj, context, false);
+
+                            barcodeProduct.postValue(product);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }else{
+                    new TaskRunner().executeAsync(new JSONTask(searchURL + search + searchQuery + page), (result) -> {
+                        try {
+                            JSONObject obj = new JSONObject(result);
+                            JSONArray jsonArray = obj.getJSONArray("products");
+
+                            for (int i = 0; i < jsonArray.length(); i++)
+                                finalResults.add(new Product(jsonArray.getJSONObject(i), context, true));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } finally {
+                            products.postValue(finalResults);
+                        }
+                    });
+                }
+            }
+            else
+                products.postValue(finalResults);
+        }else
+            products.postValue(results);
     }
 
     private static class TaskRunner {

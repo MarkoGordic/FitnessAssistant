@@ -14,10 +14,13 @@ import androidx.annotation.NonNull;
 import com.example.fitnessassistant.database.data.ActivityData;
 import com.example.fitnessassistant.database.data.BackupStatus;
 import com.example.fitnessassistant.database.data.GoalsData;
+import com.example.fitnessassistant.database.data.MealsData;
 import com.example.fitnessassistant.database.data.PedometerData;
 import com.example.fitnessassistant.database.data.PreferencesData;
+import com.example.fitnessassistant.database.data.ProductsData;
 import com.example.fitnessassistant.database.data.SleepData;
 import com.example.fitnessassistant.database.mdbh.MDBHActivityTracker;
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.database.mdbh.MDBHSleepTracker;
 import com.example.fitnessassistant.database.mdbh.MDBHWeight;
@@ -41,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -506,4 +510,140 @@ public class RealtimeDB {
         }
     }
 
+    public static void saveMealsData(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data");
+
+            MealsData data = new MealsData();
+
+            data.setData(MDBHNutritionTracker.getInstance(context).getAllMealsFromDB());
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.child("meals").setValue(data);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("meals_backup", "y#" + Calendar.getInstance().getTimeInMillis());
+                    editor.apply();
+
+                    updateBackupStatus(context);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    public static void restoreMealsData(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("meals");
+
+            db.get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()){
+                    Log.e("Firebase", "Error getting data", task.getException());
+                } else {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    MealsData data = dataSnapshot.getValue(MealsData.class);
+                    List<String> meals;
+
+                    MDBHNutritionTracker.getInstance(context).deleteMealsDB();
+
+                    // Saving new data
+                    if(data != null) {
+                        meals = data.getData();
+
+                        for(String meal : meals){
+                            List<Integer> productIDs = new ArrayList<>();
+                            List<Float> quantities = new ArrayList<>();
+
+                            StringTokenizer tokenizer = new StringTokenizer(meal, "#");
+                            String date = tokenizer.nextToken();
+                            int type = Integer.parseInt(tokenizer.nextToken());
+
+                            while(tokenizer.hasMoreElements()){
+                                productIDs.add(Integer.parseInt(tokenizer.nextToken()));
+                                quantities.add(Float.parseFloat(tokenizer.nextToken()));
+                            }
+                            MDBHNutritionTracker.getInstance(context).addNewMeal(type,date,productIDs,quantities);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    public static void saveProductsData(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data");
+
+            ProductsData data = new ProductsData();
+
+            data.setData(MDBHNutritionTracker.getInstance(context).getAllProductsFromDB());
+
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    db.child("products").setValue(data);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("products_backup", "y#" + Calendar.getInstance().getTimeInMillis());
+                    editor.apply();
+
+                    updateBackupStatus(context);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { }
+            });
+        }
+    }
+
+    public static void restoreProductsData(Context context){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users").child(userID).child("data").child("products");
+
+            db.get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()){
+                    Log.e("Firebase", "Error getting data", task.getException());
+                } else {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    ProductsData data = dataSnapshot.getValue(ProductsData.class);
+                    List<String> products;
+
+                    MDBHNutritionTracker.getInstance(context).deleteProductsDB();
+
+                    // Saving new data
+                    if(data != null) {
+                        products = data.getData();
+
+                        for(String product : products){
+                            StringTokenizer tokenizer = new StringTokenizer(product, "#");
+
+                            int id = Integer.parseInt(tokenizer.nextToken());
+                            String name = tokenizer.nextToken();
+                            String brands = tokenizer.nextToken();
+                            String barcode = tokenizer.nextToken();
+                            StringBuilder nutriments = new StringBuilder();
+                            while(tokenizer.hasMoreElements()) {
+                                nutriments.append(tokenizer.nextToken());
+
+                                if(tokenizer.hasMoreElements())
+                                    nutriments.append('#');
+                            }
+
+                            MDBHNutritionTracker.getInstance(context).forceAddNewProduct(id, name, String.valueOf(nutriments), barcode, brands);
+                        }
+                    }
+                }
+            });
+        }
+    }
 }

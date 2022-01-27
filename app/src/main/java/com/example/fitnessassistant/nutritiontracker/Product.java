@@ -655,7 +655,7 @@ public class Product {
         product += getVitamin_d_100g() + "#";
         product += getVitamin_e_100g() + "#";
         product += getVitamin_k_100g() + "#";
-        product += getVitamin_pp_100g() + "#";
+        product += getVitamin_pp_100g();
 
         return product;
     }

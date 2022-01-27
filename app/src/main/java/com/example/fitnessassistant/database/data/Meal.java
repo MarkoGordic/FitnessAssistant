@@ -7,9 +7,9 @@ public class Meal {
     int type;
     long date;
     List<Integer> productIDs;
-    float quantity;
+    List<Float> quantity;
 
-    public float getQuantity() {
+    public List<Float> getQuantity() {
         return quantity;
     }
 
@@ -45,7 +45,7 @@ public class Meal {
         this.productIDs = productIDs;
     }
 
-    public void setQuantity(float quantity) {
+    public void setQuantity(List<Float> quantity) {
         this.quantity = quantity;
     }
 }

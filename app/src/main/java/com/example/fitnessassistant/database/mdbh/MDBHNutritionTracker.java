@@ -30,7 +30,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     private static final String MEALS_COLUMN_ID = "_id";
     private static final String MEALS_COLUMN_TYPE = "type";
     private static final String MEALS_COLUMN_DATE = "date";
-    private static final String MEALS_COLUMN_PRODUCTS = "product";
+    private static final String MEALS_COLUMN_PRODUCTS = "products";
     private static final String MEALS_COLUMN_QUANTITY = "quantity";
 
     private static MDBHNutritionTracker instance;
@@ -63,7 +63,25 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
             System.out.println("Success! DATABASE");
     }
 
-    public void addNewMeal(int type, long date, List<Integer> product_ids, float quantity){
+    public void forceAddNewProduct(int id, String name, String nutriments, String barcode, String brands){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(PRODUCTS_COLUMN_ID, id);
+        cv.put(PRODUCTS_COLUMN_NAME, name);
+        cv.put(PRODUCTS_COLUMN_NUTRIMENTS, nutriments);
+        cv.put(PRODUCTS_COLUMN_BARCODE, barcode);
+        cv.put(PRODUCTS_COLUMN_BRANDS, brands);
+
+        long result = db.insert(PRODUCTS_TABLE_NAME, null, cv);
+
+        if(result == -1)
+            System.out.println("Fail! DATABASE");
+        else
+            System.out.println("Success! DATABASE");
+    }
+
+    public void addNewMeal(int type, String date, List<Integer> product_ids, List<Float> quantity){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -74,10 +92,17 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 products.append('#');
         }
 
+        StringBuilder quantities = new StringBuilder();
+        for(int i = 0; i < quantity.size(); i++) {
+            quantities.append(quantity.get(i));
+            if(i != quantity.size() - 1)
+                quantities.append('#');
+        }
+
         cv.put(MEALS_COLUMN_TYPE, type);
         cv.put(MEALS_COLUMN_DATE, date);
         cv.put(MEALS_COLUMN_PRODUCTS, String.valueOf(products));
-        cv.put(MEALS_COLUMN_QUANTITY, quantity);
+        cv.put(MEALS_COLUMN_QUANTITY, String.valueOf(quantities));
 
         long result = db.insert(MEALS_TABLE_NAME, null, cv);
 
@@ -367,11 +392,19 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 products.append('#');
         }
 
+        List<Float> quantities = meal.getQuantity();
+        StringBuilder product_quantities = new StringBuilder();
+        for(int i = 0; i < quantities.size(); i++){
+            product_quantities.append(quantities.get(i));
+            if(i != quantities.size() - 1)
+                products.append('#');
+        }
+
         cv.put(MEALS_COLUMN_ID, meal.getId());
         cv.put(MEALS_COLUMN_PRODUCTS, String.valueOf(products));
         cv.put(MEALS_COLUMN_TYPE, meal.getType());
         cv.put(MEALS_COLUMN_DATE, meal.getDate());
-        cv.put(MEALS_COLUMN_QUANTITY, meal.getQuantity());
+        cv.put(MEALS_COLUMN_QUANTITY, String.valueOf(quantities));
 
         // now we need to determine does old data exists
         String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_ID + " = " + meal.getId();
@@ -412,14 +445,96 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                     meal.setId(cursor.getInt(cursor.getColumnIndex(MEALS_COLUMN_ID)));
                     meal.setDate(cursor.getLong(cursor.getColumnIndex(MEALS_COLUMN_DATE)));
                     meal.setType(cursor.getInt(cursor.getColumnIndex(MEALS_COLUMN_TYPE)));
+
                     String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                     StringTokenizer stringTokenizer = new StringTokenizer(products,"#");
                     List<Integer> product_ids = new ArrayList<>();
                     while (stringTokenizer.hasMoreElements())
                         product_ids.add(Integer.parseInt(stringTokenizer.nextToken()));
                     meal.setProductIDs(product_ids);
-                    meal.setQuantity(cursor.getFloat(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY)));
+
+                    String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY));
+                    stringTokenizer = new StringTokenizer(quantities,"#");
+                    List<Float> product_quantities = new ArrayList<>();
+                    while (stringTokenizer.hasMoreElements())
+                        product_quantities.add(Float.parseFloat(stringTokenizer.nextToken()));
+                    meal.setQuantity(product_quantities);
+
                     data.add(meal);
+                }while(cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        return data;
+    }
+
+    public List<Product> getAllProductsFromDB(){
+        String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        List<Product> data = new ArrayList<>();
+
+        if(db != null) {
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                do{
+                    Product product = new Product();
+                    product.setName(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NAME)));
+                    product.setBarcode(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BARCODE)));
+                    product.setBrands(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BRANDS)));
+                    String nutriments = cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NUTRIMENTS));
+                    StringTokenizer stringTokenizer = new StringTokenizer(nutriments, "#");
+                    product.setCalcium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setChloride_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFluoride_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMagnesium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setPotassium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCholesterol_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSalt_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setZinc_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSodium_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setBiotin_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCarbohydrates_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setEnergy_kcal_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFiber_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setTrans_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMonounsaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setPolyunsaturated_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_3_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_6_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setOmega_9_fat_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setProteins_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setIron_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCopper_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setManganese_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setIodine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCaffeine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setTaurine_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSugars_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setSucrose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setGlucose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setFructose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setLactose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setMaltose_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setStarch_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setCasein_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setAlcohol_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_a_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b1_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b2_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b6_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b9_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_b12_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_c_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_d_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_e_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_k_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    product.setVitamin_pp_100g(Float.parseFloat(stringTokenizer.nextToken()));
+                    data.add(product);
                 }while(cursor.moveToNext());
                 cursor.close();
             }
@@ -485,7 +600,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                         " (" + MEALS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         MEALS_COLUMN_TYPE + " INTEGER, " +
                         MEALS_COLUMN_DATE + " TEXT, " +
-                        MEALS_COLUMN_QUANTITY + " REAL, " +
+                        MEALS_COLUMN_QUANTITY + " TEXT, " +
                         MEALS_COLUMN_PRODUCTS + " TEXT);";
 
         db.execSQL(query);
@@ -508,9 +623,13 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + MEALS_TABLE_NAME);
     }
 
-    public void deleteDB(){
+    public void deleteMealsDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(MEALS_TABLE_NAME, null, null);
+    }
+
+    public void deleteProductsDB(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(PRODUCTS_TABLE_NAME, null, null);
-        db.delete(MEALS_TABLE_NAME, null, null);
     }
 }

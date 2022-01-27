@@ -86,7 +86,8 @@ public class SettingsFragment extends Fragment {
         MDBHActivityTracker.getInstance(context).deleteDB();
         MDBHPedometer.getInstance(context).deleteDB();
         MDBHWeight.getInstance(context).deleteDB();
-        MDBHNutritionTracker.getInstance(context).deleteDB();
+        MDBHNutritionTracker.getInstance(context).deleteMealsDB();
+        MDBHNutritionTracker.getInstance(context).deleteProductsDB();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(InAppActivity.backupFragment.listener);

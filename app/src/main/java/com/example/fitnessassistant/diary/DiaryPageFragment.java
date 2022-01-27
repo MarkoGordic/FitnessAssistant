@@ -216,14 +216,10 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
                     view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
                     requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
-
-                    if(AuthFunctional.currentlyOnline) {
-                        shouldReceiveProducts.set(true);
-                        performingSearch.set(true);
-                        view.findViewById(R.id.searchBar).setVisibility(View.VISIBLE);
-                        APISearch.getInstance().searchAPI(query, requireContext(), false, false, 1);
-                    } else
-                        AuthFunctional.quickFlash(requireActivity(), requireActivity().findViewById(R.id.notification));
+                    shouldReceiveProducts.set(true);
+                    performingSearch.set(true);
+                    view.findViewById(R.id.searchBar).setVisibility(View.VISIBLE);
+                    APISearch.getInstance().searchAPI(query, requireContext(), false, false, 1);
                 } else
                     shouldReceiveProducts.set(false);
 
@@ -241,12 +237,9 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                     requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
 
                     if(!query.isEmpty() && !performingSearch.get()) {
-                        if(AuthFunctional.currentlyOnline){
-                            shouldReceiveProducts.set(true);
-                            performingSearch.set(true);
-                            APISearch.getInstance().searchAPI(query, requireContext(), false, true, 1);
-                        } else
-                            AuthFunctional.quickFlash(requireActivity(), requireActivity().findViewById(R.id.notification));
+                        shouldReceiveProducts.set(true);
+                        performingSearch.set(true);
+                        APISearch.getInstance().searchAPI(query, requireContext(), false, true, 1);
                     } else
                         shouldReceiveProducts.set(false);
                 }
@@ -312,14 +305,11 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         setUpCurrentDay(view);
 
         listener = new EndlessScrollListener(pageNumber -> {
-            if(AuthFunctional.currentlyOnline) {
-                view.findViewById(R.id.loadMore).setVisibility(View.INVISIBLE);
-                view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
-                shouldReceiveProducts.set(true);
-                performingSearch.set(true);
-                APISearch.getInstance().searchAPI(searchView.getQuery().toString(), requireContext(), false, false, pageNumber);
-            } else
-                ((TextView) view.findViewById(R.id.loadMore)).setText(R.string.connect_and_search_again);
+            view.findViewById(R.id.loadMore).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+            shouldReceiveProducts.set(true);
+            performingSearch.set(true);
+            APISearch.getInstance().searchAPI(searchView.getQuery().toString(), requireContext(), false, false, pageNumber);
         });
 
         recyclerView = view.findViewById(R.id.searchRecycler);
