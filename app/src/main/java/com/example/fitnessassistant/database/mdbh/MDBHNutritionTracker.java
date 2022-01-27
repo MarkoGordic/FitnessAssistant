@@ -81,7 +81,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
             System.out.println("Success! DATABASE");
     }
 
-    public void addNewMeal(int type, String date, List<Integer> product_ids, List<Float> quantity){
+    public void addOrUpdateMeal(int type, String date, List<Integer> product_ids, List<Float> quantity){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -104,7 +104,27 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         cv.put(MEALS_COLUMN_PRODUCTS, String.valueOf(products));
         cv.put(MEALS_COLUMN_QUANTITY, String.valueOf(quantities));
 
-        long result = db.insert(MEALS_TABLE_NAME, null, cv);
+        // now we need to determine do we need to update old data or insert new
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + type;
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean dataExists = false;
+
+        if(dbRead != null){
+            cursor = dbRead.rawQuery(query, null);
+        }
+
+        if(cursor != null)
+            if(cursor.getCount() > 0) {
+                cursor.close();
+                dataExists = true;
+            }
+
+        long result;
+        if(dataExists)
+            result = db.update(MEALS_TABLE_NAME, cv, "date = ? AND type = ?", new String[]{String.valueOf(date), String.valueOf(type)});
+        else
+            result = db.insert(MEALS_TABLE_NAME, null, cv);
 
         if(result == -1)
             System.out.println("Fail! DATABASE");
