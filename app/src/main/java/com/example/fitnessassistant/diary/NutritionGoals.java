@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,11 +69,17 @@ public class NutritionGoals extends Fragment {
     }
 
     private boolean fieldsValid(View view){
-        int mainKcal = Integer.parseInt(((TextView) view.findViewById(R.id.mainKcal)).getText().toString());
-        int totalKcal = Integer.parseInt(((TextView) view.findViewById(R.id.totalKcal)).getText().toString());
+        Number mainKcal, totalKcal;
+        if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
+            mainKcal = getFloat(((EditText) view.findViewById(R.id.mainKcal)).getText().toString());
+            totalKcal = getFloat(((TextView) view.findViewById(R.id.totalKcal)).getText().toString());
+        } else{
+            mainKcal = Math.round(getFloat(((EditText) view.findViewById(R.id.mainKcal)).getText().toString()));
+            totalKcal = Math.round(getFloat(((TextView) view.findViewById(R.id.totalKcal)).getText().toString()));
+        }
 
-        if(mainKcal != totalKcal){
-            if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
+        if (!mainKcal.equals(totalKcal)) {
+            if (UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
                 Toast.makeText(requireActivity(), R.string.total_kj_must_be_equal, Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(requireActivity(), R.string.total_kcal_must_be_equal, Toast.LENGTH_SHORT).show();
@@ -104,7 +111,7 @@ public class NutritionGoals extends Fragment {
 
         if(getCaloriesGoal(requireActivity()) != -1)
             if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
-                mainGoal.setText(String.format("%d", Math.round(getCaloriesGoal(requireActivity()) * 4.184f)));
+                mainGoal.setText(String.format("%.1f", Math.round(getCaloriesGoal(requireActivity())) * 4.184f));
             else
                 mainGoal.setText(String.format("%d", Math.round(getCaloriesGoal(requireActivity()))));
 
@@ -139,8 +146,6 @@ public class NutritionGoals extends Fragment {
                 carbCals.setText(String.format("%d", Math.round(cGoal * 4f)));
         }
 
-        TextView totalCals = view.findViewById(R.id.totalKcal);
-
         TextView fatCals = view.findViewById(R.id.fatCalories);
 
         float fGoal = getFatGoal(requireActivity());
@@ -153,8 +158,10 @@ public class NutritionGoals extends Fragment {
                 fatCals.setText(String.format("%d", Math.round(fGoal * 9f)));
         }
 
+        TextView totalCals = view.findViewById(R.id.totalKcal);
+
         if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
-            totalCals.setText(String.format("%d", Math.round(totalCalories * 4.184f)));
+            totalCals.setText(String.format("%.1f", Math.round(totalCalories) * 4.184f));
         else
             totalCals.setText(String.format("%d", Math.round(totalCalories)));
 
@@ -163,23 +170,33 @@ public class NutritionGoals extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int energy, totalEnergy = 0;
+                float energy, totalEnergy = 0;
                 if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
-                    energy = Math.round(getFloat(s.toString()) * 4f * 4.184f);
+                    energy = Math.round(getFloat(s.toString()) * 4f) * 4.184f;
                 else
                     energy = Math.round(getFloat(s.toString()) * 4f);
 
                 totalEnergy += energy;
 
-                if(fatCals.getText().length() != 0)
-                    totalEnergy += Math.round(getFloat(fatCals.getText().toString()));
+                if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
+                    if(fatCals.getText().length() != 0)
+                        totalEnergy += getFloat(fatCals.getText().toString());
 
-                if(carbCals.getText().length() != 0)
-                    totalEnergy += Math.round(getFloat(carbCals.getText().toString()));
+                    if(carbCals.getText().length() != 0)
+                        totalEnergy += getFloat(carbCals.getText().toString());
 
-                proteinCals.setText(String.format("%d", energy));
+                    proteinCals.setText(String.format("%.1f", energy));
+                    totalCals.setText(String.format("%.1f", totalEnergy));
+                } else {
+                    if(fatCals.getText().length() != 0)
+                        totalEnergy += Math.round(getFloat(fatCals.getText().toString()));
 
-                totalCals.setText(String.format("%d", totalEnergy));
+                    if(carbCals.getText().length() != 0)
+                        totalEnergy += Math.round(getFloat(carbCals.getText().toString()));
+
+                    proteinCals.setText(String.format("%d", Math.round(energy)));
+                    totalCals.setText(String.format("%d", Math.round(totalEnergy)));
+                }
             }
             @Override
             public void afterTextChanged(Editable s) {}
@@ -190,23 +207,33 @@ public class NutritionGoals extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int energy, totalEnergy = 0;
+                float energy, totalEnergy = 0;
                 if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
-                    energy = Math.round(getFloat(s.toString()) * 9f * 4.184f);
+                    energy = Math.round(getFloat(s.toString()) * 9f) * 4.184f;
                 else
                     energy = Math.round(getFloat(s.toString()) * 9f);
 
                 totalEnergy += energy;
 
-                if(proteinCals.getText().length() != 0)
-                    totalEnergy += Math.round(getFloat(proteinCals.getText().toString()));
+                if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
+                    if(proteinCals.getText().length() != 0)
+                        totalEnergy += getFloat(proteinCals.getText().toString());
 
-                if(carbCals.getText().length() != 0)
-                    totalEnergy += Math.round(getFloat(carbCals.getText().toString()));
+                    if(carbCals.getText().length() != 0)
+                        totalEnergy += getFloat(carbCals.getText().toString());
 
-                fatCals.setText(String.format("%d", energy));
+                    fatCals.setText(String.format("%.1f", energy));
+                    totalCals.setText(String.format("%.1f", totalEnergy));
+                } else {
+                    if(proteinCals.getText().length() != 0)
+                        totalEnergy += Math.round(getFloat(proteinCals.getText().toString()));
 
-                totalCals.setText(String.format("%d", totalEnergy));
+                    if(carbCals.getText().length() != 0)
+                        totalEnergy += Math.round(getFloat(carbCals.getText().toString()));
+
+                    fatCals.setText(String.format("%d", Math.round(energy)));
+                    totalCals.setText(String.format("%d", Math.round(totalEnergy)));
+                }
             }
             @Override
             public void afterTextChanged(Editable s) {}
@@ -217,23 +244,33 @@ public class NutritionGoals extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int energy, totalEnergy = 0;
+                float energy, totalEnergy = 0;
                 if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
-                    energy = Math.round(getFloat(s.toString()) * 4f * 4.184f);
+                    energy = Math.round(getFloat(s.toString()) * 4f) * 4.184f;
                 else
-                    energy = Math.round(getFloat(s.toString()) * 9f);
+                    energy = Math.round(getFloat(s.toString()) * 4f);
 
                 totalEnergy += energy;
 
-                if(proteinCals.getText().length() != 0)
-                    totalEnergy += Math.round(getFloat(proteinCals.getText().toString()));
+                if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
+                    if(proteinCals.getText().length() != 0)
+                        totalEnergy += getFloat(proteinCals.getText().toString());
 
-                if(fatGoal.getText().length() != 0)
-                    totalEnergy += Math.round(getFloat(fatGoal.getText().toString()));
+                    if(fatCals.getText().length() != 0)
+                        totalEnergy += getFloat(fatCals.getText().toString());
 
-                carbCals.setText(String.format("%d", energy));
+                    carbCals.setText(String.format("%.1f", energy));
+                    totalCals.setText(String.format("%.1f", totalEnergy));
+                } else {
+                    if(proteinCals.getText().length() != 0)
+                        totalEnergy += Math.round(getFloat(proteinCals.getText().toString()));
 
-                totalCals.setText(String.format("%d", totalEnergy));
+                    if(fatCals.getText().length() != 0)
+                        totalEnergy += Math.round(getFloat(fatCals.getText().toString()));
+
+                    carbCals.setText(String.format("%d", Math.round(energy)));
+                    totalCals.setText(String.format("%d", Math.round(totalEnergy)));
+                }
             }
             @Override
             public void afterTextChanged(Editable s) {}
@@ -241,7 +278,11 @@ public class NutritionGoals extends Fragment {
 
         view.findViewById(R.id.setButton).setOnClickListener(v -> {
             if(fieldsNotEmpty(view) && fieldsValid(view)){
-                float kGoal = Integer.parseInt(mainGoal.getText().toString());
+                float kGoal;
+                if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
+                    kGoal = getFloat(mainGoal.getText().toString());
+                else
+                    kGoal = Math.round(getFloat(mainGoal.getText().toString()));
                 float caGoal = getFloat(carbsGoal.getText().toString());
                 float faGoal = getFloat(fatGoal.getText().toString());
                 float prGoal = getFloat(proteinGoal.getText().toString());
@@ -264,21 +305,25 @@ public class NutritionGoals extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.nutrition_goals, container, false);
 
-        setUpOnClickListeners(view);
-
         if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
             ((TextView) view.findViewById(R.id.mainUnit)).setText(requireActivity().getString(R.string.kj));
             ((TextView) view.findViewById(R.id.carbUnit)).setText(requireActivity().getString(R.string.kj));
             ((TextView) view.findViewById(R.id.fatUnit)).setText(requireActivity().getString(R.string.kj));
             ((TextView) view.findViewById(R.id.proteinUnit)).setText(requireActivity().getString(R.string.kj));
             ((TextView) view.findViewById(R.id.totalUnit)).setText(requireActivity().getString(R.string.kj));
+
+            ((EditText) view.findViewById(R.id.mainKcal)).setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         } else{
             ((TextView) view.findViewById(R.id.mainUnit)).setText(requireActivity().getString(R.string.cal));
             ((TextView) view.findViewById(R.id.carbUnit)).setText(requireActivity().getString(R.string.cal));
             ((TextView) view.findViewById(R.id.fatUnit)).setText(requireActivity().getString(R.string.cal));
             ((TextView) view.findViewById(R.id.proteinUnit)).setText(requireActivity().getString(R.string.cal));
             ((TextView) view.findViewById(R.id.totalUnit)).setText(requireActivity().getString(R.string.cal));
+
+            ((EditText) view.findViewById(R.id.mainKcal)).setInputType(InputType.TYPE_CLASS_NUMBER);
         }
+
+        setUpOnClickListeners(view);
 
         return view;
     }
