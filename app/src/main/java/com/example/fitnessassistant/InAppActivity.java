@@ -117,13 +117,21 @@ public class InAppActivity extends AppCompatActivity {
     private final FragmentManager fm = getSupportFragmentManager();
     // and setting the currently active fragment as home
     private Fragment active;
-    // listener for SharedPreferences - used for Updating UI
+    // listeners for SharedPreferences - used for Updating UI
     public final SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         if(key.equals("pedometerDataChanged")){
             if(homeFragment != null && pedometerFragment != null && personalBestsFragment != null) {
                 homeFragment.updateStepsData(null);
                 pedometerFragment.updateStepsData(null);
                 personalBestsFragment.updateStepsData(null);
+            }
+        }
+    };
+    public final SharedPreferences.OnSharedPreferenceChangeListener listener1 = (sharedPreferences, key) -> {
+        if(key.equals("nutritionGoalsChanged")){
+            if(diaryFragment != null && homeFragment != null) {
+                diaryFragment.updateNutritionData(null);
+                homeFragment.updateNutritionData(null);
             }
         }
     };
@@ -556,6 +564,7 @@ public class InAppActivity extends AppCompatActivity {
         flash.setRepeatCount(Animation.INFINITE);
         findViewById(R.id.notification).startAnimation(flash);
 
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(listener1);
         getSharedPreferences("pedometer", MODE_PRIVATE).registerOnSharedPreferenceChangeListener(listener);
 
         if(ServiceFunctional.getPedometerShouldRun(this))

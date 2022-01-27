@@ -88,6 +88,7 @@ public class SettingsFragment extends Fragment {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(InAppActivity.backupFragment.listener);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(((InAppActivity) context).listener1);
         String lang = sharedPreferences.getString("langPref", "sys");
         String mode = sharedPreferences.getString("mode", "none");
         SharedPreferences.Editor editor = sharedPreferences.edit().clear();
@@ -96,7 +97,7 @@ public class SettingsFragment extends Fragment {
         editor.apply();
 
         sharedPreferences = context.getSharedPreferences("pedometer", Context.MODE_PRIVATE);
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(((InAppActivity)context).listener);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(((InAppActivity) context).listener);
         editor = sharedPreferences.edit().clear();
         editor.apply();
 

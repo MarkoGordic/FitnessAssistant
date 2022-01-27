@@ -81,6 +81,15 @@ public class HomePageFragment extends Fragment {
         }
     }
 
+    public void updateNutritionData(View view){
+        if(view == null)
+            view = getView();
+
+        if(view != null){
+            // TODO
+        }
+    }
+
     @SuppressLint("DefaultLocale")
     private void setUpClock(View view){
         ClockView clock = view.findViewById(R.id.clock);

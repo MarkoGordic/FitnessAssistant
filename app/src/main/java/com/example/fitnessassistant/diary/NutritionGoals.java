@@ -3,6 +3,7 @@ package com.example.fitnessassistant.diary;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.activitytracker.LocationService;
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionGoals;
 import com.example.fitnessassistant.questions.BirthdayFragment;
 import com.example.fitnessassistant.questions.HeightFragment;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
@@ -30,8 +33,38 @@ import com.example.fitnessassistant.questions.WeightFragment;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 public class NutritionGoals extends Fragment {
+    public synchronized static void putUnsavedNutritionGoals(Context context){
+        // getting last date saved in db
+        String date = MDBHNutritionGoals.getInstance(context).findLatestDayInDB();
+
+        if(date == null) {
+            try {
+                date = (String) DateFormat.format("yyyyMMdd", context.getPackageManager().getPackageInfo(context.getPackageName(), 0).firstInstallTime);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(date != null) {
+            int latestDate = Integer.parseInt(date);
+
+            int latestDay = latestDate % 100;
+            latestDate /= 100;
+            int latestMonth = latestDate % 100;
+            latestDate /= 100;
+            int latestYear = latestDate;
+
+            for(LocalDate localDate = LocalDate.of(latestYear, latestMonth, latestDay); localDate.isBefore(LocalDateTime.ofInstant(Calendar.getInstance().toInstant(), Calendar.getInstance().getTimeZone().toZoneId()).toLocalDate()); localDate = localDate.plusDays(1))
+                MDBHNutritionGoals.getInstance(context).putNutritionGoalsData(context, localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")), getCaloriesGoal(context), getCarbsGoal(context), getFatGoal(context), getProteinGoal(context));
+        }
+    }
+
     public synchronized static void setCaloriesGoal(Context context, float calsGoal){
         PreferenceManager.getDefaultSharedPreferences(context).edit().putFloat("caloriesGoal", calsGoal).apply();
     }

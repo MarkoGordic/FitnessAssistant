@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 
@@ -45,7 +46,7 @@ public class MDBHNutritionGoals extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public void putNutritionGoalsData(String date, Float calories, Float carbs, Float fat, Float protein){
+    public void putNutritionGoalsData(Context context, String date, Float calories, Float carbs, Float fat, Float protein){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -54,6 +55,10 @@ public class MDBHNutritionGoals extends SQLiteOpenHelper {
         cv.put(COLUMN_CARBS, carbs);
         cv.put(COLUMN_FAT, fat);
         cv.put(COLUMN_PROTEIN, protein);
+
+        // this will surely trigger live update
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("nutritionGoalsChanged", true).apply();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("nutritionGoalsChanged", false).apply();
 
         // now we need to determine do we need to update old data or insert new
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_DATE + " = " + date;

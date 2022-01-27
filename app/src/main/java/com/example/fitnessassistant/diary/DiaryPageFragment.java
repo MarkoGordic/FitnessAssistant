@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.adapters.SearchAdapter;
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionGoals;
 import com.example.fitnessassistant.nutritiontracker.APISearch;
 import com.example.fitnessassistant.nutritiontracker.BarcodeScanner;
 import com.example.fitnessassistant.nutritiontracker.Product;
@@ -42,6 +43,7 @@ import com.example.fitnessassistant.util.EndlessScrollListener;
 import com.example.fitnessassistant.util.PermissionFunctional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -94,6 +96,34 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             shouldRestoreState.set(true);
             requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product)).addToBackStack(null).commit();
         }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void setUpCalories(View view){
+        float caloriesGoal;
+        if(currentDay.getYear() == Calendar.getInstance().get(Calendar.YEAR) && currentDay.getDayOfYear() == Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
+            caloriesGoal = Math.round(NutritionGoals.getCaloriesGoal(requireActivity()));
+        else
+            caloriesGoal = MDBHNutritionGoals.getInstance(requireActivity()).readCaloriesForDate(currentDay.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
+        // TODO change remaining also
+        if (UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
+            ((TextView) view.findViewById(R.id.unitRemaining)).setText(requireActivity().getString(R.string.kilojoules_remaining));
+
+            if(caloriesGoal != -1)
+                ((TextView) view.findViewById(R.id.goalCalories)).setText(String.format("%.1f", Math.round(caloriesGoal) * 4.184f));
+            else
+                ((TextView) view.findViewById(R.id.goalCalories)).setText("?");
+        } else {
+            ((TextView) view.findViewById(R.id.unitRemaining)).setText(requireActivity().getString(R.string.calories_remaining));
+
+            if(caloriesGoal != -1)
+                ((TextView) view.findViewById(R.id.goalCalories)).setText(String.format("%d", Math.round(caloriesGoal)));
+            else
+                ((TextView) view.findViewById(R.id.goalCalories)).setText("?");
+        }
+        ((TextView) view.findViewById(R.id.intakeCalories)).setText("?");
+        ((TextView) view.findViewById(R.id.remainingCalories)).setText("?");
     }
 
     private void subscribeToObservers(View view){
@@ -232,8 +262,21 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         });
 
         view.findViewById(R.id.dayBefore).setOnClickListener(v -> {
-            currentDay = currentDay.minusDays(1);
-            setUpCurrentDay(view);
+            Calendar cal = Calendar.getInstance();
+
+            try {
+                cal.setTimeInMillis(requireActivity().getPackageManager().getPackageInfo(requireActivity().getPackageName(), 0).firstInstallTime);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            if (currentDay.getYear() > cal.get(Calendar.YEAR) ||
+                    (currentDay.getYear() == cal.get(Calendar.YEAR) && currentDay.getMonthValue() > cal.get(Calendar.MONTH) + 1) ||
+                    (currentDay.getYear() == cal.get(Calendar.YEAR) && currentDay.getMonthValue() == cal.get(Calendar.MONTH) + 1 && currentDay.getDayOfMonth() > cal.get(Calendar.DAY_OF_MONTH))) {
+                currentDay = currentDay.minusDays(1);
+                setUpCurrentDay(view);
+                setUpCalories(view);
+            }
         });
 
         view.findViewById(R.id.dayAfter).setOnClickListener(v -> {
@@ -242,6 +285,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                     (currentDay.getYear() == Calendar.getInstance().get(Calendar.YEAR) && currentDay.getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1) && currentDay.getDayOfMonth() < Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
                 currentDay = currentDay.plusDays(1);
                 setUpCurrentDay(view);
+                setUpCalories(view);
             }
         });
 
@@ -290,33 +334,22 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         return view;
     }
 
-    @SuppressLint("DefaultLocale")
+    public void updateNutritionData(View view){
+        if(view == null)
+            view = getView();
+
+        if(view != null){
+            currentDay = LocalDate.now();
+            setUpCurrentDay(view);
+            setUpCalories(view);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         if(getView() != null) {
-            // TODO change remaining also
-            if (UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
-                ((TextView) getView().findViewById(R.id.unitRemaining)).setText(requireActivity().getString(R.string.kilojoules_remaining));
-
-                if(NutritionGoals.getCaloriesGoal(requireActivity()) != -1)
-                    ((TextView) getView().findViewById(R.id.goalCalories)).setText(String.format("%d", Math.round(NutritionGoals.getCaloriesGoal(requireActivity()) * 4.184f)));
-                else
-                    ((TextView) getView().findViewById(R.id.goalCalories)).setText("?");
-
-                ((TextView) getView().findViewById(R.id.intakeCalories)).setText("?");
-                ((TextView) getView().findViewById(R.id.remainingCalories)).setText("?");
-            } else {
-                ((TextView) getView().findViewById(R.id.unitRemaining)).setText(requireActivity().getString(R.string.calories_remaining));
-
-                if(NutritionGoals.getCaloriesGoal(requireActivity()) != -1)
-                    ((TextView) getView().findViewById(R.id.goalCalories)).setText(String.format("%d", Math.round(NutritionGoals.getCaloriesGoal(requireActivity()))));
-                else
-                    ((TextView) getView().findViewById(R.id.goalCalories)).setText("?");
-
-                ((TextView) getView().findViewById(R.id.intakeCalories)).setText("?");
-                ((TextView) getView().findViewById(R.id.remainingCalories)).setText("?");
-            }
+            setUpCalories(getView());
         }
     }
 }

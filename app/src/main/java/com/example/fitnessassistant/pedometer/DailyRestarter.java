@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
+import com.example.fitnessassistant.diary.NutritionGoals;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.ServiceFunctional;
 
@@ -22,6 +23,9 @@ public class DailyRestarter extends BroadcastReceiver {
 
         // putting step goal for previous day
         StepGoalFragment.putUnsavedStepGoals(updatedContext);
+
+        // putting nutrition goal for previous day
+        NutritionGoals.putUnsavedNutritionGoals(updatedContext);
 
         // updating widget and pedometer with today's data
         Pedometer.updatePedometerWidgetData(updatedContext ,((int) MDBHPedometer.getInstance(updatedContext).readPedometerSteps(getCurrentDateFormatted())), null);
