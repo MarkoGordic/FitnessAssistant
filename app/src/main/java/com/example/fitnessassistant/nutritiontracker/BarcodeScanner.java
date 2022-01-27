@@ -3,6 +3,7 @@ package com.example.fitnessassistant.nutritiontracker;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
@@ -22,15 +23,15 @@ import androidx.fragment.app.Fragment;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.diary.DiaryPageFragment;
 import com.example.fitnessassistant.util.AuthFunctional;
-import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+@SuppressWarnings("deprecation")
 public class BarcodeScanner extends Fragment {
-    public CameraSource cameraSource;
+    public com.example.fitnessassistant.nutritiontracker.CameraSource cameraSource;
     private ToneGenerator toneGenerator;
     private boolean performingSearch;
 
@@ -47,13 +48,13 @@ public class BarcodeScanner extends Fragment {
                 if(flashOn){
                     flashOn = false;
                     ((AppCompatImageButton) v).setImageResource(R.drawable.flash_off);
-                    // TODO turn off flash
+                    cameraSource.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                 } else{
                     flashOn = true;
                     ((AppCompatImageButton) v).setImageResource(R.drawable.flash_on);
-                    // TODO turn on flash
+                    cameraSource.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    }
                 }
-            }
         });
 
         performingSearch = false;
@@ -79,9 +80,9 @@ public class BarcodeScanner extends Fragment {
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
 
-        cameraSource = new CameraSource.Builder(requireContext(), barcodeDetector)
+        cameraSource = new CameraSource.Builder(requireActivity(), barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
-                .setAutoFocusEnabled(true)
+                .setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)
                 .build();
 
         ((SurfaceView)view.findViewById(R.id.surface_view)).getHolder().addCallback(new SurfaceHolder.Callback() {

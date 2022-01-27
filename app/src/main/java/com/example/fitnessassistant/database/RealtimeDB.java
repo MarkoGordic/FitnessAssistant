@@ -46,10 +46,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class RealtimeDB {
-    public static void enablePersistence(){
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-    }
-
     // method for adding new user to database
     public static void registerNewUser(){
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -100,12 +96,10 @@ public class RealtimeDB {
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             DatabaseReference db = FirebaseDatabase.getInstance("https://fitness-assistant-app-default-rtdb.europe-west1.firebasedatabase.app").getReference("users");
 
-            db.child(userID).child("backup").get().addOnCompleteListener(task -> {
-                if (!task.isSuccessful()){
-                    Log.e("Firebase", "Error getting data", task.getException());
-                } else {
-                    DataSnapshot dataSnapshot = task.getResult();
-                    BackupStatus data = dataSnapshot.getValue(BackupStatus.class);
+            db.child(userID).child("backup").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    BackupStatus data = snapshot.getValue(BackupStatus.class);
 
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -118,6 +112,11 @@ public class RealtimeDB {
                         // TODO Add other backups here when added
                     }
                     editor.apply();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
                 }
             });
         }
