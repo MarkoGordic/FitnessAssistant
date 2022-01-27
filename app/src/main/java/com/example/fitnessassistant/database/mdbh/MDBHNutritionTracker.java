@@ -360,7 +360,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public ArrayList<Product> getBreakfastProducts(String date){
-        String query = "SELECT " + MEALS_COLUMN_PRODUCTS + " FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + BREAKFAST;
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + BREAKFAST;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Product> data = null;
 
@@ -383,7 +383,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public ArrayList<Product> getLunchProducts(String date){
-        String query = "SELECT " + MEALS_COLUMN_PRODUCTS + " FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + LUNCH;
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + LUNCH;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Product> data = null;
 
@@ -406,7 +406,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public ArrayList<Product> getDinnerProducts(String date){
-        String query = "SELECT " + MEALS_COLUMN_PRODUCTS + " FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + DINNER;
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + DINNER;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Product> data = null;
 
@@ -429,7 +429,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public ArrayList<Product> getSnackProducts(String date){
-        String query = "SELECT " + MEALS_COLUMN_PRODUCTS + " FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + SNACK;
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + SNACK;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Product> data = null;
 
@@ -452,7 +452,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public ArrayList<Float> getBreakfastQuantities(String date){
-        String query = "SELECT " + MEALS_COLUMN_QUANTITY + " FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + BREAKFAST;
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + BREAKFAST;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Float> data = null;
 
@@ -475,7 +475,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public ArrayList<Float> getLunchQuantities(String date){
-        String query = "SELECT " + MEALS_COLUMN_QUANTITY + " FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + LUNCH;
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + LUNCH;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Float> data = null;
 
@@ -498,7 +498,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public ArrayList<Float> getDinnerQuantities(String date){
-        String query = "SELECT " + MEALS_COLUMN_QUANTITY + " FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + DINNER;
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + DINNER;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Float> data = null;
 
@@ -521,7 +521,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     }
 
     public ArrayList<Float> getSnackQuantities(String date){
-        String query = "SELECT " + MEALS_COLUMN_QUANTITY + " FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + SNACK;
+        String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + SNACK;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Float> data = null;
 
