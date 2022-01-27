@@ -51,7 +51,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void addNewProduct(String name, String nutriments, String barcode, String brands){
+    public void addNewProduct(int id, String name, String nutriments, String barcode, String brands){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -60,7 +60,28 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         cv.put(PRODUCTS_COLUMN_BARCODE, barcode);
         cv.put(PRODUCTS_COLUMN_BRANDS, brands);
 
-        long result = db.insert(PRODUCTS_TABLE_NAME, null, cv);
+        // now we need to determine does old data exists
+        String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_ID + " = " + id;
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean dataExists = false;
+
+        if(dbRead != null){
+            cursor = dbRead.rawQuery(query, null);
+        }
+
+        if(cursor != null)
+            if(cursor.getCount() > 0) {
+                cursor.close();
+                dataExists = true;
+            }
+
+        long result;
+
+        if(dataExists) {
+            result = db.update(PRODUCTS_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+        }else
+            result = db.insert(PRODUCTS_TABLE_NAME, null, cv);
 
         if(result == -1)
             System.out.println("Fail! DATABASE");
@@ -756,7 +777,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + PRODUCTS_TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
-        int id = -1;
+        int id = 0;
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
