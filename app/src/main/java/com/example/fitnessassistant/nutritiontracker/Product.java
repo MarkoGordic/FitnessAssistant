@@ -71,8 +71,12 @@ public class Product {
                     if (object.has("product")) {
                         JSONObject product = object.getJSONObject("product");
 
-                        if (object.has("_id"))
+                        if (object.has("_id")) {
                             setBarcode(product.getString("_id"));
+                            // in case we find this product in our local db we will update it to avoid duplicates
+                            if(MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(getBarcode()).size() > 0)
+                                id = MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(getBarcode()).get(0).getId();
+                        }
                         else
                             setBarcode(null);
 

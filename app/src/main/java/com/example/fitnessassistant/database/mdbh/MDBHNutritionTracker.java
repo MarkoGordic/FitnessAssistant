@@ -146,8 +146,22 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 dataExists = true;
             }
 
+        query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + type;
+        boolean barcodeExists = false;
+        cursor = null;
+
+        if(dbRead != null){
+            cursor = dbRead.rawQuery(query, null);
+        }
+
+        if(cursor != null)
+            if(cursor.getCount() > 0) {
+                cursor.close();
+                barcodeExists = true;
+            }
+
         long result;
-        if(dataExists)
+        if(dataExists || barcodeExists)
             result = db.update(MEALS_TABLE_NAME, cv, "date = ? AND type = ?", new String[]{String.valueOf(date), String.valueOf(type)});
         else
             result = db.insert(MEALS_TABLE_NAME, null, cv);
@@ -165,7 +179,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         ArrayList<Product> data = new ArrayList<>();
 
         if(db != null) {
-            Cursor cursor = db.rawQuery(query, new String[]{searchTerm});
+            Cursor cursor = db.rawQuery(query, new String[]{"%" + searchTerm + "%"});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do{
