@@ -87,24 +87,25 @@ public class BarcodeScanner extends Fragment {
         ((SurfaceView)view.findViewById(R.id.surface_view)).getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder holder) {
-                try {
-                    if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
-                        cameraSource.start(holder);
+                requireActivity().runOnUiThread(() -> {
+                    if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        try {
+                            cameraSource.start(holder);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     else
                         requireActivity();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                });
             }
 
             @Override
-            public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-
-            }
+            public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) { }
 
             @Override
             public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
-                cameraSource.stop();
+                requireActivity().runOnUiThread(() -> cameraSource.stop());
             }
         });
 
@@ -121,11 +122,14 @@ public class BarcodeScanner extends Fragment {
 
                     if(!performingSearch) {
                         performingSearch = true;
-                        cameraSource.stop();
-                        DiaryPageFragment.shouldReceiveProducts.set(true);
-                        APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false, 1);
+                        requireActivity().runOnUiThread(() -> {
+                            cameraSource.stop();
 
-                        requireActivity().onBackPressed();
+                            DiaryPageFragment.shouldReceiveProducts.set(true);
+                            APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false, 1);
+
+                            requireActivity().onBackPressed();
+                        });
                     }
                 }
             }
