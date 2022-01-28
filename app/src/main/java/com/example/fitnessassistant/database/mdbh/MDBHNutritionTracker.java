@@ -79,7 +79,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         long result;
 
         if(dataExists) {
-            result = db.update(PRODUCTS_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+            result = db.update(PRODUCTS_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
         }else
             result = db.insert(PRODUCTS_TABLE_NAME, null, cv);
 
