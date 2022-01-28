@@ -495,7 +495,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
-                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY));
                 StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
                 while(stringTokenizer.hasMoreElements()){
                     data.add(Float.parseFloat(stringTokenizer.nextToken()));
@@ -517,7 +517,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
-                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY));
                 StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
                 while(stringTokenizer.hasMoreElements()){
                     data.add(Float.parseFloat(stringTokenizer.nextToken()));
@@ -539,7 +539,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
-                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY));
                 StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
                 while(stringTokenizer.hasMoreElements()){
                     data.add(Float.parseFloat(stringTokenizer.nextToken()));
@@ -561,7 +561,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
 
             if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
-                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
+                String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY));
                 StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
                 while(stringTokenizer.hasMoreElements()){
                     data.add(Float.parseFloat(stringTokenizer.nextToken()));
