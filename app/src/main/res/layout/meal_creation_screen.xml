@@ -424,6 +424,21 @@
                             android:textColor="@color/InvertedBackgroundColor"
                             android:textFontWeight="600"
                             android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/carbCalories"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
                     </LinearLayout>
                 </RelativeLayout>
                 <View
@@ -560,6 +575,20 @@
                             android:textColor="@color/InvertedBackgroundColor"
                             android:textFontWeight="600"
                             android:textSize="17sp" />
+                        <TextView
+                            android:id="@+id/fatCalories"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
                     </LinearLayout>
                 </RelativeLayout>
                 <View
@@ -628,6 +657,20 @@
                             android:textColor="@color/InvertedBackgroundColor"
                             android:textFontWeight="600"
                             android:textSize="17sp" />
+                        <TextView
+                            android:id="@+id/proteinCalories"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="@font/roboto_light"
+
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/InvertedBackgroundColor"
+                            android:textFontWeight="600"
+                            android:textSize="17sp" />
                     </LinearLayout>
                 </RelativeLayout>
                 <View
@@ -635,6 +678,29 @@
                     android:layout_height="5dp"
 
                     android:background="@color/LightGrayColor"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/totalCalories"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:layout_marginStart="4dp"
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="center_vertical"
+                        android:padding="20dp"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/InvertedBackgroundColor"
+                        android:textFontWeight="600"
+                        android:textSize="17sp" />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

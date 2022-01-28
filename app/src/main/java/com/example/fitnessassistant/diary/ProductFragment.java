@@ -247,9 +247,14 @@ public class ProductFragment extends Fragment {
             ((TextView) view.findViewById(R.id.caloriesAmount)).setText(String.format("%.1f", kilojoules));
             ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%.1f", kilojoules));
             ((TextView) view.findViewById(R.id.energyUnit)).setText(requireActivity().getString(R.string.kj));
+            ((TextView) view.findViewById(R.id.energyUnit1)).setText(requireActivity().getString(R.string.kilojoules));
+            ((TextView) view.findViewById(R.id.energyUnit2)).setText(requireActivity().getString(R.string.kilojoules));
         } else{
             ((TextView) view.findViewById(R.id.caloriesAmount)).setText(String.format("%d", Math.round(totalKcal)));
             ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%d", Math.round(totalKcal)));
+            ((TextView) view.findViewById(R.id.energyUnit)).setText(requireActivity().getString(R.string.cal));
+            ((TextView) view.findViewById(R.id.energyUnit1)).setText(requireActivity().getString(R.string.calories));
+            ((TextView) view.findViewById(R.id.energyUnit2)).setText(requireActivity().getString(R.string.calories));
         }
 
         ((TextView) view.findViewById(R.id.carbsAmount)).setText(String.format("%.1fg", carbs));

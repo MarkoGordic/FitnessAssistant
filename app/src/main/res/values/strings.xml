@@ -532,4 +532,5 @@
     <string name="add_product">Add Product</string>
     <string name="_100">100</string>
     <string name="field_cannot_be_empty">Field Can\'t Be Empty</string>
+    <string name="sugar_content_error">Sugar Content Can\'t Be Higher Than Carbs Content</string>
 </resources>
