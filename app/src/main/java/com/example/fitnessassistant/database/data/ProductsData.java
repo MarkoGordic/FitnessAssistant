@@ -20,14 +20,12 @@ public class ProductsData {
         List<String> newData = new ArrayList<>();
 
         for(int i = 0; i < data.size(); i++) {
-            System.out.println(data.get(i).getName() + data.get(i).getId() + " DEKI SMEKI");
             String product =
                     data.get(i).getId() + "#" +
                     data.get(i).getName() + "#" +
                     data.get(i).getBrands() + "#" +
                     data.get(i).getBarcode() + "#" +
                     data.get(i).nutrimentsToDBString();
-            System.out.println(product + "DEKISA");
             newData.add(product);
         }
 

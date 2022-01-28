@@ -44,7 +44,7 @@
 
             android:layout_alignBottom="@id/backButton"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@id/forwardButton"
+            android:layout_toStartOf="@id/deleteButton"
             android:layout_toEndOf="@id/backButton"
             android:background="@color/backgroundColor"
 
@@ -57,6 +57,29 @@
             android:textColor="@color/SpaceCadet"
             android:textFontWeight="600"
             android:textSize="21sp" />
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@id/forwardButton"
+
+            android:background="@color/backgroundColor"
+            android:contentDescription="@null"
+
+            android:paddingStart="4dp"
+            android:paddingTop="28dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="4dp"
+
+            android:scaleX="0.75"
+            android:scaleY="0.75"
+            android:src="@drawable/trash"
+            app:tint="@color/SpaceCadet"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/forwardButton"
@@ -72,7 +95,7 @@
 
             android:paddingStart="4dp"
             android:paddingTop="28dp"
-            android:paddingEnd="28dp"
+            android:paddingEnd="16dp"
             android:paddingBottom="4dp"
 
             android:scaleX="0.75"
@@ -80,16 +103,17 @@
             android:src="@drawable/check"
             app:tint="@color/SpaceCadet"
             tools:ignore="SpeakableTextPresentCheck" />
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="2dp"
 
+            android:layout_below="@id/backButton"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_below="@id/backButton"
             android:layout_marginTop="10dp"
 
-            android:background="@color/LightGrayColor"/>
+            android:background="@color/LightGrayColor" />
     </RelativeLayout>
 
     <ScrollView
@@ -243,6 +267,24 @@
 
                     android:stateListAnimator="@xml/spinner_sla"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/dateChosen"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/roboto_light"
+                    android:padding="20dp"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/SpaceCadet"
+                    android:textFontWeight="600"
+                    android:textSize="17sp"
+                    tools:ignore="RelativeOverlap" />
             </RelativeLayout>
 
             <View
@@ -900,7 +942,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
 
-                    android:background="@color/LightGrayColor"/>
+                    android:background="@color/LightGrayColor"
+                    tools:ignore="TooManyViews"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
@@ -919,8 +962,7 @@
                         android:text="@string/calories"
                         android:textColor="@color/InvertedBackgroundColor"
                         android:textFontWeight="600"
-                        android:textSize="17sp"
-                        tools:ignore="TooManyViews"/>
+                        android:textSize="17sp" />
 
                     <TextView
                         android:id="@+id/caloriesAmount1"

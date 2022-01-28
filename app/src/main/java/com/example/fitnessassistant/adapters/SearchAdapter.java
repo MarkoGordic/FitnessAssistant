@@ -1,5 +1,7 @@
 package com.example.fitnessassistant.adapters;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.nutritiontracker.Product;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 
 import java.util.ArrayList;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder>{
 
+    private final Context context;
     private final ArrayList<Product> products;
     private final OnItemListener listener;
 
-    public SearchAdapter(ArrayList<Product> products, OnItemListener listener){
+    public SearchAdapter(Context context, ArrayList<Product> products, OnItemListener listener){
+        this.context = context;
         this.products = products;
         this.listener = listener;
     }
@@ -30,11 +35,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         return new SearchViewHolder(listener, inflater.inflate(R.layout.product_field, parent, false));
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         holder.productName.setText(products.get(holder.getAdapterPosition()).getName());
         holder.brandName.setText(products.get(holder.getAdapterPosition()).getBrands());
-        holder.calorieAmount.setText(String.valueOf(Math.round(products.get(holder.getAdapterPosition()).getEnergy_kcal_100g())));
+        if(UnitPreferenceFragment.getEnergyUnit(context).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
+            holder.calorieAmount.setText(String.format("%.1f", Math.round(products.get(holder.getAdapterPosition()).getEnergy_kcal_100g()) * 4.184f));
+        else
+            holder.calorieAmount.setText(String.format("%d", Math.round(products.get(holder.getAdapterPosition()).getEnergy_kcal_100g())));
     }
 
     @Override

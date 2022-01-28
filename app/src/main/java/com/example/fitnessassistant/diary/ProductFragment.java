@@ -1,5 +1,6 @@
 package com.example.fitnessassistant.diary;
 
+import static com.example.fitnessassistant.diary.NutritionGoals.getFloat;
 import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -40,13 +41,18 @@ import com.example.fitnessassistant.util.PieView;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 public class ProductFragment extends Fragment {
     private final Product product;
+    private final float initAmountChosen;
     private float amountChosen;
     private final int mealType;
     private final LocalDate localDate;
+    private final boolean edit;
     private CustomSpinner spinner;
     private CustomSpinner dateSpinner;
 
@@ -55,11 +61,15 @@ public class ProductFragment extends Fragment {
             quantity = 100f;
         if(mealType == null)
             mealType = -1;
-        if(localDate == null)
+        if(localDate == null) {
             localDate = LocalDate.now();
+            edit = false;
+        } else
+            edit = true;
 
         this.product = product;
         this.amountChosen = quantity;
+        this.initAmountChosen = quantity;
         this.mealType = mealType;
         this.localDate = localDate;
     }
@@ -254,7 +264,7 @@ public class ProductFragment extends Fragment {
     @SuppressLint("DefaultLocale")
     private void setUpProductView(View view, float gramsChosen){
         amountChosen = gramsChosen / 100f;
-        ((TextView) view.findViewById(R.id.amountChosen)).setText(String.format("%.3f", gramsChosen));
+        ((TextView) view.findViewById(R.id.amountChosen)).setText(String.format("%.2f", gramsChosen));
         setProductMacros(view, amountChosen);
         setProductDetails(view, amountChosen);
     }
@@ -316,32 +326,138 @@ public class ProductFragment extends Fragment {
                 if(input.getText().toString().isEmpty()){
                     Toast.makeText(requireActivity(), R.string.amount_cannot_be_empty, Toast.LENGTH_SHORT).show();
                 } else{
-                    float amount = Float.parseFloat(input.getText().toString());
+                    float amount = getFloat(input.getText().toString());
                     // if amount is more than 20 % of user's weight
                     if(amount / 1000f > 0.2f * ((WeightFragment.getLastDailyAverage(requireActivity()) == -1f) ? WeightFragment.getWorldwideAverageWeight(requireActivity()) : WeightFragment.getLastDailyAverage(requireActivity())))
                         Toast.makeText(requireActivity(), R.string.amount_probably_not_that_large, Toast.LENGTH_SHORT).show();
                     else {
                         dialog.dismiss();
-                        setUpProductView(view, Float.parseFloat(input.getText().toString()));
+                        setUpProductView(view, getFloat(input.getText().toString()));
                     }
                 }
             });
         });
 
         view.findViewById(R.id.forwardButton).setOnClickListener(v -> {
-            int daysBefore = dateSpinner.getSelectedItemPosition();
-            LocalDate date = LocalDate.now();
-            date = date.minusDays(daysBefore);
+            if(edit) {
+                String dateFormatted = (String) DateFormat.format("yyyyMMdd", Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
-            String dateFormatted = (String) DateFormat.format("yyyyMMdd", Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                if (spinner.getSelectedItemPosition() > 0 && spinner.getSelectedItemPosition() < 5) {
 
-            if (spinner.getSelectedItemPosition() > 0 && spinner.getSelectedItemPosition() < 5) {
-                MDBHNutritionTracker.getInstance(requireActivity()).addNewProduct(product.getId(), product.getName(), product.nutrimentsToDBString(), product.getBarcode(), product.getBrands());
-                InAppActivity.diaryFragment.putProduct(product, amountChosen, dateFormatted, spinner.getSelectedItemPosition() + 100);
-            } else
-                Toast.makeText(requireActivity(), R.string.select_a_meal, Toast.LENGTH_SHORT).show();
+                    ArrayList<Product> products;
+                    ArrayList<Float> quantities;
+                    List<Integer> productIds = new ArrayList<>();
+                    int newMealType = spinner.getSelectedItemPosition() + 100;
 
-            requireActivity().onBackPressed();
+                    switch(mealType){
+                        case MDBHNutritionTracker.BREAKFAST:
+                            products = MDBHNutritionTracker.getInstance(requireActivity()).getBreakfastProducts(dateFormatted);
+                            quantities = MDBHNutritionTracker.getInstance(requireActivity()).getBreakfastQuantities(dateFormatted);
+
+                            for(Product p : products)
+                                productIds.add(p.getId());
+
+                            for(int i = 0; i < products.size(); i++){
+                                Product currProduct = products.get(i);
+                                int id  = currProduct.getId();
+                                float qu = quantities.get(i);
+
+                                if(id == product.getId() && qu == initAmountChosen / 100f){
+                                    productIds.remove(i);
+                                    quantities.remove(i);
+                                    // removed meal from previous mealType
+                                    MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIds, quantities);
+                                    InAppActivity.diaryFragment.putProduct(currProduct, amountChosen, dateFormatted, newMealType);
+                                    break;
+                                }
+                            }
+                            break;
+                        case MDBHNutritionTracker.LUNCH:
+                            products = MDBHNutritionTracker.getInstance(requireActivity()).getLunchProducts(dateFormatted);
+                            quantities = MDBHNutritionTracker.getInstance(requireActivity()).getLunchQuantities(dateFormatted);
+
+                            for(Product p : products)
+                                productIds.add(p.getId());
+
+                            for(int i = 0; i < products.size(); i++){
+                                Product currProduct = products.get(i);
+                                int id  = currProduct.getId();
+                                float qu = quantities.get(i);
+
+                                if(id == product.getId() && qu == initAmountChosen / 100f){
+                                    productIds.remove(i);
+                                    quantities.remove(i);
+                                    // removed meal from previous mealType
+                                    MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIds, quantities);
+                                    InAppActivity.diaryFragment.putProduct(currProduct, amountChosen, dateFormatted, newMealType);
+                                    break;
+                                }
+                            }
+                            break;
+                        case MDBHNutritionTracker.DINNER:
+                            products = MDBHNutritionTracker.getInstance(requireActivity()).getDinnerProducts(dateFormatted);
+                            quantities = MDBHNutritionTracker.getInstance(requireActivity()).getDinnerQuantities(dateFormatted);
+
+                            for(Product p : products)
+                                productIds.add(p.getId());
+
+                            for(int i = 0; i < products.size(); i++){
+                                Product currProduct = products.get(i);
+                                int id  = currProduct.getId();
+                                float qu = quantities.get(i);
+
+                                if(id == product.getId() && qu == initAmountChosen / 100f){
+                                    productIds.remove(i);
+                                    quantities.remove(i);
+                                    // removed meal from previous mealType
+                                    MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIds, quantities);
+                                    InAppActivity.diaryFragment.putProduct(currProduct, amountChosen, dateFormatted, newMealType);
+                                    break;
+                                }
+                            }
+                            break;
+                        case MDBHNutritionTracker.SNACK:
+                            products = MDBHNutritionTracker.getInstance(requireActivity()).getSnackProducts(dateFormatted);
+                            quantities = MDBHNutritionTracker.getInstance(requireActivity()).getSnackQuantities(dateFormatted);
+
+                            for(Product p : products)
+                                productIds.add(p.getId());
+
+                            for(int i = 0; i < products.size(); i++){
+                                Product currProduct = products.get(i);
+                                int id  = currProduct.getId();
+                                float qu = quantities.get(i);
+
+                                if(id == product.getId() && qu == initAmountChosen / 100f){
+                                    productIds.remove(i);
+                                    quantities.remove(i);
+                                    // removed meal from previous mealType
+                                    MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIds, quantities);
+                                    InAppActivity.diaryFragment.putProduct(currProduct, amountChosen, dateFormatted, newMealType);
+                                    break;
+                                }
+                            }
+                            break;
+                    }
+
+                    requireActivity().onBackPressed();
+                } else
+                    Toast.makeText(requireActivity(), R.string.select_a_meal, Toast.LENGTH_SHORT).show();
+            } else {
+                int daysBefore = dateSpinner.getSelectedItemPosition();
+                LocalDate date = LocalDate.now();
+                date = date.minusDays(daysBefore);
+
+                String dateFormatted = (String) DateFormat.format("yyyyMMdd", Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+                if (spinner.getSelectedItemPosition() > 0 && spinner.getSelectedItemPosition() < 5) {
+                    MDBHNutritionTracker.getInstance(requireActivity()).addNewProduct(product.getId(), product.getName(), product.nutrimentsToDBString(), product.getBarcode(), product.getBrands());
+                    InAppActivity.diaryFragment.putProduct(product, amountChosen, dateFormatted, spinner.getSelectedItemPosition() + 100);
+
+                    requireActivity().onBackPressed();
+                } else
+                    Toast.makeText(requireActivity(), R.string.select_a_meal, Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -393,51 +509,168 @@ public class ProductFragment extends Fragment {
                 spinner.setSelection(0);
         }
 
-        LocalDate start = localDate;
-        LocalDate now = LocalDate.now();
-
-        try {
-            start = Instant.ofEpochMilli(requireActivity().getPackageManager().getPackageInfo(requireActivity().getPackageName(), 0).firstInstallTime).atZone(ZoneId.systemDefault()).toLocalDate();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        String[] dates = new String[(int) DAYS.between(start, now) + 1];
-        int indexSelected = 0;
-
-        int i = 0;
-        for(; now.atStartOfDay().isAfter(start.atStartOfDay()); now = now.minusDays(1), i++){
-            dates[i] = String.format("%02d %s %d", now.getDayOfMonth(), getMonthShort(requireActivity(), now.getMonthValue()), now.getYear());
-            if(now.getYear() == localDate.getYear()
-                && now.getMonthValue() == localDate.getMonthValue()
-                && now.getDayOfMonth() == localDate.getDayOfMonth()){
-                indexSelected = i;
-            }
-        }
-
-        if(i == (int) DAYS.between(start, LocalDate.now())){
-            dates[i] = String.format("%02d %s %d", now.getDayOfMonth(), getMonthShort(requireActivity(), now.getMonthValue()), now.getYear());
-            if(now.getYear() == localDate.getYear()
-                    && now.getMonthValue() == localDate.getMonthValue()
-                    && now.getDayOfMonth() == localDate.getDayOfMonth()){
-                indexSelected = i;
-            }
-        }
-
-        StringSpinnerAdapter adapter1 = new StringSpinnerAdapter(requireActivity(), R.layout.date_spinner_layout, dates);
-        adapter1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-
         dateSpinner = view.findViewById(R.id.dateSpinner);
 
-        dateSpinner.setAdapter(adapter1);
-        dateSpinner.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
-            @Override
-            public void onSpinnerOpened() { spinner.setSelected(true); }
-            @Override
-            public void onSpinnerClosed() { spinner.setSelected(false); }
-        });
+        if(!edit) {
+            LocalDate start = localDate;
+            LocalDate now = LocalDate.now();
 
-        dateSpinner.setSelection(indexSelected);
+            try {
+                start = Instant.ofEpochMilli(requireActivity().getPackageManager().getPackageInfo(requireActivity().getPackageName(), 0).firstInstallTime).atZone(ZoneId.systemDefault()).toLocalDate();
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            String[] dates = new String[(int) DAYS.between(start, now) + 1];
+            int indexSelected = 0;
+
+            int i = 0;
+            for (; now.atStartOfDay().isAfter(start.atStartOfDay()); now = now.minusDays(1), i++) {
+                dates[i] = String.format("%02d %s %d", now.getDayOfMonth(), getMonthShort(requireActivity(), now.getMonthValue()), now.getYear());
+                if (now.getYear() == localDate.getYear()
+                        && now.getMonthValue() == localDate.getMonthValue()
+                        && now.getDayOfMonth() == localDate.getDayOfMonth()) {
+                    indexSelected = i;
+                }
+            }
+
+            if (i == (int) DAYS.between(start, LocalDate.now())) {
+                dates[i] = String.format("%02d %s %d", now.getDayOfMonth(), getMonthShort(requireActivity(), now.getMonthValue()), now.getYear());
+                if (now.getYear() == localDate.getYear()
+                        && now.getMonthValue() == localDate.getMonthValue()
+                        && now.getDayOfMonth() == localDate.getDayOfMonth()) {
+                    indexSelected = i;
+                }
+            }
+
+            StringSpinnerAdapter adapter1 = new StringSpinnerAdapter(requireActivity(), R.layout.date_spinner_layout, dates);
+            adapter1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+            dateSpinner.setAdapter(adapter1);
+            dateSpinner.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
+                @Override
+                public void onSpinnerOpened() {
+                    spinner.setSelected(true);
+                }
+
+                @Override
+                public void onSpinnerClosed() {
+                    spinner.setSelected(false);
+                }
+            });
+
+            dateSpinner.setSelection(indexSelected);
+
+            dateSpinner.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.dateChosen).setVisibility(View.GONE);
+            view.findViewById(R.id.deleteButton).setVisibility(View.GONE);
+        } else{
+            ((TextView) view.findViewById(R.id.dateChosen)).setText(String.format("%02d %s %d", localDate.getDayOfMonth(), getMonthShort(requireActivity(), localDate.getMonthValue()), localDate.getYear()));
+            dateSpinner.setVisibility(View.GONE);
+            view.findViewById(R.id.dateChosen).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.deleteButton).setOnClickListener(v -> {
+                String dateFormatted = (String) DateFormat.format("yyyyMMdd", Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+                ArrayList<Product> products;
+                ArrayList<Float> quantities;
+                Iterator<Product> productIterator;
+                Iterator<Float> floatIterator;
+                List<Integer> productIds = new ArrayList<>();
+                switch(mealType){
+                    case MDBHNutritionTracker.BREAKFAST:
+                        products = MDBHNutritionTracker.getInstance(requireActivity()).getBreakfastProducts(dateFormatted);
+                        quantities = MDBHNutritionTracker.getInstance(requireActivity()).getBreakfastQuantities(dateFormatted);
+                        productIterator = products.iterator();
+                        floatIterator = quantities.iterator();
+
+                        while(productIterator.hasNext() && floatIterator.hasNext()){
+                            int id  = productIterator.next().getId();
+                            float qu = floatIterator.next();
+
+                            if(id == product.getId() && qu == initAmountChosen / 100f){
+                                productIterator.remove();
+                                floatIterator.remove();
+                                break;
+                            }
+                        }
+
+                        for(Product p : products)
+                            productIds.add(p.getId());
+
+                        MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIds, quantities);
+                        break;
+                    case MDBHNutritionTracker.LUNCH:
+                        products = MDBHNutritionTracker.getInstance(requireActivity()).getLunchProducts(dateFormatted);
+                        quantities = MDBHNutritionTracker.getInstance(requireActivity()).getLunchQuantities(dateFormatted);
+                        productIterator = products.iterator();
+                        floatIterator = quantities.iterator();
+
+                        while(productIterator.hasNext() && floatIterator.hasNext()){
+                            int id  = productIterator.next().getId();
+                            float qu = floatIterator.next();
+
+                            if(id == product.getId() && qu == initAmountChosen / 100f){
+                                productIterator.remove();
+                                floatIterator.remove();
+                                break;
+                            }
+                        }
+
+                        for(Product p : products)
+                            productIds.add(p.getId());
+
+                        MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIds, quantities);
+                        break;
+                    case MDBHNutritionTracker.DINNER:
+                        products = MDBHNutritionTracker.getInstance(requireActivity()).getDinnerProducts(dateFormatted);
+                        quantities = MDBHNutritionTracker.getInstance(requireActivity()).getDinnerQuantities(dateFormatted);
+                        productIterator = products.iterator();
+                        floatIterator = quantities.iterator();
+
+                        while(productIterator.hasNext() && floatIterator.hasNext()){
+                            int id  = productIterator.next().getId();
+                            float qu = floatIterator.next();
+
+                            if(id == product.getId() && qu == initAmountChosen / 100f){
+                                productIterator.remove();
+                                floatIterator.remove();
+                                break;
+                            }
+                        }
+
+                        for(Product p : products)
+                            productIds.add(p.getId());
+
+                        MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIds, quantities);
+                        break;
+                    case MDBHNutritionTracker.SNACK:
+                        products = MDBHNutritionTracker.getInstance(requireActivity()).getSnackProducts(dateFormatted);
+                        quantities = MDBHNutritionTracker.getInstance(requireActivity()).getSnackQuantities(dateFormatted);
+                        productIterator = products.iterator();
+                        floatIterator = quantities.iterator();
+
+                        while(productIterator.hasNext() && floatIterator.hasNext()){
+                            int id  = productIterator.next().getId();
+                            float qu = floatIterator.next();
+
+                            if(id == product.getId() && qu == initAmountChosen / 100f){
+                                productIterator.remove();
+                                floatIterator.remove();
+                                break;
+                            }
+                        }
+
+                        for(Product p : products)
+                            productIds.add(p.getId());
+
+                        MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIds, quantities);
+                        break;
+                }
+
+                requireActivity().onBackPressed();
+            });
+            view.findViewById(R.id.deleteButton).setVisibility(View.VISIBLE);
+        }
 
         return view;
     }

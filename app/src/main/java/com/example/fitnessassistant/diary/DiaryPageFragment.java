@@ -80,10 +80,6 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
     private RecyclerView searchRecyclerView;
     private LocalDate currentDay;
     private SearchView searchView;
-    private RecyclerView breakfastRecyclerView;
-    private RecyclerView lunchRecyclerView;
-    private RecyclerView dinnerRecyclerView;
-    private RecyclerView snackRecyclerView;
 
     private EndlessScrollListener listener;
     public static final AtomicBoolean shouldReceiveProducts = new AtomicBoolean(true);
@@ -128,7 +124,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                     listener.noMorePages();
                 } else {
                     if (searchRecyclerView.getAdapter() == null) {
-                        searchRecyclerView.setAdapter(new SearchAdapter(products, this));
+                        searchRecyclerView.setAdapter(new SearchAdapter(requireActivity(), products, this));
                     } else {
                         ((SearchAdapter) searchRecyclerView.getAdapter()).addProducts(products);
                     }
@@ -153,10 +149,10 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
     @SuppressLint("DefaultLocale")
     private void setUpRecyclerViews(View view){
-        breakfastRecyclerView = view.findViewById(R.id.breakfastRecyclerView);
-        lunchRecyclerView = view.findViewById(R.id.lunchRecyclerView);
-        dinnerRecyclerView = view.findViewById(R.id.dinnerRecyclerView);
-        snackRecyclerView = view.findViewById(R.id.snackRecyclerView);
+        RecyclerView breakfastRecyclerView = view.findViewById(R.id.breakfastRecyclerView);
+        RecyclerView lunchRecyclerView = view.findViewById(R.id.lunchRecyclerView);
+        RecyclerView dinnerRecyclerView = view.findViewById(R.id.dinnerRecyclerView);
+        RecyclerView snackRecyclerView = view.findViewById(R.id.snackRecyclerView);
 
         String currDateFormatted = (String) DateFormat.format("yyyyMMdd", Date.from(currentDay.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
@@ -172,11 +168,11 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         it = products.iterator();
         it2 = quantities.iterator();
         while(it.hasNext() && it2.hasNext()){
-            totalBreakfastCals += Math.round(it.next().getEnergy_kcal_100g()) * it2.next();
+            totalBreakfastCals += Math.round(it.next().getEnergy_kcal_100g() * it2.next());
         }
 
         if(!products.isEmpty()){
-            MealAdapter bfMealAdapter = new MealAdapter(products ,quantities,this, MDBHNutritionTracker.BREAKFAST);
+            MealAdapter bfMealAdapter = new MealAdapter(requireActivity(), products ,quantities,this, MDBHNutritionTracker.BREAKFAST, currentDay);
             breakfastRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
                 @Override
                 public boolean supportsPredictiveItemAnimations() {
@@ -186,10 +182,10 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             breakfastRecyclerView.setHasFixedSize(true);
             breakfastRecyclerView.setAdapter(bfMealAdapter);
             breakfastRecyclerView.setVisibility(View.VISIBLE);
-            ((TextView) view.findViewById(R.id.breakfastEmpty)).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.breakfastEmpty).setVisibility(View.INVISIBLE);
         } else{
             breakfastRecyclerView.setVisibility(View.INVISIBLE);
-            ((TextView) view.findViewById(R.id.breakfastEmpty)).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.breakfastEmpty).setVisibility(View.VISIBLE);
         }
 
         products = MDBHNutritionTracker.getInstance(requireActivity()).getLunchProducts(currDateFormatted);
@@ -199,11 +195,11 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         it = products.iterator();
         it2 = quantities.iterator();
         while(it.hasNext() && it2.hasNext()){
-            totalLunchCals += Math.round(it.next().getEnergy_kcal_100g()) * it2.next();
+            totalLunchCals += Math.round(it.next().getEnergy_kcal_100g() * it2.next());
         }
 
         if(!products.isEmpty()){
-            MealAdapter luMealAdapter = new MealAdapter(products ,quantities,this, MDBHNutritionTracker.LUNCH);
+            MealAdapter luMealAdapter = new MealAdapter(requireActivity(), products ,quantities,this, MDBHNutritionTracker.LUNCH, currentDay);
             lunchRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
                 @Override
                 public boolean supportsPredictiveItemAnimations() {
@@ -213,10 +209,10 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             lunchRecyclerView.setHasFixedSize(true);
             lunchRecyclerView.setAdapter(luMealAdapter);
             lunchRecyclerView.setVisibility(View.VISIBLE);
-            ((TextView) view.findViewById(R.id.lunchEmpty)).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.lunchEmpty).setVisibility(View.INVISIBLE);
         } else{
             lunchRecyclerView.setVisibility(View.INVISIBLE);
-            ((TextView) view.findViewById(R.id.lunchEmpty)).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.lunchEmpty).setVisibility(View.VISIBLE);
         }
 
         products = MDBHNutritionTracker.getInstance(requireActivity()).getDinnerProducts(currDateFormatted);
@@ -226,11 +222,11 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         it = products.iterator();
         it2 = quantities.iterator();
         while(it.hasNext() && it2.hasNext()){
-            totalDinnerCals += Math.round(it.next().getEnergy_kcal_100g()) * it2.next();
+            totalDinnerCals += Math.round(it.next().getEnergy_kcal_100g() * it2.next());
         }
 
         if(!products.isEmpty()){
-            MealAdapter diMealAdapter = new MealAdapter(products ,quantities,this, MDBHNutritionTracker.DINNER);
+            MealAdapter diMealAdapter = new MealAdapter(requireActivity(), products ,quantities,this, MDBHNutritionTracker.DINNER, currentDay);
             dinnerRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
                 @Override
                 public boolean supportsPredictiveItemAnimations() {
@@ -240,10 +236,10 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             dinnerRecyclerView.setHasFixedSize(true);
             dinnerRecyclerView.setAdapter(diMealAdapter);
             dinnerRecyclerView.setVisibility(View.VISIBLE);
-            ((TextView) view.findViewById(R.id.dinnerEmpty)).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.dinnerEmpty).setVisibility(View.INVISIBLE);
         } else{
             dinnerRecyclerView.setVisibility(View.INVISIBLE);
-            ((TextView) view.findViewById(R.id.dinnerEmpty)).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.dinnerEmpty).setVisibility(View.VISIBLE);
         }
 
         products = MDBHNutritionTracker.getInstance(requireActivity()).getSnackProducts(currDateFormatted);
@@ -253,11 +249,11 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         it = products.iterator();
         it2 = quantities.iterator();
         while(it.hasNext() && it2.hasNext()){
-            totalSnackCals += Math.round(it.next().getEnergy_kcal_100g()) * it2.next();
+            totalSnackCals += Math.round(it.next().getEnergy_kcal_100g() * it2.next());
         }
 
         if(!products.isEmpty()){
-            MealAdapter snMealAdapter = new MealAdapter(products ,quantities,this, MDBHNutritionTracker.SNACK);
+            MealAdapter snMealAdapter = new MealAdapter(requireActivity(), products ,quantities,this, MDBHNutritionTracker.SNACK, currentDay);
             snackRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
                 @Override
                 public boolean supportsPredictiveItemAnimations() {
@@ -267,10 +263,10 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             snackRecyclerView.setHasFixedSize(true);
             snackRecyclerView.setAdapter(snMealAdapter);
             snackRecyclerView.setVisibility(View.VISIBLE);
-            ((TextView) view.findViewById(R.id.snackEmpty)).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.snackEmpty).setVisibility(View.INVISIBLE);
         } else{
             snackRecyclerView.setVisibility(View.INVISIBLE);
-            ((TextView) view.findViewById(R.id.snackEmpty)).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.snackEmpty).setVisibility(View.VISIBLE);
         }
 
         float caloriesGoal;
@@ -337,8 +333,14 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                 for(Product prod : MDBHNutritionTracker.getInstance(requireActivity()).getLunchProducts(dateFormatted))
                     productIDs.add(prod.getId());
 
+                System.out.println("PREVIOUS: " + productIDs);
+                System.out.println("PREVIOUS QUANTITIES: " + quantities);
+
                 productIDs.add(product.getId());
                 quantities.add(amountChosen);
+
+                System.out.println("PRODUCT: " + product.getId());
+                System.out.println("AMOUNT CHOSEN: " + amountChosen);
 
                 MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIDs, quantities);
                 break;
@@ -544,8 +546,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
     }
 
     @Override // MEAL RECYCLER
-    public void onItemClick(Product product, float quantity, int mealType) {
-        // TODO add flag to customize product fragment for edits
-        requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product, quantity * 100f, mealType, null)).addToBackStack(null).commit();
+    public void onItemClick(Product product, float quantity, int mealType, LocalDate date) {
+        requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product, quantity * 100f, mealType, date)).addToBackStack(null).commit();
     }
 }

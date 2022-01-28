@@ -128,7 +128,7 @@ public class NutritionGoals extends Fragment {
             return true;
     }
 
-    private float getFloat(String str){
+    public static float getFloat(String str){
         float total = 0f;
         try {
             total = Float.parseFloat(str);
