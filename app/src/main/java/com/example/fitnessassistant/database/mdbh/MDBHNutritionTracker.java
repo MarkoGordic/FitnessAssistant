@@ -76,19 +76,22 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 dataExists = true;
             }
 
-        query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_BARCODE + " = " + barcode;
         boolean barcodeExists = false;
-        cursor = null;
+        if(barcode != null){
+            query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_BARCODE + " = " + barcode;
 
-        if(dbRead != null){
-            cursor = dbRead.rawQuery(query, null);
-        }
+            cursor = null;
 
-        if(cursor != null)
-            if(cursor.getCount() > 0) {
-                cursor.close();
-                barcodeExists = true;
+            if(dbRead != null){
+                cursor = dbRead.rawQuery(query, null);
             }
+
+            if(cursor != null)
+                if(cursor.getCount() > 0) {
+                    cursor.close();
+                    barcodeExists = true;
+                }
+        }
 
         long result;
 
