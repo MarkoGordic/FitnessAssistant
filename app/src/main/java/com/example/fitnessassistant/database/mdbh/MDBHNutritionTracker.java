@@ -688,14 +688,14 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                     String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                     StringTokenizer stringTokenizer = new StringTokenizer(products,"#");
                     List<Integer> product_ids = new ArrayList<>();
-                    while (stringTokenizer.hasMoreElements())
+                    while (stringTokenizer.hasMoreTokens())
                         product_ids.add(Integer.parseInt(stringTokenizer.nextToken()));
                     meal.setProductIDs(product_ids);
 
                     String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_QUANTITY));
                     stringTokenizer = new StringTokenizer(quantities,"#");
                     List<Float> product_quantities = new ArrayList<>();
-                    while (stringTokenizer.hasMoreElements())
+                    while (stringTokenizer.hasMoreTokens())
                         product_quantities.add(Float.parseFloat(stringTokenizer.nextToken()));
                     meal.setQuantity(product_quantities);
 

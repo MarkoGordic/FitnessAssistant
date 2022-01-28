@@ -20,10 +20,10 @@ public class MealsData {
             List<Integer> products = data.get(i).getProductIDs();
             List<Float> quantities = data.get(i).getQuantity();
             for(int j = 0; j < products.size(); j++){
-                meal.append(products.get(i).toString());
+                meal.append(products.get(j).toString());
                 meal.append("#");
-                meal.append(quantities.get(i).toString());
-                if(i != data.size() - 1)
+                meal.append(quantities.get(j).toString());
+                if(j != products.size() - 1)
                     meal.append("#");
             }
             newData.add(String.valueOf(meal));

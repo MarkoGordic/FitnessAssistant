@@ -564,10 +564,11 @@ public class RealtimeDB {
                             List<Float> quantities = new ArrayList<>();
 
                             StringTokenizer tokenizer = new StringTokenizer(meal, "#");
+
                             String date = tokenizer.nextToken();
                             int type = Integer.parseInt(tokenizer.nextToken());
 
-                            while(tokenizer.hasMoreElements()){
+                            while(tokenizer.hasMoreTokens()){
                                 productIDs.add(Integer.parseInt(tokenizer.nextToken()));
                                 quantities.add(Float.parseFloat(tokenizer.nextToken()));
                             }
