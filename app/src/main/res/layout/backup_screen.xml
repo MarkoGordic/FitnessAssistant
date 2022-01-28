@@ -358,6 +358,61 @@
             app:trackTint="@color/BlueYonder" />
     </TableRow>
 
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:gravity="center"
+
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+
+        android:layout_marginTop="26dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/ralewayb"
+                android:includeFontPadding="false"
+                android:text="@string/nutrition_data"
+                android:textAlignment="textStart"
+                android:textColor="@color/SpaceCadet"
+                android:textFontWeight="600"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/nutritionBackupDate"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="3dp"
+
+                android:fontFamily="@font/roboto_light"
+                android:includeFontPadding="false"
+                android:textAlignment="textStart"
+                android:textColor="@color/BlueYonder"
+                android:textFontWeight="600"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/nutritionDataSwitch"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+
+            app:thumbTint="@color/DarkBlueYonder"
+            app:trackTint="@color/BlueYonder" />
+    </TableRow>
+
     <View
         android:layout_width="wrap_content"
         android:layout_height="2dp"

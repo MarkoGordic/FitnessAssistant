@@ -519,7 +519,7 @@ public class RealtimeDB {
 
             MealsData data = new MealsData();
 
-            data.setData(MDBHNutritionTracker.getInstance(context).getAllMealsFromDB());
+            data.setDataDB(MDBHNutritionTracker.getInstance(context).getAllMealsFromDB());
 
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -586,7 +586,7 @@ public class RealtimeDB {
 
             ProductsData data = new ProductsData();
 
-            data.setData(MDBHNutritionTracker.getInstance(context).getAllProductsFromDB());
+            data.setDataDB(MDBHNutritionTracker.getInstance(context).getAllProductsFromDB());
 
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -638,7 +638,7 @@ public class RealtimeDB {
                                 nutriments.append(tokenizer.nextToken());
 
                                 if(tokenizer.hasMoreElements())
-                                    nutriments.append('#');
+                                    nutriments.append("#");
                             }
 
                             MDBHNutritionTracker.getInstance(context).forceAddNewProduct(id, name, String.valueOf(nutriments), barcode, brands);

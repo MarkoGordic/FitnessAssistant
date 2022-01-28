@@ -325,6 +325,7 @@
     <string name="activities">Activities</string>
     <string name="pedometer_data">Pedometer Data</string>
     <string name="sleep_data">Sleep Data</string>
+    <string name="nutrition_data">Nutrition Diary Data</string>
     <string name="last_backup">Last backup</string>
     <string name="n_a">N/A</string>
     <string name="select_one">Select At Least One Field</string>

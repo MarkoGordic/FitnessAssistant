@@ -67,11 +67,12 @@ public class Product {
         if(object != null)
             try {
                 id = MDBHNutritionTracker.getInstance(context).getLastProductID() + 1;
+
                 if(!search) {
                     if (object.has("product")) {
                         JSONObject product = object.getJSONObject("product");
 
-                        if (object.has("_id")) {
+                        if (product.has("_id")) {
                             setBarcode(product.getString("_id"));
                             // in case we find this product in our local db we will update it to avoid duplicates
                             if(MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(getBarcode()).size() > 0)
@@ -350,8 +351,12 @@ public class Product {
                         else
                             setName(null);
 
-                    if (object.has("_id"))
+                    if (object.has("_id")) {
                         setBarcode(object.getString("_id"));
+                        // in case we find this product in our local db we will update it to avoid duplicates
+                        if(MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(getBarcode()).size() > 0)
+                            id = MDBHNutritionTracker.getInstance(context).searchProductsByBarcode(getBarcode()).get(0).getId();
+                    }
                     else
                         setBarcode(null);
 

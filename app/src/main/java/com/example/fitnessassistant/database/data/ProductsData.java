@@ -12,16 +12,23 @@ public class ProductsData {
         return data;
     }
 
-    public void setData(List<Product> data) {
+    public void setData(List<String> data){
+        this.data = data;
+    }
+
+    public void setDataDB(List<Product> data) {
         List<String> newData = new ArrayList<>();
 
         for(int i = 0; i < data.size(); i++) {
-            StringBuilder product = new StringBuilder();
-            product.append(data.get(i).getId() + '#');
-            product.append(data.get(i).getName()).append('#');
-            product.append(data.get(i).getBrands()).append('#');
-            product.append(data.get(i).getBarcode()).append('#');
-            product.append(data.get(i).nutrimentsToDBString());
+            System.out.println(data.get(i).getName() + data.get(i).getId() + " DEKI SMEKI");
+            String product =
+                    data.get(i).getId() + "#" +
+                    data.get(i).getName() + "#" +
+                    data.get(i).getBrands() + "#" +
+                    data.get(i).getBarcode() + "#" +
+                    data.get(i).nutrimentsToDBString();
+            System.out.println(product + "DEKISA");
+            newData.add(product);
         }
 
         this.data = newData;

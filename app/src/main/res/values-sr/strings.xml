@@ -326,6 +326,7 @@
     <string name="activities">Aktivnosti</string>
     <string name="pedometer_data">Podaci Pedometra</string>
     <string name="sleep_data">Podaci o Spavanju</string>
+    <string name="nutrition_data">Dnevnik Ishrane</string>
     <string name="last_backup">Poslednje čuvanje</string>
     <string name="n_a">Nikad</string>
     <string name="select_one">Odaberite Bar Jedno Polje</string>

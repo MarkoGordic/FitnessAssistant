@@ -76,9 +76,23 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 dataExists = true;
             }
 
+        query = "SELECT * FROM " + PRODUCTS_TABLE_NAME + " WHERE " + PRODUCTS_COLUMN_BARCODE + " = " + barcode;
+        boolean barcodeExists = false;
+        cursor = null;
+
+        if(dbRead != null){
+            cursor = dbRead.rawQuery(query, null);
+        }
+
+        if(cursor != null)
+            if(cursor.getCount() > 0) {
+                cursor.close();
+                barcodeExists = true;
+            }
+
         long result;
 
-        if(dataExists) {
+        if(dataExists || barcodeExists) {
             result = db.update(PRODUCTS_TABLE_NAME, cv, PRODUCTS_COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
         }else
             result = db.insert(PRODUCTS_TABLE_NAME, null, cv);
@@ -115,14 +129,14 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         for(int i = 0; i < product_ids.size(); i++) {
             products.append(product_ids.get(i));
             if(i != product_ids.size() - 1)
-                products.append('#');
+                products.append("#");
         }
 
         StringBuilder quantities = new StringBuilder();
         for(int i = 0; i < quantity.size(); i++) {
             quantities.append(quantity.get(i));
             if(i != quantity.size() - 1)
-                quantities.append('#');
+                quantities.append("#");
         }
 
         cv.put(MEALS_COLUMN_TYPE, type);
@@ -146,22 +160,8 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 dataExists = true;
             }
 
-        query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + type;
-        boolean barcodeExists = false;
-        cursor = null;
-
-        if(dbRead != null){
-            cursor = dbRead.rawQuery(query, null);
-        }
-
-        if(cursor != null)
-            if(cursor.getCount() > 0) {
-                cursor.close();
-                barcodeExists = true;
-            }
-
         long result;
-        if(dataExists || barcodeExists)
+        if(dataExists)
             result = db.update(MEALS_TABLE_NAME, cv, "date = ? AND type = ?", new String[]{String.valueOf(date), String.valueOf(type)});
         else
             result = db.insert(MEALS_TABLE_NAME, null, cv);
@@ -184,6 +184,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 do{
                     Product product = new Product();
+                    product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCTS_COLUMN_ID)));
                     product.setName(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NAME)));
                     product.setBarcode(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BARCODE)));
                     product.setBrands(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BRANDS)));
@@ -258,6 +259,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 do{
                     Product product = new Product();
+                    product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCTS_COLUMN_ID)));
                     product.setName(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NAME)));
                     product.setBarcode(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BARCODE)));
                     product.setBrands(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BRANDS)));
@@ -626,7 +628,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         for(int i = 0; i < product_ids.size(); i++) {
             products.append(product_ids.get(i));
             if(i != product_ids.size() - 1)
-                products.append('#');
+                products.append("#");
         }
 
         List<Float> quantities = meal.getQuantity();
@@ -634,7 +636,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
         for(int i = 0; i < quantities.size(); i++){
             product_quantities.append(quantities.get(i));
             if(i != quantities.size() - 1)
-                products.append('#');
+                products.append("#");
         }
 
         cv.put(MEALS_COLUMN_ID, meal.getId());
@@ -718,6 +720,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 do{
                     Product product = new Product();
+                    product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCTS_COLUMN_ID)));
                     product.setName(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NAME)));
                     product.setBarcode(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BARCODE)));
                     product.setBrands(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BRANDS)));

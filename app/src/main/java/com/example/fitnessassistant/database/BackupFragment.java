@@ -46,6 +46,7 @@ public class BackupFragment extends Fragment {
     private static final AtomicBoolean activityData = new AtomicBoolean(false);
     private static final AtomicBoolean pedometerData = new AtomicBoolean(false);
     private static final AtomicBoolean sleepData = new AtomicBoolean(false);
+    private static final AtomicBoolean nutritionData = new AtomicBoolean(false);
 
     @SuppressLint("DefaultLocale")
     public final SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
@@ -73,6 +74,10 @@ public class BackupFragment extends Fragment {
                     cal.setTimeInMillis(Long.parseLong(sharedPreferences.getString("activities_backup", "n#/").substring(2)));
                     ((TextView) getView().findViewById(R.id.activitiesBackupDate)).setText(String.format("%s %02d %s %d %02d:%02d", lastBackup, cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)));
                     break;
+                case "meals_backup":
+                    cal.setTimeInMillis(Long.parseLong(sharedPreferences.getString("meals_backup", "n#/").substring(2)));
+                    ((TextView) getView().findViewById(R.id.nutritionBackupDate)).setText(String.format("%s %02d %s %d %02d:%02d", lastBackup, cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)));
+                    break;
             }
         }
     };
@@ -83,6 +88,7 @@ public class BackupFragment extends Fragment {
         activityData.set(((SwitchCompat) view.findViewById(R.id.activitiesSwitch)).isChecked());
         pedometerData.set(((SwitchCompat) view.findViewById(R.id.pedometerDataSwitch)).isChecked());
         sleepData.set(((SwitchCompat) view.findViewById(R.id.sleepDataSwitch)).isChecked());
+        nutritionData.set(((SwitchCompat) view.findViewById(R.id.nutritionDataSwitch)).isChecked());
     }
 
     private boolean atLeastOneSwitchChecked(View view){
@@ -90,8 +96,8 @@ public class BackupFragment extends Fragment {
                 ((SwitchCompat) view.findViewById(R.id.goalsSwitch)).isChecked() ||
                 ((SwitchCompat) view.findViewById(R.id.activitiesSwitch)).isChecked() ||
                 ((SwitchCompat) view.findViewById(R.id.pedometerDataSwitch)).isChecked() ||
-                ((SwitchCompat) view.findViewById(R.id.sleepDataSwitch)).isChecked();
-                // TODO add more
+                ((SwitchCompat) view.findViewById(R.id.sleepDataSwitch)).isChecked() ||
+                ((SwitchCompat) view.findViewById(R.id.nutritionDataSwitch)).isChecked();
     }
 
     private void resetBools(){
@@ -100,6 +106,7 @@ public class BackupFragment extends Fragment {
         activityData.set(false);
         pedometerData.set(false);
         sleepData.set(false);
+        nutritionData.set(false);
     }
 
     @SuppressLint("DefaultLocale")
@@ -137,7 +144,11 @@ public class BackupFragment extends Fragment {
         } else
             ((TextView) view.findViewById(R.id.activitiesBackupDate)).setText(String.format("%s: %s", lastBackup, requireActivity().getString(R.string.n_a)));
 
-        // TODO add more data
+        if(!sharedPreferences.getString("meals_backup", "n#/").equals("n#/")) {
+            cal.setTimeInMillis(Long.parseLong(sharedPreferences.getString("meals_backup", "n#/").substring(2)));
+            ((TextView) view.findViewById(R.id.nutritionBackupDate)).setText(String.format("%s %02d %s %d %02d:%02d", lastBackup, cal.get(Calendar.DAY_OF_MONTH), getMonthShort(requireActivity(), cal.get(Calendar.MONTH) + 1), cal.get(Calendar.YEAR), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE)));
+        } else
+            ((TextView) view.findViewById(R.id.nutritionBackupDate)).setText(String.format("%s: %s", lastBackup, requireActivity().getString(R.string.n_a)));
     }
 
     private void setUpOnClickListeners(View view){
@@ -313,6 +324,10 @@ public class BackupFragment extends Fragment {
             if(sleepData.get()) {
                 RealtimeDB.saveUserSleepData(context);
             }
+            if(nutritionData.get()) {
+                RealtimeDB.saveMealsData(context);
+                RealtimeDB.saveProductsData(context);
+            }
             return null;
         }
     }
@@ -336,6 +351,10 @@ public class BackupFragment extends Fragment {
                 RealtimeDB.restorePedometerData(context);
             if(sleepData.get()) {
                 RealtimeDB.restoreSleepData(context);
+            }
+            if(nutritionData.get()) {
+                RealtimeDB.restoreMealsData(context);
+                RealtimeDB.restoreProductsData(context);
             }
             return null;
         }
