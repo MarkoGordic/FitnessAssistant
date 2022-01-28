@@ -318,6 +318,7 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 do{
                     Product product = new Product();
+                    product.setId(cursor.getInt(cursor.getColumnIndex(PRODUCTS_COLUMN_ID)));
                     product.setName(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_NAME)));
                     product.setBarcode(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BARCODE)));
                     product.setBrands(cursor.getString(cursor.getColumnIndex(PRODUCTS_COLUMN_BRANDS)));
