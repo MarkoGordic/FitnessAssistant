@@ -213,7 +213,6 @@
     <string name="activity">Aktivnost</string>
     <string name="diary">Dnevnik</string>
     <string name="home">Početna</string>
-    <string name="health">Zdravlje</string>
     <string name="profile">Profil</string>
 
     <!-- Greeting strings -->
@@ -447,7 +446,7 @@
     <string name="fat">Masti</string>
     <string name="protein">Proteini</string>
     <string name="cal_big">Kal</string>
-    <string name="swipe_down_for_more">Povuci Nadole Za Još Rezultata…</string>
+    <string name="swipe_down_for_more">Povuci Nadole ili Pretraži Ponovo Za Još Rezultata…</string>
     <string name="no_more_results">Nema Više Rezultata.</string>
     <string name="no_results">Nema Rezultata.</string>
     <string name="fiber">Vlakna</string>
@@ -530,6 +529,4 @@
     <string name="snack">Užina</string>
     <string name="add_food_via_search_or_qr">Dodajte Hranu preko Pretrage ili QR Koda</string>
     <string name="select_a_meal">Odaberite Tip Jela</string>
-
-    <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

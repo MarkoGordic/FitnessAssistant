@@ -83,7 +83,7 @@
             android:fontFamily="@font/roboto_light"
             android:textFontWeight="800"
             android:includeFontPadding="false"
-            android:textColor="@color/LightGrayColor"
+            android:textColor="@color/InvertedBackgroundColor"
             android:textAlignment="textEnd"
             android:textSize="15sp"
             android:padding="16dp"

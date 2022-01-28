@@ -34,9 +34,8 @@ public class EndlessScrollListener extends RecyclerView.OnScrollListener {
                     refreshListener.onRefresh(pageNumber);
                     notifyMorePages();
                 }
-            } else {
+            } else
                 isLoading = false;
-            }
         }
     }
 
@@ -47,7 +46,7 @@ public class EndlessScrollListener extends RecyclerView.OnScrollListener {
     public void notifyMorePages() {
         hasMorePages = true;
         isRefreshing = false;
-        pageNumber = pageNumber + 1;
+        pageNumber++;
     }
 
     public interface RefreshListener {

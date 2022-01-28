@@ -212,7 +212,6 @@
     <string name="activity">Activity</string>
     <string name="diary">Diary</string>
     <string name="home">Home</string>
-    <string name="health">Health</string>
     <string name="profile">Profile</string>
 
     <!-- Greeting strings -->
@@ -446,7 +445,7 @@
     <string name="fat">Fat</string>
     <string name="protein">Protein</string>
     <string name="cal_big">Cal</string>
-    <string name="swipe_down_for_more">Swipe Down For More…</string>
+    <string name="swipe_down_for_more">Swipe Down or Search Again For More…</string>
     <string name="no_more_results">No More Results.</string>
     <string name="no_results">No Results.</string>
     <string name="fiber">Fiber</string>
@@ -529,6 +528,4 @@
     <string name="snack">Snack</string>
     <string name="add_food_via_search_or_qr">Add Food via Search or QR Code</string>
     <string name="select_a_meal">Select A Meal</string>
-
-    <string name="coming_soon">COMING SOON</string>
 </resources>

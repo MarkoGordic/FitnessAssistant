@@ -84,10 +84,6 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
     private EndlessScrollListener listener;
     public static final AtomicBoolean shouldReceiveProducts = new AtomicBoolean(true);
     private static final AtomicBoolean performingSearch = new AtomicBoolean(false);
-    public static final AtomicBoolean shouldRestoreState = new AtomicBoolean(false);
-
-    // booleans for saving state of search when going to diff fragments
-    public static final AtomicBoolean activityOnBackPressed = new AtomicBoolean(false);
 
     @SuppressLint("DefaultLocale")
     private void setUpCurrentDay(View view){
@@ -100,7 +96,6 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         if(product == null)
             Toast.makeText(requireActivity(), R.string.product_not_found , Toast.LENGTH_SHORT).show();
         else {
-            shouldRestoreState.set(true);
             requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product, null, null, null)).addToBackStack(null).commit();
         }
     }
@@ -112,22 +107,17 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             view.findViewById(R.id.loadMore).setVisibility(View.VISIBLE);
             view.findViewById(R.id.loading).setVisibility(View.INVISIBLE);
             if(shouldReceiveProducts.get()) {
-                activityOnBackPressed.set(true);
-                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.VISIBLE);
-                requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.GONE);
                 if (products.isEmpty()) {
                     if (searchRecyclerView.getAdapter() == null)
                         ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_results));
                     else
                         ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
-
                     listener.noMorePages();
                 } else {
-                    if (searchRecyclerView.getAdapter() == null) {
+                    if (searchRecyclerView.getAdapter() == null)
                         searchRecyclerView.setAdapter(new SearchAdapter(requireActivity(), products, this));
-                    } else {
+                    else
                         ((SearchAdapter) searchRecyclerView.getAdapter()).addProducts(products);
-                    }
 
                     if (products.size() < 24) {
                         ((TextView) view.findViewById(R.id.loadMore)).setText(requireActivity().getString(R.string.no_more_results));
@@ -137,10 +127,13 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                         listener.notifyMorePages();
                     }
                 }
+
+                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.VISIBLE);
             } else {
+                if(searchRecyclerView.getAdapter() != null)
+                    searchRecyclerView.setAdapter(null);
+
                 view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
-                if(isVisible())
-                    requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
             }
         });
 
@@ -182,9 +175,9 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             breakfastRecyclerView.setHasFixedSize(true);
             breakfastRecyclerView.setAdapter(bfMealAdapter);
             breakfastRecyclerView.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.breakfastEmpty).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.breakfastEmpty).setVisibility(View.GONE);
         } else{
-            breakfastRecyclerView.setVisibility(View.INVISIBLE);
+            breakfastRecyclerView.setVisibility(View.GONE);
             view.findViewById(R.id.breakfastEmpty).setVisibility(View.VISIBLE);
         }
 
@@ -209,9 +202,9 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             lunchRecyclerView.setHasFixedSize(true);
             lunchRecyclerView.setAdapter(luMealAdapter);
             lunchRecyclerView.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.lunchEmpty).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.lunchEmpty).setVisibility(View.GONE);
         } else{
-            lunchRecyclerView.setVisibility(View.INVISIBLE);
+            lunchRecyclerView.setVisibility(View.GONE);
             view.findViewById(R.id.lunchEmpty).setVisibility(View.VISIBLE);
         }
 
@@ -236,9 +229,9 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             dinnerRecyclerView.setHasFixedSize(true);
             dinnerRecyclerView.setAdapter(diMealAdapter);
             dinnerRecyclerView.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.dinnerEmpty).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.dinnerEmpty).setVisibility(View.GONE);
         } else{
-            dinnerRecyclerView.setVisibility(View.INVISIBLE);
+            dinnerRecyclerView.setVisibility(View.GONE);
             view.findViewById(R.id.dinnerEmpty).setVisibility(View.VISIBLE);
         }
 
@@ -263,9 +256,9 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             snackRecyclerView.setHasFixedSize(true);
             snackRecyclerView.setAdapter(snMealAdapter);
             snackRecyclerView.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.snackEmpty).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.snackEmpty).setVisibility(View.GONE);
         } else{
-            snackRecyclerView.setVisibility(View.INVISIBLE);
+            snackRecyclerView.setVisibility(View.GONE);
             view.findViewById(R.id.snackEmpty).setVisibility(View.VISIBLE);
         }
 
@@ -333,14 +326,8 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                 for(Product prod : MDBHNutritionTracker.getInstance(requireActivity()).getLunchProducts(dateFormatted))
                     productIDs.add(prod.getId());
 
-                System.out.println("PREVIOUS: " + productIDs);
-                System.out.println("PREVIOUS QUANTITIES: " + quantities);
-
                 productIDs.add(product.getId());
                 quantities.add(amountChosen);
-
-                System.out.println("PRODUCT: " + product.getId());
-                System.out.println("AMOUNT CHOSEN: " + amountChosen);
 
                 MDBHNutritionTracker.getInstance(requireActivity()).addOrUpdateMeal(mealType, dateFormatted, productIDs, quantities);
                 break;
@@ -390,17 +377,10 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             searchView.setSelected(hasFocus);
             if(!hasFocus) {
                 shouldReceiveProducts.set(false);
-                if(!shouldRestoreState.get()) {
-                    if (searchRecyclerView.getAdapter() != null) {
-                        ((SearchAdapter) searchRecyclerView.getAdapter()).clear();
-                        searchRecyclerView.setAdapter(null);
-                    }
-                    view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
-                    requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
-                } else {
-                    shouldRestoreState.set(false);
-                    activityOnBackPressed.set(true);
-                }
+                if (searchRecyclerView.getAdapter() != null)
+                    searchRecyclerView.setAdapter(null);
+
+                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
             }
         });
 
@@ -408,38 +388,37 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(!query.isEmpty() && !performingSearch.get()) {
-                    if (searchRecyclerView.getAdapter() != null)
-                        searchRecyclerView.setAdapter(null);
+                shouldReceiveProducts.set(false);
 
-                    view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
-                    requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
+                if (searchRecyclerView.getAdapter() != null)
+                    searchRecyclerView.setAdapter(null);
+
+                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
+
+                if(!query.isEmpty() && !performingSearch.get()) {
                     shouldReceiveProducts.set(true);
                     performingSearch.set(true);
                     view.findViewById(R.id.searchBar).setVisibility(View.VISIBLE);
                     APISearch.getInstance().searchAPI(query, requireContext(), false, false, 1);
-                } else
-                    shouldReceiveProducts.set(false);
+                }
 
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
+                shouldReceiveProducts.set(false);
+
                 // Only local API search is available due to API's TOS
-                if(!shouldRestoreState.get()) {
-                    if (searchRecyclerView.getAdapter() != null)
-                        searchRecyclerView.setAdapter(null);
+                if (searchRecyclerView.getAdapter() != null)
+                    searchRecyclerView.setAdapter(null);
 
-                    view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
-                    requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
 
-                    if(!query.isEmpty() && !performingSearch.get()) {
-                        shouldReceiveProducts.set(true);
-                        performingSearch.set(true);
-                        APISearch.getInstance().searchAPI(query, requireContext(), false, true, 1);
-                    } else
-                        shouldReceiveProducts.set(false);
+                if(!query.isEmpty() && !performingSearch.get()) {
+                    shouldReceiveProducts.set(true);
+                    performingSearch.set(true);
+                    APISearch.getInstance().searchAPI(query, requireContext(), false, true, 1);
                 }
 
                 return false;
@@ -447,10 +426,9 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         });
 
         view.findViewById(R.id.qrCodeScanner).setOnClickListener(v -> {
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-                shouldRestoreState.set(true);
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
                 requireActivity().getSupportFragmentManager().beginTransaction().hide(DiaryPageFragment.this).add(R.id.in_app_container, new BarcodeScanner()).addToBackStack(null).commit();
-            } else
+            else
                 PermissionFunctional.checkCameraPermission(requireContext(), cameraPermissionLauncher);
         });
 
@@ -483,12 +461,6 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         });
 
         view.findViewById(R.id.three_dots).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new NutritionGoals()).addToBackStack(null).commit());
-    }
-
-    public void clearRecycler(){
-        requireActivity().findViewById(R.id.bottomNavigation).setVisibility(View.VISIBLE);
-        requireView().findViewById(R.id.searchRecyclerLayout).setVisibility(View.GONE);
-        searchRecyclerView.setAdapter(null);
     }
 
     @Nullable

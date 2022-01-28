@@ -4,6 +4,10 @@
     app:itemRippleColor="@color/SpaceCadet">
 
     <!-- Parts of the navigation -->
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="@string/home" />
 
     <item
         android:id="@+id/map"
@@ -14,16 +18,6 @@
         android:id="@+id/diary"
         android:icon="@drawable/diary"
         android:title="@string/diary" />
-
-    <item
-        android:id="@+id/home"
-        android:icon="@drawable/home"
-        android:title="@string/home" />
-
-    <item
-        android:id="@+id/health"
-        android:icon="@drawable/health"
-        android:title="@string/health" />
 
     <item
         android:id="@+id/profile"

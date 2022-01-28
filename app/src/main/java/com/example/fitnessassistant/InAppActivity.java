@@ -67,7 +67,6 @@ import com.example.fitnessassistant.uiprefs.ColorMode;
 import com.example.fitnessassistant.uiprefs.LocaleExt;
 import com.example.fitnessassistant.util.AuthFunctional;
 import com.example.fitnessassistant.util.ServiceFunctional;
-import com.example.fitnessassistant.workout.WorkoutPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -93,7 +92,6 @@ public class InAppActivity extends AppCompatActivity {
     public static MapPageFragment mapFragment;
     public static DiaryPageFragment diaryFragment;
     private HomePageFragment homeFragment;
-    private WorkoutPageFragment workoutFragment;
     private ProfilePageFragment profileFragment;
     public static ActivityTrackingFragment activityTrackingFragment;
     public static SettingsFragment settingsFragment;
@@ -256,12 +254,6 @@ public class InAppActivity extends AppCompatActivity {
     // return to previous fragment (if it exists)
     @Override
     public void onBackPressed() {
-        if(DiaryPageFragment.activityOnBackPressed.get() && diaryFragment.isVisible()){
-            DiaryPageFragment.activityOnBackPressed.set(false);
-            diaryFragment.clearRecycler();
-            return;
-        }
-
         if(fm.getBackStackEntryCount() == 0)
             super.onBackPressed();
         else {
@@ -276,7 +268,6 @@ public class InAppActivity extends AppCompatActivity {
         mapFragment = new MapPageFragment();
         diaryFragment = new DiaryPageFragment();
         homeFragment = new HomePageFragment();
-        workoutFragment = new WorkoutPageFragment();
         profileFragment = new ProfilePageFragment();
         settingsFragment = new SettingsFragment();
         linkAccountsFragment = new LinkAccountsFragment();
@@ -295,7 +286,6 @@ public class InAppActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.in_app_container, mapFragment).hide(mapFragment).commit();
         fm.beginTransaction().add(R.id.in_app_container, diaryFragment).hide(diaryFragment).commit();
         fm.beginTransaction().add(R.id.in_app_container, active).commit();
-        fm.beginTransaction().add(R.id.in_app_container, workoutFragment).hide(workoutFragment).commit();
         fm.beginTransaction().add(R.id.in_app_container, profileFragment).hide(profileFragment).commit();
 
         // navigation listener hides the active fragment, shows the selected one and sets the selected as the new active
@@ -318,11 +308,6 @@ public class InAppActivity extends AppCompatActivity {
             } else if(item.getItemId() == R.id.home){
                 fm.beginTransaction().hide(active).show(homeFragment).commit();
                 active = homeFragment;
-                active.onResume();
-                return true;
-            } else if(item.getItemId() == R.id.health){
-                fm.beginTransaction().hide(active).show(workoutFragment).commit();
-                active = workoutFragment;
                 active.onResume();
                 return true;
             } else if(item.getItemId() == R.id.profile) {
