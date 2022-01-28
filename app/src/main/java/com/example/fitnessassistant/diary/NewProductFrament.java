@@ -41,7 +41,7 @@ public class NewProductFrament extends Fragment {
     private CustomSpinner spinner;
     private CustomSpinner dateSpinner;
     private String name = null;
-    private float calories = -1f;
+    private float calories = 0f;
     private float carbs = -1f;
     private float sugar = -1f;
     private float fat = -1f;
@@ -50,7 +50,6 @@ public class NewProductFrament extends Fragment {
     private float carbCalories = 0f;
     private float proteinCalories = 0f;
     private float fatCalories = 0f;
-    private float totalCalories = 0f;
 
     @SuppressLint("DefaultLocale")
     private void setOnClickListeners(View view){
@@ -88,53 +87,6 @@ public class NewProductFrament extends Fragment {
             });
         });
 
-        view.findViewById(R.id.caloriesAmount1).setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-            builder.setView(R.layout.custom_two_button_alert_dialog);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.findViewById(R.id.dialog_drawable).setVisibility(View.GONE);
-            dialog.findViewById(R.id.dialog_header).setVisibility(View.GONE);
-            dialog.findViewById(R.id.dialog_message).setVisibility(View.GONE);
-
-            EditText input = dialog.findViewById(R.id.dialog_input);
-            if(calories != -1f) {
-                if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
-                    input.setText(String.format("%.1f", calories * 4.184f));
-                else
-                    input.setText(String.format("%d", Math.round(calories)));
-            }
-            input.setHint(null);
-            if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
-                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            } else {
-                input.setInputType(InputType.TYPE_CLASS_NUMBER);
-            }
-            input.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
-
-            dialog.findViewById(R.id.dialog_negative_button).setOnClickListener(view2 -> dialog.dismiss());
-
-            ((Button) dialog.findViewById(R.id.dialog_positive_button)).setText(R.string.set);
-            dialog.findViewById(R.id.dialog_positive_button).setOnClickListener(view2 -> {
-                if(input.getText().toString().isEmpty()){
-                    Toast.makeText(requireActivity(), R.string.field_cannot_be_empty, Toast.LENGTH_SHORT).show();
-                } else{
-                    if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
-                        ((TextView) view.findViewById(R.id.energyUnit)).setText(R.string.kilojoules);
-                        ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%.1f", getFloat(input.getText().toString())));
-                        calories = getFloat(input.getText().toString()) / 4.184f;
-                    } else {
-                        ((TextView) view.findViewById(R.id.energyUnit)).setText(R.string.calories);
-                        ((TextView) view.findViewById(R.id.caloriesAmount1)).setText(String.format("%d", Integer.parseInt(input.getText().toString())));
-                        calories = getFloat(input.getText().toString());
-                    }
-                    dialog.dismiss();
-                }
-            });
-        });
-
         view.findViewById(R.id.setCarbs).setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setView(R.layout.custom_two_button_alert_dialog);
@@ -163,13 +115,13 @@ public class NewProductFrament extends Fragment {
                     ((TextView) view.findViewById(R.id.carbsAmount1)).setText(String.format("%.1f", getFloat(input.getText().toString())));
                     carbs = getFloat(input.getText().toString());
                     carbCalories = 4f * carbs;
-                    totalCalories = carbCalories + fatCalories + proteinCalories;
+                    calories = carbCalories + fatCalories + proteinCalories;
                     if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
                         ((TextView) view.findViewById(R.id.carbCalories)).setText(String.format("(%.1f %s)", Math.round(carbCalories) * 4.184f, requireActivity().getString(R.string.kj)));
-                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("(%.1f %s)", Math.round(totalCalories) * 4.184f, requireActivity().getString(R.string.kj)));
+                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%.1f %s", Math.round(calories) * 4.184f, requireActivity().getString(R.string.kj)));
                     } else {
                         ((TextView) view.findViewById(R.id.carbCalories)).setText(String.format("(%d %s)", Math.round(carbCalories), requireActivity().getString(R.string.cal)));
-                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("(%d %s)", Math.round(totalCalories), requireActivity().getString(R.string.cal)));
+                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%d %s", Math.round(calories), requireActivity().getString(R.string.cal)));
                     }
                     dialog.dismiss();
                 }
@@ -236,13 +188,13 @@ public class NewProductFrament extends Fragment {
                     ((TextView) view.findViewById(R.id.fatAmount1)).setText(String.format("%.1f", getFloat(input.getText().toString())));
                     fat = getFloat(input.getText().toString());
                     fatCalories = 9f * fat;
-                    totalCalories = carbCalories + fatCalories + proteinCalories;
+                    calories = carbCalories + fatCalories + proteinCalories;
                     if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
                         ((TextView) view.findViewById(R.id.fatCalories)).setText(String.format("(%.1f %s)", Math.round(fatCalories) * 4.184f, requireActivity().getString(R.string.kj)));
-                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("(%.1f %s)", Math.round(totalCalories) * 4.184f, requireActivity().getString(R.string.kj)));
+                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%.1f %s", Math.round(calories) * 4.184f, requireActivity().getString(R.string.kj)));
                     } else {
                         ((TextView) view.findViewById(R.id.fatCalories)).setText(String.format("(%d %s)", Math.round(fatCalories), requireActivity().getString(R.string.cal)));
-                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("(%d %s)", Math.round(totalCalories), requireActivity().getString(R.string.cal)));
+                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%d %s", Math.round(calories), requireActivity().getString(R.string.cal)));
                     }
                     dialog.dismiss();
                 }
@@ -277,13 +229,13 @@ public class NewProductFrament extends Fragment {
                     ((TextView) view.findViewById(R.id.proteinAmount1)).setText(String.format("%.1f", getFloat(input.getText().toString())));
                     protein = getFloat(input.getText().toString());
                     proteinCalories = 4f * protein;
-                    totalCalories = carbCalories + fatCalories + proteinCalories;
+                    calories = carbCalories + fatCalories + proteinCalories;
                     if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)) {
                         ((TextView) view.findViewById(R.id.proteinCalories)).setText(String.format("(%.1f %s)", Math.round(proteinCalories) * 4.184f, requireActivity().getString(R.string.kj)));
-                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("(%.1f %s)", Math.round(totalCalories) * 4.184f, requireActivity().getString(R.string.kj)));
+                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%.1f %s", Math.round(calories) * 4.184f, requireActivity().getString(R.string.kj)));
                     } else {
                         ((TextView) view.findViewById(R.id.proteinCalories)).setText(String.format("(%d %s)", Math.round(proteinCalories), requireActivity().getString(R.string.cal)));
-                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("(%d %s)", Math.round(totalCalories), requireActivity().getString(R.string.cal)));
+                        ((TextView) view.findViewById(R.id.totalCalories)).setText(String.format("%d %s", Math.round(calories), requireActivity().getString(R.string.cal)));
                     }
                     dialog.dismiss();
                 }
@@ -300,11 +252,6 @@ public class NewProductFrament extends Fragment {
             if (spinner.getSelectedItemPosition() > 0 && spinner.getSelectedItemPosition() < 5) {
                 if (name == null || calories == -1f || carbs == -1f || protein == -1f || fat == -1f || sugar == -1f) {
                     Toast.makeText(requireActivity(), R.string.fill_up_all_fields, Toast.LENGTH_SHORT).show();
-                } else if (calories != carbCalories + proteinCalories + fatCalories){
-                    if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ))
-                        Toast.makeText(requireActivity(), R.string.total_kj_must_be_equal, Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(requireActivity(), R.string.total_kcal_must_be_equal, Toast.LENGTH_SHORT).show();
                 } else if(sugar > carbs){
                     Toast.makeText(requireActivity(), R.string.sugar_content_error, Toast.LENGTH_SHORT).show();
                 } else {
@@ -385,7 +332,6 @@ public class NewProductFrament extends Fragment {
         dateSpinner.setVisibility(View.VISIBLE);
 
         ((TextView) view.findViewById(R.id.productName)).setText("?");
-        ((TextView) view.findViewById(R.id.caloriesAmount1)).setText("?");
         ((TextView) view.findViewById(R.id.carbsAmount1)).setText("?");
         ((TextView) view.findViewById(R.id.fatAmount1)).setText("?");
         ((TextView) view.findViewById(R.id.proteinAmount1)).setText("?");

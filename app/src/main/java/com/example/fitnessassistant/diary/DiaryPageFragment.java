@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.diary;
 
 import static com.example.fitnessassistant.util.TimeFunctional.getMonthLong;
+import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -357,6 +359,7 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private void setUpOnClickListeners(View view){
         // setting up search
         SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -462,6 +465,174 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                 currentDay = currentDay.plusDays(1);
                 setUpCurrentDay(view);
                 setUpRecyclerViews(view);
+            }
+        });
+
+        view.findViewById(R.id.dayReview).setOnClickListener(v -> {
+            String date = String.format("%02d %s %d", currentDay.getDayOfMonth(), getMonthShort(requireActivity(), currentDay.getMonthValue()), currentDay.getYear());
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setView(R.layout.nutrition_review_dialog);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            dialog.findViewById(R.id.dialog_ok_button).setOnClickListener(view1 -> dialog.dismiss());
+            ((TextView) dialog.findViewById(R.id.date)).setText(date);
+
+            String currDateFormatted = (String) DateFormat.format("yyyyMMdd",  Date.from(currentDay.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+            ArrayList<Product> products;
+            ArrayList<Float> quantities;
+            Iterator<Product> it;
+            Iterator<Float> it2;
+
+            float totalIntakeCals = 0f;
+            float totalProteinIntake = 0f;
+            float totalCarbIntake = 0f;
+            float totalFatIntake = 0f;
+            products = MDBHNutritionTracker.getInstance(requireActivity()).getBreakfastProducts(currDateFormatted);
+            quantities =  MDBHNutritionTracker.getInstance(requireActivity()).getBreakfastQuantities(currDateFormatted);
+            it = products.iterator();
+            it2 = quantities.iterator();
+            while(it.hasNext() && it2.hasNext()){
+                Product p = it.next();
+                float q = it2.next();
+
+                totalIntakeCals += Math.round(p.getEnergy_kcal_100g() * q);
+                totalProteinIntake += p.getProteins_100g() * q;
+                totalFatIntake += p.getFat_100g() * q;
+                totalCarbIntake += p.getCarbohydrates_100g() * q;
+            }
+            products = MDBHNutritionTracker.getInstance(requireActivity()).getLunchProducts(currDateFormatted);
+            quantities =  MDBHNutritionTracker.getInstance(requireActivity()).getLunchQuantities(currDateFormatted);
+            it = products.iterator();
+            it2 = quantities.iterator();
+            while(it.hasNext() && it2.hasNext()){
+                Product p = it.next();
+                float q = it2.next();
+
+                totalIntakeCals += Math.round(p.getEnergy_kcal_100g() * q);
+                totalProteinIntake += p.getProteins_100g() * q;
+                totalFatIntake += p.getFat_100g() * q;
+                totalCarbIntake += p.getCarbohydrates_100g() * q;
+            }
+            products = MDBHNutritionTracker.getInstance(requireActivity()).getDinnerProducts(currDateFormatted);
+            quantities =  MDBHNutritionTracker.getInstance(requireActivity()).getDinnerQuantities(currDateFormatted);
+            it = products.iterator();
+            it2 = quantities.iterator();
+            while(it.hasNext() && it2.hasNext()){
+                Product p = it.next();
+                float q = it2.next();
+
+                totalIntakeCals += Math.round(p.getEnergy_kcal_100g() * q);
+                totalProteinIntake += p.getProteins_100g() * q;
+                totalFatIntake += p.getFat_100g() * q;
+                totalCarbIntake += p.getCarbohydrates_100g() * q;
+            }
+            products = MDBHNutritionTracker.getInstance(requireActivity()).getSnackProducts(currDateFormatted);
+            quantities =  MDBHNutritionTracker.getInstance(requireActivity()).getSnackQuantities(currDateFormatted);
+            it = products.iterator();
+            it2 = quantities.iterator();
+            while(it.hasNext() && it2.hasNext()){
+                Product p = it.next();
+                float q = it2.next();
+
+                totalIntakeCals += Math.round(p.getEnergy_kcal_100g() * q);
+                totalProteinIntake += p.getProteins_100g() * q;
+                totalFatIntake += p.getFat_100g() * q;
+                totalCarbIntake += p.getCarbohydrates_100g() * q;
+            }
+
+            float caloriesGoal;
+            float proGoal;
+            float fatGoal;
+            float carbGoal;
+            if(currentDay.getYear() == Calendar.getInstance().get(Calendar.YEAR) && currentDay.getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1 && currentDay.getDayOfMonth() == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+                caloriesGoal = Math.round(NutritionGoals.getCaloriesGoal(requireActivity()));
+                proGoal = NutritionGoals.getProteinGoal(requireActivity());
+                fatGoal = NutritionGoals.getFatGoal(requireActivity());
+                carbGoal = NutritionGoals.getCarbsGoal(requireActivity());
+            } else{
+                caloriesGoal = Math.round(MDBHNutritionGoals.getInstance(requireActivity()).readCaloriesForDate(currDateFormatted));
+                proGoal = MDBHNutritionGoals.getInstance(requireActivity()).readProteinForDate(currDateFormatted);
+                fatGoal = MDBHNutritionGoals.getInstance(requireActivity()).readFatForDate(currDateFormatted);
+                carbGoal = MDBHNutritionGoals.getInstance(requireActivity()).readCarbsForDate(currDateFormatted);
+            }
+
+            if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
+                ((TextView) dialog.findViewById(R.id.energyUnit)).setText(requireActivity().getString(R.string.kilojoules));
+                if(caloriesGoal > 0) {
+                    int percent = Math.round(totalIntakeCals / caloriesGoal * 100f);
+                    if(percent > 100)
+                        percent = 100;
+
+                    ((ProgressBar) dialog.findViewById(R.id.caloriesProgress)).setProgress(percent);
+                    ((TextView) dialog.findViewById(R.id.caloriesPercent)).setText(String.format("%d%%", percent));
+                    ((TextView) dialog.findViewById(R.id.caloriesGoal)).setText(String.format("%.1f/%.1f %s", Math.round(totalIntakeCals) * 4.184f, Math.round(caloriesGoal) * 4.184f, requireActivity().getString(R.string.kj)));
+                } else {
+                    ((ProgressBar) dialog.findViewById(R.id.caloriesProgress)).setProgress(0);
+                    ((TextView) dialog.findViewById(R.id.caloriesPercent)).setText("?%%");
+                    ((TextView) dialog.findViewById(R.id.caloriesGoal)).setText(String.format("%.1f/? %s", Math.round(totalIntakeCals) * 4.184f, requireActivity().getString(R.string.kj)));
+                }
+            } else{
+                ((TextView) dialog.findViewById(R.id.energyUnit)).setText(requireActivity().getString(R.string.calories));
+                if(caloriesGoal > 0) {
+                    int percent = Math.round(totalIntakeCals / caloriesGoal * 100f);
+                    if(percent > 100)
+                        percent = 100;
+
+                    ((ProgressBar) dialog.findViewById(R.id.caloriesProgress)).setProgress(percent);
+                    ((TextView) dialog.findViewById(R.id.caloriesPercent)).setText(String.format("%d%%", percent));
+                    ((TextView) dialog.findViewById(R.id.caloriesGoal)).setText(String.format("%d/%d %s", Math.round(totalIntakeCals), Math.round(caloriesGoal), requireActivity().getString(R.string.cal)));
+                } else {
+                    ((ProgressBar) dialog.findViewById(R.id.caloriesProgress)).setProgress(0);
+                    ((TextView) dialog.findViewById(R.id.caloriesPercent)).setText("?%%");
+                    ((TextView) dialog.findViewById(R.id.caloriesGoal)).setText(String.format("%d/? %s", Math.round(totalIntakeCals), requireActivity().getString(R.string.cal)));
+                }
+            }
+
+            if(carbGoal > 0){
+                int percent = Math.round(totalCarbIntake / carbGoal * 100f);
+                if(percent > 100)
+                    percent = 100;
+
+                ((ProgressBar) dialog.findViewById(R.id.carbsProgress)).setProgress(percent);
+                ((TextView) dialog.findViewById(R.id.carbsPercent)).setText(String.format("%d%%", percent));
+                ((TextView) dialog.findViewById(R.id.carbsGoal)).setText(String.format("%.1f/%.1f g", totalCarbIntake, carbGoal));
+            } else{
+                ((ProgressBar) dialog.findViewById(R.id.carbsProgress)).setProgress(0);
+                ((TextView) dialog.findViewById(R.id.carbsPercent)).setText("?%%");
+                ((TextView) dialog.findViewById(R.id.carbsGoal)).setText(String.format("%.1f/? g", totalCarbIntake));
+            }
+
+            if(fatGoal > 0){
+                int percent = Math.round(totalFatIntake / fatGoal * 100f);
+                if(percent > 100)
+                    percent = 100;
+
+                ((ProgressBar) dialog.findViewById(R.id.fatProgress)).setProgress(percent);
+                ((TextView) dialog.findViewById(R.id.fatPercent)).setText(String.format("%d%%", percent));
+                ((TextView) dialog.findViewById(R.id.fatGoal)).setText(String.format("%.1f/%.1f g", totalFatIntake, fatGoal));
+            } else{
+                ((ProgressBar) dialog.findViewById(R.id.fatProgress)).setProgress(0);
+                ((TextView) dialog.findViewById(R.id.fatPercent)).setText("?%%");
+                ((TextView) dialog.findViewById(R.id.fatGoal)).setText(String.format("%.1f/? g", totalFatIntake));
+            }
+
+            if(proGoal > 0){
+                int percent = Math.round(totalProteinIntake / proGoal * 100f);
+                if(percent > 100)
+                    percent = 100;
+
+                ((ProgressBar) dialog.findViewById(R.id.proteinProgress)).setProgress(percent);
+                ((TextView) dialog.findViewById(R.id.proteinPercent)).setText(String.format("%d%%", percent));
+                ((TextView) dialog.findViewById(R.id.proteinGoal)).setText(String.format("%.1f/%.1f g", totalProteinIntake, proGoal));
+            } else{
+                ((ProgressBar) dialog.findViewById(R.id.proteinProgress)).setProgress(0);
+                ((TextView) dialog.findViewById(R.id.proteinPercent)).setText("?%%");
+                ((TextView) dialog.findViewById(R.id.proteinGoal)).setText(String.format("%.1f/? g", totalProteinIntake));
             }
         });
 

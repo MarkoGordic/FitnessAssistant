@@ -533,4 +533,5 @@
     <string name="_100">100</string>
     <string name="field_cannot_be_empty">Polje Ne Može Biti Prazno</string>
     <string name="sugar_content_error">Količina Šećera Ne Može Biti Veća Od Količine Hidrata</string>
+    <string name="day_review">Pregled Dana</string>
 </resources>

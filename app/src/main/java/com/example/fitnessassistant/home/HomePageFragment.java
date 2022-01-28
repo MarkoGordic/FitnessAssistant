@@ -166,6 +166,7 @@ public class HomePageFragment extends Fragment {
             float carbGoal = NutritionGoals.getCarbsGoal(requireActivity());
 
             if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
+                ((TextView) view.findViewById(R.id.energyUnit)).setText(requireActivity().getString(R.string.kilojoules));
                 if(caloriesGoal > 0) {
                     int percent = Math.round(totalIntakeCals / caloriesGoal * 100f);
                     if(percent > 100)
@@ -180,6 +181,7 @@ public class HomePageFragment extends Fragment {
                     ((TextView) view.findViewById(R.id.caloriesGoal)).setText(String.format("%.1f/? %s", Math.round(totalIntakeCals) * 4.184f, requireActivity().getString(R.string.kj)));
                 }
             } else{
+                ((TextView) view.findViewById(R.id.energyUnit)).setText(requireActivity().getString(R.string.calories));
                 if(caloriesGoal > 0) {
                     int percent = Math.round(totalIntakeCals / caloriesGoal * 100f);
                     if(percent > 100)
