@@ -1,4 +1,4 @@
-package com.example.fitnessassistant.adapters;
+package com.example.fitnessassistant.diary;
 
 import android.content.Context;
 import android.view.View;
@@ -11,16 +11,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.fitnessassistant.R;
-import com.example.fitnessassistant.util.ActivitySelection;
 
-public class SpinnerAdapter extends ArrayAdapter<ActivitySelection> {
+public class StringSpinnerAdapter extends ArrayAdapter<String> {
     private final Context context;
-    private final ActivitySelection[] selections;
+    private final String[] selections;
 
-    public SpinnerAdapter(Context context, int textViewResourceId, ActivitySelection[] activitySelections){
-        super(context, textViewResourceId, activitySelections);
+    public StringSpinnerAdapter(Context context, int textViewResourceId, String[] selections){
+        super(context, textViewResourceId, selections);
         this.context = context;
-        this.selections = activitySelections;
+        this.selections = selections;
     }
 
     @Override
@@ -30,7 +29,7 @@ public class SpinnerAdapter extends ArrayAdapter<ActivitySelection> {
 
     @Nullable
     @Override
-    public ActivitySelection getItem(int position) {
+    public String getItem(int position) {
         return selections[position];
     }
 
@@ -43,10 +42,7 @@ public class SpinnerAdapter extends ArrayAdapter<ActivitySelection> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         TextView item = (TextView) super.getView(position, convertView, parent);
-
-        item.setText(selections[position].getName());
-        item.setCompoundDrawablesWithIntrinsicBounds(selections[position].getDrawable(), null, null, null);
-
+        item.setText(selections[position]);
         return item;
     }
 
@@ -54,9 +50,8 @@ public class SpinnerAdapter extends ArrayAdapter<ActivitySelection> {
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         TextView item = (TextView) super.getView(position, convertView, parent);
 
-        item.setBackground(AppCompatResources.getDrawable(context, R.drawable.spinner_dropdown_border));
-        item.setText(selections[position].getName());
-        item.setCompoundDrawablesWithIntrinsicBounds(selections[position].getDrawable(), null, null, null);
+        item.setBackground(AppCompatResources.getDrawable(context, R.drawable.meal_spinner_dropdown_border));
+        item.setText(selections[position]);
 
         return item;
     }

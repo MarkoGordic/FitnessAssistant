@@ -218,40 +218,81 @@
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:padding="20dp"
-                    android:text="@string/meal"
+                    android:text="@string/date"
                     android:textColor="@color/InvertedBackgroundColor"
                     android:textFontWeight="600"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    tools:ignore="RelativeOverlap" />
 
+                <com.example.fitnessassistant.util.CustomSpinner
+                    android:id="@+id/dateSpinner"
 
-                <LinearLayout
-                    android:id="@+id/changeMeal"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
 
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/string_spinner_background"
+                    android:dropDownWidth="120dp"
+                    android:dropDownVerticalOffset="40dp"
+                    android:fontFamily="@font/ralewaym"
+                    android:popupBackground="@color/BlueYonder"
+
+                    android:popupElevation="3dp"
+
+                    android:stateListAnimator="@xml/spinner_sla"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+
+                android:background="@color/LightGrayColor"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="@color/backgroundColor">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/ralewaym"
 
-                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
                     android:padding="20dp"
-                    tools:ignore="RelativeOverlap">
+                    android:text="@string/meal"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="17sp"
+                    tools:ignore="RelativeOverlap" />
 
-                    <TextView
-                        android:id="@+id/mealType"
+                <com.example.fitnessassistant.util.CustomSpinner
+                    android:id="@+id/mealSpinner"
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
 
-                        android:layout_marginEnd="2dp"
-                        android:fontFamily="@font/ralewaym"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/string_spinner_background"
+                    android:dropDownWidth="120dp"
+                    android:dropDownVerticalOffset="40dp"
+                    android:fontFamily="@font/ralewaym"
+                    android:popupBackground="@color/BlueYonder"
 
-                        android:gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/SpaceCadet"
-                        android:textFontWeight="600"
-                        android:textSize="17sp" />
-                </LinearLayout>
+                    android:popupElevation="3dp"
+
+                    android:stateListAnimator="@xml/spinner_sla"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
             </RelativeLayout>
 
             <View
@@ -878,7 +919,8 @@
                         android:text="@string/calories"
                         android:textColor="@color/InvertedBackgroundColor"
                         android:textFontWeight="600"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        tools:ignore="TooManyViews"/>
 
                     <TextView
                         android:id="@+id/caloriesAmount1"
@@ -902,8 +944,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
 
-                    android:background="@color/LightGrayColor"
-                    tools:ignore="TooManyViews"/>
+                    android:background="@color/LightGrayColor" />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -922,7 +963,7 @@
                         android:text="@string/carbs"
                         android:textColor="@color/InvertedBackgroundColor"
                         android:textFontWeight="600"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"

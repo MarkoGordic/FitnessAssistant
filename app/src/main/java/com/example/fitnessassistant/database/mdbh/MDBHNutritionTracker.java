@@ -398,13 +398,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     public ArrayList<Product> getBreakfastProducts(String date){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + BREAKFAST;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Product> data = null;
+        ArrayList<Product> data = new ArrayList<>();
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0){
-                data = new ArrayList<>();
                 cursor.moveToFirst();
                 String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                 StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
@@ -421,13 +420,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     public ArrayList<Product> getLunchProducts(String date){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + LUNCH;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Product> data = null;
+        ArrayList<Product> data = new ArrayList<>();
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0){
-                data = new ArrayList<>();
                 cursor.moveToFirst();
                 String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                 StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
@@ -444,13 +442,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     public ArrayList<Product> getDinnerProducts(String date){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + DINNER;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Product> data = null;
+        ArrayList<Product> data = new ArrayList<>();
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0){
-                data = new ArrayList<>();
                 cursor.moveToFirst();
                 String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                 StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
@@ -467,13 +464,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     public ArrayList<Product> getSnackProducts(String date){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + SNACK;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Product> data = null;
+        ArrayList<Product> data = new ArrayList<>();
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0){
-                data = new ArrayList<>();
                 cursor.moveToFirst();
                 String products = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                 StringTokenizer stringTokenizer = new StringTokenizer(products, "#");
@@ -490,13 +486,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     public ArrayList<Float> getBreakfastQuantities(String date){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + BREAKFAST;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Float> data = null;
+        ArrayList<Float> data = new ArrayList<>();
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0){
-                data = new ArrayList<>();
                 cursor.moveToFirst();
                 String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                 StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
@@ -513,13 +508,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     public ArrayList<Float> getLunchQuantities(String date){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + LUNCH;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Float> data = null;
+        ArrayList<Float> data = new ArrayList<>();
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0){
-                data = new ArrayList<>();
                 cursor.moveToFirst();
                 String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                 StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
@@ -536,13 +530,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     public ArrayList<Float> getDinnerQuantities(String date){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + DINNER;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Float> data = null;
+        ArrayList<Float> data = new ArrayList<>();
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0){
-                data = new ArrayList<>();
                 cursor.moveToFirst();
                 String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                 StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");
@@ -559,13 +552,12 @@ public class MDBHNutritionTracker extends SQLiteOpenHelper {
     public ArrayList<Float> getSnackQuantities(String date){
         String query = "SELECT * FROM " + MEALS_TABLE_NAME + " WHERE " + MEALS_COLUMN_DATE + " = " + date + " AND " + MEALS_COLUMN_TYPE + " = " + SNACK;
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Float> data = null;
+        ArrayList<Float> data = new ArrayList<>();
 
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
 
             if(cursor != null && cursor.getCount() > 0){
-                data = new ArrayList<>();
                 cursor.moveToFirst();
                 String quantities = cursor.getString(cursor.getColumnIndex(MEALS_COLUMN_PRODUCTS));
                 StringTokenizer stringTokenizer = new StringTokenizer(quantities, "#");

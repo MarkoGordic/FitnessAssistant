@@ -37,7 +37,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public void onBindViewHolder(@NonNull MealAdapter.MealViewHolder holder, int position) {
         holder.productName.setText(products.get(holder.getAdapterPosition()).getName());
         holder.brandName.setText(products.get(holder.getAdapterPosition()).getBrands());
-        holder.calorieAmount.setText(String.valueOf(Math.round(products.get(holder.getAdapterPosition()).getEnergy_kcal_100g() / quantities.get(holder.getAdapterPosition()))));
+        holder.calorieAmount.setText(String.valueOf(Math.round(products.get(holder.getAdapterPosition()).getEnergy_kcal_100g() * quantities.get(holder.getAdapterPosition()))));
     }
 
     @Override
@@ -68,18 +68,5 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         public void onClick(View v) {
             onItemListener.onItemClick(products.get(getAdapterPosition()), quantities.get(getAdapterPosition()), mealType);
         }
-    }
-
-    public void addProduct(Product product, float quantity){
-        int position = products.size();
-        products.add(product);
-        quantities.add(quantity);
-        notifyItemInserted(position);
-    }
-
-    public void removeProduct(int position){
-        products.remove(position);
-        quantities.remove(position);
-        notifyItemRemoved(position);
     }
 }

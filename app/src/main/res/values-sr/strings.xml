@@ -440,7 +440,7 @@
     <string name="search_hint">Potražite hranu</string>
     <string name="product_details">Detalji o Proizvodu</string>
     <string name="g">g</string>
-    <string name="meal">Meal</string>
+    <string name="meal">Jelo</string>
     <string name="amount">Količina</string>
     <string name="carbs">Hidrati</string>
     <string name="fat">Masti</string>
@@ -528,6 +528,7 @@
     <string name="dinner">Večera</string>
     <string name="snack">Užina</string>
     <string name="add_food_via_search_or_qr">Dodajte Hranu preko Pretrage ili QR Koda</string>
+    <string name="select_a_meal">Odaberite Tip Jela</string>
 
     <string name="coming_soon">DOLAZI USKORO</string>
 </resources>

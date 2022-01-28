@@ -162,16 +162,16 @@ public class WeightFragment extends Fragment {
             if(dateInt > lastDate){
                 lastDate = dateInt;
             }
-            int num = Integer.parseInt(tokenizer.nextToken());
             float total = Float.parseFloat(tokenizer.nextToken());
+            int num = Integer.parseInt(tokenizer.nextToken());
             MDBHWeight.getInstance(context).putWeightData(date, num, total);
         }
 
         if(lastDate != -1){
             String data = MDBHWeight.getInstance(context).readWeightData(String.valueOf(lastDate));
             StringTokenizer tokenizer = new StringTokenizer(data, "#");
-            int num = Integer.parseInt(tokenizer.nextToken());
             float total = Float.parseFloat(tokenizer.nextToken());
+            int num = Integer.parseInt(tokenizer.nextToken());
 
             putLastDailyAverageDate(context, String.valueOf(lastDate));
             putLastDailyAverage(context, total / num , String.valueOf(lastDate));

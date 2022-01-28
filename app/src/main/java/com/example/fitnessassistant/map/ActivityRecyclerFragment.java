@@ -1,7 +1,6 @@
 package com.example.fitnessassistant.map;
 
 
-import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -76,7 +75,6 @@ public class ActivityRecyclerFragment extends Fragment {
         InAppActivity.personalBestsFragment.updateActivityData(null);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void updateView(int position){
         switch(position){
             case 0:
@@ -133,7 +131,6 @@ public class ActivityRecyclerFragment extends Fragment {
         });
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) { updateView(position); }
             @Override
@@ -183,7 +180,6 @@ public class ActivityRecyclerFragment extends Fragment {
         ((InAppActivity) requireActivity()).updateActivityRecyclerUI(null);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onPause() {
         super.onPause();

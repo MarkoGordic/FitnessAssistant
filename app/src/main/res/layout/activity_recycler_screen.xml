@@ -66,7 +66,7 @@
             android:background="@drawable/spinner_background"
             android:dropDownWidth="145dp"
 
-            android:dropDownVerticalOffset="36dp"
+            android:dropDownVerticalOffset="40dp"
 
             android:paddingStart="0dp"
 

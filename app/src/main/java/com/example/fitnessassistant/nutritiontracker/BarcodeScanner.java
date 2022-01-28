@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.diary.DiaryPageFragment;
-import com.example.fitnessassistant.util.AuthFunctional;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;

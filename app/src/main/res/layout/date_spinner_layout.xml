@@ -1,0 +1,15 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textView"
+
+    style="?attr/spinnerDropDownItemStyle"
+    android:singleLine="true"
+
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+
+    android:fontFamily="@font/roboto_light"
+    android:includeFontPadding="false"
+    android:textColor="@color/SpaceCadet"
+    android:textAlignment="textEnd"
+    android:textSize="17sp"
+    android:ellipsize="marquee" />

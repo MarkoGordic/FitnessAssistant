@@ -1,13 +1,18 @@
 package com.example.fitnessassistant.diary;
 
+import static com.example.fitnessassistant.util.TimeFunctional.getMonthShort;
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,27 +28,40 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
 import com.example.fitnessassistant.nutritiontracker.Product;
 import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.questions.WeightFragment;
+import com.example.fitnessassistant.util.CustomSpinner;
 import com.example.fitnessassistant.util.PieView;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class ProductFragment extends Fragment {
     private final Product product;
     private float amountChosen;
-    private int mealType;
+    private final int mealType;
+    private final LocalDate localDate;
+    private CustomSpinner spinner;
+    private CustomSpinner dateSpinner;
 
-    public ProductFragment(Product product, Float quantity, Integer mealType){
+    public ProductFragment(Product product, Float quantity, Integer mealType, LocalDate localDate){
         if(quantity == null)
             quantity = 100f;
         if(mealType == null)
             mealType = -1;
+        if(localDate == null)
+            localDate = LocalDate.now();
 
         this.product = product;
         this.amountChosen = quantity;
         this.mealType = mealType;
+        this.localDate = localDate;
     }
 
     @SuppressLint("DefaultLocale")
@@ -311,10 +329,23 @@ public class ProductFragment extends Fragment {
         });
 
         view.findViewById(R.id.forwardButton).setOnClickListener(v -> {
-            // TODO handle product and amount and meal
+            int daysBefore = dateSpinner.getSelectedItemPosition();
+            LocalDate date = LocalDate.now();
+            date = date.minusDays(daysBefore);
+
+            String dateFormatted = (String) DateFormat.format("yyyyMMdd", Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+            if (spinner.getSelectedItemPosition() > 0 && spinner.getSelectedItemPosition() < 5) {
+                MDBHNutritionTracker.getInstance(requireActivity()).addNewProduct(product.getId(), product.getName(), product.nutrimentsToDBString(), product.getBarcode(), product.getBrands());
+                InAppActivity.diaryFragment.putProduct(product, amountChosen, dateFormatted, spinner.getSelectedItemPosition() + 100);
+            } else
+                Toast.makeText(requireActivity(), R.string.select_a_meal, Toast.LENGTH_SHORT).show();
+
+            requireActivity().onBackPressed();
         });
     }
 
+    @SuppressLint("DefaultLocale")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -327,16 +358,86 @@ public class ProductFragment extends Fragment {
         setUpProductView(view, amountChosen);
         setUpOnClickListeners(view);
 
+        StringSpinnerAdapter adapter = new StringSpinnerAdapter(requireActivity(), R.layout.string_spinner_layout, new String[]{
+                "?",
+                requireActivity().getString(R.string.breakfast),
+                requireActivity().getString(R.string.lunch),
+                requireActivity().getString(R.string.dinner),
+                requireActivity().getString(R.string.snack),
+        });
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        spinner = view.findViewById(R.id.mealSpinner);
+        spinner.setAdapter(adapter);
+        spinner.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
+            @Override
+            public void onSpinnerOpened() { spinner.setSelected(true); }
+            @Override
+            public void onSpinnerClosed() { spinner.setSelected(false); }
+        });
+
         switch(mealType){
             case MDBHNutritionTracker.BREAKFAST:
+                spinner.setSelection(1);
                 break;
             case MDBHNutritionTracker.LUNCH:
+                spinner.setSelection(2);
                 break;
             case MDBHNutritionTracker.DINNER:
+                spinner.setSelection(3);
                 break;
             case MDBHNutritionTracker.SNACK:
+                spinner.setSelection(4);
                 break;
+            default:
+                spinner.setSelection(0);
         }
+
+        LocalDate start = localDate;
+        LocalDate now = LocalDate.now();
+
+        try {
+            start = Instant.ofEpochMilli(requireActivity().getPackageManager().getPackageInfo(requireActivity().getPackageName(), 0).firstInstallTime).atZone(ZoneId.systemDefault()).toLocalDate();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String[] dates = new String[(int) DAYS.between(start, now) + 1];
+        int indexSelected = 0;
+
+        int i = 0;
+        for(; now.atStartOfDay().isAfter(start.atStartOfDay()); now = now.minusDays(1), i++){
+            dates[i] = String.format("%02d %s %d", now.getDayOfMonth(), getMonthShort(requireActivity(), now.getMonthValue()), now.getYear());
+            if(now.getYear() == localDate.getYear()
+                && now.getMonthValue() == localDate.getMonthValue()
+                && now.getDayOfMonth() == localDate.getDayOfMonth()){
+                indexSelected = i;
+            }
+        }
+
+        if(i == (int) DAYS.between(start, LocalDate.now())){
+            dates[i] = String.format("%02d %s %d", now.getDayOfMonth(), getMonthShort(requireActivity(), now.getMonthValue()), now.getYear());
+            if(now.getYear() == localDate.getYear()
+                    && now.getMonthValue() == localDate.getMonthValue()
+                    && now.getDayOfMonth() == localDate.getDayOfMonth()){
+                indexSelected = i;
+            }
+        }
+
+        StringSpinnerAdapter adapter1 = new StringSpinnerAdapter(requireActivity(), R.layout.date_spinner_layout, dates);
+        adapter1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        dateSpinner = view.findViewById(R.id.dateSpinner);
+
+        dateSpinner.setAdapter(adapter1);
+        dateSpinner.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
+            @Override
+            public void onSpinnerOpened() { spinner.setSelected(true); }
+            @Override
+            public void onSpinnerClosed() { spinner.setSelected(false); }
+        });
+
+        dateSpinner.setSelection(indexSelected);
 
         return view;
     }

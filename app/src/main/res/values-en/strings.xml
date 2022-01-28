@@ -527,6 +527,7 @@
     <string name="dinner">Dinner</string>
     <string name="snack">Snack</string>
     <string name="add_food_via_search_or_qr">Add Food via Search or QR Code</string>
+    <string name="select_a_meal">Select A Meal</string>
 
     <string name="coming_soon">COMING SOON</string>
 </resources>
