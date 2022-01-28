@@ -63,6 +63,63 @@ public class Product {
 
     public Product(){}
 
+    public Product(Context context, String name, String barcode, Float calories, Float sugar, Float carbs, Float proteins, Float fat){
+        id = MDBHNutritionTracker.getInstance(context).getLastProductID() + 1;
+        setName(name);
+        setBarcode(barcode);
+        setEnergy_kcal_100g(calories);
+        setSugars_100g(sugar);
+        setCarbohydrates_100g(carbs);
+        setProteins_100g(proteins);
+        setFat_100g(fat);
+        setBrands(null);
+
+        setBiotin_100g(0f);
+        setCalcium_100g(0f);
+        setFluoride_100g(0f);
+        setChloride_100g(0f);
+        setMagnesium_100g(0f);
+        setPotassium_100g(0f);
+        setCholesterol_100g(0f);
+        setSalt_100g(0f);
+        setSodium_100g(0f);
+        setFiber_100g(0f);
+        setSaturated_fat_100g(0f);
+        setTrans_fat_100g(0f);
+        setMonounsaturated_fat_100g(0f);
+        setPolyunsaturated_fat_100g(0f);
+        setOmega_3_fat_100g(0f);
+        setOmega_6_fat_100g(0f);
+        setOmega_9_fat_100g(0f);
+        setCaffeine_100g(0f);
+        setCopper_100g(0f);
+        setIodine_100g(0f);
+        setManganese_100g(0f);
+        setGlucose_100g(0f);
+        setFructose_100g(0f);
+        setLactose_100g(0f);
+        setSucrose_100g(0f);
+        setAlcohol_100g(0f);
+        setCasein_100g(0f);
+        setMaltose_100g(0f);
+        setStarch_100g(0f);
+        setTaurine_100g(0f);
+        setZinc_100g(0f);
+        setIron_100g(0f);
+        setVitamin_a_100g(0f);
+        setVitamin_b1_100g(0f);
+        setVitamin_b2_100g(0f);
+        setVitamin_pp_100g(0f);
+        setVitamin_b6_100g(0f);
+        setVitamin_b9_100g(0f);
+        setVitamin_b12_100g(0f);
+        setVitamin_c_100g(0f);
+        setVitamin_d_100g(0f);
+        setVitamin_e_100g(0f);
+        setVitamin_k_100g(0f);
+
+    }
+
     public Product(JSONObject object, Context context, boolean search){
         if(object != null)
             try {
@@ -495,11 +552,6 @@ public class Product {
                             setFructose_100g((float)nutriments.getDouble("fructose_100g"));
                         else
                             setFructose_100g(0f);
-
-                        if(nutriments.has("lactose_100g"))
-                            setLactose_100g((float)nutriments.getDouble("lactose_100g"));
-                        else
-                            setLactose_100g(0f);
 
                         if(nutriments.has("lactose_100g"))
                             setLactose_100g((float)nutriments.getDouble("lactose_100g"));

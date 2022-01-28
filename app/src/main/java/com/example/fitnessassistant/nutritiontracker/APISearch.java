@@ -27,6 +27,7 @@ import java.util.concurrent.Executors;
 public class APISearch {
     public static MutableLiveData<ArrayList<Product>> products = new MutableLiveData<>();
     public static MutableLiveData<Product> barcodeProduct = new MutableLiveData<>();
+    public static String barcodeDetected = null;
 
     final static String baseURL = "https://world.openfoodfacts.org/api/v0/product/";
     final static String searchURL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=";

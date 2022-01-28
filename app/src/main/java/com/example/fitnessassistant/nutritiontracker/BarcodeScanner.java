@@ -1,5 +1,7 @@
 package com.example.fitnessassistant.nutritiontracker;
 
+import static com.example.fitnessassistant.nutritiontracker.APISearch.barcodeDetected;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
@@ -126,6 +128,7 @@ public class BarcodeScanner extends Fragment {
                             cameraSource.stop();
 
                             DiaryPageFragment.shouldReceiveProducts.set(true);
+                            barcodeDetected = barcodes.valueAt(0).displayValue;
                             APISearch.getInstance().searchAPI(barcodes.valueAt(0).displayValue, requireContext(), true, false, 1);
 
                             requireActivity().onBackPressed();
