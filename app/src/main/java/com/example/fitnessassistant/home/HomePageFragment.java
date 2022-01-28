@@ -4,6 +4,7 @@ import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFor
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +21,24 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.fitnessassistant.InAppActivity;
 import com.example.fitnessassistant.R;
 import com.example.fitnessassistant.database.data.SleepSegment;
+import com.example.fitnessassistant.database.mdbh.MDBHNutritionTracker;
 import com.example.fitnessassistant.database.mdbh.MDBHPedometer;
 import com.example.fitnessassistant.database.mdbh.MDBHSleepTracker;
+import com.example.fitnessassistant.diary.NutritionGoals;
+import com.example.fitnessassistant.nutritiontracker.Product;
 import com.example.fitnessassistant.pedometer.StepGoalFragment;
+import com.example.fitnessassistant.questions.UnitPreferenceFragment;
 import com.example.fitnessassistant.sleeptracker.SleepDateFragment;
 import com.example.fitnessassistant.sleeptracker.SleepFragment;
 import com.example.fitnessassistant.util.ClockView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 
 public class HomePageFragment extends Fragment {
 
@@ -81,12 +88,154 @@ public class HomePageFragment extends Fragment {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     public void updateNutritionData(View view){
         if(view == null)
             view = getView();
 
+        Calendar cal = Calendar.getInstance();
+
         if(view != null){
-            // TODO
+            String currDateFormatted = (String) DateFormat.format("yyyyMMdd", cal);
+
+            ArrayList<Product> products;
+            ArrayList<Float> quantities;
+            Iterator<Product> it;
+            Iterator<Float> it2;
+
+            float totalIntakeCals = 0f;
+            float totalProteinIntake = 0f;
+            float totalCarbIntake = 0f;
+            float totalFatIntake = 0f;
+            products = MDBHNutritionTracker.getInstance(requireActivity()).getBreakfastProducts(currDateFormatted);
+            quantities =  MDBHNutritionTracker.getInstance(requireActivity()).getBreakfastQuantities(currDateFormatted);
+            it = products.iterator();
+            it2 = quantities.iterator();
+            while(it.hasNext() && it2.hasNext()){
+                Product p = it.next();
+                float q = it2.next();
+
+                totalIntakeCals += Math.round(p.getEnergy_kcal_100g() * q);
+                totalProteinIntake += p.getProteins_100g() * q;
+                totalFatIntake += p.getFat_100g() * q;
+                totalCarbIntake += p.getCarbohydrates_100g() * q;
+            }
+            products = MDBHNutritionTracker.getInstance(requireActivity()).getLunchProducts(currDateFormatted);
+            quantities =  MDBHNutritionTracker.getInstance(requireActivity()).getLunchQuantities(currDateFormatted);
+            it = products.iterator();
+            it2 = quantities.iterator();
+            while(it.hasNext() && it2.hasNext()){
+                Product p = it.next();
+                float q = it2.next();
+
+                totalIntakeCals += Math.round(p.getEnergy_kcal_100g() * q);
+                totalProteinIntake += p.getProteins_100g() * q;
+                totalFatIntake += p.getFat_100g() * q;
+                totalCarbIntake += p.getCarbohydrates_100g() * q;
+            }
+            products = MDBHNutritionTracker.getInstance(requireActivity()).getDinnerProducts(currDateFormatted);
+            quantities =  MDBHNutritionTracker.getInstance(requireActivity()).getDinnerQuantities(currDateFormatted);
+            it = products.iterator();
+            it2 = quantities.iterator();
+            while(it.hasNext() && it2.hasNext()){
+                Product p = it.next();
+                float q = it2.next();
+
+                totalIntakeCals += Math.round(p.getEnergy_kcal_100g() * q);
+                totalProteinIntake += p.getProteins_100g() * q;
+                totalFatIntake += p.getFat_100g() * q;
+                totalCarbIntake += p.getCarbohydrates_100g() * q;
+            }
+            products = MDBHNutritionTracker.getInstance(requireActivity()).getSnackProducts(currDateFormatted);
+            quantities =  MDBHNutritionTracker.getInstance(requireActivity()).getSnackQuantities(currDateFormatted);
+            it = products.iterator();
+            it2 = quantities.iterator();
+            while(it.hasNext() && it2.hasNext()){
+                Product p = it.next();
+                float q = it2.next();
+
+                totalIntakeCals += Math.round(p.getEnergy_kcal_100g() * q);
+                totalProteinIntake += p.getProteins_100g() * q;
+                totalFatIntake += p.getFat_100g() * q;
+                totalCarbIntake += p.getCarbohydrates_100g() * q;
+            }
+
+            float caloriesGoal = Math.round(NutritionGoals.getCaloriesGoal(requireActivity()));
+            float proGoal = NutritionGoals.getProteinGoal(requireActivity());
+            float fatGoal = NutritionGoals.getFatGoal(requireActivity());
+            float carbGoal = NutritionGoals.getCarbsGoal(requireActivity());
+
+            if(UnitPreferenceFragment.getEnergyUnit(requireActivity()).equals(UnitPreferenceFragment.ENERGY_UNIT_KJ)){
+                if(caloriesGoal > 0) {
+                    int percent = Math.round(totalIntakeCals / caloriesGoal * 100f);
+                    if(percent > 100)
+                        percent = 100;
+
+                    ((ProgressBar) view.findViewById(R.id.caloriesProgress)).setProgress(percent);
+                    ((TextView) view.findViewById(R.id.caloriesPercent)).setText(String.format("%d%%", percent));
+                    ((TextView) view.findViewById(R.id.caloriesGoal)).setText(String.format("%.1f/%.1f %s", Math.round(totalIntakeCals) * 4.184f, Math.round(caloriesGoal) * 4.184f, requireActivity().getString(R.string.kj)));
+                } else {
+                    ((ProgressBar) view.findViewById(R.id.caloriesProgress)).setProgress(0);
+                    ((TextView) view.findViewById(R.id.caloriesPercent)).setText("?%%");
+                    ((TextView) view.findViewById(R.id.caloriesGoal)).setText(String.format("%.1f/? %s", Math.round(totalIntakeCals) * 4.184f, requireActivity().getString(R.string.kj)));
+                }
+            } else{
+                if(caloriesGoal > 0) {
+                    int percent = Math.round(totalIntakeCals / caloriesGoal * 100f);
+                    if(percent > 100)
+                        percent = 100;
+
+                    ((ProgressBar) view.findViewById(R.id.caloriesProgress)).setProgress(percent);
+                    ((TextView) view.findViewById(R.id.caloriesPercent)).setText(String.format("%d%%", percent));
+                    ((TextView) view.findViewById(R.id.caloriesGoal)).setText(String.format("%d/%d %s", Math.round(totalIntakeCals), Math.round(caloriesGoal), requireActivity().getString(R.string.cal)));
+                } else {
+                    ((ProgressBar) view.findViewById(R.id.caloriesProgress)).setProgress(0);
+                    ((TextView) view.findViewById(R.id.caloriesPercent)).setText("?%%");
+                    ((TextView) view.findViewById(R.id.caloriesGoal)).setText(String.format("%d/? %s", Math.round(totalIntakeCals), requireActivity().getString(R.string.cal)));
+                }
+            }
+
+            if(carbGoal > 0){
+                int percent = Math.round(totalCarbIntake / carbGoal * 100f);
+                if(percent > 100)
+                    percent = 100;
+
+                ((ProgressBar) view.findViewById(R.id.carbsProgress)).setProgress(percent);
+                ((TextView) view.findViewById(R.id.carbsPercent)).setText(String.format("%d%%", percent));
+                ((TextView) view.findViewById(R.id.carbsGoal)).setText(String.format("%.1f/%.1f g", totalCarbIntake, carbGoal));
+            } else{
+                ((ProgressBar) view.findViewById(R.id.carbsProgress)).setProgress(0);
+                ((TextView) view.findViewById(R.id.carbsPercent)).setText("?%%");
+                ((TextView) view.findViewById(R.id.carbsGoal)).setText(String.format("%.1f/? g", totalCarbIntake));
+            }
+
+            if(fatGoal > 0){
+                int percent = Math.round(totalFatIntake / fatGoal * 100f);
+                if(percent > 100)
+                    percent = 100;
+
+                ((ProgressBar) view.findViewById(R.id.fatProgress)).setProgress(percent);
+                ((TextView) view.findViewById(R.id.fatPercent)).setText(String.format("%d%%", percent));
+                ((TextView) view.findViewById(R.id.fatGoal)).setText(String.format("%.1f/%.1f g", totalFatIntake, fatGoal));
+            } else{
+                ((ProgressBar) view.findViewById(R.id.fatProgress)).setProgress(0);
+                ((TextView) view.findViewById(R.id.fatPercent)).setText("?%%");
+                ((TextView) view.findViewById(R.id.fatGoal)).setText(String.format("%.1f/? g", totalFatIntake));
+            }
+
+            if(proGoal > 0){
+                int percent = Math.round(totalProteinIntake / proGoal * 100f);
+                if(percent > 100)
+                    percent = 100;
+
+                ((ProgressBar) view.findViewById(R.id.proteinProgress)).setProgress(percent);
+                ((TextView) view.findViewById(R.id.proteinPercent)).setText(String.format("%d%%", percent));
+                ((TextView) view.findViewById(R.id.proteinGoal)).setText(String.format("%.1f/%.1f g", totalProteinIntake, proGoal));
+            } else{
+                ((ProgressBar) view.findViewById(R.id.proteinProgress)).setProgress(0);
+                ((TextView) view.findViewById(R.id.proteinPercent)).setText("?%%");
+                ((TextView) view.findViewById(R.id.proteinGoal)).setText(String.format("%.1f/? g", totalProteinIntake));
+            }
         }
     }
 
@@ -130,6 +279,7 @@ public class HomePageFragment extends Fragment {
 
         updateStepsData(view);
         updateSleepData(view);
+        updateNutritionData(view);
 
         TextView welcomeTextView = view.findViewById(R.id.welcomeMessageTextView); // TextView in top right corner for welcome message
 

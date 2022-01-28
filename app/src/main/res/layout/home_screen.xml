@@ -315,6 +315,311 @@
             android:textSize="18sp"
             android:padding="8dp"
             android:textColor="@color/SpaceCadet"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+
+                    android:gravity="start"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:text="@string/calories"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginStart="1dp"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="15sp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp">
+                    <ProgressBar
+                        android:id="@+id/caloriesProgress"
+
+                        style="?android:attr/progressBarStyleHorizontal"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+
+                        android:layout_gravity="center"
+
+                        android:indeterminate="false"
+                        android:progressBackgroundTint="@color/LightGrayColor"
+                        android:progressTint="@color/SpaceCadet" />
+                </FrameLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp">
+                    <TextView
+                        android:id="@+id/caloriesPercent"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+
+                        android:gravity="start"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/SpaceCadet"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/caloriesGoal"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="start"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:text="@string/carbs"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginStart="1dp"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="15sp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp">
+                    <ProgressBar
+                        android:id="@+id/carbsProgress"
+
+                        style="?android:attr/progressBarStyleHorizontal"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+
+                        android:layout_gravity="center"
+
+                        android:indeterminate="false"
+                        android:progressBackgroundTint="@color/LightGrayColor"
+                        android:progressTint="@color/Green" />
+                </FrameLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp">
+                    <TextView
+                        android:id="@+id/carbsPercent"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+
+                        android:gravity="start"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/Green"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/carbsGoal"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+
+                    android:gravity="start"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:text="@string/fat"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginStart="1dp"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="15sp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp">
+                    <ProgressBar
+                        android:id="@+id/fatProgress"
+
+                        style="?android:attr/progressBarStyleHorizontal"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+
+                        android:layout_gravity="center"
+
+                        android:indeterminate="false"
+                        android:progressBackgroundTint="@color/LightGrayColor"
+                        android:progressTint="@color/Yellow" />
+                </FrameLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp">
+                    <TextView
+                        android:id="@+id/fatPercent"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+
+                        android:gravity="start"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/Yellow"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/fatGoal"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+
+                    android:gravity="start"
+
+                    android:fontFamily="@font/ralewaym"
+                    android:includeFontPadding="false"
+                    android:text="@string/protein"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginStart="1dp"
+                    android:textColor="@color/InvertedBackgroundColor"
+                    android:textFontWeight="600"
+                    android:textSize="15sp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp">
+                    <ProgressBar
+                        android:id="@+id/proteinProgress"
+
+                        style="?android:attr/progressBarStyleHorizontal"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+
+                        android:layout_gravity="center"
+
+                        android:indeterminate="false"
+                        android:progressBackgroundTint="@color/LightGrayColor"
+                        android:progressTint="@color/Red" />
+                </FrameLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp">
+                    <TextView
+                        android:id="@+id/proteinPercent"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+
+                        android:gravity="start"
+
+                        android:fontFamily="@font/roboto_light"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/Red"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/proteinGoal"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+
+                        android:fontFamily="@font/roboto_light"
+
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/LightGrayColor"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

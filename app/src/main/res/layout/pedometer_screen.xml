@@ -147,7 +147,7 @@
             android:indeterminate="false"
             android:progress="40"
             android:progressTint="@color/MangoTango"
-            android:progressBackgroundTint="@color/NonBackgroundColor"
+            android:progressBackgroundTint="@color/LightGrayColor"
             android:tint="@color/backgroundColor"/>
 
         <LinearLayout
@@ -424,7 +424,7 @@
                             android:paddingStart="8dp"
                             android:paddingEnd="0dp"
                             android:progress="40"
-                            android:progressBackgroundTint="@color/NonBackgroundColor"
+                            android:progressBackgroundTint="@color/LightGrayColor"
                             android:progressTint="@color/BlueYonder"
                             android:tint="@color/backgroundColor" />
                     </LinearLayout>
@@ -483,7 +483,7 @@
                             android:paddingStart="8dp"
                             android:paddingEnd="0dp"
                             android:progress="40"
-                            android:progressBackgroundTint="@color/NonBackgroundColor"
+                            android:progressBackgroundTint="@color/LightGrayColor"
                             android:progressTint="@color/BlueYonder"
                             android:tint="@color/backgroundColor" />
                     </LinearLayout>
@@ -542,7 +542,7 @@
                             android:paddingStart="8dp"
                             android:paddingEnd="0dp"
                             android:progress="40"
-                            android:progressBackgroundTint="@color/NonBackgroundColor"
+                            android:progressBackgroundTint="@color/LightGrayColor"
                             android:progressTint="@color/BlueYonder"
                             android:tint="@color/backgroundColor" />
                     </LinearLayout>
@@ -602,7 +602,7 @@
                             android:paddingStart="8dp"
                             android:paddingEnd="0dp"
                             android:progress="40"
-                            android:progressBackgroundTint="@color/NonBackgroundColor"
+                            android:progressBackgroundTint="@color/LightGrayColor"
                             android:progressTint="@color/BlueYonder"
                             android:tint="@color/backgroundColor" />
                     </LinearLayout>
@@ -661,7 +661,7 @@
                             android:paddingStart="8dp"
                             android:paddingEnd="0dp"
                             android:progress="40"
-                            android:progressBackgroundTint="@color/NonBackgroundColor"
+                            android:progressBackgroundTint="@color/LightGrayColor"
                             android:progressTint="@color/BlueYonder"
                             android:tint="@color/backgroundColor" />
                     </LinearLayout>
@@ -720,7 +720,7 @@
                             android:paddingStart="8dp"
                             android:paddingEnd="0dp"
                             android:progress="40"
-                            android:progressBackgroundTint="@color/NonBackgroundColor"
+                            android:progressBackgroundTint="@color/LightGrayColor"
                             android:progressTint="@color/BlueYonder"
                             android:tint="@color/backgroundColor" />
                     </LinearLayout>
@@ -779,7 +779,7 @@
                             android:paddingStart="8dp"
                             android:paddingEnd="0dp"
                             android:progress="40"
-                            android:progressBackgroundTint="@color/NonBackgroundColor"
+                            android:progressBackgroundTint="@color/LightGrayColor"
                             android:progressTint="@color/BlueYonder"
                             android:tint="@color/backgroundColor" />
                     </LinearLayout>
