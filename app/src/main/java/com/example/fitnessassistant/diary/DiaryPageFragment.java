@@ -92,12 +92,10 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
 
     @Override // SEARCH RECYCLER
     public void onItemClick(Product product) {
-        // TODO change
         if(product == null)
             Toast.makeText(requireActivity(), R.string.product_not_found , Toast.LENGTH_SHORT).show();
-        else {
+        else
             requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new ProductFragment(product, null, null, null)).addToBackStack(null).commit();
-        }
     }
 
     private void subscribeToObservers(View view){
@@ -137,7 +135,12 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
             }
         });
 
-        APISearch.barcodeProduct.observe(getViewLifecycleOwner(), this::onItemClick);
+        APISearch.barcodeProduct.observe(getViewLifecycleOwner(), product ->  {
+            if(product == null)
+                requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new NewProductFrament()).addToBackStack(null).commit();
+            else
+                onItemClick(product);
+        });
     }
 
     @SuppressLint("DefaultLocale")
@@ -424,6 +427,8 @@ public class DiaryPageFragment extends Fragment implements SearchAdapter.OnItemL
                 return false;
             }
         });
+
+        view.findViewById(R.id.addNewProduct).setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().hide(this).add(R.id.in_app_container, new NewProductFrament()).addToBackStack(null).commit());
 
         view.findViewById(R.id.qrCodeScanner).setOnClickListener(v -> {
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)

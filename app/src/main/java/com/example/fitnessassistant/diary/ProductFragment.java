@@ -134,21 +134,21 @@ public class ProductFragment extends Fragment {
         int fatPercent = 0;
 
         if(totalKcal > 0){
-            carbPercent = Math.round(carbs * 4f / totalKcal * 100f);
-            proteinPercent = Math.round(protein * 4f / totalKcal * 100f);
-            fatPercent = Math.round(fat * 9f / totalKcal * 100f);
-
             float carbKcal = carbs * 4f;
             float fatKcal = fat * 9f;
             float proteinKcal = protein * 4f;
 
-            float maxKcal = Math.max(proteinKcal, Math.max(carbKcal, fatKcal));
+            carbPercent = Math.round(carbKcal / totalKcal * 100f);
+            proteinPercent = Math.round(proteinKcal / totalKcal * 100f);
+            fatPercent = Math.round(fatKcal / totalKcal * 100f);
 
-            if(maxKcal == carbKcal)
+            float maxPercent = Math.max(carbPercent, Math.max(proteinPercent, fatPercent));
+
+            if(maxPercent == carbPercent)
                 carbPercent = 100 - proteinPercent - fatPercent;
-            else if (maxKcal == fatKcal)
+            else if (maxPercent == fatPercent)
                 fatPercent = 100 - proteinPercent - carbPercent;
-            else if (maxKcal == proteinKcal)
+            else if (maxPercent == proteinPercent)
                 proteinPercent = 100 - carbPercent - fatPercent;
         }
 
