@@ -2,6 +2,8 @@ package com.example.fitnessassistant.questions;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.example.fitnessassistant.diary.NutritionGoals.getFloat;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -146,7 +148,7 @@ public class HeightFragment extends Fragment {
                 heightInInches.setError(null);
                 if(heightInFeet.getText().length() != 0 && heightInInches.getText().length() != 0){
                     // get height in inches
-                    float height = Integer.parseInt(s.toString()) * 12 + Float.parseFloat(heightInInches.getText().toString());
+                    float height = Integer.parseInt(s.toString()) * 12 + getFloat(heightInInches.getText().toString());
                     setHeightInCentimeters(height, heightInCMs);
                     if(height < 20f || height > 100f){
                         heightInCMs.setError(getString(R.string.height_not_valid));
@@ -178,8 +180,8 @@ public class HeightFragment extends Fragment {
             view.findViewById(R.id.skipButton).setOnClickListener(v -> ((InAppActivity) requireActivity()).proceedQuestions(3));
 
             view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
-                if (heightInCMs.getText().length() != 0 && validHeight(Float.parseFloat(heightInCMs.getText().toString()))) {
-                    putHeight(requireActivity(), Float.parseFloat(heightInCMs.getText().toString()));
+                if (heightInCMs.getText().length() != 0 && validHeight(getFloat(heightInCMs.getText().toString()))) {
+                    putHeight(requireActivity(), getFloat(heightInCMs.getText().toString()));
 
                     // put unit preference given too
                     if (((SwitchCompat) view.findViewById(R.id.unitSwitch)).isChecked())
@@ -197,8 +199,8 @@ public class HeightFragment extends Fragment {
 
             view.findViewById(R.id.skipButton).setOnClickListener(v -> requireActivity().onBackPressed());
             view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
-                if (heightInCMs.getText().length() != 0 && validHeight(Float.parseFloat(heightInCMs.getText().toString()))) {
-                    putHeight(requireActivity(), Float.parseFloat(heightInCMs.getText().toString()));
+                if (heightInCMs.getText().length() != 0 && validHeight(getFloat(heightInCMs.getText().toString()))) {
+                    putHeight(requireActivity(), getFloat(heightInCMs.getText().toString()));
 
                     // put unit preference given too
                     if (((SwitchCompat) view.findViewById(R.id.unitSwitch)).isChecked())

@@ -1,6 +1,7 @@
 package com.example.fitnessassistant.questions;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.example.fitnessassistant.diary.NutritionGoals.getFloat;
 import static com.example.fitnessassistant.util.TimeFunctional.getCurrentDateFormatted;
 
 import android.app.AlertDialog;
@@ -222,7 +223,7 @@ public class WeightFragment extends Fragment {
                 weightInPounds.setError(null);
                 if(weightInKGs.getText().length() != 0){
                     // get height in inches
-                    float weight = Float.parseFloat(weightInKGs.getText().toString());
+                    float weight = getFloat(weightInKGs.getText().toString());
                     setWeightInPounds(weight, weightInPounds);
                     if(weight < 2f || weight > 700f){
                         weightInKGs.setError(getString(R.string.weight_not_valid));
@@ -244,7 +245,7 @@ public class WeightFragment extends Fragment {
                 weightInPounds.setError(null);
                 if(weightInPounds.getText().length() != 0){
                     // get height in inches
-                    float weight = Float.parseFloat(weightInPounds.getText().toString());
+                    float weight = getFloat(weightInPounds.getText().toString());
                     setWeightInKilograms(weight, weightInKGs);
                     if(weight < 5f || weight > 1500f){
                         weightInKGs.setError(getString(R.string.weight_not_valid));
@@ -275,10 +276,10 @@ public class WeightFragment extends Fragment {
             view.findViewById(R.id.skipButton).setOnClickListener(v -> ((InAppActivity) requireActivity()).proceedQuestions(4));
 
             view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
-                if (weightInKGs.getText().length() != 0 && validWeight(Float.parseFloat(weightInKGs.getText().toString()))) {
-                    putFirstWeight(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
+                if (weightInKGs.getText().length() != 0 && validWeight(getFloat(weightInKGs.getText().toString()))) {
+                    putFirstWeight(requireActivity(), getFloat(weightInKGs.getText().toString()));
                     putFirstWeightDate(requireActivity(), getCurrentDateFormatted());
-                    updateWeightForToday(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
+                    updateWeightForToday(requireActivity(), getFloat(weightInKGs.getText().toString()));
 
                     // put unit preference given too
                     if (((SwitchCompat) view.findViewById(R.id.unitSwitch)).isChecked())
@@ -329,12 +330,12 @@ public class WeightFragment extends Fragment {
 
                 view.findViewById(R.id.skipButton).setOnClickListener(v -> requireActivity().onBackPressed());
                 view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
-                    if (weightInKGs.getText().length() != 0 && validWeight(Float.parseFloat(weightInKGs.getText().toString()))) {
+                    if (weightInKGs.getText().length() != 0 && validWeight(getFloat(weightInKGs.getText().toString()))) {
                         if (getFirstWeight(requireActivity()) == -1f) {
-                            putFirstWeight(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
+                            putFirstWeight(requireActivity(), getFloat(weightInKGs.getText().toString()));
                             putFirstWeightDate(requireActivity(), getCurrentDateFormatted());
                         }
-                        updateWeightForToday(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
+                        updateWeightForToday(requireActivity(), getFloat(weightInKGs.getText().toString()));
 
                         // put unit preference given too
                         if (((SwitchCompat) view.findViewById(R.id.unitSwitch)).isChecked())
@@ -355,8 +356,8 @@ public class WeightFragment extends Fragment {
 
                 view.findViewById(R.id.skipButton).setOnClickListener(v -> requireActivity().onBackPressed());
                 view.findViewById(R.id.proceedButton).setOnClickListener(v -> {
-                    if (weightInKGs.getText().length() != 0 && validWeight(Float.parseFloat(weightInKGs.getText().toString()))) {
-                        putGoalWeight(requireActivity(), Float.parseFloat(weightInKGs.getText().toString()));
+                    if (weightInKGs.getText().length() != 0 && validWeight(getFloat(weightInKGs.getText().toString()))) {
+                        putGoalWeight(requireActivity(), getFloat(weightInKGs.getText().toString()));
 
                         // put unit preference given too
                         if (((SwitchCompat) view.findViewById(R.id.unitSwitch)).isChecked())

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "545598236576-g5k7346ggdupivoh3uj3cdteqeel0agq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fitnessassistant",
+            "certificate_hash": "22d1029724c81207436433bf4446ec0f6ef99db6"
+          }
+        },
+        {
           "client_id": "545598236576-qkf7i2dp0pv1urol2vk79oj8rvce9glr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
